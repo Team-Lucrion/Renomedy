@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp",
+      "note": "Official Supabase MCP server. Uses OAuth on first connection."
+    }
+  }
+}

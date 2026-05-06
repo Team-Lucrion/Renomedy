@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Swasthi — Your Family's Medication Clarity System</title>
+
+  <link rel="icon" type="image/png" href="https://your-favicon-link-here.com/favicon.png">
+  <link rel="apple-touch-icon" href="https://your-favicon-link-here.com/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy:#07111c; --navy-2:#0d1f30; --teal:#00b4a0; --mint:#a8f0e8;
+      --white:#f5f9fb; --white-70:rgba(245,249,251,.7); --white-30:rgba(245,249,251,.3);
+      --white-10:rgba(245,249,251,.08); --glow:rgba(0,180,160,.28);
+      --serif:'DM Serif Display',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+      --ease:cubic-bezier(.16,1,.3,1);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--sans);background:var(--navy);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none}
+    .page-wrap{position:relative;z-index:1;min-height:100vh}
+    .glow-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+    .orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,180,160,.18),transparent 70%);top:-160px;left:50%;transform:translateX(-50%)}
+    .orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(0,100,160,.2),transparent 70%);bottom:10%;right:-100px}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:28px 48px}
+    .logo-mark{display:flex;align-items:center;gap:12px}
+    .logo-icon{width:42px;height:42px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,var(--teal),#006e8a);box-shadow:0 0 20px var(--glow)}
+    .logo-icon img{width:100%;height:100%;object-fit:cover}
+    .logo-text{font-family:var(--serif);font-size:24px;letter-spacing:-.02em}
+    .trust-badge{display:flex;align-items:center;gap:7px;background:var(--white-10);border:1px solid rgba(0,180,160,.2);border-radius:100px;padding:7px 15px;font-size:12px;color:var(--white-70);backdrop-filter:blur(8px)}
+    .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:pulse 2.4s infinite}
+    @keyframes pulse{50%{opacity:.4}}
+
+    .hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px 0;max-width:1200px;margin:0 auto;min-height:calc(100vh - 100px)}
+    .hero-left{padding-right:40px;padding-bottom:80px}
+    .pill-label{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(168,240,232,.25);background:rgba(168,240,232,.06);border-radius:100px;padding:5px 14px 5px 6px;font-size:12px;font-weight:500;color:var(--mint);letter-spacing:.04em;text-transform:uppercase;margin-bottom:28px}
+    .pill-label .tag{background:var(--teal);color:var(--navy);border-radius:100px;padding:2px 8px;font-size:10px;font-weight:700}
+    h1{font-family:var(--serif);font-size:clamp(2.7rem,4.3vw,4.2rem);line-height:1.08;letter-spacing:-.035em;margin-bottom:20px}
+    h1 em{font-style:italic;color:var(--mint)}
+    .subhead{font-size:18px;line-height:1.6;color:var(--white-70);max-width:460px;margin-bottom:14px}
+    .desc{font-size:14px;font-weight:300;line-height:1.7;color:var(--white-30);max-width:430px;margin-bottom:40px}
+
+    .waitlist-form{display:flex;flex-direction:column;gap:12px;max-width:420px}
+    .input-row{display:flex;background:var(--white-10);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:5px 5px 5px 18px;transition:.2s}
+    .input-row:focus-within{border-color:rgba(0,180,160,.5);box-shadow:0 0 0 3px rgba(0,180,160,.12)}
+    .input-row input{flex:1;background:none;border:none;outline:none;font-size:15px;color:var(--white);padding:10px 0}
+    .input-row input::placeholder{color:var(--white-30)}
+    .btn-cta{background:linear-gradient(135deg,var(--teal),#009688);color:var(--navy);border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 4px 20px rgba(0,180,160,.35)}
+    .btn-cta:hover{opacity:.92;transform:translateY(-1px)}
+    .btn-cta:disabled{opacity:.55;cursor:not-allowed}
+    .form-note{font-size:12px;color:var(--white-30)}
+    .form-note strong{color:var(--white-70);font-weight:500}
+    .success-msg{display:none;flex-direction:column;gap:8px;background:rgba(0,180,160,.08);border:1px solid rgba(0,180,160,.3);border-radius:14px;padding:20px 24px;max-width:420px}
+    .success-msg.show{display:flex}
+    .success-msg h4{font-size:15px;color:var(--mint)}
+    .success-msg p{font-size:13px;color:var(--white-70);line-height:1.5}
+
+    .trust-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+    .chip{display:flex;align-items:center;gap:7px;background:var(--white-10);border:1px solid rgba(255,255,255,.08);border-radius:100px;padding:7px 14px;font-size:12.5px;color:var(--white-70)}
+
+    .hero-right{display:flex;justify-content:center;align-items:flex-end;position:relative}
+    .phone-glow-halo{position:absolute;width:380px;height:480px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,180,160,.22),transparent 70%);filter:blur(30px)}
+    .phone-frame{position:relative;width:280px;background:#0a1929;border-radius:46px;border:2px solid rgba(255,255,255,.12);box-shadow:0 40px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);overflow:hidden;transform:perspective(1200px) rotateY(-6deg) rotateX(2deg);margin-bottom:30px}
+    .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:28px;background:#0a1929;border-radius:0 0 18px 18px;z-index:10}
+    .phone-notch::after{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:48px;height:5px;border-radius:3px;background:rgba(255,255,255,.15)}
+    .phone-screen{background:linear-gradient(180deg,#0d2137,#0a1829);padding:36px 16px 16px;min-height:560px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+
+    .app-status{display:flex;justify-content:space-between;font-size:9px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:4px}
+    .app-greeting{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px}
+    .greeting-text{font-size:11px;color:rgba(255,255,255,.5)}
+    .greeting-name{font-size:17px;font-weight:600;color:#fff;margin-top:1px}
+    .avatar-circle{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#006e8a);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy)}
+
+    .family-card{background:linear-gradient(135deg,rgba(0,180,160,.18),rgba(0,110,138,.25));border:1px solid rgba(0,180,160,.3);border-radius:18px;padding:14px;position:relative;overflow:hidden}
+    .fc-label{font-size:9.5px;font-weight:500;color:var(--mint);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+    .fc-stats{display:flex;gap:16px}
+    .fc-stat h3{font-size:22px;font-weight:700;color:#fff;line-height:1}
+    .fc-stat span{font-size:9px;color:rgba(255,255,255,.5)}
+    .fc-divider{width:1px;background:rgba(255,255,255,.12)}
+    .fc-avatars{display:flex;gap:4px;margin-top:12px}
+    .fa-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:3px 8px 3px 4px;display:flex;align-items:center;gap:4px;font-size:8.5px;color:rgba(255,255,255,.7)}
+    .fa-dot{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700}
+    .fa-add{background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.2);border-radius:100px;padding:3px 8px;font-size:8px;color:rgba(255,255,255,.4)}
+
+    .section-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.05em;text-transform:uppercase;margin-top:4px}
+    .med-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 12px}
+    .med-icon-wrap{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+    .med-info{flex:1}
+    .med-name{font-size:11px;font-weight:600;color:rgba(255,255,255,.85)}
+    .med-time{font-size:9px;color:rgba(255,255,255,.35);margin-top:1px}
+    .med-check{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(0,180,160,.4);display:flex;align-items:center;justify-content:center;font-size:9px}
+    .med-check.done{background:var(--teal);border-color:var(--teal);color:var(--navy)}
+
+    .scan-cta{background:linear-gradient(135deg,rgba(0,180,160,.15),rgba(0,70,100,.2));border:1px solid rgba(0,180,160,.25);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+    .scan-icon{width:32px;height:32px;border-radius:10px;background:rgba(0,180,160,.2);display:flex;align-items:center;justify-content:center}
+    .scan-text h4{font-size:11px;font-weight:600;color:var(--mint)}
+    .scan-text p{font-size:9px;color:rgba(255,255,255,.35);margin-top:2px}
+    .scan-arrow{margin-left:auto;font-size:14px;color:rgba(0,180,160,.6)}
+    .refill-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:11px 12px;display:flex;align-items:center;gap:10px}
+    .refill-text h4{font-size:10.5px;color:rgba(255,255,255,.7)}
+    .refill-text p{font-size:8.5px;color:rgba(255,255,255,.3);margin-top:2px}
+    .refill-badge{margin-left:auto;background:rgba(255,180,0,.15);border:1px solid rgba(255,180,0,.25);color:#ffc84a;font-size:8px;font-weight:700;border-radius:100px;padding:3px 7px}
+    .bottom-nav{display:flex;justify-content:space-around;align-items:center;border-top:1px solid rgba(255,255,255,.07);padding:10px 8px 6px;margin:4px -16px -16px}
+    .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:8px;color:rgba(255,255,255,.3);font-weight:500;min-width:44px}
+    .nav-item.active{color:var(--teal)}
+    .nav-ic{font-size:16px}
+    .nav-dot{width:4px;height:4px;border-radius:50%;background:var(--teal)}
+
+    .floating-card{position:absolute;background:rgba(13,31,48,.92);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;backdrop-filter:blur(16px);box-shadow:0 16px 40px rgba(0,0,0,.4);font-size:12px;white-space:nowrap}
+    .float-left{left:-100px;top:36%;animation:floatLeft 6s ease-in-out infinite}
+    .float-right{right:-80px;bottom:28%;animation:floatRight 7s ease-in-out infinite 1s}
+    @keyframes floatLeft{50%{transform:translateY(-8px)}}@keyframes floatRight{50%{transform:translateY(6px)}}
+    .float-inner{display:flex;align-items:center;gap:8px}.float-icon{font-size:20px}.float-label{font-size:10px;color:rgba(255,255,255,.5)}.float-val{font-size:13px;font-weight:700}
+
+    footer{text-align:center;padding:32px 24px 40px;font-size:12px;color:var(--white-30)}
+    footer span{color:var(--white-70)}
+    #toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,25,41,.95);border:1px solid rgba(0,180,160,.3);color:var(--mint);padding:12px 24px;border-radius:100px;font-size:13.5px;font-weight:500;backdrop-filter:blur(16px);z-index:999;transition:transform .35s var(--ease);white-space:nowrap}
+    #toast.show{transform:translateX(-50%) translateY(0)}
+    .fade-up{opacity:0;transform:translateY(28px);animation:fadeUp .7s var(--ease) forwards}@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.35s}.delay-4{animation-delay:.5s}.delay-5{animation-delay:.65s}.delay-6{animation-delay:.8s}.delay-7{animation-delay:.95s}
+
+    @media(max-width:900px){
+      nav{padding:20px 24px}.trust-badge{display:none}
+      .hero{grid-template-columns:1fr;padding:20px 24px 0;min-height:auto;gap:48px}
+      .hero-left{text-align:center;padding-right:0;padding-bottom:0}
+      .pill-label,.subhead,.desc,.waitlist-form{margin-left:auto;margin-right:auto}
+      .trust-chips{justify-content:center}.hero-right{padding-bottom:40px}
+      .phone-frame{transform:none;width:260px}.floating-card{display:none}
+    }
+    @media(max-width:480px){.input-row{flex-direction:column;padding:12px;gap:10px}.btn-cta{width:100%}}
+  </style>
+</head>
+
+<body>
+  <div class="page-wrap">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <nav>
+      <div class="logo-mark fade-up">
+        <div class="logo-icon">
+          <img src="https://your-logo-link-here.com/logo.png" alt="Swasthi Logo">
+        </div>
+        <span class="logo-text">Swasthi</span>
+      </div>
+      <div class="trust-badge fade-up delay-1">
+        <span class="dot"></span> Private, Secure & AI-Assisted
+      </div>
+    </nav>
+
+    <main class="hero">
+      <section class="hero-left">
+        <div class="pill-label fade-up delay-1">
+          <span class="tag">Early Access</span> India-first Medication Platform
+        </div>
+
+        <h1 class="fade-up delay-2">
+          Your family's<br>
+          <em>medication clarity</em><br>
+          system.
+        </h1>
+
+        <p class="subhead fade-up delay-3">
+          Understand prescriptions. Track medicines.<br>Protect your family.
+        </p>
+
+        <p class="desc fade-up delay-3">
+          Built for caregivers, families, and chronic care households managing BP, Diabetes, Thyroid, and long-term medications.
+        </p>
+
+        <div class="waitlist-form fade-up delay-4" id="formWrap">
+          <div class="input-row">
+            <input type="email" id="emailInput" placeholder="you@email.com" autocomplete="email" required>
+            <button class="btn-cta" id="ctaBtn" onclick="handleSignup()">Get Early Access</button>
+          </div>
+          <p class="form-note"><strong>No spam, ever.</strong> We'll reach out when Swasthi is ready for your family.</p>
+        </div>
+
+        <div class="success-msg" id="successMsg">
+          <h4>✦ You're on the list</h4>
+          <p>We'll reach out when Swasthi is ready. Thank you for being an early believer.</p>
+        </div>
+
+        <div class="trust-chips fade-up delay-5">
+          <div class="chip">🔍 AI prescription reading</div>
+          <div class="chip">🔄 Medication continuity</div>
+          <div class="chip">👨‍👩‍👧 Family sync</div>
+        </div>
+      </section>
+
+      <section class="hero-right fade-up delay-6">
+        <div class="floating-card float-left">
+          <div class="float-inner">
+            <span class="float-icon">✅</span>
+            <div><div class="float-label">Dose taken</div><div class="float-val">Metformin 500mg</div></div>
+          </div>
+        </div>
+
+        <div class="floating-card float-right">
+          <div class="float-inner">
+            <span class="float-icon">📋</span>
+            <div><div class="float-label">Prescription read</div><div class="float-val">3 medicines found</div></div>
+          </div>
+        </div>
+
+        <div class="phone-glow-halo"></div>
+
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="app-status"><span>9:41</span><span>● ● ▰</span></div>
+
+            <div class="app-greeting">
+              <div>
+                <div class="greeting-text">Good morning,</div>
+                <div class="greeting-name">Arjun 👋</div>
+              </div>
+              <div class="avatar-circle">AK</div>
+            </div>
+
+            <div class="family-card">
+              <div class="fc-label">Family Health</div>
+              <div class="fc-stats">
+                <div class="fc-stat"><h3>4</h3><span>Members</span></div>
+                <div class="fc-divider"></div>
+                <div class="fc-stat"><h3>3</h3><span>Doses remaining</span></div>
+              </div>
+              <div class="fc-avatars">
+                <div class="fa-pill"><div class="fa-dot" style="background:#00b4a0;color:#07111c;">S</div>Self</div>
+                <div class="fa-pill"><div class="fa-dot" style="background:#e879a0;color:#fff;">M</div>Mom</div>
+                <div class="fa-pill"><div class="fa-dot" style="background:#f59e0b;color:#07111c;">D</div>Dad</div>
+                <div class="fa-add">+ Add</div>
+              </div>
+            </div>
+
+            <div class="section-label">Today's Medications</div>
+
+            <div class="med-row">
+              <div class="med-icon-wrap" style="background:rgba(0,180,160,.12)">💊</div>
+              <div class="med-info"><div class="med-name">Metformin 500mg</div><div class="med-time">After breakfast · Mom</div></div>
+              <div class="med-check done">✓</div>
+            </div>
+
+            <div class="med-row">
+              <div class="med-icon-wrap" style="background:rgba(232,121,160,.12)">🩺</div>
+              <div class="med-info"><div class="med-name">Thyronorm 50mcg</div><div class="med-time">Empty stomach · Mom</div></div>
+              <div class="med-check"></div>
+            </div>
+
+            <div class="scan-cta">
+              <div class="scan-icon">📄</div>
+              <div class="scan-text"><h4>Scan & Understand Prescription</h4><p>AI reads your prescription clearly</p></div>
+              <div class="scan-arrow">›</div>
+            </div>
+
+            <div class="refill-card">
+              <span>🔄</span>
+              <div class="refill-text"><h4>Refill Continuity</h4><p>Amlodipine running low · 4 days left</p></div>
+              <div class="refill-badge">Soon</div>
+            </div>
+
+            <div class="bottom-nav">
+              <div class="nav-item active"><span class="nav-ic">🏠</span><span>Home</span><div class="nav-dot"></div></div>
+              <div class="nav-item"><span class="nav-ic">📋</span><span>Presc Hub</span></div>
+              <div class="nav-item"><span class="nav-ic">⏰</span><span>Tracker</span></div>
+              <div class="nav-item"><span class="nav-ic">👤</span><span>Profile</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="fade-up delay-7">
+      © 2026 <span>Swasthi</span>. Made with care in India. · Not a medical device · Not for diagnosis
+    </footer>
+  </div>
+
+  <div id="toast">✦ You're on the waitlist!</div>
+
+  <script>
+    const SUPABASE_URL = "https://gntncwnkuxwtfkxkqrme.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdudG5jd25rdXh3dGZreGtxcm1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NjQ2NjIsImV4cCI6MjA5MDU0MDY2Mn0.f-cWjCy-dJH_cgaeh2dhv5d_oSloMDIzdrkB_WqTPeE";
+    const TABLE_NAME = "swasthi_waitlist";
+    const POSTHOG_KEY = "phc_mfdquhJipR59wHYfEK2Y7EUGKdnLQiQyx9MimmzHxS4D";
+
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get("utm_source") || "direct";
+    const utmCampaign = params.get("utm_campaign") || "none";
+    const utmMedium = params.get("utm_medium") || "none";
+
+    function track(event, props = {}) {
+      try {
+        if (window.posthog) posthog.capture(event, { utm_source: utmSource, utm_campaign: utmCampaign, utm_medium: utmMedium, ...props });
+        console.log("[analytics]", event, props);
+      } catch(e) {}
+    }
+
+    (function initPostHog() {
+      if (POSTHOG_KEY === "YOUR_POSTHOG_KEY") return;
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript";p.async=!0;p.src=s.api_host+"/static/array.js";(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e};u.people.toString=function(){return u.toString(1)+".people"};o="capture identify alias people.set people.set_once".split(" ");n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      posthog.init(POSTHOG_KEY, { api_host: "https://app.posthog.com" });
+    })();
+
+    window.addEventListener("load", () => track("landing_page_viewed", { page: "swasthi_waitlist" }));
+
+    async function insertToSupabase(email) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON,
+          "Authorization": `Bearer ${SUPABASE_ANON}`,
+          "Prefer": "return=representation"
+        },
+        body: JSON.stringify({
+          email,
+          utm_source: utmSource,
+          utm_campaign: utmCampaign,
+          utm_medium: utmMedium,
+          created_at: new Date().toISOString()
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || "Supabase error");
+      }
+      return res.json();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3500);
+    }
+
+    async function handleSignup() {
+      const emailEl = document.getElementById("emailInput");
+      const btn = document.getElementById("ctaBtn");
+      const email = emailEl.value.trim().toLowerCase();
+
+      if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+        emailEl.focus();
+        showToast("Please enter a valid email.");
+        return;
+      }
+
+      track("waitlist_signup_attempted", { email });
+      btn.disabled = true;
+      btn.textContent = "Joining…";
+
+      try {
+        if (SUPABASE_URL !== "YOUR_SUPABASE_URL") await insertToSupabase(email);
+        else await new Promise(r => setTimeout(r, 700));
+
+        track("waitlist_signup_completed", { email });
+        document.getElementById("formWrap").style.display = "none";
+        document.getElementById("successMsg").classList.add("show");
+        showToast("✦ You're on the waitlist!");
+      } catch(e) {
+        console.error(e);
+        btn.disabled = false;
+        btn.textContent = "Get Early Access";
+        showToast(e.message.includes("duplicate") ? "You're already on the waitlist." : "Something went wrong. Please try again.");
+        track("waitlist_signup_error", { error: e.message });
+      }
+    }
+
+    document.getElementById("emailInput").addEventListener("keydown", e => {
+      if (e.key === "Enter") handleSignup();
+    });
+  </script>
+</body>
+</html>

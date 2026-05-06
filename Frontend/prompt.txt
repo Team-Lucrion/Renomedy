@@ -1,0 +1,41 @@
+Modify the existing Swasthi Expo React Native frontend to use Clerk authentication.
+
+Important:
+Do NOT redesign or rebuild the existing UI.
+Keep the current splash screen, login screen, signup screen, navigation, styling, and layout exactly as they are.
+Only replace the current authentication logic with Clerk.
+
+Stack:
+- React Native
+- Expo
+- TypeScript
+- Clerk Expo SDK
+
+Tasks:
+1. Install and configure Clerk for Expo.
+2. Add ClerkProvider at the app root.
+3. Use EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY from env.
+4. Add secure token caching for Expo.
+5. Replace existing login logic with Clerk signIn.
+6. Replace existing signup logic with Clerk signUp.
+7. Add Google OAuth if the current UI has Google login.
+8. Keep existing email/password fields and buttons.
+9. Keep splash screen behavior.
+10. After successful login/signup, redirect to the existing Home/Dashboard screen.
+11. Add signOut using Clerk.
+12. Protect authenticated routes.
+13. If user is not signed in, show existing auth flow.
+14. If user is signed in, show existing app tabs/screens.
+15. Do not change visual design unless required for functionality.
+16. Add loading and error handling without changing the layout.
+
+Important:
+- Do not use Supabase Auth.
+- Clerk handles identity only.
+- Supabase will later use Clerk user ID for backend data.
+- Do not delete existing screens.
+- Refactor only auth-related code.
+- Keep the app demo-ready.
+
+Expected output:
+A working Expo app where the existing Swasthi frontend uses Clerk authentication instead of the previous auth system.

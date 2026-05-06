@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swasthi — Medication Literacy Research Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1D9E75; --teal-l: #E1F5EE; --teal-m: #9FE1CB; --teal-d: #0F6E56; --teal-dk: #085041;
+    --amber: #BA7517; --amber-l: #FAEEDA; --amber-m: #FAC775; --amber-d: #854F0B;
+    --coral: #D85A30; --coral-l: #FAECE7; --coral-m: #F5C4B3; --coral-d: #993C1D;
+    --purple: #7F77DD; --purple-l: #EEEDFE; --purple-m: #CECBF6; --purple-d: #534AB7;
+    --blue: #378ADD; --blue-l: #E6F1FB; --blue-m: #B5D4F4; --blue-d: #185FA5;
+    --green: #639922; --green-l: #EAF3DE; --green-m: #C0DD97; --green-d: #3B6D11;
+    --red: #E24B4A; --red-l: #FCEBEB; --red-m: #F7C1C1; --red-d: #A32D2D;
+    --bg: #FDFCF8; --bg2: #F5F3ED; --bg3: #EDEBE3;
+    --text: #1A1916; --text2: #5C5A52; --text3: #8C8A82;
+    --border: rgba(28,27,22,0.1); --border2: rgba(28,27,22,0.18);
+    --serif: 'Instrument Serif', serif;
+    --mono: 'DM Mono', monospace;
+    --body: 'Lora', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    background: var(--teal-dk);
+    padding: 48px 32px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .site-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 120px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .header-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal-m);
+    margin-bottom: 12px;
+  }
+
+  .header-title {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 52px);
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .header-title em { font-style: italic; color: var(--teal-m); }
+
+  .header-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hstat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hstat-num {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-style: italic;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .hstat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ─── LAYOUT ─── */
+  .app-shell {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    position: sticky;
+    top: 24px;
+    padding: 24px 0;
+  }
+
+  .sidebar-section {
+    margin-bottom: 28px;
+  }
+
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0 0 8px;
+    margin-bottom: 4px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .cat-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 10px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--body);
+    font-size: 13px;
+    color: var(--text2);
+    text-align: left;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+
+  .cat-btn:hover { background: var(--bg2); color: var(--text); }
+
+  .cat-btn.active {
+    background: var(--teal-l);
+    color: var(--teal-d);
+    font-weight: 500;
+  }
+
+  .cat-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cat-count {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    margin: 24px 0 0;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 9px 14px 9px 36px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    border-radius: 8px;
+    font-family: var(--body);
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-input:focus { border-color: var(--teal); background: #fff; }
+
+  .search-icon {
+    position: absolute;
+    left: 11px; top: 50%;
+    transform: translateY(-50%);
+    width: 14px; height: 14px;
+    color: var(--text3);
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .main {
+    padding: 28px 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .section-count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  /* ─── TOPIC CARDS ─── */
+  .topics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .topic-card {
+    border-bottom: 0.5px solid var(--border);
+    padding: 18px 0;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .topic-card:first-child { border-top: 0.5px solid var(--border); }
+
+  .topic-card:hover { background: var(--bg2); padding-left: 12px; padding-right: 12px; margin: 0 -12px; border-radius: 8px; border-color: transparent; }
+
+  .topic-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .topic-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 32px;
+    padding-top: 2px;
+  }
+
+  .topic-meta { flex: 1; }
+
+  .topic-title {
+    font-family: var(--body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .topic-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  .pill-teal { background: var(--teal-l); color: var(--teal-d); }
+  .pill-amber { background: var(--amber-l); color: var(--amber-d); }
+  .pill-coral { background: var(--coral-l); color: var(--coral-d); }
+  .pill-purple { background: var(--purple-l); color: var(--purple-d); }
+  .pill-blue { background: var(--blue-l); color: var(--blue-d); }
+  .pill-green { background: var(--green-l); color: var(--green-d); }
+  .pill-red { background: var(--red-l); color: var(--red-d); }
+
+  .topic-insight {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-left: 44px;
+  }
+
+  .topic-expand {
+    display: none;
+    margin-left: 44px;
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: var(--bg2);
+    border-radius: 8px;
+    border-left: 3px solid var(--teal);
+  }
+
+  .topic-expand.open { display: block; }
+
+  .expand-section {
+    margin-bottom: 12px;
+  }
+
+  .expand-section:last-child { margin-bottom: 0; }
+
+  .expand-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 5px;
+  }
+
+  .expand-text {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .expand-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .expand-list li {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 3px 0;
+    display: flex;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .expand-list li::before {
+    content: '→';
+    color: var(--teal);
+    flex-shrink: 0;
+    font-size: 12px;
+    padding-top: 1px;
+  }
+
+  .chevron {
+    margin-left: auto;
+    color: var(--text3);
+    font-size: 14px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .topic-card.open .chevron { transform: rotate(180deg); }
+
+  /* Use type badges */
+  .use-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
+
+  .ub-content { background: var(--blue-l); color: var(--blue-d); }
+  .ub-product { background: var(--purple-l); color: var(--purple-d); }
+  .ub-screen { background: var(--green-l); color: var(--green-d); }
+  .ub-alert { background: var(--coral-l); color: var(--coral-d); }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    padding: 48px 0;
+    text-align: center;
+    color: var(--text3);
+    font-size: 14px;
+  }
+
+  /* ─── FOOTER ─── */
+  .vault-footer {
+    background: var(--bg3);
+    border-top: 0.5px solid var(--border);
+    padding: 24px 32px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 680px) {
+    .app-shell { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Swasthi · Internal Research Vault · V1</div>
+    <h1 class="header-title">Medication <em>Literacy</em><br>Research Vault</h1>
+    <p class="header-desc">India-specific confusion patterns, clinical research, and content strategy for the Family Medication Operating System. 100 topics across 8 knowledge domains.</p>
+    <div class="header-stats">
+      <div class="hstat"><span class="hstat-num">100</span><span class="hstat-label">Topics</span></div>
+      <div class="hstat"><span class="hstat-num">8</span><span class="hstat-label">Domains</span></div>
+      <div class="hstat"><span class="hstat-num">67%</span><span class="hstat-label">Poor/Fair Rx comprehension in India*</span></div>
+      <div class="hstat"><span class="hstat-num">50%</span><span class="hstat-label">General population medication adherence*</span></div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:960px;margin:0 auto;padding:0 24px;">
+  <div class="search-wrap" style="margin:24px 0 8px;">
+    <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="4"/><path d="M11 11l3 3" stroke-linecap="round"/></svg>
+    <input class="search-input" type="text" id="search" placeholder="Search topics, keywords, medicines..." oninput="filterTopics()">
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Domains</div>
+      <button class="cat-btn active" onclick="filterCat('all', this)">
+        <span class="cat-dot" style="background:var(--teal)"></span>
+        All Topics
+        <span class="cat-count">100</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('timing', this)">
+        <span class="cat-dot" style="background:var(--amber)"></span>
+        Food Timing
+        <span class="cat-count">15</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('frequency', this)">
+        <span class="cat-dot" style="background:var(--teal)"></span>
+        Frequency (OD/BD/TDS)
+        <span class="cat-count">12</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('generic', this)">
+        <span class="cat-dot" style="background:var(--blue)"></span>
+        Generic vs Brand
+        <span class="cat-count">12</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('elder', this)">
+        <span class="cat-dot" style="background:var(--purple)"></span>
+        Elder Adherence
+        <span class="cat-count">15</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('caregiver', this)">
+        <span class="cat-dot" style="background:var(--coral)"></span>
+        Caregiver Errors
+        <span class="cat-count">13</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('chronic', this)">
+        <span class="cat-dot" style="background:var(--red)"></span>
+        Chronic Disease Mx
+        <span class="cat-count">15</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('refill', this)">
+        <span class="cat-dot" style="background:var(--green)"></span>
+        Refill Continuity
+        <span class="cat-count">10</span>
+      </button>
+      <button class="cat-btn" onclick="filterCat('handwriting', this)">
+        <span class="cat-dot" style="background:var(--text3)"></span>
+        Rx Literacy & Handwriting
+        <span class="cat-count">8</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Use Types</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text2);">
+        <div><span class="use-badge ub-content">Content</span> Blog / social / in-app education</div>
+        <div><span class="use-badge ub-product">Product</span> Feature / decode logic</div>
+        <div><span class="use-badge ub-screen">Screen</span> UI copy / explainer screen</div>
+        <div><span class="use-badge ub-alert">Alert</span> Push notification hook</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);line-height:1.6;padding-top:16px;border-top:0.5px solid var(--border);">
+      * Sources: Eastern India Rx comprehension study (PMC12236393); Geriatric compliance study (PMC5296451)
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div id="section-header" class="section-header">
+      <span class="section-title">All Topics</span>
+      <span class="section-count" id="topic-count">100 topics</span>
+    </div>
+    <div class="topics-grid" id="topics-grid"></div>
+    <div class="empty-state" id="empty-state" style="display:none">No topics match your search.</div>
+  </div>
+</div>
+
+<div class="vault-footer">
+  Swasthi · Medication Literacy Research Vault · Internal use only · Built for the Family Chief Health Officer
+</div>
+
+<script>
+const TOPICS = [
+  // ── FOOD TIMING (15) ──────────────────────────────────────────────
+  {
+    num: "01", cat: "timing", title: "Before food (AC) vs after food (PC): what really changes?",
+    tags: ["Food Timing", "Core Literacy"], tagColors: ["amber", "teal"],
+    uses: ["content", "screen"],
+    insight: "AC (Ante Cibum) and PC (Post Cibum) are Latin abbreviations almost no Indian patient recognises. 67% of patients in an Eastern India study had poor-to-fair comprehension of prescription instructions — food timing was a primary gap.",
+    confusion: "Patients often take AC medicines after food 'to be safe on the stomach', defeating the absorption purpose entirely.",
+    swasthiAngle: "Decode card must render: 'Take on an EMPTY stomach (≥30 min before eating)' in bold, with a plain-language reason.",
+    contentIdeas: ["Why some medicines stop working if taken with food", "The real meaning of AC and PC on your doctor's prescription"],
+    productNote: "Medication activation screen must include food timing as a required field with plain-language options, never raw abbreviations."
+  },
+  {
+    num: "02", cat: "timing", title: "Empty stomach confusion: how many hours after last meal?",
+    tags: ["Food Timing", "Caregiver Query"], tagColors: ["amber", "coral"],
+    uses: ["content", "screen", "alert"],
+    insight: "Guidelines vary: 2h for most drugs, 30 min for levothyroxine (thyroid), 1h for some antibiotics. Patients rarely know which applies to their specific drug.",
+    confusion: "Elderly patients often confuse 'empty stomach' with 'first thing in the morning regardless of last night's meal timing'.",
+    swasthiAngle: "Decode card should specify exact window: 'Take 30 minutes before breakfast' rather than 'empty stomach'.",
+    contentIdeas: ["Does 'empty stomach' mean you can't even drink water?", "Thyroid medicine at 6am: here's exactly why it matters"],
+    productNote: "Drug database should map each medicine category to specific pre-meal timing windows."
+  },
+  {
+    num: "03", cat: "timing", title: "Why Metformin must be taken with food (not before or after)",
+    tags: ["Food Timing", "Diabetes", "Senior Rx"], tagColors: ["amber", "red", "purple"],
+    uses: ["content", "screen"],
+    insight: "Metformin taken on an empty stomach causes significant GI side effects (nausea, diarrhoea), leading many Indian patients to self-discontinue. Studies show GI effects are the #1 reason for metformin dropout.",
+    confusion: "Patients see 'after food' and take it 1–2 hours after, missing the with-meal window that protects the stomach.",
+    swasthiAngle: "Contextual explanation on Metformin decode card: 'With food = during the meal, not after. This prevents stomach upset.'",
+    contentIdeas: ["Why your parent stopped their diabetes medicine (and how to help them restart)", "Metformin and nausea: the food timing fix most patients don't know"],
+    productNote: "Flag Metformin-class drugs for special food timing note in OCR decode output."
+  },
+  {
+    num: "04", cat: "timing", title: "Levothyroxine: the 30-minute rule that most thyroid patients break",
+    tags: ["Food Timing", "Thyroid", "High Impact"], tagColors: ["amber", "blue", "teal"],
+    uses: ["content", "alert", "screen"],
+    insight: "Levothyroxine absorption is reduced by 40% when taken with food. Indian patients are rarely told why the 30-minute window matters — they assume it's a general instruction and skip it when rushed.",
+    confusion: "Coffee, milk (common Indian morning staples) dramatically reduce levothyroxine absorption. Patients drink chai within minutes of taking the tablet.",
+    swasthiAngle: "Alert hook: 'Thyroid medicine alert: avoid chai or milk for 30 minutes after taking'. Scheduled 6am nudge.",
+    contentIdeas: ["Why your thyroid medicine doesn't seem to work (it might be your morning chai)", "The exact 30-minute thyroid routine that maximises your medication"],
+    productNote: "Levothyroxine detected in OCR → auto-flag with food timing alert template and morning schedule recommendation."
+  },
+  {
+    num: "05", cat: "timing", title: "Antacids: before or after meals? Most people take them wrong",
+    tags: ["Food Timing", "GI", "OTC Confusion"], tagColors: ["amber", "blue", "coral"],
+    uses: ["content", "screen"],
+    insight: "Antacids work by neutralising stomach acid — they're most effective 30–60 minutes after a meal when acid production peaks, or at bedtime. Taking them before eating provides almost no benefit.",
+    confusion: "In India, antacids are often taken before meals 'to prevent acidity', which misses their mechanism entirely.",
+    swasthiAngle: "Decode card clarification: 'Take 30–60 min after eating' with reason: 'Works best when stomach acid is highest'.",
+    contentIdeas: ["Are you taking your acidity medicine at the wrong time?", "Antacid timing: the mistake 8 in 10 people make"],
+    productNote: "Antacid class drugs: prompt for post-meal timing during activation, override common misassumption."
+  },
+  {
+    num: "06", cat: "timing", title: "Iron tablets and the milk/chai interference no one warns about",
+    tags: ["Food Timing", "Supplements", "India-Specific"], tagColors: ["amber", "green", "teal"],
+    uses: ["content", "alert"],
+    insight: "Calcium in dairy and tannins in tea reduce iron absorption by up to 50–75%. In India, where chai is taken multiple times a day, patients taking iron often show no improvement because of this interaction.",
+    confusion: "Patients take iron 'after food' with chai or milk believing it reduces stomach upset — it does, but it also reduces absorption dramatically.",
+    swasthiAngle: "Conflict alert: 'Iron tablet: take 1h before chai, not with it. Try with lemon juice to boost absorption.'",
+    contentIdeas: ["Is your chai cancelling your iron tablet?", "Iron deficiency despite tablets: the food timing problem no one tells you about"],
+    productNote: "Iron detected in prescription → trigger food interference warning card in decode output."
+  },
+  {
+    num: "07", cat: "timing", title: "Calcium supplements: morning or night, and why it matters",
+    tags: ["Food Timing", "Supplements", "Elderly"], tagColors: ["amber", "purple", "teal"],
+    uses: ["content", "screen"],
+    insight: "Calcium carbonate requires stomach acid for absorption — take with food. Calcium citrate can be taken anytime. Splitting doses (max 500mg at a time) increases absorption. Most patients take a single large dose at arbitrary times.",
+    confusion: "Patients conflate calcium with vitamins ('just take once a day at any time') and miss the dosing split logic.",
+    swasthiAngle: "Schedule builder should split calcium into two daily doses and explain why during activation.",
+    contentIdeas: ["The calcium supplement timing mistake that wastes your medicine", "Morning vs night calcium: which works better for bones?"],
+    productNote: "Calcium supplement → prompt for dose splitting and food co-administration during schedule setup."
+  },
+  {
+    num: "08", cat: "timing", title: "Statins: why evening dosing matters for cholesterol medicine",
+    tags: ["Food Timing", "Heart", "Senior Rx"], tagColors: ["amber", "red", "purple"],
+    uses: ["content", "screen"],
+    insight: "Cholesterol synthesis peaks at night. Short-acting statins (simvastatin, lovastatin) work best taken in the evening. Patients often shift to morning dosing for convenience without knowing it reduces efficacy.",
+    confusion: "When told 'once daily', most Indian patients default to morning dosing — particularly elderly patients who have established morning pill routines.",
+    swasthiAngle: "Statin activation: recommend evening time, explain the biological reason in one sentence.",
+    contentIdeas: ["Take your cholesterol medicine at night: here's why evening timing matters", "Are you getting the full benefit from your statin?"],
+    productNote: "Statin-class drugs: default schedule suggestion to 8–10pm with contextual note."
+  },
+  {
+    num: "09", cat: "timing", title: "Blood pressure medicines: morning vs night debate simplified",
+    tags: ["Food Timing", "Hypertension", "High Impact"], tagColors: ["amber", "red", "teal"],
+    uses: ["content", "screen"],
+    insight: "Some BP medicines (ACE inhibitors, ARBs) have better outcomes taken at night per emerging research. But consistency matters more than timing — same time every day reduces variability. Indian patients often skip evening doses when they go to sleep early.",
+    confusion: "Doctors write 'OD' without specifying AM or PM. Patients default to morning then forget if they were supposed to take at night.",
+    swasthiAngle: "Schedule activation for BP meds should prompt: 'Morning or evening?' and record the choice permanently for reminders.",
+    contentIdeas: ["Should you take BP medicine in the morning or at night?", "The #1 BP medicine mistake: changing the time you take it"],
+    productNote: "Antihypertensive + OD: active prompt for time-of-day preference during activation, not assumed."
+  },
+  {
+    num: "10", cat: "timing", title: "With food vs after food: they are not the same thing",
+    tags: ["Food Timing", "Core Literacy"], tagColors: ["amber", "teal"],
+    uses: ["content", "screen"],
+    insight: "Clinically, 'with food' means during the meal (simultaneous). 'After food' means 30–60 min post-meal. In Indian households, both phrases are used interchangeably in conversation and instruction.",
+    confusion: "Parents tell children to 'take your medicine after you eat' meaning simultaneously during the meal. This linguistic gap causes consistent mistiming.",
+    swasthiAngle: "Decode card should explicitly state: 'During your meal (not after finishing)' or 'After eating, wait 30 minutes'.",
+    contentIdeas: ["With food vs after food: your doctor means two very different things", "How mistranslating one phrase causes medicine to stop working"],
+    productNote: "PC instruction in OCR → binary clarification in UI: 'During the meal' vs '30+ minutes after'."
+  },
+  {
+    num: "11", cat: "timing", title: "Diabetes medicines and meal skipping: the dangerous gap",
+    tags: ["Food Timing", "Diabetes", "Safety"], tagColors: ["amber", "red", "coral"],
+    uses: ["alert", "content"],
+    insight: "Sulfonylureas (glibenclamide, glimepiride) cause hypoglycaemia if taken without eating. In India, patients frequently skip meals during fasting days (festivals, religious observances) without adjusting medication.",
+    confusion: "Patients don't know to reduce or skip doses on fasting days. Caregivers don't realise the risk.",
+    swasthiAngle: "Fasting-day alert: 'Papa has diabetes medicine today and skipped lunch — check if he's feeling dizzy or weak.'",
+    contentIdeas: ["Diabetes and fasting: what happens if you take medicine without eating", "Festival fasting with diabetes: a caregiver's safety guide"],
+    productNote: "Sulphonylurea class → flag as 'must-eat-before-dose' and include missed-meal protocol note."
+  },
+  {
+    num: "12", cat: "timing", title: "Warfarin and green vegetables: the vitamin K interaction in Indian kitchens",
+    tags: ["Food Timing", "Drug-Food Interaction", "Heart"], tagColors: ["amber", "red", "blue"],
+    uses: ["content", "alert"],
+    insight: "Warfarin (blood thinner) interacts significantly with vitamin K — found in spinach, methi, palak, broccoli, and many Indian staple vegetables. Erratic intake of these foods makes warfarin unpredictable, increasing clot or bleeding risk.",
+    confusion: "Caregivers preparing food don't know that switching from methi sabzi to another vegetable can affect a blood-thinner's efficacy.",
+    swasthiAngle: "Food interaction card for warfarin: list common Indian vegetables, advise consistent (not zero) intake.",
+    contentIdeas: ["Warfarin and Indian food: what your family needs to know", "The palak paneer–blood thinner connection most doctors don't explain"],
+    productNote: "Warfarin detected → pop food interaction card with Indian-specific vegetable list during decode."
+  },
+  {
+    num: "13", cat: "timing", title: "Antibiotics and food: ciprofloxacin and dairy don't mix",
+    tags: ["Food Timing", "Antibiotics", "Acute Rx"], tagColors: ["amber", "blue", "teal"],
+    uses: ["content", "screen"],
+    insight: "Ciprofloxacin and dairy (milk, curd, paneer) form insoluble complexes that reduce antibiotic absorption by 36–47%. In India where curd and dal are dietary staples, this interaction is extremely common and underrecognised.",
+    confusion: "Patients take ciprofloxacin with curd-rice believing it 'soothes the stomach'. It effectively reduces the dose they receive.",
+    swasthiAngle: "Antibiotic decode card: 'Do not take with curd, milk, or paneer. Wait 2 hours before/after dairy.'",
+    contentIdeas: ["Curd-rice and antibiotics: the combination that weakens your medicine", "Common Indian foods that block antibiotic absorption"],
+    productNote: "Fluoroquinolone/tetracycline class → auto-flag dairy restriction in decode output."
+  },
+  {
+    num: "14", cat: "timing", title: "HS (hora somni): the bedtime dose most patients forget",
+    tags: ["Food Timing", "Frequency", "Elder Rx"], tagColors: ["amber", "teal", "purple"],
+    uses: ["content", "screen", "alert"],
+    insight: "HS means 'at bedtime'. Commonly used for sleep aids, alpha-blockers for prostate, and some antihistamines. Elderly patients frequently miss this dose because bedtimes are variable and they don't associate 'medicine time' with 'sleep time'.",
+    confusion: "HS appears on prescriptions and patients assume it's a brand name abbreviation. Many pharmacists don't clarify it.",
+    swasthiAngle: "Decode: 'HS = take at bedtime, just before sleep.' Auto-suggest 9–10pm reminder during schedule setup.",
+    contentIdeas: ["What does HS mean on your prescription? The bedtime dose explained", "Why your father's prostate medicine must be taken at night"],
+    productNote: "HS detected in OCR → prompt: 'This is a bedtime medicine. Set your usual sleep time to schedule reminder.'"
+  },
+  {
+    num: "15", cat: "timing", title: "SOS medicines: what 'take when needed' actually means",
+    tags: ["Food Timing", "SOS", "Core Literacy"], tagColors: ["amber", "teal", "coral"],
+    uses: ["content", "screen"],
+    insight: "SOS (Si Opus Sit = if needed) medicines are among the most mismanaged. Patients either take them preventively every day or never take them for fear of addiction, defeating the purpose entirely.",
+    confusion: "Elderly patients stockpile SOS medicines or take them on a regular schedule to 'not run out'. Caregivers often don't know what symptom triggers the dose.",
+    swasthiAngle: "SOS activation screen: requires caregiver to specify the trigger symptom. Shows in tracker as 'take when needed, not daily'.",
+    contentIdeas: ["SOS medicine: when to take it and when not to", "Your parent's 'as-needed' medicine: a caregiver's guide to knowing when"],
+    productNote: "SOS-flagged meds: separate tracker card from scheduled meds. Log each use with timestamp, not as missed if not taken."
+  },
+
+  // ── FREQUENCY OD/BD/TDS (12) ─────────────────────────────────────
+  {
+    num: "16", cat: "frequency", title: "OD: once daily, but does it mean morning or night?",
+    tags: ["Frequency", "Core Literacy"], tagColors: ["teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "OD (Omnis Die) means once every 24 hours. Without specifying AM or PM, patients pick morning by default. For drugs with time-specific efficacy (statins, some BP meds) this default can reduce effectiveness.",
+    confusion: "OD is sometimes written 'od' or even '1-0-0' in Indian prescriptions, where the columns represent morning-afternoon-night doses.",
+    swasthiAngle: "OD decode always prompts for time-of-day. Explains that '1-0-0' notation means morning only.",
+    contentIdeas: ["OD on your prescription doesn't always mean morning", "Decoding Indian prescription notation: 1-0-0, 0-1-0, 1-0-1 explained"],
+    productNote: "OCR should recognise both OD and numeric notation (1-0-0). Time-of-day prompt mandatory during activation."
+  },
+  {
+    num: "17", cat: "frequency", title: "BD: the 12-hour interval most patients ignore",
+    tags: ["Frequency", "Core Literacy", "High Impact"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content", "screen", "alert"],
+    insight: "BD (Bis Die) means twice a day. Clinically this means 12-hour intervals for most drugs. In practice, Indian patients take both doses close together — morning and early afternoon — leaving a 6h gap, then 18h with no medicine.",
+    confusion: "Research from Eastern India confirmed BD abbreviations are among the most misunderstood — patients may take both doses within a few hours of each other.",
+    swasthiAngle: "BD schedule setup: suggest 8am and 8pm. Explain: 'Space doses 12 hours apart so medicine stays in your body evenly.'",
+    contentIdeas: ["BD doesn't mean 'morning and afternoon' — here's what your doctor actually means", "Why taking both tablets in the morning defeats the purpose of BD"],
+    productNote: "BD activation: auto-suggest 12h-apart times. Flag if user-selected times are less than 8h apart."
+  },
+  {
+    num: "18", cat: "frequency", title: "TDS: 8-hour intervals and why Indian meal schedules make it hard",
+    tags: ["Frequency", "Core Literacy", "Caregiver"], tagColors: ["teal", "teal", "coral"],
+    uses: ["content", "screen"],
+    insight: "TDS (Ter Die Sumendum) means three times a day — ideally every 8 hours. In India, standard mealtimes (8am, 1pm, 8pm) create 5h, 7h, and 12h gaps — not 8-hour intervals. AC/PC instructions with TDS create further complexity.",
+    confusion: "Patients anchor TDS doses to meals. The AC-TDS combination (before each meal) is particularly confusing — patients skip the dose if they skip a meal.",
+    swasthiAngle: "TDS schedule: present ideal 8h suggestion with option to anchor to meals. Explain tradeoff clearly.",
+    contentIdeas: ["TDS: your doctor wants 8-hour gaps, but here's why Indian mealtimes make that hard", "Three times a day: how to fit TDS into a real Indian daily routine"],
+    productNote: "TDS activation: offer two modes — strict 8h intervals OR meal-anchored. Show time-gap warning if meals are uneven."
+  },
+  {
+    num: "19", cat: "frequency", title: "QID: four times a day — who actually does this correctly?",
+    tags: ["Frequency", "Complex Rx", "Adherence"], tagColors: ["teal", "teal", "purple"],
+    uses: ["content", "alert"],
+    insight: "QID (Quarter In Die) = 4 times daily / 6-hour intervals. Almost no outpatient achieves true 6-hour spacing. Research shows QID adherence drops to below 50% within a week. Doctors often prescribe QID when TDS or BD would be clinically equivalent.",
+    confusion: "Patients don't know when to fit the 4th dose — they end up doing 3 doses and calling it done.",
+    swasthiAngle: "QID schedule: be honest — suggest 7am, 1pm, 7pm, 11pm as a practical alternative to strict 6h. Flag the clinical note.",
+    contentIdeas: ["QID: the prescription instruction that barely anyone follows correctly", "Does your 4-times-a-day medicine actually need to be 4 times?"],
+    productNote: "QID activation: auto-calculate 4 realistic time slots based on user's typical wake/sleep time."
+  },
+  {
+    num: "20", cat: "frequency", title: "The 1-0-1 notation: decoding India's unique prescription format",
+    tags: ["Frequency", "India-Specific", "Core Literacy"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "Many Indian prescriptions use a 3-column notation: morning-afternoon-night (e.g., 1-0-1 = one tablet morning and night; 0-0-1 = only at bedtime). This is entirely India-specific and absent from international medical literature.",
+    confusion: "The '0' in the middle is often misread as 'also take at noon' — patients take an extra dose because the zero confuses them.",
+    swasthiAngle: "OCR must recognise the 3-column format. Decode renders it as: 'Morning: 1 tab, Afternoon: skip, Night: 1 tab'.",
+    contentIdeas: ["What does 1-0-1 mean on your Indian prescription?", "The prescription number code: 1-1-1, 1-0-1, 0-0-1 — decoded"],
+    productNote: "Core OCR capability: 3-column numeric notation detection with plain-language conversion. India-first feature."
+  },
+  {
+    num: "21", cat: "frequency", title: "Alternate day dosing: the confusion around 'every other day'",
+    tags: ["Frequency", "Complex Rx", "Elder Rx"], tagColors: ["teal", "teal", "purple"],
+    uses: ["content", "screen"],
+    insight: "Alternate day dosing (e.g., methotrexate, some steroids, low-dose aspirin variants) is extremely confusing for elderly patients. 'Every other day' becomes 'I'll decide when I feel like it'.",
+    confusion: "Patients conflate 'alternate day' with 'every two days' — missing or doubling doses based on their interpretation.",
+    swasthiAngle: "Alternate day medicine schedule: calendar-pinned toggle system. Day on = green, day off = grey. No ambiguity.",
+    contentIdeas: ["Alternate day dosing: what it means and how not to get confused", "Every other day medicine: a simple calendar method that works"],
+    productNote: "Alternate day schedule: calendar view as default, not time-of-day view. Visual day toggle."
+  },
+  {
+    num: "22", cat: "frequency", title: "Weekly medicines: methotrexate, alendronate — the once-a-week trap",
+    tags: ["Frequency", "Complex Rx", "Safety"], tagColors: ["teal", "teal", "coral"],
+    uses: ["content", "alert", "screen"],
+    insight: "Once-weekly medicines (methotrexate for RA, alendronate for osteoporosis) are among the most dangerous when misunderstood. Daily dosing of methotrexate instead of weekly can be fatal. These are among the highest-risk medication errors globally.",
+    confusion: "Patients forget which week they took it and take a second dose 'just to be safe'. Or they take it daily because they misread the prescription.",
+    swasthiAngle: "Weekly medicine: prominent calendar pin with 'ONCE WEEKLY — never daily' warning. Cannot be set to daily frequency.",
+    contentIdeas: ["Once a week medicine: the dangerous mistake that sends people to hospital", "Methotrexate is not a daily medicine — here's how to track it safely"],
+    productNote: "CRITICAL: Weekly medicine flag. Hard-code frequency lock to prevent daily schedule. Add safety confirmation step."
+  },
+  {
+    num: "23", cat: "frequency", title: "Stat dose: 'take immediately' and the confusion with regular doses",
+    tags: ["Frequency", "Acute Rx", "Core Literacy"], tagColors: ["teal", "teal", "amber"],
+    uses: ["content", "screen"],
+    insight: "STAT (Statim = immediately) means a one-time immediate dose, separate from the maintenance course. Patients often continue the 'stat' dose as a regular dose or skip it thinking it means 'optional'.",
+    confusion: "STAT written at the top of a prescription is mistaken for the entire course instruction. Patient takes one dose and stops.",
+    swasthiAngle: "Stat flag in decode: 'Take this ONCE right now. This is separate from your regular course below.'",
+    contentIdeas: ["What does STAT mean on a prescription? Not what most people think", "Immediate dose vs regular course: how to read your prescription correctly"],
+    productNote: "STAT detected in OCR → separate activation card, cannot be added to regular schedule, shown as 'one-time dose' only."
+  },
+  {
+    num: "24", cat: "frequency", title: "Missed dose rules: double-dose or skip — it depends on the medicine",
+    tags: ["Frequency", "Adherence", "Safety"], tagColors: ["teal", "purple", "coral"],
+    uses: ["content", "alert", "screen"],
+    insight: "For most medicines, a missed dose should be taken as soon as remembered unless it's close to the next dose — in which case, skip and continue. For a few (warfarin, some heart medicines), doubling is safe. For others (insulin), it's dangerous. Context-specific rules are critical.",
+    confusion: "Patients apply one rule to all medicines. Many take double doses 'to catch up', which causes harm with certain drugs.",
+    swasthiAngle: "Missed dose log: when a dose is marked late, Swasthi shows the correct protocol for that specific medicine category.",
+    contentIdeas: ["Missed a medicine dose? Here's exactly what to do (it depends on which medicine)", "Never double-dose these medicines — a caregiver's safety rule"],
+    productNote: "Missed dose event → drug-category-specific protocol card. Not generic. Map 10 categories to their respective missed-dose rules."
+  },
+  {
+    num: "25", cat: "frequency", title: "Medicine holidays: can you take a 'break' from chronic medicines?",
+    tags: ["Frequency", "Adherence", "Chronic Care"], tagColors: ["teal", "purple", "red"],
+    uses: ["content", "alert"],
+    insight: "Indian patients frequently take unsanctioned 'medicine holidays' — a few days off during festivals, travel, or when feeling well. For BP, diabetes, and thyroid, these gaps cause measurable rebound effects.",
+    confusion: "The logic is: 'I'm feeling fine, so the medicine has worked and I can stop.' This is exactly backwards — they feel fine BECAUSE of the medicine.",
+    swasthiAngle: "Streak-broken alert: 'BP medicine gap detected. Rajesh's BP may rise after missing 2+ days. Consider calling his doctor.'",
+    contentIdeas: ["The 'medicine holiday' that isn't really a holiday", "Festival season and chronic medicine: what caregivers need to know"],
+    productNote: "Consecutive missed doses (2+) for chronic meds: escalate from patient alert to caregiver alert automatically."
+  },
+  {
+    num: "26", cat: "frequency", title: "PRN vs SOS: two abbreviations that mean the same thing",
+    tags: ["Frequency", "Core Literacy", "Abbreviations"], tagColors: ["teal", "teal", "amber"],
+    uses: ["content", "screen"],
+    insight: "PRN (Pro Re Nata) and SOS (Si Opus Sit) both mean 'as needed'. Different doctors use different abbreviations, and patients receiving prescriptions from multiple doctors get confused thinking they are different instructions.",
+    confusion: "Patients ask: 'My old prescription says SOS and new one says PRN — are these different medicines?'",
+    swasthiAngle: "Standardise to one term internally. Decode always says 'Take only when needed, not daily' regardless of abbreviation used.",
+    contentIdeas: ["PRN and SOS mean the same thing — here's a guide to as-needed medicines", "Prescription abbreviation glossary: India edition"],
+    productNote: "OCR: treat PRN and SOS as identical instruction flags. Render identically in decode card."
+  },
+  {
+    num: "27", cat: "frequency", title: "What 'continue' means on a prescription: and when it means stop",
+    tags: ["Frequency", "Prescription Reading", "Core Literacy"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "'Continue' on a prescription means the medication is ongoing from a previous prescription — the new prescription authorises refill or confirms the existing regimen. Patients interpret it as 'you don't need to do anything new'.",
+    confusion: "Patients show 'continue' prescription to pharmacist and are surprised when asked which medicine — they expected the pharmacist to already know.",
+    swasthiAngle: "When 'continue' is detected, Swasthi prompts: 'Which medicines from before should continue? Let's check your active list.'",
+    contentIdeas: ["What does 'continue' on a prescription actually mean?", "Prescription continuity: how to make sure nothing gets missed between doctor visits"],
+    productNote: "OCR detects 'Cont.' or 'Continue' → cross-references existing active medication list in the family profile."
+  },
+
+  // ── GENERIC VS BRAND (12) ─────────────────────────────────────────
+  {
+    num: "28", cat: "generic", title: "Are generic medicines really as good as branded ones? The honest answer",
+    tags: ["Generic vs Brand", "Trust", "Core Literacy"], tagColors: ["blue", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "CDSCO requires generics to meet bioequivalence standards. A landmark Indian study (Liverdoc, 2026) found no clinically significant quality difference between tested generics and branded versions — the main difference was price.",
+    confusion: "61% of Indian patients believe generic medicines are lower quality than branded ones (Northern India study). This belief persists regardless of education level.",
+    swasthiAngle: "Brand-generic mapping in decode card: 'This is the branded version. The generic (same medicine) costs X less.'",
+    contentIdeas: ["Generic vs branded: what the science actually says", "Jan Aushadhi medicines: should your family trust them?"],
+    productNote: "Brand→generic name mapping in drug database. Show both names in decode card with price delta where available."
+  },
+  {
+    num: "29", cat: "generic", title: "Salt name vs brand name: the same molecule, two different labels",
+    tags: ["Generic vs Brand", "Core Literacy", "India-Specific"], tagColors: ["blue", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "Indian prescriptions sometimes write the salt name (e.g., Amlodipine) and sometimes the brand name (e.g., Amtas, Norvasc). Families managing multiple family members often have the same medicine under different brand names and think they're different medicines.",
+    confusion: "Patients double-dose because they don't recognise Amlodipine and Amlo-5 as the same medication.",
+    swasthiAngle: "Drug deduplication in family medication list — OCR matches salt name to any existing active medication before activation.",
+    contentIdeas: ["Is Amlodipine the same as Amtas? Understanding generic and brand names", "Your medicine might already be in the house: how salt names confuse Indian families"],
+    productNote: "CRITICAL product feature: salt-name deduplication. OCR must normalise to salt name before activation. Warn if duplicate detected."
+  },
+  {
+    num: "30", cat: "generic", title: "When the pharmacist switches your medicine without telling you",
+    tags: ["Generic vs Brand", "Pharmacy Trust", "Safety"], tagColors: ["blue", "coral", "teal"],
+    uses: ["content", "alert"],
+    insight: "In India, generic substitution by pharmacists without prescription change is legally not allowed — yet it happens routinely. Patients receive a different brand without understanding whether it's equivalent.",
+    confusion: "Elderly patients accept whatever the pharmacist gives them. Caregivers don't know the brand has been swapped and can't tell if a new side effect is from the switch.",
+    swasthiAngle: "Refill feature: 'Did you get the same medicine? If the packaging looks different, check here.' Help identify substitutions.",
+    contentIdeas: ["What to do when the pharmacist gives you a different brand than what was prescribed", "Your rights at the chemist: generic substitution rules in India"],
+    productNote: "Refill tracking: flag brand-name changes at refill time. Prompt user to confirm same salt name."
+  },
+  {
+    num: "31", cat: "generic", title: "Jan Aushadhi stores: who should use them and who should be careful",
+    tags: ["Generic vs Brand", "India-Specific", "Affordability"], tagColors: ["blue", "teal", "green"],
+    uses: ["content", "screen"],
+    insight: "Jan Aushadhi centres provide low-cost generics that meet Indian Pharmacopoeia standards. Appropriate for most stable chronic conditions. Greater caution needed for narrow therapeutic index drugs (thyroid, epilepsy, cardiac) where minor bioequivalence variation matters more.",
+    confusion: "Caregivers don't know which medicines are safe to switch to Jan Aushadhi and which need to stay on a trusted brand.",
+    swasthiAngle: "Drug database flag: 'safe to switch to generic' vs 'consult doctor before switching' for narrow therapeutic index drugs.",
+    contentIdeas: ["Jan Aushadhi: complete guide for families managing chronic medicines on a budget", "These 5 medicines you should NOT switch to generic without doctor advice"],
+    productNote: "Tag narrow therapeutic index drugs (levothyroxine, warfarin, phenytoin, digoxin, lithium) as 'consult before switching'."
+  },
+  {
+    num: "32", cat: "generic", title: "Branded generics vs pure generics: the Indian market's third category",
+    tags: ["Generic vs Brand", "India-Specific", "Market"], tagColors: ["blue", "teal", "teal"],
+    uses: ["content"],
+    insight: "India has a unique 'branded generic' category — the same salt sold under a proprietary brand name by a company that didn't develop the original drug. Most Indian medicines are branded generics. Pure generics (just the salt name) are rarer. Patients don't know this category exists.",
+    confusion: "Patients believe they're choosing between 'the real branded medicine' and 'cheap generics'. In most cases, both options are branded generics from different companies.",
+    swasthiAngle: "Education content only — explains the Indian market structure. Helps caregivers understand why doctors may have preferences.",
+    contentIdeas: ["Why there is no single 'generic' alternative in India — and what your medicine really is", "Branded generic vs generic: India's three-tier medicine market explained"],
+    productNote: "Educational content tag — no direct product action. Use in onboarding education flow."
+  },
+  {
+    num: "33", cat: "generic", title: "The price-quality perception: why cheaper feels less effective",
+    tags: ["Generic vs Brand", "Psychology", "India-Specific"], tagColors: ["blue", "purple", "teal"],
+    uses: ["content"],
+    insight: "Nocebo effect — patients who believe generic medicine is inferior report more side effects and less efficacy even when the medicine is pharmacologically identical. This is a documented psychological phenomenon that particularly affects patients who switched from branded to generic under financial pressure.",
+    confusion: "When a generic doesn't 'feel like it's working', patients stop taking it — attributing the same side effects they had before to the switch.",
+    swasthiAngle: "Transparent education: 'If you feel differently after switching, here's what to track and what to report to your doctor.'",
+    contentIdeas: ["The placebo effect of branded medicine: what science says about feeling better vs being better", "I switched to generic and it 'doesn't work': is that possible?"],
+    productNote: "Post-switch symptom tracking feature for users who switch from brand to generic — data for personal decisions and doctor conversations."
+  },
+  {
+    num: "34", cat: "generic", title: "Combination pills: the branded combos that have no generic equivalent",
+    tags: ["Generic vs Brand", "Polypharmacy", "India-Specific"], tagColors: ["blue", "amber", "teal"],
+    uses: ["content", "screen"],
+    insight: "Fixed-dose combinations (FDCs) like Telmisartan+Amlodipine, Metformin+Sitagliptin are patented formulations. When a doctor writes a specific FDC brand, the exact combination generic may not be available. Patients sometimes buy the components separately — creating dosing complexity.",
+    confusion: "Caregiver is told 'the shop doesn't have it' and buys the two separate medicines — not knowing the dose in each individual tablet differs from the combination.",
+    swasthiAngle: "FDC detection in OCR: flag if it's a combination pill. Show the component medicines. Warn if individual substitution creates dose mismatch.",
+    contentIdeas: ["Combination tablets: what happens if you can't find the exact one prescribed?", "FDC medicines: the combination pill your doctor wrote may not exist as a generic"],
+    productNote: "FDC database: map common FDCs to their component molecules and flag during decode."
+  },
+  {
+    num: "35", cat: "generic", title: "Narrow therapeutic index drugs: the generics to treat with extra care",
+    tags: ["Generic vs Brand", "Safety", "Chronic Care"], tagColors: ["blue", "coral", "red"],
+    uses: ["content", "alert"],
+    insight: "For narrow therapeutic index drugs (warfarin, levothyroxine, digoxin, phenytoin, lithium), a small variation in blood levels causes significant clinical effect. Switching between brands/generics can shift levels enough to cause toxicity or therapeutic failure.",
+    confusion: "Pharmacists substitute these medicines freely. Patients or caregivers don't know to track for change in response.",
+    swasthiAngle: "High-alert tag for these medicines in the medication list. Any refill prompts: 'Did you get the same brand as last time?'",
+    contentIdeas: ["These medicines: never switch brands without checking with your doctor", "Narrow therapeutic index: what it means and which of your medicines fall in this category"],
+    productNote: "NTI drug list hard-coded in database. Different refill protocol: brand consistency check prompt mandatory."
+  },
+  {
+    num: "36", cat: "generic", title: "Insulin: brand confusion when the doctor writes one name but dispenses another",
+    tags: ["Generic vs Brand", "Diabetes", "Safety"], tagColors: ["blue", "red", "coral"],
+    uses: ["content", "alert"],
+    insight: "Insulin biosimilars are not straightforward substitutes for reference insulins. India has multiple biosimilar insulins (Basalog, Glargine alternatives) that may have subtly different PK profiles. Substitution without dose adjustment can cause dangerous hypoglycaemia or hyperglycaemia.",
+    confusion: "Caregivers pick up 'a different insulin' from the pharmacy because the usual one is out of stock — not knowing this is a critical substitution decision.",
+    swasthiAngle: "Insulin high-alert tag. Refill stockout alert at 10-day supply, not 3-day, to give time to find the right brand.",
+    contentIdeas: ["Insulin substitution: why you can't just switch to whatever is in stock", "Out of insulin at the pharmacy: a caregiver's emergency guide"],
+    productNote: "Insulin class: DDC stockout alert at 10 days (not 7). Refill brand-consistency check mandatory."
+  },
+  {
+    num: "37", cat: "generic", title: "Why doctors write brand names: the real reason beyond pharma influence",
+    tags: ["Generic vs Brand", "Trust", "Doctor Relationship"], tagColors: ["blue", "teal", "purple"],
+    uses: ["content"],
+    insight: "Doctors often write brand names because: (1) they know that brand's manufacturer, (2) they've seen consistent results, (3) combination pills have no generic equivalent, (4) the generic market has variable quality. It's not always pharma influence — it's sometimes clinical judgment.",
+    confusion: "Caregivers assume branded prescriptions are always driven by pharma incentives and may distrust the doctor's recommendation.",
+    swasthiAngle: "Doctor-respectful framing: 'Your doctor wrote this specific brand. Here's what you should know before deciding to switch.'",
+    contentIdeas: ["Why your doctor writes brand names: the honest, non-pharma explanation", "Brand name prescriptions: when to switch and when to stick"],
+    productNote: "Tone calibration: Swasthi content must never undermine doctor trust. Present generic info as additional context, never as correction."
+  },
+  {
+    num: "38", cat: "generic", title: "The look-alike, sound-alike brand name problem in India",
+    tags: ["Generic vs Brand", "Safety", "India-Specific"], tagColors: ["blue", "coral", "teal"],
+    uses: ["content", "alert"],
+    insight: "India has thousands of medicine brands, many with similar-sounding names (Taxim vs Taxim-O, Augmentin vs Amoxyclav, Metoprolol vs Metoproterenol). ISMP maintains a global look-alike/sound-alike list, but the India-specific variant is vastly larger.",
+    confusion: "Elderly patients and caregivers picking up medicine may get the wrong brand due to name similarity, especially when reading handwritten prescriptions.",
+    swasthiAngle: "OCR: flag common sound-alike names during decode. Prompt user to verify the exact medicine name before purchasing.",
+    contentIdeas: ["Sound-alike medicines: the dangerous name confusion at Indian pharmacies", "Double-check before buying: India's most commonly confused medicine names"],
+    productNote: "LASA (look-alike, sound-alike) database for top 50 India-specific medicine pairs. Flag in decode when close match detected."
+  },
+  {
+    num: "39", cat: "generic", title: "Expiry confusion: does medicine really stop working the day it expires?",
+    tags: ["Generic vs Brand", "Storage", "Elder Adherence"], tagColors: ["blue", "purple", "amber"],
+    uses: ["content"],
+    insight: "Expiry dates indicate the guaranteed potency period — most medications retain significant efficacy beyond expiry (SLEP studies show 90% of medicines remain potent 1–15 years beyond expiry). Exceptions: insulin, liquid antibiotics, eye drops, nitroglycerin. Most solid tablets in good storage are safer than patients assume.",
+    confusion: "Caregivers throw away entire medicine strips because one tablet is near expiry, wasting medicine and sometimes causing treatment gaps.",
+    swasthiAngle: "Education content only. Inform caregivers: 'Check, don't panic. Most tablets are fine for months past the date if stored correctly.'",
+    contentIdeas: ["Medicine expiry: the real story behind the date on your strip", "When to throw medicine away — and when you don't have to"],
+    productNote: "Expiry tracking feature: alert 30 days before expiry on active medications. Not a blanket 'discard immediately' prompt."
+  },
+
+  // ── ELDER ADHERENCE (15) ──────────────────────────────────────────
+  {
+    num: "40", cat: "elder", title: "Polypharmacy in Indian elders: managing 5+ medicines without a system",
+    tags: ["Elder Adherence", "Polypharmacy", "Core Problem"], tagColors: ["purple", "purple", "teal"],
+    uses: ["content", "screen", "product"],
+    insight: "Indian geriatric patients often take 5–12 medicines across 2–3 conditions. Studies show that with 3+ medicines, adherence drops below 50%. Without a system, patients lose track of which they've taken, take duplicate doses, or miss medicines entirely.",
+    confusion: "Without a pill organiser or app, elderly patients use memory alone. Memory lapses are blamed for most adherence failures in Indian geriatric studies.",
+    swasthiAngle: "Swasthi's core value for elder adherence: a single family view of all medicines, all schedules, all families members.",
+    contentIdeas: ["Managing 8 medicines a day: a caregiver's survival guide", "When your parent takes too many medicines: how to keep track without losing your mind"],
+    productNote: "Family medication list: all active meds per patient in a single scrollable view. Duplicate detection critical."
+  },
+  {
+    num: "41", cat: "elder", title: "Forgetfulness vs non-compliance: the diagnosis most caregivers get wrong",
+    tags: ["Elder Adherence", "Cognitive", "Caregiver"], tagColors: ["purple", "purple", "coral"],
+    uses: ["content"],
+    insight: "Forgetfulness (unintentional non-adherence) and intentional non-compliance (deciding not to take) require different interventions. Indian families often treat all missed doses as forgetfulness when in fact many are intentional (fear of side effects, feeling well).",
+    confusion: "Caregivers add more reminders to solve the wrong problem. The elder who is intentionally avoiding a medicine needs a conversation, not more alerts.",
+    swasthiAngle: "Missed dose log should include a reason field: 'Forgot', 'Felt well', 'Side effect concern', 'Unavailable'. Routes to right intervention.",
+    contentIdeas: ["Why your parent keeps missing doses (it's not always forgetfulness)", "Intentional vs unintentional non-compliance: how to tell the difference and what to do"],
+    productNote: "Missed dose reason taxonomy (4 options) drives different response logic: reminder vs educational card vs doctor-consult prompt."
+  },
+  {
+    num: "42", cat: "elder", title: "Swallowing difficulty: the reason elders quietly stop taking tablets",
+    tags: ["Elder Adherence", "Dysphagia", "Geriatric"], tagColors: ["purple", "purple", "amber"],
+    uses: ["content", "screen"],
+    insight: "Dysphagia (difficulty swallowing) affects ~15% of Indian elders but is rarely disclosed to doctors. Patients crush tablets (which may alter absorption or release mechanism for coated/extended-release tablets) or simply stop taking them.",
+    confusion: "Caregivers don't notice because elders are embarrassed to admit swallowing difficulty. Medicine is found under the pillow or dissolved in water inappropriately.",
+    swasthiAngle: "Activation: 'Does your family member have difficulty swallowing tablets?' Guides to liquid alternatives or crushable medications.",
+    contentIdeas: ["Trouble swallowing tablets? Here's what you can safely crush — and what you must not", "Swallowing medicine at 70+: a caregiver's practical guide"],
+    productNote: "Swallowing flag in patient profile: triggers review of all activated meds for crushability. Never allow ER/EC tablets to be flagged safe to crush."
+  },
+  {
+    num: "43", cat: "elder", title: "Visual impairment and medicine confusion: when elders can't read the label",
+    tags: ["Elder Adherence", "Accessibility", "Safety"], tagColors: ["purple", "purple", "coral"],
+    uses: ["content", "product"],
+    insight: "40% of Indians over 60 have some form of visual impairment. Misreading medicine labels — mistaking one white tablet for another, misreading dosage numbers — is a documented cause of medication errors in Indian elderly.",
+    confusion: "Elders with poor vision rely on the shape, colour, and position of tablets in their organiser. Any change in brand (different colour) causes confusion and accidental dose skips or doubles.",
+    swasthiAngle: "Medicine activation: photo of the tablet/packaging as reference. 'This is what your father's BP tablet looks like — check if yours matches.'",
+    contentIdeas: ["Medicine and poor eyesight: how families can prevent label misreading errors", "Colour-coding your parent's medicines: a visual organisation system that works"],
+    productNote: "Tablet photo upload during activation. Visual reference shown in dose-taking screen for elderly patients."
+  },
+  {
+    num: "44", cat: "elder", title: "Hearing and communication barriers in medicine instructions",
+    tags: ["Elder Adherence", "Communication", "India-Specific"], tagColors: ["purple", "purple", "teal"],
+    uses: ["content"],
+    insight: "Hearing loss in Indian elders is often undisclosed. When doctors give verbal medication instructions, elders with partial hearing may mishear dose or frequency. Literacy studies from Eastern India confirm verbal instructions are the weakest link in patient education.",
+    confusion: "Patient hears 'three times' and takes 'two times' — or mishears 'before food' as 'after food'. In busy OPDs, there's no time to repeat.",
+    swasthiAngle: "Swasthi as the written record that compensates for what was missed or misheard at the doctor's office.",
+    contentIdeas: ["When doctor instructions get lost in translation: the hearing gap in elderly care", "Your prescription is the source of truth: why you shouldn't rely only on what you heard"],
+    productNote: "Product positioning: Swasthi captures the written prescription as the ground truth, correcting for verbal instruction gaps."
+  },
+  {
+    num: "45", cat: "elder", title: "Financial barrier: elders self-rationing medicine when cost is high",
+    tags: ["Elder Adherence", "Affordability", "India-Specific"], tagColors: ["purple", "green", "teal"],
+    uses: ["content", "alert"],
+    insight: "Studies show 57% of elderly patients in India require financial help for medications. Self-rationing (taking every other day, splitting tablets, or stopping expensive medicines) is a documented but under-discussed adherence failure in Indian geriatrics.",
+    confusion: "Elders don't tell caregivers they're rationing — they're embarrassed or don't want to be a financial burden. Caregivers discover it only when a medical crisis occurs.",
+    swasthiAngle: "DDC alert: when refill quantity entered is systematically lower than prescribed quantity, flag a gentle 'supply check' conversation prompt.",
+    contentIdeas: ["Is your parent secretly skipping doses to save money?", "Affordable medicine strategies: Jan Aushadhi, generic alternatives, and government schemes for chronic patients"],
+    productNote: "Quantity tracking in DDC: compare prescribed quantity vs purchased quantity. Flag consistent under-purchasing."
+  },
+  {
+    num: "46", cat: "elder", title: "Polypharmacy and falls: the medicine interaction no one talks about",
+    tags: ["Elder Adherence", "Safety", "Geriatric"], tagColors: ["purple", "coral", "red"],
+    uses: ["content"],
+    insight: "Multiple studies confirm polypharmacy (5+ medicines) increases fall risk in elders by 2–3x. In India, where falls in elderly are a leading cause of hospitalisation, this connection is almost never communicated to families.",
+    confusion: "Caregivers see the medicines and the falls as unrelated. The medicines that cause dizziness (antihypertensives, sedatives, diuretics) are rarely connected to the fall by the patient or family.",
+    swasthiAngle: "Educational content. Falls safety card in the family profile for patients on 5+ medicines.",
+    contentIdeas: ["Could your parent's medicines be causing them to fall?", "Polypharmacy and fall risk: the hidden connection in Indian elder care"],
+    productNote: "5+ active meds: show 'fall risk' informational card in patient profile. Not a medical alert — an awareness flag."
+  },
+  {
+    num: "47", cat: "elder", title: "Dependency fear: why elders refuse to take long-term medicines",
+    tags: ["Elder Adherence", "Psychology", "India-Specific"], tagColors: ["purple", "purple", "teal"],
+    uses: ["content"],
+    insight: "Fear of becoming 'dependent' on medicine is a major driver of non-adherence among Indian elders, particularly for BP and diabetes. The belief that the body should manage itself, and that medicine is a sign of weakness, is deeply embedded in older Indian generations.",
+    confusion: "Elders tell caregivers 'I don't want to get addicted' when refusing BP medicine — conflating chronic disease management with addiction.",
+    swasthiAngle: "Education card: 'Dependency vs chronic disease management — what's the difference, explained simply.'",
+    contentIdeas: ["Is BP medicine addictive? The fear that stops Indian elders from getting help", "'I don't want to get dependent' — how to talk to your parent about long-term medicine"],
+    productNote: "Onboarding education card for chronic disease patients: dependency myth debunked with simple analogy."
+  },
+  {
+    num: "48", cat: "elder", title: "The 'feeling better so stopping' pattern in chronic Indian patients",
+    tags: ["Elder Adherence", "Chronic Care", "Core Problem"], tagColors: ["purple", "red", "teal"],
+    uses: ["content", "alert"],
+    insight: "Across Indian studies on hypertension, diabetes, and thyroid, self-discontinuation 'because I feel well' is the #1 reported reason. Studies from Northern India (discontinuation questionnaire study) show 14.7% of diabetes patients stopped because of 'perceived good control'.",
+    confusion: "The logic is intuitive but wrong: 'I feel well = medicine worked = I don't need it anymore.' For chronic diseases, feeling well IS the medicine working — not permission to stop.",
+    swasthiAngle: "Streak alert: 'Rajesh hasn't marked his BP medicine in 4 days. This often happens when people feel better — but this medicine is meant to keep him feeling that way.'",
+    contentIdeas: ["Why feeling well is the worst time to stop your chronic medicine", "'My numbers are normal so I stopped' — the hidden danger in India's most common mistake"],
+    productNote: "4-day miss on chronic medication → special 'feeling-well-stopping' educational alert, not just a generic reminder."
+  },
+  {
+    num: "49", cat: "elder", title: "Ayurvedic medicine interactions: the parallel medication track",
+    tags: ["Elder Adherence", "India-Specific", "Safety"], tagColors: ["purple", "teal", "coral"],
+    uses: ["content", "alert"],
+    insight: "A substantial proportion of Indian elders take Ayurvedic, homeopathic, or herbal medicines alongside allopathic prescriptions — without telling their doctor. Some of these have significant interactions (e.g., ashwagandha with thyroid meds, gurmar with diabetes drugs, amla with blood thinners).",
+    confusion: "Elders don't consider Ayurvedic medicines as 'medicines' and don't think to disclose them. Caregivers may actively encourage the parallel track.",
+    swasthiAngle: "Medication list includes Ayurvedic/home remedies section. Non-judgmental: 'Include any home remedies or Ayurvedic medicines for the complete picture.'",
+    contentIdeas: ["Ayurvedic and allopathic: which combinations to watch out for", "Telling your doctor about Ayurvedic medicine: why it matters more than you think"],
+    productNote: "Medication list: separate Ayurvedic/herbal category. Flag high-risk interactions (3–4 documented examples) during activation."
+  },
+  {
+    num: "50", cat: "elder", title: "Multiple doctors, multiple prescriptions: the overlap no one monitors",
+    tags: ["Elder Adherence", "Polypharmacy", "System Failure"], tagColors: ["purple", "purple", "red"],
+    uses: ["content", "product"],
+    insight: "Indian elders with multiple conditions see multiple specialists — cardiologist, diabetologist, orthopaedic — who each prescribe independently. No one reconciles the total medication list. Duplicate medicines from different doctors are common.",
+    confusion: "A patient may receive Metformin from the diabetologist and a different anti-glycaemic from the GP — both writing independently without a common record.",
+    swasthiAngle: "Prescription archive: all Rx from all doctors in one family record. Makes reconciliation visible for the first time.",
+    contentIdeas: ["Multiple doctors, multiple prescriptions: is your parent taking duplicate medicines?", "The missing health record that puts Indian elders at risk"],
+    productNote: "Prescription archive + duplication detection at the salt-name level across all uploaded prescriptions."
+  },
+  {
+    num: "51", cat: "elder", title: "The travel dilemma: managing medicines across cities for elder parents",
+    tags: ["Elder Adherence", "Caregiver", "India-Specific"], tagColors: ["purple", "coral", "teal"],
+    uses: ["content", "product"],
+    insight: "Adult children who live in different cities face the 'travel medicine crisis' — the parent's prescription is in Chennai, the child is in Bengaluru, and the medicine runs out. Without a unified record, the child cannot even name the medicines to buy locally.",
+    confusion: "In an emergency, the caregiver doesn't know the exact brand, dose, or doctor to call. Medicine names are remembered vaguely ('the small white heart tablet').",
+    swasthiAngle: "This is Swasthi's primary product moment: the child opens the app and immediately sees every medicine, dose, and doctor. Anywhere, anytime.",
+    contentIdeas: ["Long-distance caregiving: how to manage your parent's medicines from another city", "What to do when your parent's medicine runs out and you're not there"],
+    productNote: "Core product positioning scenario. Show this use case in onboarding. This is the 'aha' moment for long-distance caregivers."
+  },
+  {
+    num: "52", cat: "elder", title: "Cognitive decline and medicine: when elders can't self-manage anymore",
+    tags: ["Elder Adherence", "Cognitive Decline", "Caregiver Transition"], tagColors: ["purple", "purple", "coral"],
+    uses: ["content", "product"],
+    insight: "The transition from independent self-management to caregiver-managed medication is one of the most difficult and underdiscussed moments in Indian family caregiving. There is no clear trigger point, and families default to the system only after a crisis.",
+    confusion: "Adult children don't know when to 'take over' medicine management — seen as infantilising. By the time cognitive decline is obvious, errors have already accumulated.",
+    swasthiAngle: "Swasthi's governance model: patient can remain on the account, caregiver takes admin. The transition is smooth, not abrupt.",
+    contentIdeas: ["When to take over your parent's medicine management: a gentle guide", "Signs your parent needs help tracking their medicines"],
+    productNote: "Feature: transition from 'patient-managed' to 'caregiver-managed' mode. Patient account still exists, admin shifts."
+  },
+  {
+    num: "53", cat: "elder", title: "Skin patch, inhaler, eye drop: the administration methods elders struggle with",
+    tags: ["Elder Adherence", "Administration", "Geriatric"], tagColors: ["purple", "purple", "amber"],
+    uses: ["content", "screen"],
+    insight: "Non-oral medications (patches, inhalers, insulin pens, eye drops, nasal sprays) require technique. Elderly patients with arthritis, poor vision, or tremors frequently administer these incorrectly — reducing efficacy without knowing it.",
+    confusion: "Patients assume they're using the inhaler correctly because they feel medicine going in — but poor technique (not coordinating breath and puff) delivers <10% of the dose to the lungs.",
+    swasthiAngle: "Administration method flag during activation: 'This is an inhaler. Proper technique matters — here's a simple guide.'",
+    contentIdeas: ["How to use your inhaler correctly: most patients do this wrong", "Eye drops, patches, and injections: the technique guide for elder caregivers"],
+    productNote: "Non-oral route flag in drug database. Activation for inhalers/eye drops/patches triggers technique education card."
+  },
+  {
+    num: "54", cat: "elder", title: "Side effects vs disease symptoms: elders can't always tell the difference",
+    tags: ["Elder Adherence", "Side Effects", "Geriatric"], tagColors: ["purple", "red", "coral"],
+    uses: ["content"],
+    insight: "In elders with multiple comorbidities, new symptoms (fatigue, nausea, dizziness) may be (a) disease progression, (b) drug side effect, (c) drug-drug interaction, or (d) unrelated illness. The inability to distinguish causes either overreporting or dangerous dismissal.",
+    confusion: "Elders stop medicine when they experience a side effect that's actually disease progression — and continue medicine when experiencing a serious side effect they attribute to 'old age'.",
+    swasthiAngle: "Symptom log linked to medication timeline: 'When did this start? Did you start any new medicine recently?'",
+    contentIdeas: ["Is this a side effect or your illness getting worse? How to tell the difference", "New symptom, new medicine: the caregiver checklist"],
+    productNote: "Symptom log feature (V2): timestamps symptoms against medication changes for correlation tracking."
+  },
+
+  // ── CAREGIVER ERRORS (13) ────────────────────────────────────────
+  {
+    num: "55", cat: "caregiver", title: "The double-dose error: when caregiver and patient both give the medicine",
+    tags: ["Caregiver Errors", "Safety", "High Impact"], tagColors: ["coral", "coral", "teal"],
+    uses: ["content", "alert", "product"],
+    insight: "The most common caregiver-related medication error in Indian families: one family member gives the dose, then another gives it again because there's no shared record. This is particularly dangerous with blood thinners, diabetes medicines, and sedatives.",
+    confusion: "In joint families where multiple adults (spouse, adult child, daughter-in-law) share care duties, communication about 'who gave medicine' breaks down.",
+    swasthiAngle: "Dose marking with user ID: 'Dose marked by Priya at 8:14am.' Other caregivers see this instantly, preventing double-dosing.",
+    contentIdeas: ["The double-dose danger in Indian joint families: how to prevent it", "One app, many caregivers: how to coordinate medicine without dangerous mix-ups"],
+    productNote: "CRITICAL: Dose log shows who marked taken, with timestamp. All family members see the same real-time state."
+  },
+  {
+    num: "56", cat: "caregiver", title: "Stopping medicine during side effects without doctor consultation",
+    tags: ["Caregiver Errors", "Safety", "Discontinuation"], tagColors: ["coral", "coral", "red"],
+    uses: ["content", "alert"],
+    insight: "Caregivers who witness uncomfortable side effects (nausea from metformin, cough from ACE inhibitors, hair loss from propranolol) often stop the medicine to 'help' the patient — without knowing that stopping abruptly may be more dangerous.",
+    confusion: "The caregiver's instinct to protect conflicts with clinical need to continue or taper properly. Stopping beta-blockers abruptly can cause rebound hypertension and angina.",
+    swasthiAngle: "Side-effect education during activation: 'If Amma feels nauseous from this medicine, here's what to do (don't stop — call the doctor).'",
+    contentIdeas: ["My parent has side effects — should I stop the medicine? The answer is almost always no", "Medicines with side effects you should never stop suddenly"],
+    productNote: "High-risk discontinuation flag for beta-blockers, corticosteroids, antiepileptics, antidepressants during activation."
+  },
+  {
+    num: "57", cat: "caregiver", title: "Crushing the wrong tablets: what happens when you modify medicine",
+    tags: ["Caregiver Errors", "Safety", "Administration"], tagColors: ["coral", "coral", "red"],
+    uses: ["content", "alert"],
+    insight: "Extended-release, enteric-coated, and sublingual tablets must NEVER be crushed. Crushing converts a slow-release dose into an immediate-release bolus — equivalent to a massive overdose in some cases. Indian caregivers routinely crush all tablets for elders who can't swallow.",
+    confusion: "Caregivers can't identify modified-release tablets by appearance. SR/MR/XL/ER in the brand name are the only clues — and they're often missed.",
+    swasthiAngle: "Crushability flag in database. During activation: 'Do not crush this tablet — it is extended-release. Here are alternatives.'",
+    contentIdeas: ["Never crush these medicines: the dangerous caregiver mistake that looks like kindness", "SR, MR, XL, ER: what the letters after your medicine name really mean"],
+    productNote: "Drug database: crushability flag mandatory for all ER/SR/EC tablets. Shown prominently during activation for elders."
+  },
+  {
+    num: "58", cat: "caregiver", title: "Giving the wrong patient's medicine: mix-ups in multi-patient households",
+    tags: ["Caregiver Errors", "Safety", "Household"], tagColors: ["coral", "coral", "red"],
+    uses: ["content", "product"],
+    insight: "In households where both parents or multiple family members take medicines, mix-ups are common. White tablets of similar size from different strips are given to the wrong person — a BP tablet to the diabetic parent, or vice versa.",
+    confusion: "Without labelling or organisation, all tablets look the same. Caregivers preparing medicines in bulk (Sunday set-up) are particularly error-prone.",
+    swasthiAngle: "Family profile separation: each patient's medicines are siloed in their own profile. Never mixed in the family view.",
+    contentIdeas: ["Managing medicines for two parents: how to prevent dangerous mix-ups", "The Sunday pill setup mistake: how most families organise medicines wrong"],
+    productNote: "Multi-patient household is a core design scenario. Patient profiles must be visually distinct, never mergeable."
+  },
+  {
+    num: "59", cat: "caregiver", title: "Buying the wrong strength: 5mg vs 10mg errors at the pharmacy",
+    tags: ["Caregiver Errors", "Safety", "Pharmacy"], tagColors: ["coral", "coral", "red"],
+    uses: ["content", "alert"],
+    insight: "Caregivers sent to purchase medicines without the prescription frequently buy the wrong strength. 'Amlodipine' without '5mg' specified results in the pharmacist dispensing whatever is in stock. A 10mg tablet where 5mg was prescribed = double dose.",
+    confusion: "Caregivers memorise the drug name but not the strength. Pharmacists don't always ask 'which strength?' before dispensing.",
+    swasthiAngle: "Refill card: shows exact drug name + strength + quantity needed. Shareable image for WhatsApp to pharmacy.",
+    contentIdeas: ["The pharmacy mistake that doubles your parent's dose", "What to tell the pharmacist: the exact information you need to bring"],
+    productNote: "Refill card feature: generates a shareable image with drug name + strength + quantity. Core DDC refill feature."
+  },
+  {
+    num: "60", cat: "caregiver", title: "Storing medicine incorrectly: heat, humidity, and Indian kitchens",
+    tags: ["Caregiver Errors", "Storage", "India-Specific"], tagColors: ["coral", "amber", "teal"],
+    uses: ["content"],
+    insight: "Many medicines degrade in heat and humidity — both common in Indian kitchens and bathrooms where medicine boxes are often kept. Insulin requires refrigeration (2–8°C). Nitroglycerine degrades in heat. Syrups have short post-opening lives.",
+    confusion: "Medicine boxes kept near the gas stove, in bathrooms, or by windows receive regular heat and light exposure that reduces potency — without any visible change to the tablet.",
+    swasthiAngle: "Storage notes during activation for heat-sensitive medicines: 'Store this medicine away from the kitchen and bathroom. A cupboard in a bedroom is ideal.'",
+    contentIdeas: ["Where you store your medicines is as important as when you take them", "Insulin in Indian summer: the storage guide every caregiver needs"],
+    productNote: "Temperature-sensitive flag in database. Storage guidance shown in decode card for relevant medicines."
+  },
+  {
+    num: "61", cat: "caregiver", title: "Night-shift caregiver handover: the medication gap at shift change",
+    tags: ["Caregiver Errors", "Multi-Caregiver", "Safety"], tagColors: ["coral", "coral", "coral"],
+    uses: ["content", "product"],
+    insight: "In households where care duties shift between day and night caregivers (domestic help, family members), handover communication about medications is almost always verbal and incomplete. Night doses are most frequently missed.",
+    confusion: "Day caregiver assumes night caregiver knows the schedule. Night caregiver doesn't want to wake the elder to check. Morning check reveals the dose was never given.",
+    swasthiAngle: "Real-time dose log accessible to all caregivers: shift handover is now transparent. Night dose status visible at a glance.",
+    contentIdeas: ["The medication handover: what happens to your parent's medicine at shift change", "Multi-carer coordination: how Indian families get medicine wrong at night"],
+    productNote: "All-caregiver real-time view of dose status. Night-dose missed → morning caregiver alert. Audit log captures who was responsible."
+  },
+  {
+    num: "62", cat: "caregiver", title: "WhatsApp as a medication management system: why it fails",
+    tags: ["Caregiver Errors", "Communication", "India-Specific"], tagColors: ["coral", "teal", "teal"],
+    uses: ["content", "product"],
+    insight: "Indian families manage medicine coordination through WhatsApp groups — sharing prescription photos, reminding via messages, and tracking via chats. This system has no structure, no history, no deduplication, and fails catastrophically when the group is quiet.",
+    confusion: "A prescription photo sent on WhatsApp gets buried under 300 other messages in a week. No one can find it when the pharmacist asks for the medicine name.",
+    swasthiAngle: "Swasthi is what WhatsApp cannot be: structured, searchable, historical, and accessible to the right family members when needed.",
+    contentIdeas: ["Why your family WhatsApp group is not a medication system", "Moving from WhatsApp to Swasthi: what you gain in 10 minutes"],
+    productNote: "WhatsApp prescription import: user can share the prescription image directly from WhatsApp to Swasthi via share sheet."
+  },
+  {
+    num: "63", cat: "caregiver", title: "Over-helping vs under-helping: caregiver burnout patterns",
+    tags: ["Caregiver Errors", "Mental Health", "India-Specific"], tagColors: ["coral", "purple", "teal"],
+    uses: ["content"],
+    insight: "Indian adult children managing parents' health remotely experience significant caregiver anxiety. Studies show two failure modes: over-involvement (hypervigilance that exhausts both caregiver and patient) and under-involvement (guilt-driven avoidance that leads to gaps).",
+    confusion: "There is no calibration tool. Caregivers don't know if they're doing too much or too little — they react to crises rather than following a system.",
+    swasthiAngle: "Swasthi reduces caregiver anxiety by providing a reliable baseline: 'Everything is on schedule' removes the need for constant checking.",
+    contentIdeas: ["Caregiver burnout in India: the emotional cost of managing your parent's health from afar", "Finding the right level of involvement in your parent's medication management"],
+    productNote: "Product positioning: Swasthi replaces anxiety with information. 'Know, don't worry.' Dashboard as peace-of-mind."
+  },
+  {
+    num: "64", cat: "caregiver", title: "Reading a prescription after a hospital discharge: the most dangerous moment",
+    tags: ["Caregiver Errors", "Discharge", "High Impact"], tagColors: ["coral", "coral", "red"],
+    uses: ["content", "product"],
+    insight: "Hospital discharge prescriptions are complex — multiple new medicines, modified doses of existing ones, time-limited courses alongside indefinite ones. Studies identify hospital discharge as the highest-risk moment for medication errors, particularly in geriatric patients.",
+    confusion: "Caregivers receive discharge papers in a state of relief and exhaustion. They don't read carefully. New medicines get added haphazardly to existing home medicines.",
+    swasthiAngle: "Discharge Rx upload is a distinct flow in Swasthi: 'Uploading a new prescription from hospital? Let's check for changes against your current medicine list.'",
+    contentIdeas: ["Hospital discharge day: the medication guide for Indian caregivers", "What to do in the first 24 hours after your parent comes home from hospital"],
+    productNote: "Special 'discharge prescription' mode: flags new medicines, changes to existing medicines, and medicines to stop. Compares against current active list."
+  },
+  {
+    num: "65", cat: "caregiver", title: "Prescription misinterpretation at the pharmacy: errors before the medicine reaches home",
+    tags: ["Caregiver Errors", "Pharmacy", "Handwriting"], tagColors: ["coral", "coral", "amber"],
+    uses: ["content", "product"],
+    insight: "Indian pharmacists receive handwritten prescriptions they sometimes can't read clearly. Rather than calling the doctor, they dispense the closest match. Studies show ~10% of pharmacy dispensing errors in India are related to illegible prescriptions.",
+    confusion: "The medicine arrives home in the right packaging and the caregiver trusts the pharmacist — not knowing the prescription was misread.",
+    swasthiAngle: "Decoded prescription card shareable with the pharmacist: 'Here is what the doctor wrote, clearly.' Pharmacist can read the digital decode, not just the handwriting.",
+    contentIdeas: ["Is the pharmacist reading your doctor's prescription correctly?", "Sharing your decoded prescription with the chemist: a new way to prevent errors"],
+    productNote: "Shareable decode card feature: generated after verify gate, can be exported/shared with pharmacist. Caregiver safety tool."
+  },
+  {
+    num: "66", cat: "caregiver", title: "Assuming compliance: the 'I reminded them' is not the same as 'they took it'",
+    tags: ["Caregiver Errors", "Verification", "Governance"], tagColors: ["coral", "coral", "purple"],
+    uses: ["content", "product"],
+    insight: "Caregivers who send reminders via phone or message assume the medicine was taken. In reality, the reminder is acknowledged but the dose is not taken in ~35–45% of cases. Phone reminders without confirmation have very poor adherence outcomes.",
+    confusion: "The caregiver ticks 'done' in their mental checklist after sending a reminder. The elder says 'yes yes I took it' without having done so.",
+    swasthiAngle: "Swasthi distinguishes between 'reminder sent' and 'dose confirmed'. Only patient marks = dose taken. Caregiver sees unmarked doses.",
+    contentIdeas: ["'I reminded them' is not the same as 'they took it' — the accountability gap in Indian medication management", "Why WhatsApp reminders don't actually improve medication adherence"],
+    productNote: "Separation of reminder-sent and dose-confirmed states. Caregiver view shows unconfirmed doses distinctly."
+  },
+  {
+    num: "67", cat: "caregiver", title: "Informed consent for medicines: caregivers making decisions the patient should make",
+    tags: ["Caregiver Errors", "Ethics", "Patient Autonomy"], tagColors: ["coral", "purple", "teal"],
+    uses: ["content"],
+    insight: "Adult children sometimes make medication decisions on behalf of cognitively intact elderly parents — switching medicines, stopping doses, adjusting schedules — without the patient's informed consent. This is both ethically problematic and practically risky.",
+    confusion: "In Indian family culture, adult children assume authority over elderly parents' health decisions, sometimes overriding patient preferences with good intent.",
+    swasthiAngle: "Governance model: patient is always visible on the account. Changes to active medications require admin confirmation — not silent caregiver action.",
+    contentIdeas: ["Your parent still gets to decide about their medicine: informed consent for elderly patients", "When helping too much becomes taking control: the ethics of caregiver medication decisions"],
+    productNote: "Patient-visible audit log: every medication change notified to patient profile (if patient has app access). Not silent."
+  },
+
+  // ── CHRONIC DISEASE MEDICATION (15) ──────────────────────────────
+  {
+    num: "68", cat: "chronic", title: "Hypertension is silent: why BP patients feel no reason to take medicine",
+    tags: ["Chronic Disease", "Hypertension", "Adherence"], tagColors: ["red", "red", "purple"],
+    uses: ["content", "alert"],
+    insight: "BP is the 'silent killer' — patients feel no symptoms. This makes adherence uniquely difficult. Without a felt benefit, there is no positive reinforcement for taking medicine. Studies in Chennai show large adherence gaps strongly linked to poor understanding of BP mechanism.",
+    confusion: "Patients with 140/90 feel perfectly normal. When they take medicine and BP normalises, they feel exactly the same — confirming their belief that medicine wasn't needed.",
+    swasthiAngle: "Education card when BP medicine is activated: 'You won't feel it working. That's how it's supposed to work.'",
+    contentIdeas: ["Blood pressure medicine when you feel fine: the invisible reason it still matters", "How to explain silent hypertension to an elderly parent who doesn't believe they're sick"],
+    productNote: "BP medicine activation: mandatory education card about asymptomatic nature. Cannot be skipped."
+  },
+  {
+    num: "69", cat: "chronic", title: "Diabetes medicine forever: managing the psychological burden of lifelong treatment",
+    tags: ["Chronic Disease", "Diabetes", "Psychology"], tagColors: ["red", "red", "purple"],
+    uses: ["content"],
+    insight: "The moment a patient is told diabetes medicine is lifelong, many go through a grief-like reaction. Indian patients frequently seek 'cure' through alternative systems, diet alone, or stopping medicines — not out of non-compliance, but denial.",
+    confusion: "Patients who achieve good HbA1c through medicine believe they've 'cured' the diabetes and stop medicine — causing relapse.",
+    swasthiAngle: "Framing: 'Managing diabetes is a skill, not a failure.' Swasthi helps the family get good at the skill.",
+    contentIdeas: ["Diabetes forever: how to make peace with lifelong medicine", "When your parent refuses to accept they have diabetes: a gentle caregiver guide"],
+    productNote: "Diabetes activation onboarding: long-term framing. 'This medicine helps Amma manage her blood sugar every day — like a daily tool, not a lifelong punishment.'"
+  },
+  {
+    num: "70", cat: "chronic", title: "Thyroid medicine: the one drug where consistency beats everything else",
+    tags: ["Chronic Disease", "Thyroid", "Core Literacy"], tagColors: ["red", "blue", "teal"],
+    uses: ["content", "screen"],
+    insight: "Levothyroxine dose is calibrated to the individual through blood tests. Inconsistent dosing creates erratic thyroid hormone levels that cascade into fatigue, weight, mood, and cardiac effects. Consistency — same time, same conditions, every day — is the #1 clinical priority.",
+    confusion: "Patients and caregivers skip doses during travel ('I forgot my medicine at home'), take double doses the next day, and underestimate the compounding effect of inconsistency.",
+    swasthiAngle: "Thyroid medicine: streak tracking with special framing. 'Day 47 consistent. Amma's thyroid routine is on track.'",
+    contentIdeas: ["Thyroid medicine consistency: why missing even one day matters more than you think", "The thyroid medicine tracker: how Swasthi helps families keep the 30-minute streak"],
+    productNote: "Levothyroxine: premium streak display in dose tracking. Missed dose framing: 'This affects thyroid levels — mark what happened so you can track patterns.'"
+  },
+  {
+    num: "71", cat: "chronic", title: "Insulin: the most feared and mismanaged medicine in Indian households",
+    tags: ["Chronic Disease", "Diabetes", "Insulin"], tagColors: ["red", "red", "coral"],
+    uses: ["content", "alert", "screen"],
+    insight: "Insulin is associated with disease severity in Indian culture — 'they put him on insulin' signals a crisis. This stigma causes families to delay insulin initiation, ration doses, and stop insulin without medical guidance. 26% of patients who stopped insulin without guidance required emergency care within 6 months.",
+    confusion: "Insulin dosing is dose-response dependent on meals — variable meal portions in Indian households make fixed dosing challenging. Caregivers don't know how to handle meal skipping.",
+    swasthiAngle: "Insulin meal-anchoring in schedule setup. Clear dose tracking. Stockout alert extended to 10 days (not 7).",
+    contentIdeas: ["Insulin is not the end: reframing the most feared medicine in India", "Managing insulin doses when your parent eats differently every day"],
+    productNote: "Insulin: meal-linked scheduling. Dose tracking includes meal status field. Extended stockout alert (10 days)."
+  },
+  {
+    num: "72", cat: "chronic", title: "ACE inhibitor cough: the side effect that stops BP treatment in India",
+    tags: ["Chronic Disease", "Hypertension", "Side Effects"], tagColors: ["red", "red", "amber"],
+    uses: ["content", "alert"],
+    insight: "ACE inhibitors (ramipril, enalapril, lisinopril) cause a dry cough in ~15–20% of patients — and this proportion is higher in Asian populations. Most Indian patients and caregivers stop the medicine, not knowing the cough is a class effect and that switching to an ARB (candesartan, telmisartan) solves it.",
+    confusion: "Caregivers see the cough and blame the medicine — but rather than switching class with doctor guidance, they stop all BP medicine.",
+    swasthiAngle: "ACE inhibitor activation: 'Some people develop a dry cough with this medicine. If this happens, don't stop — talk to your doctor. There is an easy alternative.'",
+    contentIdeas: ["The BP medicine cough: why it happens and what to do instead of stopping your medicine", "ACE inhibitors and the Indian cough: what your doctor can do to help"],
+    productNote: "ACE inhibitor class: cough side effect education card during activation. Doctor-consult CTA if user reports cough in missed-dose reason."
+  },
+  {
+    num: "73", cat: "chronic", title: "Statin side effects: muscle pain and the real discontinuation risk",
+    tags: ["Chronic Disease", "Heart", "Side Effects"], tagColors: ["red", "red", "coral"],
+    uses: ["content", "alert"],
+    insight: "Statin-related myalgia (muscle pain/weakness) affects 5–10% of patients and is the #1 reason for statin discontinuation. In India, the connection between statin and muscle pain is rarely made — patients stop statins but continue other medicines.",
+    confusion: "Muscle pain attributed to ageing, arthritis, or over-exertion — not the statin. Caregiver doesn't connect the dots.",
+    swasthiAngle: "Statin activation: 'If you notice new muscle pain or weakness after starting this medicine, tell your doctor. It may be the medicine.'",
+    contentIdeas: ["Muscle pain and cholesterol medicine: the connection your doctor might not have told you", "Statin side effects: what's normal, what's not, and when to call your doctor"],
+    productNote: "Statin class: muscle pain flag during activation. Missed-dose reason 'pain/discomfort' → statin-specific educational card."
+  },
+  {
+    num: "74", cat: "chronic", title: "NSAID risks in Indian elders: the painkiller that hides BP and kidney damage",
+    tags: ["Chronic Disease", "Pain Management", "Safety"], tagColors: ["red", "coral", "red"],
+    uses: ["content", "alert"],
+    insight: "NSAIDs (ibuprofen, diclofenac, naproxen) are the most overused medicines in India — available OTC and culturally normalised for any pain. In elders with hypertension, diabetes, or kidney disease, regular NSAID use worsens BP control, reduces kidney function, and can cause acute kidney injury.",
+    confusion: "OTC accessibility means elders self-medicate with NSAIDs without telling their doctor. Their BP medicine 'stops working' and no one connects it to the ibuprofen they're taking for back pain.",
+    swasthiAngle: "Education alert when NSAID is added to a patient already on BP or diabetes medicine.",
+    contentIdeas: ["The painkiller that worsens blood pressure: NSAIDs and Indian elder care", "Your parent's knee pain medicine might be harming their kidneys: the hidden NSAID danger"],
+    productNote: "Drug interaction logic V2: NSAID + antihypertensive → interaction alert. Start simple, expand."
+  },
+  {
+    num: "75", cat: "chronic", title: "COPD/Asthma: inhaler technique and the compliance disaster it creates",
+    tags: ["Chronic Disease", "Respiratory", "Administration"], tagColors: ["red", "blue", "coral"],
+    uses: ["content", "screen"],
+    insight: "Poor inhaler technique is the #1 cause of treatment failure in asthma and COPD. Studies show <20% of patients use inhalers correctly without training. Indian patients using pMDI (pressurised metered-dose inhalers) typically don't coordinate breath and actuation.",
+    confusion: "Patients feel the mist and assume they received the dose. They don't know that without proper technique, <20% of the medicine reaches the lungs.",
+    swasthiAngle: "Inhaler detected in prescription: step-by-step technique guide as a mandatory activation step. Not skippable.",
+    contentIdeas: ["Are you using your inhaler correctly? Most people aren't", "The 5-step inhaler technique guide for Indian patients and caregivers"],
+    productNote: "Inhaler route detected: 5-step technique guide embedded in activation flow. Video link or illustrated steps."
+  },
+  {
+    num: "76", cat: "chronic", title: "Anti-epileptic medicines: the greatest danger of stopping suddenly",
+    tags: ["Chronic Disease", "Neurology", "Safety"], tagColors: ["red", "red", "coral"],
+    uses: ["content", "alert"],
+    insight: "Antiepileptics (phenytoin, valproate, levetiracetam, carbamazepine) must never be stopped abruptly — sudden discontinuation can trigger status epilepticus (prolonged seizures), a medical emergency. Many families stop when the patient 'seems fine for months'.",
+    confusion: "'Seeming fine' on antiepileptics is the medicine working — not permission to stop. Families misread stability as cure.",
+    swasthiAngle: "Anti-epileptic activation: high-priority warning. 'NEVER stop this medicine suddenly, even if your family member seems well. Always consult the doctor.'",
+    contentIdeas: ["Never stop epilepsy medicine without your doctor's guidance: what can happen", "Seizure-free for 6 months: does that mean you can stop the medicine?"],
+    productNote: "Anti-epileptic class: NEVER-STOP flag. Missed dose alert escalates immediately to caregiver (not a 2-hour wait). Critical category."
+  },
+  {
+    num: "77", cat: "chronic", title: "Psychiatric medication stigma in India: the hidden non-adherence",
+    tags: ["Chronic Disease", "Mental Health", "Stigma"], tagColors: ["red", "purple", "teal"],
+    uses: ["content"],
+    insight: "Antidepressants, antipsychotics, and anxiolytics face extreme stigma in India. Patients hide their psychiatric diagnosis, skip doses when family visitors come, and are routinely pressured by family members to stop 'mind medicines'.",
+    confusion: "Family members (often well-meaning) encourage stopping psychiatric medicines, not understanding that abrupt SSRI discontinuation causes discontinuation syndrome, and antipsychotic stoppage can trigger acute psychosis.",
+    swasthiAngle: "Sensitive category: psychiatric medicines shown with privacy option in Swasthi — only admin/designated caregiver can see.",
+    contentIdeas: ["Mental health medicines are still medicines: the stigma that stops Indian patients from adhering", "What happens when you stop antidepressants suddenly"],
+    productNote: "Sensitive category flag: psychiatric, HIV, addiction medicines have privacy toggle — not visible to all family members. Shown only to admin."
+  },
+  {
+    num: "78", cat: "chronic", title: "Antibiotic course completion: the resistance crisis starts in Indian homes",
+    tags: ["Chronic Disease", "Antibiotics", "Public Health"], tagColors: ["red", "blue", "teal"],
+    uses: ["content", "alert"],
+    insight: "India has the highest antibiotic consumption and one of the highest antimicrobial resistance rates globally. A major driver: patients stop antibiotics when they feel better (typically Day 3 of a 7-day course). The drug-resistant bacteria survive and proliferate.",
+    confusion: "Feeling better = the antibiotic worked = I can stop. This logic is universal and almost universally wrong for antibiotic courses.",
+    swasthiAngle: "Antibiotic course: countdown display. 'Day 4 of 7. Do not stop even if feeling better.' Alert if doses missed mid-course.",
+    contentIdeas: ["Why you must finish your antibiotic course: the simple science behind it", "Antibiotic resistance starts at home: India's biggest self-inflicted health crisis"],
+    productNote: "Antibiotic course tracking: countdown display. Mandatory completion prompt. Missed doses alert with resistance education note."
+  },
+  {
+    num: "79", cat: "chronic", title: "Vitamin D deficiency in urban India: the prescription most ignore",
+    tags: ["Chronic Disease", "Supplements", "India-Specific"], tagColors: ["red", "green", "teal"],
+    uses: ["content"],
+    insight: "India paradoxically has high Vitamin D deficiency despite abundant sunshine — indoor lifestyles, dark complexion reducing synthesis, and dietary gaps are the causes. Weekly/monthly Vitamin D prescriptions are frequently ignored because patients don't 'feel' the deficiency.",
+    confusion: "A weekly sachet of Vitamin D doesn't feel like medicine. It gets skipped, forgotten, and left in drawers. Patients don't prioritise it against their 'real medicines'.",
+    swasthiAngle: "Weekly Vitamin D dose: calendar pin. 'Sunday is Vitamin D day.' Simplified tracking for non-daily doses.",
+    contentIdeas: ["Why most urban Indians are Vitamin D deficient despite living in a sunny country", "The Vitamin D prescription most people ignore: why it matters more than you think"],
+    productNote: "Weekly/monthly supplement tracking: calendar view with simple touch-to-confirm interface."
+  },
+  {
+    num: "80", cat: "chronic", title: "Proton pump inhibitors: the 'stomach protection' pill that most take forever",
+    tags: ["Chronic Disease", "GI", "Overprescription"], tagColors: ["red", "red", "amber"],
+    uses: ["content"],
+    insight: "PPIs (omeprazole, pantoprazole, rabeprazole) are among the most over-prescribed medicines in India — prescribed as stomach protectors alongside NSAIDs, often continuing indefinitely without review. Long-term PPI use has risks (magnesium deficiency, bone density, C. diff).",
+    confusion: "Patients prescribed PPI 'for 2 weeks' continue for years because no one tells them to stop. It becomes a permanent part of the medicine routine.",
+    swasthiAngle: "PPI time-limited flag: 'This stomach medicine was prescribed for [X days]. Check with your doctor before continuing beyond that date.'",
+    contentIdeas: ["The stomach medicine most people take for years when they should stop", "PPI long-term use: what your doctor wants you to review at your next visit"],
+    productNote: "PPI class: time-limited flag during activation. Duration prompt. Alert at end-of-course if still active."
+  },
+  {
+    num: "81", cat: "chronic", title: "Kidney disease medication: the renally-adjusted doses most patients receive wrong",
+    tags: ["Chronic Disease", "CKD", "Safety"], tagColors: ["red", "coral", "red"],
+    uses: ["content"],
+    insight: "In patients with chronic kidney disease, many standard medicines must be dose-reduced or avoided (metformin, certain antibiotics, NSAIDs, contrast agents). As Indian elder populations age into CKD, this becomes increasingly critical — yet most medication management systems don't flag kidney-adjusted dosing.",
+    confusion: "A patient diagnosed with diabetes at a nephrology clinic may still be getting standard metformin dose from their GP who doesn't know about the kidney disease.",
+    swasthiAngle: "Patient profile: kidney disease flag. Educational note to bring this up with all prescribing doctors. Not clinical decision support — awareness.",
+    contentIdeas: ["Kidney disease and medicines: what you must tell every doctor who prescribes for you", "Why diabetes medicine may not be safe if your parent also has kidney problems"],
+    productNote: "Patient profile: comorbidity tags (diabetes, CKD, heart failure). Educational cross-reference for caregivers. Not clinical alerts."
+  },
+  {
+    num: "82", cat: "chronic", title: "Heart failure medicines: the diuretic that requires daily weight monitoring",
+    tags: ["Chronic Disease", "Heart", "Monitoring"], tagColors: ["red", "red", "teal"],
+    uses: ["content", "screen"],
+    insight: "Patients on diuretics for heart failure require daily weight monitoring to detect fluid retention early. A 2kg weight gain in 2 days signals impending decompensation. Most Indian families with heart failure patients don't have a weigh scale, let alone a weight-tracking protocol.",
+    confusion: "Patients take their diuretic but no one monitors the response. The first sign of failure is breathlessness — by which point hospitalisation is often necessary.",
+    swasthiAngle: "Heart failure patient profile: weight log prompt linked to diuretic schedule. Simple daily check-in.",
+    contentIdeas: ["Weighing yourself daily: the most important heart failure task most families miss", "Daily weight and diuretics: what Indian heart patients need to know"],
+    productNote: "Diuretic flag in heart failure patient: daily weight log prompt linked to dose-tracking screen (V2)."
+  },
+
+  // ── REFILL CONTINUITY (10) ────────────────────────────────────────
+  {
+    num: "83", cat: "refill", title: "The refill gap: what happens in Indian families when medicine runs out",
+    tags: ["Refill Continuity", "DDC", "Core Problem"], tagColors: ["green", "green", "teal"],
+    uses: ["content", "product"],
+    insight: "Medication supply interruption is one of the most common and most preventable causes of treatment failure in Indian chronic care. Studies show ~17% of diabetes patients in India reported medication unavailability as a reason for discontinuation.",
+    confusion: "Families don't track how many tablets remain. The discovery of 'last few tablets' happens at night, on a Sunday, or during a festival when chemists are closed.",
+    swasthiAngle: "DDC is Swasthi's core differentiator: continuous calculation of days remaining based on adherence history. 7-day and 3-day alerts.",
+    contentIdeas: ["The medicine gap: what happens to your parent's BP when they run out for 3 days", "Refill continuity: why chronic medicine supply tracking is as important as the medicine itself"],
+    productNote: "DDC: days_remaining = (quantity - doses_taken) / daily_dose. Alert at 7 days and 3 days. Escalate to caregiver at 3 days."
+  },
+  {
+    num: "84", cat: "refill", title: "How to read a prescription for quantity: 30 days vs 90 days dispensed",
+    tags: ["Refill Continuity", "Core Literacy", "Pharmacy"], tagColors: ["green", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "Indian prescriptions often don't specify total quantity — they specify duration and dose. Calculating 'how many tablets to buy' requires multiplication that patients and caregivers frequently get wrong, especially for BD and TDS regimens.",
+    confusion: "Patient on Metformin BD for 30 days buys 30 tablets (one per day) instead of 60 (two per day). Runs out in 15 days without understanding why.",
+    swasthiAngle: "DDC activation calculates: 'Your prescription is for 30 days. At BD (twice daily), you need 60 tablets. Please purchase 60.'",
+    contentIdeas: ["How many tablets should I buy? The calculation most families get wrong", "Prescription duration vs tablet quantity: the maths your chemist should do but doesn't always"],
+    productNote: "DDC calculates required quantity from dose × frequency × duration. Shows at refill card: 'You need [N] tablets for [X] days.'"
+  },
+  {
+    num: "85", cat: "refill", title: "Doctor visit gaps and prescription validity: when does an old prescription expire?",
+    tags: ["Refill Continuity", "Prescription", "India-Specific"], tagColors: ["green", "teal", "teal"],
+    uses: ["content"],
+    insight: "In India, prescription validity varies: Schedule H drugs are valid for 30 days from the date of issue. Schedule H1 (certain antibiotics) require a fresh prescription for each dispensing. Chronic disease prescriptions are often used for months without renewal — which is technically illegal for Schedule H drugs but routinely practised.",
+    confusion: "Families send an old prescription to the chemist for chronic medicines. The chemist may dispense against it — or may refuse, causing a sudden gap.",
+    swasthiAngle: "Prescription archive shows prescription date. Alert if a prescription is >30 days old and medicine is being refilled against it.",
+    contentIdeas: ["Does your prescription expire? India's medicine validity rules for chronic patients", "When the chemist refuses your old prescription: what the rules actually say"],
+    productNote: "Prescription date tracking: flag prescriptions >30 days old at refill time. Educational, not blocking — prompt for doctor visit."
+  },
+  {
+    num: "86", cat: "refill", title: "Stockout risk calculation: the maths behind treatment continuity",
+    tags: ["Refill Continuity", "DDC", "Product"], tagColors: ["green", "green", "teal"],
+    uses: ["content", "product"],
+    insight: "True stockout risk isn't just 'how many tablets remain' — it's adjusted for adherence rate. A patient with 80% adherence on BD dosing takes ~1.6 doses per day instead of 2, meaning their 30 remaining tablets last ~19 days, not 15. DDC must account for actual behaviour.",
+    confusion: "Simple tablet count is overly conservative for poorly adherent patients and overly optimistic for highly adherent ones.",
+    swasthiAngle: "DDC formula: days_remaining = remaining_quantity / (daily_dose × actual_adherence_rate). Shows adherence-adjusted estimate.",
+    contentIdeas: ["How Swasthi calculates your medicine supply: the smart way to predict refill timing", "Why 'counting tablets' isn't enough to know when to refill"],
+    productNote: "DDC algorithm: use rolling 14-day adherence rate for refill projection. More accurate than naive days-remaining calculation."
+  },
+  {
+    num: "87", cat: "refill", title: "Monsoon and festival season: the refill crises that repeat every year",
+    tags: ["Refill Continuity", "India-Specific", "Seasonal"], tagColors: ["green", "teal", "teal"],
+    uses: ["content", "alert"],
+    insight: "Diwali, Navratri, Holi, and regional festivals create predictable medicine supply disruptions — chemists close, family travel increases, and attention shifts. Monsoon floods in certain geographies create access issues. These are predictable refill crises that Indian families hit repeatedly.",
+    confusion: "No one plans for medicine stock before a 5-day festival. The pattern repeats every year — patient runs out on day 3 of Diwali.",
+    swasthiAngle: "Seasonal refill alert: 'Festival season approaching — Rajesh's Metformin has 8 days remaining. Stock up before shops close.'",
+    contentIdeas: ["Festival season and chronic medicine: the checklist every Indian family needs", "Diwali preparation for families with chronic conditions: medicine edition"],
+    productNote: "Calendar awareness: pre-alert 10 days before major Indian festivals if DDC shows <15 days supply. India-specific feature."
+  },
+  {
+    num: "88", cat: "refill", title: "Partial refills: when the chemist doesn't have the full quantity",
+    tags: ["Refill Continuity", "Pharmacy", "Practical"], tagColors: ["green", "teal", "amber"],
+    uses: ["content", "screen"],
+    insight: "Medicine stockouts at pharmacies are common in India, particularly for older brands and specific formulations. Patients receive partial quantities and don't know whether to adjust dose, find another pharmacy, or return later. Partial refills create dosing interruptions.",
+    confusion: "Patient receives 30 tablets when 60 were needed. They take their regular dose and run out earlier than expected — not updating their mental model of supply.",
+    swasthiAngle: "DDC refill entry: 'How many tablets did you actually get?' Updates supply calculation with actual quantity, not prescribed quantity.",
+    contentIdeas: ["What to do when the pharmacy doesn't have your full prescription", "Partial refill: how to adjust your medicine supply tracking when you can't get everything at once"],
+    productNote: "DDC: refill entry field accepts actual quantity received (not assumed = prescribed). Recalculates days_remaining immediately."
+  },
+  {
+    num: "89", cat: "refill", title: "Online pharmacy for chronic medicines: opportunities and risks",
+    tags: ["Refill Continuity", "Digital", "India-Specific"], tagColors: ["green", "blue", "teal"],
+    uses: ["content"],
+    insight: "Online pharmacies (PharmEasy, 1MG, Apollo Pharmacy) enable doorstep delivery for chronic medicines — eliminating the access barrier. However, risks include cold chain breaks for insulin, substitution of brands without consent, and irregular delivery timelines affecting supply.",
+    confusion: "Families who transition to online pharmacies sometimes let their local pharmacy stock lapse before confirming online delivery timelines — causing a supply gap.",
+    swasthiAngle: "Refill source-agnostic: Swasthi's DDC alert tells you WHEN to refill. HOW you refill is your choice (local chemist, online, Jan Aushadhi).",
+    contentIdeas: ["Online pharmacy for chronic medicines: the guide for Indian families", "Online vs local pharmacy: what works best for different chronic medicines"],
+    productNote: "Refill advice is source-neutral. Swasthi never recommends a specific pharmacy — that's a commercial conflict with the neutral trust position."
+  },
+  {
+    num: "90", cat: "refill", title: "Travel with medicines: the 10-day trip and the 30-day supply",
+    tags: ["Refill Continuity", "Travel", "Practical"], tagColors: ["green", "teal", "amber"],
+    uses: ["content", "screen"],
+    insight: "Indian families who travel for extended periods (pilgrimages, village visits, family occasions) frequently don't carry sufficient medicine. They underestimate duration, forget some medicines, or assume they can 'get it there'.",
+    confusion: "Ashwagandha and common vitamins are easy to get anywhere. Specific brands of cardiac or diabetes medicine may be unavailable in smaller towns.",
+    swasthiAngle: "Travel mode: 'Planning to travel? How many days? Here's the complete medicine checklist for the trip.'",
+    contentIdeas: ["Travelling with chronic medicines: the complete India checklist", "Pilgrimage preparation for elderly parents on long-term medicine"],
+    productNote: "Travel mode feature (V2): generates trip-specific medicine list with quantities needed based on DDC data."
+  },
+  {
+    num: "91", cat: "refill", title: "Medicine wastage: the unopened strips families accumulate and never use",
+    tags: ["Refill Continuity", "Waste", "Practical"], tagColors: ["green", "amber", "teal"],
+    uses: ["content"],
+    insight: "Indian households with chronic patients accumulate significant medicine stock from over-ordering, prescription changes, and treatment stops. This 'medicine drawer' is a health risk (expired stock consumed), a safety risk (confusion with current medicines), and a financial loss.",
+    confusion: "Families over-order to 'be safe', medicines change after doctor visits, and old stock accumulates — creating a confusing inventory of current and obsolete medicines.",
+    swasthiAngle: "Medicine deactivation when prescription changes. 'Amma's doctor changed her BP medicine — mark the old one as stopped so it's clear which to take.'",
+    contentIdeas: ["The medicine drawer: how to clean it out and what to do with old medicines", "Over-stocking chronic medicine: why buying too much creates its own risks"],
+    productNote: "Medicine deactivation flow: when a new Rx supersedes old, prompt to deactivate replaced medicines. Visual separation of active vs stopped."
+  },
+  {
+    num: "92", cat: "refill", title: "The Sunday crisis: refill emergencies that happen on the worst days",
+    tags: ["Refill Continuity", "Practical", "India-Specific"], tagColors: ["green", "coral", "teal"],
+    uses: ["content", "alert"],
+    insight: "In India, Sunday medicine crises are a real pattern — pharmacies close early, chemists are unavailable, and patients on critical medicines (insulin, antiepileptics, cardiac medicines) run out on the one day it's hardest to get a refill. The DDC alert system prevents this.",
+    confusion: "Without supply tracking, families discover the crisis on Sunday night. Every solution (emergency chemist, hospital pharmacy) is suboptimal.",
+    swasthiAngle: "DDC is specifically designed to prevent this: alert 7 days before, again 3 days before. Saturday pickup beats Sunday crisis.",
+    contentIdeas: ["Why medicine runs out on Sunday: the predictable crisis every Indian family should prevent", "The 7-day refill rule: Swasthi's approach to never running out of critical medicines"],
+    productNote: "DDC 7-day alert: explicit messaging 'Refill by [date] to avoid weekend shortage.' Day-of-week awareness in alert copy."
+  },
+
+  // ── RX LITERACY + HANDWRITING (8) ────────────────────────────────
+  {
+    num: "93", cat: "handwriting", title: "Doctor handwriting: why it's illegible and what it costs Indian patients",
+    tags: ["Rx Literacy", "Handwriting", "Core Problem"], tagColors: ["teal", "teal", "coral"],
+    uses: ["content", "product"],
+    insight: "Illegible doctor handwriting is a documented global patient safety issue. In India, where OPDs serve 100–200 patients per day, consultation time is ~3 minutes and prescription writing is hurried. A 2020 Indian hospital study confirmed abbreviation-related errors in 53–66% of prescriptions by speciality.",
+    confusion: "Pharmacists interpret unclear handwriting. 'Sulfasalazine' and 'Sulfadiazine' look similar in hurried script. 'Mg' and 'mcg' written ambiguously differ 1000-fold in dose.",
+    swasthiAngle: "Swasthi's OCR + verification model: never assumes, always shows the original alongside the interpretation. Error prevention by design.",
+    contentIdeas: ["Why doctors write illegibly: the real reason behind the famous scrawl", "The prescription interpretation problem: how bad handwriting costs lives in India"],
+    productNote: "Swasthi shows original prescription image alongside decoded text. User can compare and correct. This is the core trust feature."
+  },
+  {
+    num: "94", cat: "handwriting", title: "Latin prescription abbreviations: the dead language India still uses",
+    tags: ["Rx Literacy", "Abbreviations", "Core Literacy"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "Indian medical prescriptions use Latin abbreviations (OD, BD, TDS, SOS, AC, PC, HS, QID, STAT, QDS, mane, nocte, PRN, Rx) that date to medieval pharmacy practice. These are taught in medical colleges but never to patients. A 2024 study confirmed BD and TDS are among the most misunderstood abbreviations by Indian patients.",
+    confusion: "67% of patients in Eastern India had poor-to-fair Rx comprehension, with frequency terminology (BD, TDS) being the primary gap.",
+    swasthiAngle: "Complete India-prescription abbreviation library is Swasthi's reference infrastructure. Every abbreviation decoded in plain Hindi and English.",
+    contentIdeas: ["The complete guide to Indian prescription abbreviations: OD, BD, TDS, SOS, AC, PC, and more", "Why your prescription is written in Latin: the history behind the abbreviations"],
+    productNote: "Swasthi abbreviation database: 40+ Latin prescription abbreviations with plain-language mappings. Foundation of OCR decode logic."
+  },
+  {
+    num: "95", cat: "handwriting", title: "Dosage notation: mg vs mcg vs mEq — the units that confuse everyone",
+    tags: ["Rx Literacy", "Units", "Safety"], tagColors: ["teal", "coral", "red"],
+    uses: ["content", "alert"],
+    insight: "The difference between mg and mcg is 1000-fold. Levothyroxine is dosed in mcg (micrograms) but patients often confuse it with mg (milligrams). Similarly, potassium is measured in mEq/L. These notation errors cause significant dosing mistakes.",
+    confusion: "In handwriting, mcg looks like mg. Patients who switch brands don't know if 50mcg and 0.05mg are the same dose.",
+    swasthiAngle: "Dose unit normalisation in OCR: Swasthi stores and displays units clearly, translating to the most familiar form (never mixed notation).",
+    contentIdeas: ["mg vs mcg: the thousand-times difference that can harm patients", "Reading medicine doses: the unit guide Indian caregivers need"],
+    productNote: "Dose unit mapping in database: mg, mcg, mEq, IU, mmol — normalised to a single standard. Displayed unambiguously in decode card."
+  },
+  {
+    num: "96", cat: "handwriting", title: "Prescription legibility standards: does India have rules doctors must follow?",
+    tags: ["Rx Literacy", "Regulation", "India-Specific"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content"],
+    insight: "The Medical Council of India's ethics regulations require prescriptions to be written legibly. Digital prescriptions are increasingly mandated in public hospitals. In 2023, the Supreme Court of India directed doctors to write prescriptions in capital letters — largely unenforced. The problem persists.",
+    confusion: "Patients don't know they have the right to ask for a legible prescription or a digital copy.",
+    swasthiAngle: "Swasthi empowers families: the decoded prescription is the legible version the regulation intended. Technology solving a regulation failure.",
+    contentIdeas: ["The Supreme Court's capital letters ruling: does your doctor follow it?", "Your right to a legible prescription: what Indian law says and what you can do"],
+    productNote: "Product positioning narrative: Swasthi solves a documented regulatory failure. Not supplementary — corrective."
+  },
+  {
+    num: "97", cat: "handwriting", title: "Digital prescriptions in India: are they more reliable than handwritten?",
+    tags: ["Rx Literacy", "Digital Health", "India-Specific"], tagColors: ["teal", "blue", "teal"],
+    uses: ["content", "product"],
+    insight: "Digital prescriptions from hospital systems (Apollo, Fortis, AIIMS) are standardised and legible. However, most Indian prescriptions (from private GP clinics, which are the majority of consultations) remain handwritten. OCR of printed prescriptions is significantly more reliable than handwritten.",
+    confusion: "Families assume a WhatsApp-forwarded prescription photo = digital prescription. It's a photo of a handwritten prescription — still OCR-challenging.",
+    swasthiAngle: "Swasthi OCR pipeline designed for handwritten first, printed as the easier case. Confidence flagging is critical for handwritten.",
+    contentIdeas: ["Digital prescriptions in India: progress, gaps, and what it means for your family", "Why a photo of a prescription is not the same as a digital prescription"],
+    productNote: "OCR confidence model must explicitly handle handwritten prescription as primary challenge, not edge case."
+  },
+  {
+    num: "98", cat: "handwriting", title: "The prescription as a legal document: what families can keep and use",
+    tags: ["Rx Literacy", "Legal", "India-Specific"], tagColors: ["teal", "teal", "amber"],
+    uses: ["content", "product"],
+    insight: "In India, a prescription is a legal document. Patients are entitled to keep a copy. Schedule H prescriptions should not be dispensed without the original — but digital copies are increasingly accepted by pharmacists. The prescription is also evidence of diagnosis for insurance claims.",
+    confusion: "Families throw away prescriptions after dispensing, not realising they may need them for insurance, second opinions, or future reference.",
+    swasthiAngle: "Prescription archive is a core Swasthi feature: every prescription, every doctor visit, permanently accessible. Insurance, second opinion, emergency.",
+    contentIdeas: ["Why you should never throw away a prescription in India", "The prescription archive: how Swasthi stores your family's medical history"],
+    productNote: "Prescription archive: core retention feature. Market as 'your family's permanent medical record, always accessible.' Insurance and second-opinion use cases."
+  },
+  {
+    num: "99", cat: "handwriting", title: "Medicine brand name vs salt name on the prescription: what to tell the pharmacist",
+    tags: ["Rx Literacy", "Pharmacy Communication", "India-Specific"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content", "screen"],
+    insight: "When a prescription lists a brand name (e.g., Glucophage) and that brand is unavailable, the pharmacist needs the salt name (Metformin) to dispense an equivalent. Most patients can't provide the salt name and accept whatever the pharmacist offers — without knowing if it's equivalent.",
+    confusion: "Patient says 'I need Glucophage' — pharmacist doesn't stock it, offers something else. Patient accepts without knowing if it's the same medicine.",
+    swasthiAngle: "Swasthi decode card shows both: brand name AND salt name. Shareable with pharmacist. Enables informed conversations.",
+    contentIdeas: ["The name on your prescription and the generic name: every patient should know both", "How to talk to your pharmacist: what you need to say beyond the brand name"],
+    productNote: "Decode card: brand name + salt name + dose + frequency shown together. Optimised for pharmacist communication."
+  },
+  {
+    num: "100", cat: "handwriting", title: "The Swasthi content mission: prescription literacy as a public health movement",
+    tags: ["Rx Literacy", "Brand", "Mission"], tagColors: ["teal", "teal", "teal"],
+    uses: ["content", "product"],
+    insight: "Prescription literacy is a public health gap that affects 750M+ Indians managing chronic disease at home. The gap is not medical — it's informational. Closing it doesn't require doctors; it requires families to understand what they've been given. Swasthi's 100-topic content vault is the foundation of this mission.",
+    confusion: "There is no India-specific, family-oriented, doctor-respectful prescription literacy resource. This vault is the first of its kind.",
+    swasthiAngle: "Every topic in this vault is a piece of Swasthi's content strategy, product education layer, and community trust-building campaign.",
+    contentIdeas: ["Swasthi's content mission: why every Indian family deserves prescription clarity", "100 questions Indian families have about medicines — and Swasthi's answers"],
+    productNote: "This vault is the source of truth for all Swasthi in-app education cards, blog content, social posts, and onboarding flows."
+  }
+];
+
+function getCatColor(cat) {
+  const map = { timing: 'amber', frequency: 'teal', generic: 'blue', elder: 'purple', caregiver: 'coral', chronic: 'red', refill: 'green', handwriting: 'teal' };
+  return map[cat] || 'teal';
+}
+
+function renderTopics(list) {
+  const grid = document.getElementById('topics-grid');
+  const empty = document.getElementById('empty-state');
+  const count = document.getElementById('topic-count');
+  grid.innerHTML = '';
+  if (list.length === 0) {
+    empty.style.display = 'block';
+    count.textContent = '0 topics';
+    return;
+  }
+  empty.style.display = 'none';
+  count.textContent = list.length + ' topic' + (list.length !== 1 ? 's' : '');
+  list.forEach(t => {
+    const useHtml = t.uses.map(u => {
+      const labels = { content: 'Content', product: 'Product', screen: 'Screen', alert: 'Alert' };
+      return `<span class="use-badge ub-${u}">${labels[u]}</span>`;
+    }).join('');
+    const tagHtml = t.tags.map((tag, i) => `<span class="pill pill-${t.tagColors[i]}">${tag}</span>`).join('');
+    const contentIdeasHtml = t.contentIdeas.map(ci => `<li>${ci}</li>`).join('');
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.dataset.cat = t.cat;
+    card.dataset.search = (t.title + ' ' + t.tags.join(' ') + ' ' + (t.insight || '') + ' ' + (t.confusion || '')).toLowerCase();
+    card.innerHTML = `
+      <div class="topic-top">
+        <span class="topic-num">${t.num}</span>
+        <div class="topic-meta">
+          <div class="topic-title">${t.title}</div>
+          <div class="topic-pills">${tagHtml}</div>
+          <div>${useHtml}</div>
+        </div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-insight">${t.insight}</div>
+      <div class="topic-expand" id="expand-${t.num}">
+        <div class="expand-section">
+          <div class="expand-label">Confusion Pattern</div>
+          <div class="expand-text">${t.confusion}</div>
+        </div>
+        <div class="expand-section">
+          <div class="expand-label">Swasthi Angle</div>
+          <div class="expand-text" style="color: var(--teal-d); font-style: italic;">${t.swasthiAngle}</div>
+        </div>
+        ${t.productNote ? `<div class="expand-section"><div class="expand-label">Product Note</div><div class="expand-text">${t.productNote}</div></div>` : ''}
+        <div class="expand-section">
+          <div class="expand-label">Content Ideas</div>
+          <ul class="expand-list">${contentIdeasHtml}</ul>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      const exp = document.getElementById('expand-' + t.num);
+      const isOpen = exp.classList.contains('open');
+      exp.classList.toggle('open', !isOpen);
+      card.classList.toggle('open', !isOpen);
+    });
+    grid.appendChild(card);
+  });
+}
+
+let currentCat = 'all';
+let currentSearch = '';
+
+function filterTopics() {
+  currentSearch = document.getElementById('search').value.toLowerCase();
+  applyFilters();
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const titles = { all: 'All Topics', timing: 'Food Timing', frequency: 'Frequency (OD/BD/TDS)', generic: 'Generic vs Brand', elder: 'Elder Adherence', caregiver: 'Caregiver Errors', chronic: 'Chronic Disease Management', refill: 'Refill Continuity', handwriting: 'Rx Literacy & Handwriting' };
+  document.querySelector('.section-title').textContent = titles[cat] || 'All Topics';
+  applyFilters();
+}
+
+function applyFilters() {
+  let list = TOPICS;
+  if (currentCat !== 'all') list = list.filter(t => t.cat === currentCat);
+  if (currentSearch) list = list.filter(t => t.dataset ? t.dataset.search.includes(currentSearch) : (t.title + ' ' + t.tags.join(' ') + ' ' + t.insight + ' ' + t.confusion).toLowerCase().includes(currentSearch));
+  renderTopics(list);
+}
+
+renderTopics(TOPICS);
+</script>
+
+</body>
+</html>

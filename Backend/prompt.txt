@@ -1,0 +1,144 @@
+Complete Swasthi V1 backend for CLOSED BETA readiness.
+
+Launch strategy:
+Swasthi will NOT launch nationwide now.
+Current launch = invite-only closed beta for trusted users, doctors, and caregiver families.
+Nationwide scale will happen later after validation/funding.
+
+Product:
+Swasthi = India-first Prescription Clarity + Family Medication Governance platform.
+
+V1 closed beta core flow:
+Invite user → Clerk login → user sync → create/join family → add parent/dependent → upload prescription → scan/OCR → save prescription parse → verify meds → activate schedule → register FCM token → send reminders → log dose → update refill continuity → show dashboard → audit critical actions.
+
+Existing backend:
+- Supabase schema
+- RLS
+- private prescription storage
+- Edge Functions deployed:
+  sync-clerk-user
+  create-family-group
+  add-family-member
+  join-family-group
+  upload-prescription
+  save-ocr-parse
+  activate-medication-schedule
+  log-dose
+  get-family-dashboard
+
+Now complete only what is needed for closed beta:
+
+1. Invite-only access
+- Add beta invite allowlist or invite_codes system
+- Only invited users can complete onboarding
+- Admin/founder can approve users manually
+- Do not build public signup growth system yet
+
+2. Prescription scanning
+- Verify private upload works
+- Add/verify signed upload/download URLs
+- OCR pipeline for beta only
+- Store raw OCR text
+- Store structured parse
+- Store confidence score
+- Force user verification before medication activation
+- No automatic medical decisions
+
+3. Medication activation
+- Medication name, dosage, frequency, timing, duration
+- Brand/generic fields if available
+- Food timing field
+- Manual correction allowed
+- Verification status required
+
+4. FCM / notifications
+- Register device notification token
+- Store notification_tokens
+- Send test push
+- Due-dose reminder
+- Missed-dose alert
+- Refill-risk alert
+- Keep notification system simple for beta
+
+5. Alert engine
+- Create alerts for due dose, missed dose, refill risk
+- Alert status: pending, sent, failed, dismissed
+- Avoid complex escalation beyond beta needs
+
+6. DDC / refill continuity
+- quantity_total
+- quantity_remaining
+- daily depletion
+- projected_runout_date
+- continuity_status: safe, risk_soon, will_run_out, out_of_stock
+- Update refill state after dose logs
+
+7. Audit + trust
+- Log user sync
+- Log family create/join/member add
+- Log prescription upload
+- Log OCR save
+- Log medication activation
+- Log dose log
+- Log refill update
+- Log notification failures
+- Log sensitive changes
+
+8. Security
+- Keep RLS strict
+- Private prescription bucket only
+- Signed URLs only
+- Family access only through active membership
+- No public health document access
+- No selling data assumptions
+
+9. Closed beta admin controls
+- Founder can view beta users
+- Founder can disable/remove beta access
+- Founder can inspect failed uploads/alerts
+- Basic operational debugging only
+- No full admin panel overbuild
+
+10. Verification
+Run/define tests for:
+- Uninvited user cannot onboard
+- Invited user can onboard
+- User sync works
+- Family create works
+- Family member add works
+- Prescription upload works privately
+- OCR parse save works
+- Medication activation requires verification
+- FCM token registration works
+- Test push works
+- Dose log updates refill
+- Dashboard reflects meds/doses/refill
+- Unauthorized user cannot access another family
+- Audit logs are created
+
+Do NOT build now:
+- Nationwide launch systems
+- Public self-serve growth
+- ABHA
+- NFC
+- Labs
+- Insurance
+- Pharmacy commerce
+- Doctor marketplace
+- Complex OCR medical intelligence
+- Multi-city operations
+
+Output:
+1. What is already complete
+2. What is missing for closed beta
+3. Exact schema changes if needed
+4. Exact Edge Functions to add/update
+5. Secrets/env vars needed
+6. Verification checklist
+7. Launch blockers
+8. Trust blockers
+9. Final closed beta backend readiness score
+
+Goal:
+Make Swasthi backend closed-beta ready, not nationwide-ready.
+Optimize for trust, safety, and controlled validation.
