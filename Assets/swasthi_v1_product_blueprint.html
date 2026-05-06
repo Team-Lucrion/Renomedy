@@ -1,0 +1,1406 @@
+
+<h2 class="sr-only">Swasthi V1 Product Blueprint — India's Family Medication Operating System</h2>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-200: #5DCAA5;
+  --teal-400: #1D9E75; --teal-600: #0F6E56; --teal-800: #085041;
+  --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-200: #EF9F27;
+  --amber-400: #BA7517; --amber-600: #854F0B; --amber-800: #633806;
+  --coral-50: #FAECE7; --coral-100: #F5C4B3; --coral-200: #F0997B;
+  --coral-400: #D85A30; --coral-600: #993C1D; --coral-800: #712B13;
+  --purple-50: #EEEDFE; --purple-100: #CECBF6; --purple-400: #7F77DD;
+  --purple-600: #534AB7; --purple-800: #3C3489;
+  --red-50: #FCEBEB; --red-400: #E24B4A; --red-600: #A32D2D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body-equiv { display: block; }
+
+.blueprint {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 0 48px;
+  color: var(--color-text-primary);
+}
+
+.hero {
+  padding: 40px 0 32px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  margin-bottom: 40px;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 38px;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--teal-400);
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-top: 12px;
+  max-width: 520px;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+.tag-teal { background: var(--teal-50); color: var(--teal-600); border: 0.5px solid var(--teal-100); }
+.tag-amber { background: var(--amber-50); color: var(--amber-600); border: 0.5px solid var(--amber-100); }
+.tag-coral { background: var(--coral-50); color: var(--coral-600); border: 0.5px solid var(--coral-100); }
+.tag-purple { background: var(--purple-50); color: var(--purple-600); border: 0.5px solid var(--purple-100); }
+
+.section {
+  margin-bottom: 48px;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  color: var(--color-text-primary);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--teal-400);
+}
+
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--teal-200);
+  margin: 20px 0;
+}
+
+/* Architecture layers */
+.arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.arch-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.arch-card:hover {
+  border-color: var(--color-border-secondary);
+}
+
+.arch-card-num {
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  margin-bottom: 8px;
+  font-family: 'DM Mono', monospace;
+}
+
+.arch-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+
+.arch-card-items {
+  list-style: none;
+  padding: 0;
+}
+
+.arch-card-items li {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  padding: 3px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arch-card-items li:last-child { border-bottom: none; }
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-teal { background: var(--teal-400); }
+.dot-amber { background: var(--amber-200); }
+.dot-coral { background: var(--coral-400); }
+.dot-purple { background: var(--purple-400); }
+.dot-red { background: var(--red-400); }
+
+/* User journey */
+.journey-wrap {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.journey-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  min-width: 700px;
+}
+
+.journey-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.journey-step::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  right: -1px;
+  width: calc(100% - 36px);
+  height: 0.5px;
+  background: var(--color-border-tertiary);
+  z-index: 0;
+  left: 50%;
+}
+
+.journey-step:last-child::after { display: none; }
+
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 1;
+  position: relative;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.step-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.step-sub {
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Trust spine */
+.trust-block {
+  background: var(--teal-50);
+  border: 0.5px solid var(--teal-100);
+  border-left: 3px solid var(--teal-400);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.trust-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--teal-600);
+  margin-bottom: 4px;
+}
+
+.trust-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* DDC system */
+.ddc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ddc-cell {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 12px;
+  border: 0.5px solid var(--color-border-tertiary);
+}
+
+.ddc-label {
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.ddc-val {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.ddc-unit {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.ddc-alert {
+  background: var(--amber-50);
+  border: 0.5px solid var(--amber-100);
+  border-left: 3px solid var(--amber-200);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--amber-600);
+  margin-top: 8px;
+}
+
+/* Feature boundaries */
+.boundary-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  margin-bottom: 20px;
+}
+
+.btab {
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  color: var(--color-text-secondary);
+  font-family: 'DM Mono', monospace;
+}
+
+.btab.active {
+  color: var(--teal-400);
+  border-bottom-color: var(--teal-400);
+}
+
+.boundary-panel { display: none; }
+.boundary-panel.active { display: block; }
+
+.feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+
+.feature-row:last-child { border-bottom: none; }
+
+.feature-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.fi-must { background: var(--teal-50); color: var(--teal-600); }
+.fi-delay { background: var(--amber-50); color: var(--amber-600); }
+.fi-avoid { background: var(--coral-50); color: var(--coral-600); }
+
+.feature-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.feature-reason {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* Habit loops */
+.loop-container {
+  position: relative;
+}
+
+.loop-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.loop-label-box {
+  background: var(--purple-50);
+  border: 0.5px solid var(--purple-100);
+  border-radius: var(--border-radius-md);
+  padding: 10px;
+  text-align: center;
+}
+
+.loop-label-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--purple-600);
+}
+
+.loop-label-icon {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.loop-content {
+  border-left: 0.5px solid var(--color-border-tertiary);
+  padding-left: 16px;
+}
+
+.loop-content-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.loop-content-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* Failure modes */
+.fail-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  align-items: start;
+}
+
+.fail-item:last-child { border-bottom: none; }
+
+.fail-sev {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  font-family: 'DM Mono', monospace;
+}
+
+.sev-high { background: var(--red-50); color: var(--red-600); border: 0.5px solid #F7C1C1; }
+.sev-med { background: var(--amber-50); color: var(--amber-600); border: 0.5px solid var(--amber-100); }
+
+.fail-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 3px;
+}
+
+.fail-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.fail-fix {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--teal-600);
+  padding: 4px 8px;
+  background: var(--teal-50);
+  border-radius: var(--border-radius-md);
+  display: inline-block;
+}
+
+/* 90-day roadmap */
+.roadmap-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.roadmap-col {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.roadmap-header {
+  padding: 12px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+.rh-1 { background: var(--teal-50); color: var(--teal-600); }
+.rh-2 { background: var(--amber-50); color: var(--amber-600); }
+.rh-3 { background: var(--purple-50); color: var(--purple-600); }
+
+.roadmap-body {
+  padding: 12px 14px;
+  background: var(--color-background-primary);
+}
+
+.roadmap-phase {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-tertiary);
+  margin-bottom: 8px;
+}
+
+.roadmap-item {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  line-height: 1.4;
+}
+
+.roadmap-item:last-child { border-bottom: none; }
+
+.roadmap-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.rb-teal { background: var(--teal-400); }
+.rb-amber { background: var(--amber-200); }
+.rb-purple { background: var(--purple-400); }
+
+.roadmap-metric {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--color-border-tertiary);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.roadmap-metric strong {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+/* Verdict */
+.verdict {
+  background: linear-gradient(135deg, var(--teal-50) 0%, var(--color-background-secondary) 100%);
+  border: 0.5px solid var(--teal-100);
+  border-radius: var(--border-radius-lg);
+  padding: 28px;
+}
+
+.verdict-q {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.verdict-answer {
+  font-size: 28px;
+  font-family: 'Instrument Serif', serif;
+  color: var(--teal-400);
+  margin-bottom: 12px;
+}
+
+.verdict-conditions {
+  list-style: none;
+  padding: 0;
+}
+
+.verdict-conditions li {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 6px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.verdict-conditions li:last-child { border-bottom: none; }
+
+.vc-check {
+  color: var(--teal-400);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* Moat table */
+.moat-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  align-items: center;
+}
+
+.moat-row:last-child { border-bottom: none; }
+
+.moat-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.moat-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.moat-bar-track {
+  height: 3px;
+  background: var(--color-border-tertiary);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.moat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--teal-400);
+}
+
+/* System logic */
+.logic-block {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.logic-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logic-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+}
+
+.lb-teal { background: var(--teal-50); color: var(--teal-600); }
+.lb-amber { background: var(--amber-50); color: var(--amber-600); }
+.lb-coral { background: var(--coral-50); color: var(--coral-600); }
+
+.logic-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logic-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.logic-key {
+  color: var(--color-text-tertiary);
+  text-align: right;
+}
+
+.logic-val {
+  color: var(--color-text-secondary);
+}
+
+/* OCR trust ladder */
+.trust-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.tl-step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  align-items: center;
+}
+
+.tl-step:last-child { border-bottom: none; }
+
+.tl-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  color: var(--teal-200);
+  font-style: italic;
+}
+
+.tl-action {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.tl-desc {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.tl-never {
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--red-600);
+  background: var(--red-50);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+</style>
+
+<div class="blueprint">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">V1 PRODUCT BLUEPRINT · CONFIDENTIAL</div>
+    <h1 class="hero-title">Swasthi<br><em>Family Medication</em><br>Operating System</h1>
+    <p class="hero-sub">India-first prescription clarity + family medication governance. Built for the Adult Child who manages their parents' health from a distance — the Family Chief Health Officer.</p>
+    <div class="hero-tags">
+      <span class="tag tag-teal">Prescription Clarity</span>
+      <span class="tag tag-amber">Family Governance</span>
+      <span class="tag tag-coral">Dose Continuity</span>
+      <span class="tag tag-purple">Caregiver-First</span>
+      <span class="tag tag-teal">India V1</span>
+    </div>
+  </div>
+
+  <!-- 1. PRODUCT ARCHITECTURE -->
+  <div class="section">
+    <div class="section-label">01 — Architecture</div>
+    <div class="section-title">Product <em>Architecture</em></div>
+
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="arch-card-num">LAYER 1</div>
+        <div class="arch-card-title">Identity + Family Governance</div>
+        <ul class="arch-card-items">
+          <li><span class="dot dot-teal"></span>Clerk auth (phone OTP + email)</li>
+          <li><span class="dot dot-teal"></span>User profile sync → Supabase</li>
+          <li><span class="dot dot-teal"></span>Family group creation</li>
+          <li><span class="dot dot-teal"></span>Member roles: Admin / Caregiver / Viewer</li>
+          <li><span class="dot dot-teal"></span>Patient profile (age, conditions, allergies)</li>
+          <li><span class="dot dot-teal"></span>Caregiver linkage (admin controls)</li>
+          <li><span class="dot dot-teal"></span>Audit log: all actions timestamped</li>
+        </ul>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card-num">LAYER 2</div>
+        <div class="arch-card-title">Prescription Hub</div>
+        <ul class="arch-card-items">
+          <li><span class="dot dot-amber"></span>Photo upload (camera / gallery)</li>
+          <li><span class="dot dot-amber"></span>OCR pipeline (interpret → explain → verify)</li>
+          <li><span class="dot dot-amber"></span>Prescription metadata (doctor, date, clinic)</li>
+          <li><span class="dot dot-amber"></span>Rx history (full archive, immutable)</li>
+          <li><span class="dot dot-amber"></span>Brand → generic mapping (informational)</li>
+          <li><span class="dot dot-amber"></span>Human-readable decode card per Rx</li>
+          <li><span class="dot dot-amber"></span>Caregiver verify gate before activation</li>
+        </ul>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card-num">LAYER 3</div>
+        <div class="arch-card-title">Medication Activation + DDC</div>
+        <ul class="arch-card-items">
+          <li><span class="dot dot-coral"></span>Activate med from decoded Rx</li>
+          <li><span class="dot dot-coral"></span>Schedule: OD / BD / TDS / SOS / custom</li>
+          <li><span class="dot dot-coral"></span>Timing: before / after / with food</li>
+          <li><span class="dot dot-coral"></span>Duration + quantity tracking</li>
+          <li><span class="dot dot-coral"></span>Stockout risk (days remaining)</li>
+          <li><span class="dot dot-coral"></span>Refill continuity alert</li>
+          <li><span class="dot dot-coral"></span>Treatment continuity index</li>
+        </ul>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card-num">LAYER 4</div>
+        <div class="arch-card-title">Tracking + Alerts</div>
+        <ul class="arch-card-items">
+          <li><span class="dot dot-purple"></span>Daily dose tracker (mark taken/missed)</li>
+          <li><span class="dot dot-purple"></span>FCM push: reminder + escalation</li>
+          <li><span class="dot dot-purple"></span>Missed dose log (timestamped)</li>
+          <li><span class="dot dot-purple"></span>Caregiver alert (if patient misses 2+)</li>
+          <li><span class="dot dot-purple"></span>Weekly adherence score</li>
+          <li><span class="dot dot-purple"></span>Refill alert (7-day + 3-day warnings)</li>
+          <li><span class="dot dot-purple"></span>PostHog event tracking</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. USER JOURNEY -->
+  <div class="section">
+    <div class="section-label">02 — User Journey</div>
+    <div class="section-title">The <em>8-Step</em> Family Health Journey</div>
+
+    <div class="journey-wrap">
+      <div class="journey-track">
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--teal-50); color: var(--teal-600); border: 0.5px solid var(--teal-100);">1</div>
+          <div class="step-label">Signup</div>
+          <div class="step-sub">Phone OTP<br>Clerk auth</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--teal-50); color: var(--teal-600); border: 0.5px solid var(--teal-100);">2</div>
+          <div class="step-label">Add Parent</div>
+          <div class="step-sub">Create family<br>+ patient profile</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--amber-50); color: var(--amber-600); border: 0.5px solid var(--amber-100);">3</div>
+          <div class="step-label">Upload Rx</div>
+          <div class="step-sub">Photo → OCR<br>pipeline</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--amber-50); color: var(--amber-600); border: 0.5px solid var(--amber-100);">4</div>
+          <div class="step-label">Decode</div>
+          <div class="step-sub">Human-readable<br>card + verify</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--coral-50); color: var(--coral-600); border: 0.5px solid var(--coral-100);">5</div>
+          <div class="step-label">Activate</div>
+          <div class="step-sub">Schedule + DDC<br>quantity entry</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--coral-50); color: var(--coral-600); border: 0.5px solid var(--coral-100);">6</div>
+          <div class="step-label">Track</div>
+          <div class="step-sub">Daily mark<br>taken / missed</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--purple-50); color: var(--purple-600); border: 0.5px solid var(--purple-100);">7</div>
+          <div class="step-label">Alerts</div>
+          <div class="step-sub">FCM push<br>caregiver notify</div>
+        </div>
+        <div class="journey-step">
+          <div class="step-circle" style="background: var(--purple-50); color: var(--purple-600); border: 0.5px solid var(--purple-100);">8</div>
+          <div class="step-label">Refill</div>
+          <div class="step-sub">DDC risk<br>continuity alert</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Edge cases -->
+    <div style="margin-top: 16px;">
+      <div style="font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Edge Cases + Friction Points</div>
+      <div class="fail-item">
+        <div class="fail-sev sev-high">F1</div>
+        <div>
+          <div class="fail-title">Illegible handwriting — OCR fails partially</div>
+          <div class="fail-desc">Show partial decode card with explicit "Unrecognised fields" flagged in red. Never fill-in-the-blank with guesses. Ask user to manually confirm or retype uncertain fields before activation.</div>
+        </div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-sev sev-med">F2</div>
+        <div>
+          <div class="fail-title">Parent refuses to show prescription to child</div>
+          <div class="fail-desc">Patient can be primary user; caregiver requests "read access." Privacy-first family model. Never force data sharing as a prerequisite.</div>
+        </div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-sev sev-high">F3</div>
+        <div>
+          <div class="fail-title">Doctor changes prescription mid-course</div>
+          <div class="fail-desc">New Rx upload triggers "supersede" flow. Old meds show as "modified/stopped." Audit trail preserved. No medication can be auto-deactivated — always a human confirmation gate.</div>
+        </div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-sev sev-med">F4</div>
+        <div>
+          <div class="fail-title">Multiple caregivers for same patient (siblings)</div>
+          <div class="fail-desc">One admin (primary caregiver) per patient. Others as co-caregivers. Dose mark by one → visible to all. Conflict resolution: latest mark wins, timestamped. Audit log shows who marked.</div>
+        </div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-sev sev-med">F5</div>
+        <div>
+          <div class="fail-title">SOS / PRN medications — "only if needed"</div>
+          <div class="fail-desc">Separate SOS tracker card. Not scheduled. Logged when taken with timestamp. Shown in adherence context not as missed. Clear UX distinction from regular schedule.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. OCR TRUST LADDER -->
+  <div class="section">
+    <div class="section-label">03 — Trust Architecture</div>
+    <div class="section-title">The OCR <em>Trust Ladder</em></div>
+    <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; line-height: 1.6;">Swasthi's core trust promise: Interpret → Explain → Verify. Never auto-decide. Every automated step has a human gate before it affects a patient's medication.</p>
+
+    <div class="trust-ladder">
+      <div class="tl-step">
+        <div class="tl-num">01</div>
+        <div>
+          <div class="tl-action">Interpret</div>
+          <div class="tl-desc">OCR reads prescription image. Raw text extracted. Confidence score computed per field (drug name, dose, frequency, duration).</div>
+          <div class="tl-never">never: auto-correct low-confidence fields</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">02</div>
+        <div>
+          <div class="tl-action">Explain</div>
+          <div class="tl-desc">Convert extracted data into plain-language decode card. "Tab 1 – OD – After Food – 30 days" → "Take 1 tablet once a day, after eating, for 30 days." Terminology mapped (OD, BD, TDS, SOS, AC, PC).</div>
+          <div class="tl-never">never: explain without showing original text side-by-side</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">03</div>
+        <div>
+          <div class="tl-action">Verify (human gate)</div>
+          <div class="tl-desc">Caregiver or patient must confirm decode card is accurate before any medication is activated. Editable fields. "Does this look right?" with explicit Yes/Edit options.</div>
+          <div class="tl-never">never: skip verify gate even if confidence is 100%</div>
+        </div>
+      </div>
+      <div class="tl-step" style="background: var(--teal-50);">
+        <div class="tl-num" style="color: var(--teal-400);">04</div>
+        <div>
+          <div class="tl-action" style="color: var(--teal-600);">Activate</div>
+          <div class="tl-desc">Only after verification. Medication enters schedule. DDC tracking begins. Audit log entry created with verifier's user ID and timestamp.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. DDC SYSTEM -->
+  <div class="section">
+    <div class="section-label">04 — System Logic</div>
+    <div class="section-title">DDC — Dose <em>Continuity</em> Controller</div>
+    <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; line-height: 1.6;">The core question DDC answers: <strong>"Will treatment continuity break?"</strong> Not a pharmacy. Not a refill button. A continuity risk signal that empowers the caregiver to act.</p>
+
+    <div class="ddc-grid">
+      <div class="ddc-cell">
+        <div class="ddc-label">Qty dispensed</div>
+        <div class="ddc-val">90 <span class="ddc-unit">tabs</span></div>
+      </div>
+      <div class="ddc-cell">
+        <div class="ddc-label">Dose / day</div>
+        <div class="ddc-val">2 <span class="ddc-unit">BD</span></div>
+      </div>
+      <div class="ddc-cell">
+        <div class="ddc-label">Duration</div>
+        <div class="ddc-val">45 <span class="ddc-unit">days</span></div>
+      </div>
+      <div class="ddc-cell">
+        <div class="ddc-label">Adherence</div>
+        <div class="ddc-val">87 <span class="ddc-unit">%</span></div>
+      </div>
+      <div class="ddc-cell">
+        <div class="ddc-label">Days remaining</div>
+        <div class="ddc-val">8 <span class="ddc-unit">days</span></div>
+      </div>
+      <div class="ddc-cell" style="background: var(--amber-50); border-color: var(--amber-100);">
+        <div class="ddc-label" style="color: var(--amber-400);">Stockout risk</div>
+        <div class="ddc-val" style="color: var(--amber-600);">HIGH</div>
+      </div>
+    </div>
+    <div class="ddc-alert">
+      Refill alert: Metformin 500mg will run out in ~8 days. At current adherence, treatment gap risk is HIGH. Refill this week to maintain continuity.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="logic-block">
+      <div class="logic-title">Schedule Logic <span class="logic-badge lb-teal">core</span></div>
+      <div class="logic-rows">
+        <div class="logic-row"><span class="logic-key">OD</span><span class="logic-val">Once daily — user picks time</span></div>
+        <div class="logic-row"><span class="logic-key">BD</span><span class="logic-val">Twice daily — system suggests 12h apart</span></div>
+        <div class="logic-row"><span class="logic-key">TDS</span><span class="logic-val">Three times — system suggests 8h apart</span></div>
+        <div class="logic-row"><span class="logic-key">SOS</span><span class="logic-val">As needed — no schedule, log when taken</span></div>
+        <div class="logic-row"><span class="logic-key">AC</span><span class="logic-val">Before food — alert 30min before meal anchor</span></div>
+        <div class="logic-row"><span class="logic-key">PC</span><span class="logic-val">After food — alert at meal anchor + 15min</span></div>
+      </div>
+    </div>
+
+    <div class="logic-block">
+      <div class="logic-title">Notification Logic <span class="logic-badge lb-amber">FCM</span></div>
+      <div class="logic-rows">
+        <div class="logic-row"><span class="logic-key">T+0</span><span class="logic-val">Dose reminder pushed to patient device</span></div>
+        <div class="logic-row"><span class="logic-key">T+30min</span><span class="logic-val">Soft nudge if not marked taken</span></div>
+        <div class="logic-row"><span class="logic-key">T+2h</span><span class="logic-val">Missed dose logged, caregiver notified</span></div>
+        <div class="logic-row"><span class="logic-key">D-7</span><span class="logic-val">7-day refill warning to caregiver</span></div>
+        <div class="logic-row"><span class="logic-key">D-3</span><span class="logic-val">Urgent refill alert, escalated to admin</span></div>
+        <div class="logic-row"><span class="logic-key">2 missed</span><span class="logic-val">Caregiver alert pattern trigger</span></div>
+      </div>
+    </div>
+
+    <div class="logic-block">
+      <div class="logic-title">Family Governance Logic <span class="logic-badge lb-coral">roles</span></div>
+      <div class="logic-rows">
+        <div class="logic-row"><span class="logic-key">Admin</span><span class="logic-val">Create/edit meds, activate Rx, manage caregivers</span></div>
+        <div class="logic-row"><span class="logic-key">Caregiver</span><span class="logic-val">Mark doses, view history, receive alerts</span></div>
+        <div class="logic-row"><span class="logic-key">Viewer</span><span class="logic-val">Read-only: schedule, history, adherence score</span></div>
+        <div class="logic-row"><span class="logic-key">Patient</span><span class="logic-val">Own device: mark taken, view own schedule</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. FEATURE BOUNDARIES -->
+  <div class="section">
+    <div class="section-label">05 — Feature Scope</div>
+    <div class="section-title">Feature <em>Boundaries</em></div>
+
+    <div class="boundary-tabs">
+      <div class="btab active" onclick="switchTab(this,'must')">Must Build</div>
+      <div class="btab" onclick="switchTab(this,'delay')">Delay</div>
+      <div class="btab" onclick="switchTab(this,'avoid')">Avoid</div>
+    </div>
+
+    <div id="must" class="boundary-panel active">
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Prescription upload + OCR decode</div><div class="feature-reason">Core wedge. This IS the product in V1. Every user enters here.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Terminology explainer (OD/BD/TDS/SOS/AC/PC)</div><div class="feature-reason">Solves the #1 confusion that brings users to Swasthi.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Medication schedule + dose tracker</div><div class="feature-reason">Converts understanding into execution. Habit formation layer.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">DDC — stockout + refill continuity alerts</div><div class="feature-reason">Unique moat. No other app does treatment continuity governance.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Family groups + caregiver roles</div><div class="feature-reason">Defines the product category. Governance IS Swasthi's business model.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Missed dose log + caregiver alert</div><div class="feature-reason">The emotional core — gives caregivers peace of mind remotely.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Prescription history (archive)</div><div class="feature-reason">Retention anchor. Switching cost grows with every Rx added.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-must">✓</div>
+        <div><div class="feature-name">Audit log</div><div class="feature-reason">Trust foundation. Every action traceable. Non-negotiable for medical governance.</div></div>
+      </div>
+    </div>
+
+    <div id="delay" class="boundary-panel">
+      <div class="feature-row">
+        <div class="feature-icon fi-delay">~</div>
+        <div><div class="feature-name">Doctor search / booking integration</div><div class="feature-reason">V2. Risk of category drift. Focus on execution, not discovery.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-delay">~</div>
+        <div><div class="feature-name">Lab report storage and interpretation</div><div class="feature-reason">High complexity, regulatory risk. Validate medication clarity first.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-delay">~</div>
+        <div><div class="feature-name">Drug interaction warnings</div><div class="feature-reason">V2 with medical advisory. Requires clinical sign-off. Trust-damaging if wrong.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-delay">~</div>
+        <div><div class="feature-name">Pharmacy tie-up / ordering</div><div class="feature-reason">Becomes pharmacy. Kills neutral trust position. Never in V1.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-delay">~</div>
+        <div><div class="feature-name">Vitals / BP / glucose logging</div><div class="feature-reason">V2 expansion. Good adjacency but dilutes focus in V1.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-delay">~</div>
+        <div><div class="feature-name">AI diagnosis / symptom checker</div><div class="feature-reason">Never in brand DNA. Swasthi is not a diagnostician.</div></div>
+      </div>
+    </div>
+
+    <div id="avoid" class="boundary-panel">
+      <div class="feature-row">
+        <div class="feature-icon fi-avoid">✗</div>
+        <div><div class="feature-name">Any prescription-to-order button</div><div class="feature-reason">Becomes a pharmacy. Destroys neutral trust layer. Fatal brand risk.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-avoid">✗</div>
+        <div><div class="feature-name">Auto-decide on ambiguous OCR without human gate</div><div class="feature-reason">Medical trust violation. One wrong auto-fill can cause patient harm.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-avoid">✗</div>
+        <div><div class="feature-name">Push medication recommendations</div><div class="feature-reason">Crosses from clarity into diagnosis. Regulatory + trust risk.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-avoid">✗</div>
+        <div><div class="feature-name">Monetise via pharmacy referrals</div><div class="feature-reason">Perceived bias kills trust. Caregiver will not trust a biased neutral layer.</div></div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon fi-avoid">✗</div>
+        <div><div class="feature-name">Generic reminder app features (no family governance)</div><div class="feature-reason">Commodity. No moat. Already built by 50 apps. Swasthi is NOT a reminder app.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. PMF — Habit + Retention -->
+  <div class="section">
+    <div class="section-label">06 — PMF Analysis</div>
+    <div class="section-title">Habit Loops + <em>Retention</em></div>
+
+    <div class="loop-row">
+      <div class="loop-label-box">
+        <div class="loop-label-icon">📋</div>
+        <div class="loop-label-title">Trigger</div>
+      </div>
+      <div class="loop-content">
+        <div class="loop-content-title">New prescription from doctor visit</div>
+        <div class="loop-content-desc">"Papa just came home with a new prescription and I don't understand what's written." This is the strongest, most natural trigger. Zero acquisition cost — the problem finds the user.</div>
+      </div>
+    </div>
+
+    <div class="loop-row">
+      <div class="loop-label-box">
+        <div class="loop-label-icon">💊</div>
+        <div class="loop-label-title">Action</div>
+      </div>
+      <div class="loop-content">
+        <div class="loop-content-title">Upload → Decode → Activate</div>
+        <div class="loop-content-desc">3-step activation flow with immediate reward: confusion replaced by clarity. The decode card is the first "aha" moment. Keep activation under 3 minutes.</div>
+      </div>
+    </div>
+
+    <div class="loop-row">
+      <div class="loop-label-box">
+        <div class="loop-label-icon">🔔</div>
+        <div class="loop-label-title">Reward</div>
+      </div>
+      <div class="loop-content">
+        <div class="loop-content-title">Peace of mind + daily confirmation</div>
+        <div class="loop-content-desc">Caregiver sees "All doses taken today ✓" — the emotional payoff. Not just information, but relief. The app becomes the external memory for a high-anxiety task.</div>
+      </div>
+    </div>
+
+    <div class="loop-row">
+      <div class="loop-label-box">
+        <div class="loop-label-icon">📈</div>
+        <div class="loop-label-title">Investment</div>
+      </div>
+      <div class="loop-content">
+        <div class="loop-content-title">Data accumulates, switching cost grows</div>
+        <div class="loop-content-desc">Prescription history, adherence records, family member data — each week of use makes Swasthi harder to abandon. Switching cost compounds with chronic disease timelines (years, not weeks).</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Emotional Triggers</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div class="trust-block">
+        <div class="trust-title">Guilt reduction</div>
+        <div class="trust-desc">"I can't be there but I know they took their medicine." Swasthi converts physical distance into managed care.</div>
+      </div>
+      <div class="trust-block">
+        <div class="trust-title">Anxiety → control</div>
+        <div class="trust-desc">"What if they run out?" becomes a solvable problem with a countdown and alert — not a helpless worry.</div>
+      </div>
+      <div class="trust-block">
+        <div class="trust-title">Shared responsibility</div>
+        <div class="trust-desc">Siblings can both see the same dashboard. Reduces "who's handling it" family friction.</div>
+      </div>
+      <div class="trust-block">
+        <div class="trust-title">Doctor-respectful clarity</div>
+        <div class="trust-desc">"Swasthi helps me understand what the doctor wrote" — not "Swasthi tells me what to do." Trust alignment.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. FAILURE MODES -->
+  <div class="section">
+    <div class="section-label">07 — Risk Analysis</div>
+    <div class="section-title">Why Swasthi Could <em>Fail</em></div>
+
+    <div class="fail-item">
+      <div class="fail-sev sev-high">F1</div>
+      <div>
+        <div class="fail-title">OCR trust collapse</div>
+        <div class="fail-desc">One wrong decode that a patient acts on causes harm. Even without clinical harm, the perception of "Swasthi gave wrong medicine info" ends the company. OCR must be treated as advisory, never prescriptive.</div>
+        <div class="fail-fix">Fix: Trust ladder is non-negotiable. Human verify gate on every single medication activation. Show OCR confidence score. Flag every uncertain field.</div>
+      </div>
+    </div>
+
+    <div class="fail-item">
+      <div class="fail-sev sev-high">F2</div>
+      <div>
+        <div class="fail-title">Low Day-7 retention — the "it's enough" drop</div>
+        <div class="fail-desc">User uploads one prescription, understands it, feels done. Returns to WhatsApp reminders. Swasthi doesn't survive as a one-time decode tool — it needs daily presence.</div>
+        <div class="fail-fix">Fix: Dose tracker must be sticky Day 1. The daily "mark taken" action is the retention mechanism, not the Rx decode. Design tracker as primary homescreen.</div>
+      </div>
+    </div>
+
+    <div class="fail-item">
+      <div class="fail-sev sev-high">F3</div>
+      <div>
+        <div class="fail-title">Becoming a pharmacy or getting perceived as one</div>
+        <div class="fail-desc">Any "buy now," "order refill," or "sponsored" feature destroys the neutral trust layer. Doctor trust also collapses if Swasthi is seen as pushing products.</div>
+        <div class="fail-fix">Fix: Strict feature boundary. Refill alert = "it's time to refill" — never a button to a pharmacy. Let the user choose HOW they refill.</div>
+      </div>
+    </div>
+
+    <div class="fail-item">
+      <div class="fail-sev sev-med">F4</div>
+      <div>
+        <div class="fail-title">Overbuilding before PMF validation</div>
+        <div class="fail-desc">Lab reports, vitals, drug interactions, doctor booking — all great ideas that dilute focus. V1 ships in 90 days or dies in planning.</div>
+        <div class="fail-fix">Fix: Honour the feature boundary. Ship MVC: Rx decode + schedule + DDC. Everything else is a V2 hypothesis.</div>
+      </div>
+    </div>
+
+    <div class="fail-item">
+      <div class="fail-sev sev-med">F5</div>
+      <div>
+        <div class="fail-title">Wrong user target — patient vs caregiver mismatch</div>
+        <div class="fail-desc">If the app is designed for the patient (65yo parent) to use alone, onboarding friction will be fatal. The primary user is the adult child, not the patient.</div>
+        <div class="fail-fix">Fix: Caregiver-first UX. Patient mode is a simplified companion view. All governance, decode, and setup flows are designed for the 28–40yo adult child.</div>
+      </div>
+    </div>
+
+    <div class="fail-item">
+      <div class="fail-sev sev-med">F6</div>
+      <div>
+        <div class="fail-title">No monetisation path before runway runs dry</div>
+        <div class="fail-desc">Free forever is not a business. But charging too early kills growth. The monetisation window is tight.</div>
+        <div class="fail-fix">Fix: Family plan subscription (₹199–399/month for 3+ family members) introduced at Day 61. Freemium: 1 patient free, family plan paid. Validate willingness-to-pay by Day 30 via conversations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. MOATS -->
+  <div class="section">
+    <div class="section-label">08 — Competitive Moats</div>
+    <div class="section-title">Swasthi's <em>Moats</em></div>
+
+    <div class="moat-row">
+      <div class="moat-name"><span class="dot dot-teal"></span>Prescription literacy</div>
+      <div>
+        <div class="moat-desc">India-specific terminology database (OD/BD/TDS, Ayurvedic scripts, regional handwriting patterns). Gets better with every decoded Rx. Data moat compounds.</div>
+        <div class="moat-bar-track"><div class="moat-bar-fill" style="width: 80%"></div></div>
+      </div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name"><span class="dot dot-amber"></span>Family governance</div>
+      <div>
+        <div class="moat-desc">Multi-caregiver governance layer. No Indian health app has this. WhatsApp groups are the current competition — Swasthi formalises what families already do informally.</div>
+        <div class="moat-bar-track"><div class="moat-bar-fill" style="width: 90%"></div></div>
+      </div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name"><span class="dot dot-coral"></span>DDC algorithm</div>
+      <div>
+        <div class="moat-desc">Dose continuity controller — treatment gap risk scoring. Unique, patentable, deeply embedded in chronic care workflows. Impossible to replicate without longitudinal adherence data.</div>
+        <div class="moat-bar-track"><div class="moat-bar-fill" style="width: 85%"></div></div>
+      </div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name"><span class="dot dot-purple"></span>India-first UX</div>
+      <div>
+        <div class="moat-desc">Designed for Indian prescription formats, brand names, handwriting, and multi-lingual terminology. Not a Western app localised. Built India-first from schema to UX.</div>
+        <div class="moat-bar-track"><div class="moat-bar-fill" style="width: 70%"></div></div>
+      </div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name"><span class="dot dot-teal"></span>Neutral trust layer</div>
+      <div>
+        <div class="moat-desc">Not a pharmacy. Not a doctor. Not an insurer. Swasthi is the only entity that helps families understand WITHOUT a commercial agenda. Rare and hard to fake once established.</div>
+        <div class="moat-bar-track"><div class="moat-bar-fill" style="width: 95%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 90-DAY ROADMAP -->
+  <div class="section">
+    <div class="section-label">09 — Execution</div>
+    <div class="section-title">90-Day <em>Roadmap</em></div>
+
+    <div class="roadmap-cols">
+      <div class="roadmap-col">
+        <div class="roadmap-header rh-1">Day 1 – 30<br>Build Core</div>
+        <div class="roadmap-body">
+          <div class="roadmap-phase">Infrastructure</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Clerk auth + Supabase schema</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Family group + member models</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Role-based access control</div>
+          <div class="roadmap-phase" style="margin-top: 12px;">Product</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Rx upload + OCR pipeline (v1)</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Decode card with verify gate</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Medication activation flow</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Basic dose tracker UI</div>
+          <div class="roadmap-phase" style="margin-top: 12px;">Validation</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>10 beta families onboarded</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-teal"></span>Rx decode accuracy audit</div>
+          <div class="roadmap-metric">Goal: <strong>Working MVC in hands of 10 real families</strong></div>
+        </div>
+      </div>
+      <div class="roadmap-col">
+        <div class="roadmap-header rh-2">Day 31 – 60<br>Build Retention</div>
+        <div class="roadmap-body">
+          <div class="roadmap-phase">Core loops</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>FCM push notifications (FCM)</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>Missed dose log + caregiver alert</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>DDC — stockout + refill alerts</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>Weekly adherence score</div>
+          <div class="roadmap-phase" style="margin-top: 12px;">Trust layer</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>Audit log (full)</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>OCR confidence UI</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>PostHog + Sentry integration</div>
+          <div class="roadmap-phase" style="margin-top: 12px;">Monetisation</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>Family plan pricing test (₹199/mo)</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-amber"></span>50 families → Day 60 target</div>
+          <div class="roadmap-metric">Goal: <strong>D7 retention > 60%, first paid conversions</strong></div>
+        </div>
+      </div>
+      <div class="roadmap-col">
+        <div class="roadmap-header rh-3">Day 61 – 90<br>Build Scale</div>
+        <div class="roadmap-body">
+          <div class="roadmap-phase">Polish</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>Hindi + Tamil Rx terminology</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>OCR accuracy improvements</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>Patient companion mode (simplified)</div>
+          <div class="roadmap-phase" style="margin-top: 12px;">Growth</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>WhatsApp share: "Rx decoded link"</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>Referral: invite sibling co-caregiver</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>Doctor community seeding</div>
+          <div class="roadmap-phase" style="margin-top: 12px;">Proof</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>200 families, 500+ Rx decoded</div>
+          <div class="roadmap-item"><span class="roadmap-bullet rb-purple"></span>PMF signal: 40%+ pay willingness</div>
+          <div class="roadmap-metric">Goal: <strong>Series A story: retention + revenue data</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. FINAL VERDICT -->
+  <div class="section">
+    <div class="section-label">10 — Final Verdict</div>
+    <div class="section-title">Can Swasthi become India's default<br><em>Family Medication OS?</em></div>
+
+    <div class="verdict">
+      <div class="verdict-q">"Can Swasthi become India's default Family Medication Operating System?"</div>
+      <div class="verdict-answer">Yes — conditionally.</div>
+
+      <ul class="verdict-conditions">
+        <li><span class="vc-check">IF</span> the OCR trust ladder is never compromised. One safety failure ends the company.</li>
+        <li><span class="vc-check">IF</span> Swasthi remains a neutral layer — not a pharmacy, not a doctor, not a diagnostician.</li>
+        <li><span class="vc-check">IF</span> family governance (multi-caregiver + roles) is the core experience, not a feature.</li>
+        <li><span class="vc-check">IF</span> DDC becomes the default way Indian families think about medication continuity.</li>
+        <li><span class="vc-check">IF</span> Day-7 retention crosses 60% by Day 60 — proving daily habit, not one-time utility.</li>
+        <li><span class="vc-check">IF</span> the 90-day roadmap ships as scoped — no feature creep, no distraction.</li>
+        <li><span class="vc-check">IF</span> Swasthi is built with the discipline to be the Family Chief Health Officer's single source of truth — not an app, but infrastructure.</li>
+      </ul>
+
+      <div class="divider" style="margin: 20px 0;"></div>
+
+      <div style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.8;">
+        India has 750M+ people managing chronic disease at home. Every family with a parent on BP / diabetes / thyroid medication is a potential Swasthi family. The market is not a niche — it is the entire Indian middle class.
+        <br><br>
+        <strong style="color: var(--teal-600); font-weight: 500;">The wedge is prescription confusion. The moat is prescription literacy + family governance. The business is chronic care infrastructure.</strong>
+        <br><br>
+        Swasthi does not need to win all of healthcare. It needs to own the 12-inch strip of territory between "doctor prescribes" and "patient takes medicine" — and make that strip so valuable, so trusted, so data-rich that no one can displace it.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(el, id) {
+  document.querySelectorAll('.btab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.boundary-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
