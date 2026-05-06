@@ -1,32 +1,34 @@
 import React from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useClerk, useUser } from '@clerk/expo';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { familyMembers } from '../data/mockData';
+import { useAppData } from '../context/AppDataContext';
+import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
+
+function formatBetaStatus(status?: string | null) {
+  if (!status) {
+    return 'Pending';
+  }
+
+  return status
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
 export default function ProfileScreen() {
-  const navigation = useNavigation<any>();
   const { signOut } = useClerk();
   const { user } = useUser();
+  const { currentUser, familyGroups, familyMembers, refreshAll, error, betaBlocked } = useAppData();
 
-  const handleLogout = async () => {
-    await signOut();
-  };
+  const displayName =
+    currentUser?.full_name ??
+    user?.fullName ??
+    'Swasthi Caregiver';
 
-  const renderSettingItem = (icon: keyof typeof Ionicons.glyphMap, title: string, subtitle?: string, hasArrow: boolean = true) => (
-    <TouchableOpacity style={styles.settingItem}>
-      <View style={styles.settingIcon}>
-        <Ionicons name={icon} size={20} color={colors.primary} />
-      </View>
-      <View style={styles.settingInfo}>
-        <Text style={styles.settingTitle}>{title}</Text>
-        {subtitle && <Text style={styles.settingSubtitle}>{subtitle}</Text>}
-      </View>
-      {hasArrow && <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />}
-    </TouchableOpacity>
-  );
+  const email =
+    user?.primaryEmailAddress?.emailAddress ??
+    'No email available';
 
   return (
     <View style={styles.container}>
@@ -34,71 +36,49 @@ export default function ProfileScreen() {
         <Text style={styles.headerTitle}>Profile & Settings</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* User Profile */}
-        <View style={styles.profileHeader}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <View style={styles.profileCard}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{user?.firstName?.[0] ?? user?.primaryEmailAddress?.emailAddress?.[0]?.toUpperCase() ?? 'A'}</Text>
+            <Text style={styles.avatarText}>{displayName[0]?.toUpperCase() ?? 'S'}</Text>
           </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>{user?.fullName ?? 'Swasthi User'}</Text>
-            <Text style={styles.profileEmail}>{user?.primaryEmailAddress?.emailAddress ?? 'No email available'}</Text>
+          <Text style={styles.profileName}>{displayName}</Text>
+          <Text style={styles.profileEmail}>{email}</Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Backend Status</Text>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Beta access</Text>
+            <Text style={styles.detailValue}>{formatBetaStatus(currentUser?.beta_access_status)}</Text>
           </View>
-          <TouchableOpacity style={styles.editButton}>
-            <Text style={styles.editButtonText}>Edit</Text>
-          </TouchableOpacity>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Onboarding</Text>
+            <Text style={styles.detailValue}>{currentUser?.onboarding_complete ? 'Complete' : 'Pending'}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Family groups</Text>
+            <Text style={styles.detailValue}>{familyGroups.length}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Family members</Text>
+            <Text style={styles.detailValue}>{familyMembers.length}</Text>
+          </View>
+          {betaBlocked ? (
+            <Text style={styles.noticeText}>
+              This account is authenticated, but backend family and medication data is blocked until beta access is approved.
+            </Text>
+          ) : null}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
 
-        {/* Family Management */}
-        <Text style={styles.sectionTitle}>Family Management</Text>
-        <View style={styles.card}>
-          {familyMembers.map((member, index) => (
-            <View key={member.id} style={[styles.familyMemberItem, index < familyMembers.length - 1 && styles.borderBottom]}>
-              <View style={styles.memberAvatar}>
-                <Ionicons name="person" size={16} color={colors.surface} />
-              </View>
-              <View style={styles.memberInfo}>
-                <Text style={styles.memberName}>{member.name}</Text>
-                <Text style={styles.memberRel}>{member.relationship}</Text>
-              </View>
-              <TouchableOpacity>
-                <Ionicons name="settings-outline" size={20} color={colors.textMuted} />
-              </TouchableOpacity>
-            </View>
-          ))}
-          <TouchableOpacity 
-            style={styles.addMemberBtn}
-            onPress={() => navigation.navigate('AddFamilyMember')}
-          >
-            <Ionicons name="add" size={20} color={colors.primary} />
-            <Text style={styles.addMemberText}>Add Family Member</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Settings */}
-        <Text style={styles.sectionTitle}>Preferences</Text>
-        <View style={styles.card}>
-          {renderSettingItem('people', 'Caregiver Permissions', 'Manage who can view health data')}
-          <View style={styles.divider} />
-          {renderSettingItem('notifications', 'Notifications', 'Alerts, refills, and reminders')}
-          <View style={styles.divider} />
-          {renderSettingItem('lock-closed', 'Privacy & Security', 'App lock, data sharing')}
-        </View>
-
-        {/* Support */}
-        <Text style={styles.sectionTitle}>Support</Text>
-        <View style={styles.card}>
-          {renderSettingItem('help-circle', 'Help Center')}
-          <View style={styles.divider} />
-          {renderSettingItem('document-text', 'Medical Disclaimer', 'Swasthi is not a replacement for medical advice')}
-        </View>
-
-        {/* Logout */}
-        <TouchableOpacity style={styles.logoutButton} onPress={() => void handleLogout()}>
-          <Text style={styles.logoutText}>Log Out</Text>
+        <TouchableOpacity style={styles.secondaryButton} onPress={() => void refreshAll()}>
+          <Ionicons name="refresh-outline" size={18} color={colors.primary} />
+          <Text style={styles.secondaryButtonText}>Refresh Backend Data</Text>
         </TouchableOpacity>
 
-        <Text style={styles.versionText}>Swasthi Version 1.0.0</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => void signOut()}>
+          <Text style={styles.logoutText}>Log Out</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -122,119 +102,79 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: spacing.lg,
     paddingBottom: 100,
+    gap: spacing.lg,
   },
-  profileHeader: {
-    flexDirection: 'row',
+  profileCard: {
     alignItems: 'center',
-    marginBottom: spacing.xl,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
+    padding: spacing.xl,
+    ...shadows.sm,
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 72,
+    height: 72,
+    borderRadius: 36,
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: spacing.md,
   },
   avatarText: {
     ...typography.h2,
     color: colors.surface,
-  },
-  profileInfo: {
-    flex: 1,
-    marginLeft: spacing.md,
   },
   profileName: {
     ...typography.h3,
   },
   profileEmail: {
     ...typography.bodySmall,
-  },
-  editButton: {
-    backgroundColor: colors.secondary + '30',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.pill,
-  },
-  editButtonText: {
-    ...typography.label,
-    color: colors.primary,
-  },
-  sectionTitle: {
-    ...typography.h3,
-    marginBottom: spacing.md,
+    marginTop: spacing.xs,
   },
   card: {
     backgroundColor: colors.surface,
     borderRadius: borderRadius.md,
+    padding: spacing.lg,
     ...shadows.sm,
-    marginBottom: spacing.xl,
+    gap: spacing.md,
   },
-  familyMemberItem: {
+  sectionTitle: {
+    ...typography.h3,
+  },
+  detailRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-  },
-  borderBottom: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  memberAvatar: {
-    backgroundColor: colors.secondary,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  memberInfo: {
-    flex: 1,
-    marginLeft: spacing.md,
+  detailLabel: {
+    ...typography.bodySmall,
+    color: colors.textMuted,
   },
-  memberName: {
+  detailValue: {
     ...typography.label,
   },
-  memberRel: {
+  noticeText: {
     ...typography.bodySmall,
+    color: colors.warning,
   },
-  addMemberBtn: {
+  errorText: {
+    ...typography.bodySmall,
+    color: colors.danger,
+  },
+  secondaryButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.pill,
     padding: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+    gap: spacing.sm,
   },
-  addMemberText: {
+  secondaryButtonText: {
     ...typography.label,
     color: colors.primary,
-    marginLeft: spacing.xs,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-  },
-  settingIcon: {
-    backgroundColor: colors.inputBackground,
-    padding: spacing.sm,
-    borderRadius: borderRadius.md,
-  },
-  settingInfo: {
-    flex: 1,
-    marginLeft: spacing.md,
-  },
-  settingTitle: {
-    ...typography.label,
-  },
-  settingSubtitle: {
-    ...typography.bodySmall,
-    marginTop: 2,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: colors.border,
-    marginLeft: 60, // Align with text
   },
   logoutButton: {
     backgroundColor: colors.surface,
@@ -243,15 +183,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.danger,
-    marginBottom: spacing.xl,
   },
   logoutText: {
     ...typography.label,
     color: colors.danger,
-  },
-  versionText: {
-    ...typography.bodySmall,
-    textAlign: 'center',
-    marginBottom: spacing.xl,
   },
 });

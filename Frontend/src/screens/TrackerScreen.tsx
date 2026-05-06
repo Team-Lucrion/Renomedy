@@ -1,91 +1,155 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { medications, familyMembers } from '../data/mockData';
+import { useAppData } from '../context/AppDataContext';
+import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
+
+function formatContinuityStatus(status?: string | null) {
+  if (!status) {
+    return 'Unknown';
+  }
+
+  return status
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function statusTone(status?: string | null) {
+  if (status === 'risk_soon') {
+    return colors.warning;
+  }
+
+  if (status === 'will_run_out' || status === 'out_of_stock') {
+    return colors.danger;
+  }
+
+  return colors.success;
+}
 
 export default function TrackerScreen() {
   const [activeTab, setActiveTab] = useState<'schedule' | 'refills'>('schedule');
+  const { familyMembers, schedules, refillStates, logDose, isLoading } = useAppData();
+
+  const scheduleCards = useMemo(
+    () =>
+      schedules.map((schedule) => {
+        const member = familyMembers.find((item) => item.id === schedule.family_member_id);
+        const refillState = refillStates.find((item) => item.medication_schedule_id === schedule.id);
+
+        return {
+          id: schedule.id,
+          memberName: member?.full_name ?? 'Family member',
+          medicationName:
+            schedule.prescription_medications?.medicine_name ??
+            schedule.prescription_medications?.brand_name ??
+            schedule.prescription_medications?.generic_name ??
+            'Medication',
+          dosage: schedule.prescription_medications?.dosage ?? '',
+          reminderTimes: schedule.reminder_times?.join(', ') ?? 'No reminder times',
+          scheduleStatus: schedule.status ?? 'active',
+          refillStatus: refillState?.continuity_status ?? null,
+        };
+      }),
+    [familyMembers, refillStates, schedules],
+  );
 
   const renderSchedule = () => {
+    if (scheduleCards.length === 0) {
+      return (
+        <View style={styles.emptyCard}>
+          <Text style={styles.emptyText}>
+            {isLoading ? 'Loading schedules...' : 'No medication schedules are active yet.'}
+          </Text>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.tabContent}>
-        <View style={styles.caregiverAlert}>
-          <Ionicons name="notifications" size={20} color={colors.surface} />
-          <Text style={styles.caregiverAlertText}>Dad missed his Amlodipine dose at 09:00 AM.</Text>
-          <TouchableOpacity>
-            <Text style={styles.caregiverAlertAction}>Call Now</Text>
-          </TouchableOpacity>
-        </View>
-
-        {medications.map((med) => {
-          const member = familyMembers.find(f => f.id === med.memberId);
-          return (
-            <View key={med.id} style={styles.medCard}>
-              <View style={styles.medHeader}>
-                <Text style={styles.medTime}>{med.time}</Text>
-                <View style={styles.memberBadge}>
-                  <Text style={styles.memberBadgeText}>{member?.name}</Text>
-                </View>
-              </View>
-              
-              <View style={styles.medBody}>
-                <View style={styles.medInfo}>
-                  <Text style={styles.medName}>{med.name} {med.strength}</Text>
-                  <Text style={styles.medInstructions}>{med.schedule}</Text>
-                </View>
-                
-                <View style={styles.actions}>
-                  {med.status === 'taken' && (
-                    <View style={[styles.statusBadge, { backgroundColor: colors.success + '20' }]}>
-                      <Ionicons name="checkmark" size={16} color={colors.success} />
-                      <Text style={[styles.statusText, { color: colors.success }]}>Taken</Text>
-                    </View>
-                  )}
-                  {med.status === 'missed' && (
-                    <View style={[styles.statusBadge, { backgroundColor: colors.danger + '20' }]}>
-                      <Ionicons name="close" size={16} color={colors.danger} />
-                      <Text style={[styles.statusText, { color: colors.danger }]}>Missed</Text>
-                    </View>
-                  )}
-                  {med.status === 'pending' && (
-                    <>
-                      <TouchableOpacity style={styles.actionButton}>
-                        <Ionicons name="alarm-outline" size={24} color={colors.warning} />
-                      </TouchableOpacity>
-                      <TouchableOpacity style={[styles.actionButton, styles.primaryAction]}>
-                        <Ionicons name="checkmark" size={24} color={colors.surface} />
-                      </TouchableOpacity>
-                    </>
-                  )}
-                </View>
+        {scheduleCards.map((med) => (
+          <View key={med.id} style={styles.medCard}>
+            <View style={styles.medHeader}>
+              <Text style={styles.medTime}>{med.reminderTimes}</Text>
+              <View style={styles.memberBadge}>
+                <Text style={styles.memberBadgeText}>{med.memberName}</Text>
               </View>
             </View>
-          );
-        })}
+
+            <View style={styles.medBody}>
+              <View style={styles.medInfo}>
+                <Text style={styles.medName}>
+                  {med.medicationName}
+                  {med.dosage ? ` ${med.dosage}` : ''}
+                </Text>
+                <Text style={styles.medInstructions}>
+                  Status: {med.scheduleStatus}
+                  {med.refillStatus ? ` • Refill ${formatContinuityStatus(med.refillStatus)}` : ''}
+                </Text>
+              </View>
+
+              <View style={styles.actions}>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => void logDose({ medication_schedule_id: med.id, status: 'missed' })}
+                >
+                  <Ionicons name="close-outline" size={24} color={colors.warning} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.primaryAction]}
+                  onPress={() => void logDose({ medication_schedule_id: med.id, status: 'taken' })}
+                >
+                  <Ionicons name="checkmark" size={24} color={colors.surface} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        ))}
       </View>
     );
   };
 
   const renderRefills = () => {
+    if (refillStates.length === 0) {
+      return (
+        <View style={styles.emptyCard}>
+          <Text style={styles.emptyText}>
+            {isLoading ? 'Loading refill continuity...' : 'No refill tracking has been initialized yet.'}
+          </Text>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.tabContent}>
-        {medications.map(med => {
-          const member = familyMembers.find(f => f.id === med.memberId);
-          let riskColor = colors.success;
-          if (med.refillRisk === 'Risk Soon') riskColor = colors.warning;
-          if (med.refillRisk === 'Will Run Out' || med.refillRisk === 'Out of Stock') riskColor = colors.danger;
+        {refillStates.map((refill) => {
+          const schedule = schedules.find((item) => item.id === refill.medication_schedule_id);
+          const member = familyMembers.find((item) => item.id === schedule?.family_member_id);
+          const riskColor = statusTone(refill.continuity_status);
 
           return (
-            <View key={med.id} style={styles.refillCard}>
+            <View key={refill.medication_schedule_id} style={styles.refillCard}>
               <View style={styles.refillInfo}>
-                <Text style={styles.medName}>{med.name}</Text>
-                <Text style={styles.medInstructions}>For {member?.name}</Text>
+                <Text style={styles.medName}>
+                  {schedule?.prescription_medications?.medicine_name ??
+                    schedule?.prescription_medications?.brand_name ??
+                    'Medication'}
+                </Text>
+                <Text style={styles.medInstructions}>For {member?.full_name ?? 'Family member'}</Text>
               </View>
               <View style={styles.refillStatus}>
-                <Text style={styles.dosesText}>{med.remainingDoses} doses left</Text>
-                <View style={[styles.riskBadge, { borderColor: riskColor, backgroundColor: riskColor + '10' }]}>
-                  <Text style={[styles.riskText, { color: riskColor }]}>{med.refillRisk}</Text>
+                <Text style={styles.dosesText}>
+                  {refill.quantity_remaining ?? '-'} doses left
+                </Text>
+                <View
+                  style={[
+                    styles.riskBadge,
+                    { borderColor: riskColor, backgroundColor: `${riskColor}10` },
+                  ]}
+                >
+                  <Text style={[styles.riskText, { color: riskColor }]}>
+                    {formatContinuityStatus(refill.continuity_status)}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -99,15 +163,15 @@ export default function TrackerScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Tracker & Alerts</Text>
-        
+
         <View style={styles.tabBar}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.tab, activeTab === 'schedule' && styles.activeTab]}
             onPress={() => setActiveTab('schedule')}
           >
             <Text style={[styles.tabText, activeTab === 'schedule' && styles.activeTabText]}>Schedule</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.tab, activeTab === 'refills' && styles.activeTab]}
             onPress={() => setActiveTab('refills')}
           >
@@ -167,25 +231,15 @@ const styles = StyleSheet.create({
   tabContent: {
     gap: spacing.lg,
   },
-  caregiverAlert: {
-    flexDirection: 'row',
-    backgroundColor: colors.danger,
-    padding: spacing.md,
+  emptyCard: {
+    backgroundColor: colors.surface,
     borderRadius: borderRadius.md,
-    alignItems: 'center',
+    padding: spacing.lg,
     ...shadows.sm,
   },
-  caregiverAlertText: {
+  emptyText: {
     ...typography.bodySmall,
-    color: colors.surface,
-    flex: 1,
-    marginHorizontal: spacing.sm,
-    fontWeight: '600',
-  },
-  caregiverAlertAction: {
-    ...typography.label,
-    color: colors.surface,
-    textDecorationLine: 'underline',
+    color: colors.textMuted,
   },
   medCard: {
     backgroundColor: colors.surface,
@@ -205,6 +259,8 @@ const styles = StyleSheet.create({
   medTime: {
     ...typography.label,
     color: colors.primary,
+    flex: 1,
+    paddingRight: spacing.md,
   },
   memberBadge: {
     backgroundColor: colors.inputBackground,
@@ -244,18 +300,6 @@ const styles = StyleSheet.create({
   },
   primaryAction: {
     backgroundColor: colors.primary,
-  },
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: borderRadius.pill,
-    gap: 4,
-  },
-  statusText: {
-    ...typography.label,
-    fontSize: 12,
   },
   refillCard: {
     flexDirection: 'row',

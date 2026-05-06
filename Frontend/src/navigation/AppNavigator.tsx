@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/theme';
+import { useAppData } from '../context/AppDataContext';
 
 // Screens
 import SplashScreen from '../screens/SplashScreen';
@@ -75,8 +76,9 @@ const MainTabs = () => {
 
 export default function AppNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
+  const { isLoading } = useAppData();
 
-  if (!isLoaded) {
+  if (!isLoaded || (isSignedIn && isLoading)) {
     return (
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>

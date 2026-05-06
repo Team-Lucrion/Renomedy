@@ -1,34 +1,99 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import { familyMembers, medications } from '../data/mockData';
+import { useUser } from '@clerk/expo';
+import { useAppData } from '../context/AppDataContext';
+import type { RootStackParamList } from '../navigation/AppNavigator';
+import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
 
+function formatReminderTime(reminderTimes?: string[] | null) {
+  if (!reminderTimes?.length) {
+    return 'No reminder times set';
+  }
+
+  return reminderTimes.join(', ');
+}
+
+function formatContinuityStatus(status?: string | null) {
+  if (!status) {
+    return 'Unknown';
+  }
+
+  return status
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
-  
-  const todayMeds = medications.filter(m => m.status === 'pending');
-  const refillAlerts = medications.filter(m => m.refillRisk === 'Risk Soon' || m.refillRisk === 'Will Run Out');
+  const { user } = useUser();
+  const { currentUser, familyGroups, familyMembers, overview, schedules, refillStates, error, betaBlocked, refreshAll } = useAppData();
+
+  const greetingName =
+    currentUser?.full_name?.split(' ')[0] ??
+    user?.firstName ??
+    user?.fullName?.split(' ')[0] ??
+    'Caregiver';
+
+  const refillAlerts = refillStates.filter((state) =>
+    ['risk_soon', 'will_run_out', 'out_of_stock'].includes(state.continuity_status ?? ''),
+  );
+
+  const activeSchedules = schedules.slice(0, 4);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good Morning, Arjun</Text>
+          <Text style={styles.greeting}>Good Morning, {greetingName}</Text>
           <Text style={styles.subtitle}>Family Health Dashboard</Text>
         </View>
-        <TouchableOpacity style={styles.profileButton}>
-          <Ionicons name="person-circle" size={40} color={colors.primary} />
+        <TouchableOpacity style={styles.profileButton} onPress={() => void refreshAll()}>
+          <Ionicons name="refresh" size={24} color={colors.primary} />
         </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Family Summary Card */}
+        {error ? (
+          <View style={styles.backendMessageCard}>
+            <Ionicons name="alert-circle-outline" size={18} color={colors.danger} />
+            <Text style={styles.backendMessageText}>{error}</Text>
+          </View>
+        ) : null}
+
+        {betaBlocked ? (
+          <View style={styles.blockedCard}>
+            <Text style={styles.blockedTitle}>Closed beta access required</Text>
+            <Text style={styles.blockedBody}>
+              Your Clerk account is signed in, but the backend is still waiting for an approved beta invite to unlock family and medication data.
+            </Text>
+          </View>
+        ) : null}
+
+        <View style={styles.statsGrid}>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{overview?.family_members_count ?? familyMembers.length}</Text>
+            <Text style={styles.statLabel}>Family Members</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{overview?.active_schedules_count ?? schedules.length}</Text>
+            <Text style={styles.statLabel}>Active Schedules</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{overview?.missed_doses_last_24h ?? 0}</Text>
+            <Text style={styles.statLabel}>Missed in 24h</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{overview?.refill_risk_count ?? refillAlerts.length}</Text>
+            <Text style={styles.statLabel}>Refill Risks</Text>
+          </View>
+        </View>
+
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>Family Overview</Text>
@@ -36,63 +101,83 @@ export default function HomeScreen() {
               <Ionicons name="add-circle" size={24} color={colors.primary} />
             </TouchableOpacity>
           </View>
+
+          {familyGroups.length > 0 ? (
+            <>
+              <Text style={styles.familyName}>{familyGroups[0].family_name}</Text>
+              {familyGroups[0].invite_code ? (
+                <Text style={styles.inviteCode}>Invite code: {familyGroups[0].invite_code}</Text>
+              ) : null}
+            </>
+          ) : (
+            <Text style={styles.emptyStateText}>No family group has been created or joined yet.</Text>
+          )}
+
           <View style={styles.familyList}>
             {familyMembers.map((member) => (
               <View key={member.id} style={styles.familyMemberBadge}>
                 <Ionicons name="person" size={16} color={colors.surface} />
-                <Text style={styles.familyMemberName}>{member.name}</Text>
+                <Text style={styles.familyMemberName}>{member.full_name}</Text>
               </View>
             ))}
           </View>
         </View>
 
-        {/* Action Buttons */}
-        <View style={styles.actionGrid}>
-          <TouchableOpacity 
-            style={[styles.actionCard, { backgroundColor: colors.primary }]}
-            // Navigate to Prescription tab via bottom nav? Wait, this is stack nav.
-            // For now, we just rely on bottom tabs for prescription. Let's not navigate here to prevent TS errors.
-          >
-            <Ionicons name="scan" size={28} color={colors.surface} />
-            <Text style={styles.actionCardText}>Scan & Understand Prescription</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.actionCard, { backgroundColor: colors.secondary }]}>
-            <Ionicons name="add" size={28} color={colors.surface} />
-            <Text style={[styles.actionCardText, { color: colors.text }]}>Add Medicine Manually</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Refill Alerts */}
-        {refillAlerts.length > 0 && (
+        {refillAlerts.length > 0 ? (
           <View style={styles.alertCard}>
             <View style={styles.alertHeader}>
               <Ionicons name="warning" size={20} color={colors.warning} />
               <Text style={styles.alertTitle}>Refill Continuity Alert</Text>
             </View>
-            {refillAlerts.map(med => (
-              <View key={med.id} style={styles.alertItem}>
-                <Text style={styles.alertMedName}>{med.name} ({familyMembers.find(f => f.id === med.memberId)?.name})</Text>
-                <Text style={styles.alertMedRisk}>{med.refillRisk}</Text>
-              </View>
-            ))}
-          </View>
-        )}
+            {refillAlerts.map((alert) => {
+              const member = familyMembers.find((item) => item.id === schedules.find((schedule) => schedule.id === alert.medication_schedule_id)?.family_member_id);
 
-        {/* Today's Medications */}
+              return (
+                <View key={alert.medication_schedule_id} style={styles.alertItem}>
+                  <Text style={styles.alertMedName}>{member?.full_name ?? 'Family member'}</Text>
+                  <Text style={styles.alertMedRisk}>{formatContinuityStatus(alert.continuity_status)}</Text>
+                </View>
+              );
+            })}
+          </View>
+        ) : null}
+
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Today's Pending</Text>
-          {todayMeds.map((med) => (
-            <View key={med.id} style={styles.medCard}>
-              <View style={styles.medInfo}>
-                <Text style={styles.medName}>{med.name} {med.strength}</Text>
-                <Text style={styles.medTime}>{med.time} • For {familyMembers.find(f => f.id === med.memberId)?.name}</Text>
-              </View>
-              <TouchableOpacity style={styles.medButton}>
-                <Ionicons name="checkmark-circle-outline" size={28} color={colors.success} />
-              </TouchableOpacity>
+          <Text style={styles.sectionTitle}>Active Medication Schedules</Text>
+          {activeSchedules.length > 0 ? (
+            activeSchedules.map((schedule) => {
+              const member = familyMembers.find((item) => item.id === schedule.family_member_id);
+              const medicationName =
+                schedule.prescription_medications?.medicine_name ??
+                schedule.prescription_medications?.brand_name ??
+                schedule.prescription_medications?.generic_name ??
+                'Medication';
+
+              return (
+                <View key={schedule.id} style={styles.medCard}>
+                  <View style={styles.medInfo}>
+                    <Text style={styles.medName}>
+                      {medicationName}
+                      {schedule.prescription_medications?.dosage ? ` ${schedule.prescription_medications.dosage}` : ''}
+                    </Text>
+                    <Text style={styles.medTime}>
+                      {formatReminderTime(schedule.reminder_times)} • For {member?.full_name ?? 'Family member'}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.medButton}
+                    onPress={() => navigation.navigate('Tracker' as never)}
+                  >
+                    <Ionicons name="chevron-forward-circle-outline" size={28} color={colors.success} />
+                  </TouchableOpacity>
+                </View>
+              );
+            })
+          ) : (
+            <View style={styles.emptyCard}>
+              <Text style={styles.emptyStateText}>No active medication schedules yet.</Text>
             </View>
-          ))}
+          )}
         </View>
       </ScrollView>
     </View>
@@ -130,6 +215,56 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
     paddingBottom: 100,
   },
+  backendMessageCard: {
+    backgroundColor: '#FFF5F5',
+    borderColor: '#FED7D7',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  backendMessageText: {
+    ...typography.bodySmall,
+    color: colors.danger,
+    flex: 1,
+  },
+  blockedCard: {
+    backgroundColor: '#FFFAF0',
+    borderColor: '#FBD38D',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    padding: spacing.lg,
+    gap: spacing.sm,
+  },
+  blockedTitle: {
+    ...typography.h3,
+    color: colors.warning,
+  },
+  blockedBody: {
+    ...typography.bodySmall,
+    color: colors.text,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.md,
+  },
+  statCard: {
+    width: '47%',
+    backgroundColor: colors.surface,
+    padding: spacing.lg,
+    borderRadius: borderRadius.md,
+    ...shadows.sm,
+  },
+  statValue: {
+    ...typography.h2,
+    color: colors.primary,
+  },
+  statLabel: {
+    ...typography.bodySmall,
+    marginTop: spacing.xs,
+  },
   card: {
     backgroundColor: colors.surface,
     padding: spacing.lg,
@@ -145,10 +280,20 @@ const styles = StyleSheet.create({
   cardTitle: {
     ...typography.h3,
   },
+  familyName: {
+    ...typography.label,
+    fontSize: 16,
+  },
+  inviteCode: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    marginTop: spacing.xs,
+  },
   familyList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
+    marginTop: spacing.md,
   },
   familyMemberBadge: {
     flexDirection: 'row',
@@ -162,22 +307,6 @@ const styles = StyleSheet.create({
   familyMemberName: {
     ...typography.label,
     color: colors.surface,
-  },
-  actionGrid: {
-    flexDirection: 'row',
-    gap: spacing.md,
-  },
-  actionCard: {
-    flex: 1,
-    padding: spacing.lg,
-    borderRadius: borderRadius.md,
-    ...shadows.sm,
-    gap: spacing.sm,
-  },
-  actionCardText: {
-    ...typography.label,
-    color: colors.surface,
-    fontSize: 16,
   },
   alertCard: {
     backgroundColor: '#FFFAF0',
@@ -238,5 +367,15 @@ const styles = StyleSheet.create({
   },
   medButton: {
     padding: spacing.xs,
+  },
+  emptyCard: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
+    ...shadows.sm,
+  },
+  emptyStateText: {
+    ...typography.bodySmall,
+    color: colors.textMuted,
   },
 });
