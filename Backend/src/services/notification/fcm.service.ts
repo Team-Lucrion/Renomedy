@@ -41,5 +41,18 @@ export async function sendPushNotification(params: {
 
 export function isInvalidFcmTokenError(error: unknown) {
   const code = typeof error === "object" && error && "code" in error ? String((error as { code?: unknown }).code) : "";
-  return code.includes("registration-token-not-registered") || code.includes("invalid-registration-token");
+  const nestedCode =
+    typeof error === "object" && error && "errorInfo" in error
+      ? String((error as { errorInfo?: { code?: unknown } }).errorInfo?.code ?? "")
+      : "";
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+
+  return (
+    code.includes("registration-token-not-registered") ||
+    code.includes("invalid-registration-token") ||
+    nestedCode.includes("registration-token-not-registered") ||
+    nestedCode.includes("invalid-registration-token") ||
+    message.includes("not a valid fcm registration token") ||
+    message.includes("registration token is not registered")
+  );
 }

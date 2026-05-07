@@ -25,6 +25,7 @@ const envSchema = z.object({
   OCR_API_URL: z.string().url().optional(),
   OCR_API_KEY: z.string().optional(),
   FOUNDER_CLERK_USER_IDS: z.string().default(""),
+  APP_TIMEZONE: z.string().default("Asia/Kolkata"),
   ENABLE_SCHEDULER: z.string().default("true"),
   CRON_REMINDER_SCAN: z.string().default("*/5 * * * *"),
   CRON_REFILL_SCAN: z.string().default("0 */6 * * *"),

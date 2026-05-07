@@ -101,6 +101,19 @@
 
 ## 6. Verification Checklist
 
+- `Clerk webhook is public and raw-body verified`
+  - `POST /auth/clerk-webhook` must not require Clerk JWT auth
+  - Route must stay mounted before `express.json()`
+- `Clerk webhook create works`
+  - Send a valid `user.created` event and confirm one `users` row exists for that `clerk_user_id`
+- `Clerk webhook delete works`
+  - Send a valid `user.deleted` event and confirm the mapped `users` row is removed
+- `Clerk webhook rejects invalid signatures`
+  - Send the same payload with a bad `svix-signature` and expect `400`
+- `Clerk webhook replay is safe`
+  - Replay the same `user.created` event and confirm no duplicate `users.clerk_user_id` row is created
+- `Webhook failures are founder-visible`
+  - `GET /admin/issues` should surface `auth.clerk_webhook_failed` and `auth.clerk_webhook_rejected`
 - `Uninvited user cannot onboard`
   - `PATCH /users/onboarding` with `onboarding_complete=true` and no valid `invite_code` returns `403`
 - `Invited user can onboard`
@@ -137,18 +150,29 @@
 ## 7. Launch Blockers
 
 - Apply the two new migrations to the target Supabase project.
+- Apply the webhook audit hardening migration so unauthenticated webhook failures can be recorded.
 - Set `FOUNDER_CLERK_USER_IDS` in all runtime environments.
 - Configure Firebase Admin credentials if push delivery is in launch scope.
 - Configure a live OCR endpoint if the beta requires real prescription scanning beyond the mock fallback.
 - Run the checklist above against the real deployed environment.
 
-## 8. Trust Blockers
+## 8. Deployment Checklist
+
+- Set `CLERK_WEBHOOK_SECRET` in the runtime environment that serves `POST /auth/clerk-webhook`.
+- In Clerk, point the webhook endpoint to the deployed `/auth/clerk-webhook` URL.
+- Subscribe the Clerk webhook to `user.created` and `user.deleted`. `user.updated` can remain enabled because the backend is idempotent.
+- Apply all Supabase migrations, including [20260507130500_webhook_audit_hardening.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Swasthi/Backend/supabase/migrations/20260507130500_webhook_audit_hardening.sql).
+- Confirm `FOUNDER_CLERK_USER_IDS` contains at least one real founder Clerk user id for `/admin/issues`.
+- Set valid Firebase Admin credentials and verify `FIREBASE_PROJECT_ID` is a single-line value in the deployed env file or secret manager.
+- Keep `OCR_PROVIDER=mock` only if the beta accepts manual prescription entry/verification during validation. Otherwise switch to live OCR before inviting families.
+
+## 9. Trust Blockers
 
 - If `OCR_PROVIDER` remains `mock`, prescription scanning is still demo-grade even though manual verification is enforced.
 - There is still no executed full integration test against live credentials in this workspace.
 - Founder operations are API-level only, so operational discipline is still needed until a thin internal UI exists.
 
-## 9. Final Closed Beta Backend Readiness Score
+## 10. Final Closed Beta Backend Readiness Score
 
 - `91/100`
 

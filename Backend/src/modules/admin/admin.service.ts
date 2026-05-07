@@ -86,7 +86,7 @@ export async function listOperationalIssues() {
     supabaseAdmin
       .from("audit_logs")
       .select("*")
-      .or("action.eq.prescription.upload_failed,action.eq.prescription.ocr_failed,action.eq.notification.failure")
+      .or("action.eq.prescription.upload_failed,action.eq.prescription.ocr_failed,action.eq.notification.failure,action.eq.auth.clerk_webhook_failed,action.eq.auth.clerk_webhook_rejected")
       .order("created_at", { ascending: false })
       .limit(100)
   ]);

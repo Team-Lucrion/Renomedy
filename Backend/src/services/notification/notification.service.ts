@@ -86,6 +86,16 @@ export async function dispatchScheduledAlerts() {
         } catch (error) {
           if (isInvalidFcmTokenError(error)) {
             await supabaseAdmin.from("notification_tokens").delete().eq("id", token.id);
+            await writeAuditLog({
+              userId: alert.user_id,
+              action: "notification.token_removed",
+              entityType: "notification_token",
+              entityId: token.id,
+              metadata: {
+                reason: error instanceof Error ? error.message : "Invalid FCM token",
+                source: "scheduled_dispatch"
+              }
+            });
           }
           throw error;
         }

@@ -5,10 +5,27 @@ import { supabaseAdmin } from "../../lib/supabase";
 import { deriveContinuityStatus } from "../../modules/medications/refill.utils";
 import { buildAlertDedupeKey, dispatchScheduledAlerts, enqueueAlert } from "../notification/notification.service";
 
+function getSchedulerTimeParts(now: Date) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: env.APP_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  });
+  const parts = formatter.formatToParts(now);
+  const map = Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+
+  return {
+    currentTime: `${map.hour}:${map.minute}`,
+    today: `${map.year}-${map.month}-${map.day}`
+  };
+}
+
 async function scanDueDoseReminders() {
-  const now = new Date();
-  const currentTime = now.toISOString().slice(11, 16);
-  const today = now.toISOString().slice(0, 10);
+  const { currentTime, today } = getSchedulerTimeParts(new Date());
 
   const { data: schedules } = await supabaseAdmin
     .from("medication_schedules")
@@ -44,7 +61,7 @@ async function scanDueDoseReminders() {
 
 async function scanMissedDoses() {
   const threshold = new Date(Date.now() - 30 * 60 * 1000).toISOString();
-  const today = new Date().toISOString().slice(0, 10);
+  const { today } = getSchedulerTimeParts(new Date());
   const { data: missedLogs } = await supabaseAdmin
     .from("dose_logs")
     .select("id, status, scheduled_time, medication_schedule_id, medication_schedules!inner(family_member_id, family_members!inner(family_group_id), prescription_medications!inner(medicine_name))")
@@ -78,7 +95,7 @@ async function scanMissedDoses() {
 }
 
 async function scanRefillRisk() {
-  const today = new Date().toISOString().slice(0, 10);
+  const { today } = getSchedulerTimeParts(new Date());
   const { data: states } = await supabaseAdmin
     .from("refill_states")
     .select("id, quantity_remaining, daily_depletion, projected_runout_date, continuity_status, medication_schedules!inner(id, family_member_id, refill_threshold_days, family_members!inner(family_group_id), prescription_medications!inner(medicine_name))")
