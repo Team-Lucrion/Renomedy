@@ -41,16 +41,18 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { isLoaded: isSignInLoaded, signIn, setActive: setSignInActive } = useSignIn();
-  const { isLoaded: isSignUpLoaded, signUp, setActive: setSignUpActive } = useSignUp();
+  const { isLoaded: isSignInLoaded, signIn, setActive: setSignInActive } = useSignIn() as any;
+  const { isLoaded: isSignUpLoaded, signUp, setActive: setSignUpActive } = useSignUp() as any;
   const { startSSOFlow } = useSSO();
 
   useEffect(() => {
-    void WebBrowser.warmUpAsync();
-
-    return () => {
-      void WebBrowser.coolDownAsync();
-    };
+    if (Platform.OS !== 'web') {
+      void WebBrowser.warmUpAsync();
+      return () => {
+        void WebBrowser.coolDownAsync();
+      };
+    }
+    return undefined;
   }, []);
 
   const resetErrorAndSwitchMode = (nextMode: AuthMode) => {
@@ -81,7 +83,7 @@ export default function LoginScreen() {
         const signInAttempt = await signIn.create({
           identifier: email.trim(),
           password,
-        });
+        } as any);
 
         if (signInAttempt.status === 'complete') {
           await setSignInActive({ session: signInAttempt.createdSessionId });
@@ -101,7 +103,7 @@ export default function LoginScreen() {
         unsafeMetadata: {
           fullName: fullName.trim(),
         },
-      });
+      } as any);
 
       if (signUpAttempt.status === 'complete') {
         await setSignUpActive({ session: signUpAttempt.createdSessionId });
