@@ -17,12 +17,29 @@ import { medicationsRouter } from "./modules/medications/medications.routes";
 import { notificationsRouter } from "./modules/notifications/notifications.routes";
 import { dashboardRouter } from "./modules/dashboard/dashboard.routes";
 import { adminRouter } from "./modules/admin/admin.routes";
+import { corsAllowedOrigins } from "./config/env";
 import { asyncHandler } from "./utils/async-handler";
 
 export const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (corsAllowedOrigins.length === 0 || corsAllowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`Origin ${origin} is not allowed by CORS.`));
+    }
+  })
+);
 app.post("/auth/clerk-webhook", express.raw({ limit: "2mb", type: "application/json" }), asyncHandler(clerkWebhookHandler));
 app.use(express.json({ limit: "2mb" }));
 app.use(requestIdMiddleware);

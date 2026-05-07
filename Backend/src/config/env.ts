@@ -12,6 +12,7 @@ const envSchema = z.object({
   SUPABASE_STORAGE_BUCKET: z.string().default("prescriptions"),
   CLERK_SECRET_KEY: z.string().min(1),
   CLERK_WEBHOOK_SECRET: z.string().min(1),
+  CORS_ALLOWED_ORIGINS: z.string().default(""),
   SENTRY_DSN: z.string().url().optional(),
   SENTRY_ENVIRONMENT: z.string().optional(),
   SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0),
@@ -40,3 +41,7 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 export const isProduction = env.NODE_ENV === "production";
+export const corsAllowedOrigins = env.CORS_ALLOWED_ORIGINS
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);

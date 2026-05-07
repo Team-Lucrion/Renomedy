@@ -1,0 +1,15 @@
+{
+  "name": "swasthi",
+  "private": true,
+  "workspaces": [
+    "Frontend",
+    "Backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --prefix Frontend run start",
+    "dev:backend": "npm --prefix Backend run dev",
+    "typecheck:frontend": "npm --prefix Frontend run typecheck",
+    "typecheck:backend": "npm --prefix Backend run typecheck",
+    "typecheck": "npm run typecheck:backend && npm run typecheck:frontend"
+  }
+}
