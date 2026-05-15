@@ -1,15 +1,15 @@
-# Swasthi: The Complete Social Growth & Content Operating System
+# Renomedy: The Complete Social Growth & Content Operating System
 **India’s Family Medication Clarity Platform**
 
 ---
 
 ## Executive Summary
-Swasthi is pioneering the **"Prescription Clarity"** category in India. Our mission is to transform the anxiety-ridden process of managing family medications into a streamlined, literate, and safe experience. This playbook outlines the strategy to own this category, build a high-velocity content engine, and execute a 90-day GTM plan to achieve market leadership.
+Renomedy is pioneering the **"Prescription Clarity"** category in India. Our mission is to transform the anxiety-ridden process of managing family medications into a streamlined, literate, and safe experience. This playbook outlines the strategy to own this category, build a high-velocity content engine, and execute a 90-day GTM plan to achieve market leadership.
 
 ---
 
 ## I. Category Creation & Brand Strategy
-Swasthi owns the **"Execution Gap"** in healthcare—the critical period between leaving the doctor’s clinic and completing the treatment at home.
+Renomedy owns the **"Execution Gap"** in healthcare—the critical period between leaving the doctor’s clinic and completing the treatment at home.
 
 ### Brand Positioning
 - **Family-Safe**: The digital "Bada Beta/Beti" (Eldest Child) for the household.
@@ -32,12 +32,12 @@ A multi-layered content strategy designed for high engagement on Instagram and h
 - **The Decoder (Utility)**: Decoding prescriptions, explaining Rx symbols, and simplifying medical jargon.
 - **The Safety Net (Fear/Education)**: Highlighting common medication errors in Indian homes.
 - **The Family Hero (Emotion)**: Celebrating the caregivers who keep the family healthy.
-- **The Founder’s Journey (Trust)**: The "Why" behind Swasthi and the tech behind the clarity.
+- **The Founder’s Journey (Trust)**: The "Why" behind Renomedy and the tech behind the clarity.
 
 ### 2. Virality Framework (The 6-Step Hook)
 Every piece of content must follow:
 1. **Hook**: "Stop doing [Common Mistake]!"
-2. **Pattern Interrupt**: Visual of a messy Rx vs. Swasthi Clarity.
+2. **Pattern Interrupt**: Visual of a messy Rx vs. Renomedy Clarity.
 3. **Emotional Trigger**: "Your parents deserve this safety."
 4. **Education**: The "Aha!" moment (e.g., why timings matter).
 5. **CTA**: "Save this for your next clinic visit."
@@ -54,7 +54,7 @@ Leveraging the unique social fabric of India to drive organic acquisition.
 - **Doctors/Pharmacists**: The "Referral" engine. QR codes and "Prescribed Clarity" kits.
 
 ### The "Family Circle" Growth Loop
-- **Step 1**: User A downloads Swasthi to track their father's medications.
+- **Step 1**: User A downloads Renomedy to track their father's medications.
 - **Step 2**: User A invites User B (sibling) to the "Family Circle" to share the caregiving load.
 - **Step 3**: User B receives a "Clarity Report" on WhatsApp, downloads the app, and eventually adds their own household (spouse/children).
 
@@ -89,8 +89,8 @@ Leveraging the unique social fabric of India to drive organic acquisition.
 | 4 | Twitter/X | Thread | "The state of medication literacy in India: A data-backed deep dive." |
 | 5 | Instagram | Reel | "Founder Story: The night a medication error changed my life." |
 | 6 | YouTube | Short | "How to store Insulin correctly in Indian summers." |
-| 7 | All | Post | "Join the Swasthi Beta: Be the Health Hero of your family." |
+| 7 | All | Post | "Join the Renomedy Beta: Be the Health Hero of your family." |
 
 ---
 
-> **Mission Statement:** Making Swasthi the digital authority for prescription understanding and family medication clarity in India.
+> **Mission Statement:** Making Renomedy the digital authority for prescription understanding and family medication clarity in India.

@@ -8,5 +8,6 @@ dist
 *.key
 *-firebase-adminsdk-*.json
 firebase-adminsdk-*.json
+*-ocr-*.json
 supabase/.temp/
 npm-debug.log*

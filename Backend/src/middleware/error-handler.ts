@@ -4,6 +4,15 @@ import { captureException } from "../lib/sentry";
 import { HttpError } from "../utils/http-error";
 
 export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction) {
+  if (err instanceof Error && err.message.startsWith("Unsupported prescription image type")) {
+    logger.warn({ err, requestId: req.requestId }, "Prescription upload rejected");
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+      requestId: req.requestId
+    });
+  }
+
   if (err instanceof HttpError) {
     logger.warn({ err, requestId: req.requestId }, "Request failed");
     if (err.statusCode >= 500) {

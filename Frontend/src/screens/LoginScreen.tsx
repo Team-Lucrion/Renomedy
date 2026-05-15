@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSignIn, useSignUp, useSSO } from '@clerk/expo';
 import * as WebBrowser from 'expo-web-browser';
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -173,6 +174,10 @@ export default function LoginScreen() {
       >
         <View style={styles.content}>
           <View style={styles.heroSection}>
+            <View style={styles.logoWrap}>
+              <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+            </View>
+            <Text style={styles.brand}>Renomedy</Text>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>{subtitle}</Text>
           </View>
@@ -306,6 +311,27 @@ const styles = StyleSheet.create({
   },
   heroSection: {
     marginTop: 6,
+    alignItems: 'flex-start',
+  },
+  logoWrap: {
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: 26,
+    height: 86,
+    justifyContent: 'center',
+    marginBottom: 18,
+    width: 86,
+  },
+  logo: {
+    height: 68,
+    width: 68,
+  },
+  brand: {
+    color: colors.primary,
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 20,
+    marginBottom: 10,
   },
   title: {
     color: colors.primary,

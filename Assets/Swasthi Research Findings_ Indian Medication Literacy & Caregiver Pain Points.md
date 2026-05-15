@@ -1,4 +1,4 @@
-# Swasthi Research Findings: Indian Medication Literacy & Caregiver Pain Points
+# Renomedy Research Findings: Indian Medication Literacy & Caregiver Pain Points
 
 ## 1. The Literacy Gap
 - **Understanding Deficit**: Studies show ~37% of patients in Indian OPDs have a poor understanding of their prescriptions.
@@ -21,7 +21,7 @@
 - **Short-form Video**: High engagement for medical awareness and "how-to" videos on Instagram/YouTube.
 - **WhatsApp**: The primary channel for family communication and "medical advice" (often misinformation), presenting a massive opportunity for a "Clarity" brand to intervene.
 
-## 5. Strategic Opportunity for Swasthi
+## 5. Strategic Opportunity for Renomedy
 - **Positioning**: Move from just a "tracker" to a "clarity" platform.
 - **Hook**: "Decoding the Doctor's Hand" or "Prescription to Peace of Mind."
 - **Shareability**: Focus on content that can be shared in "Family WhatsApp Groups" to correct common myths.

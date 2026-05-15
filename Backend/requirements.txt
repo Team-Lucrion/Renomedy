@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+requests
+python-multipart
+pytesseract
+pillow
+opencv-python
+groq
+supabase
+PyJWT
+python-dotenv

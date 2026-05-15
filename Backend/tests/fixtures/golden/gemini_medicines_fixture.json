@@ -1,0 +1,24 @@
+{
+  "medicines": [
+    {
+      "medicine_name": "Metformin 500mg",
+      "generic_name": "",
+      "dosage": "500 mg",
+      "frequency": "BD",
+      "duration": "30 days",
+      "instructions": "after food",
+      "confidence": "high"
+    },
+    {
+      "medicine_name": "Atorvastatin",
+      "generic_name": "",
+      "dosage": "20mg",
+      "frequency": "HS",
+      "duration": "",
+      "instructions": "",
+      "confidence": "medium"
+    }
+  ],
+  "warnings": ["Verify with pharmacist"],
+  "ocr_quality": "high"
+}

@@ -1,0 +1,248 @@
+# Renomedy UX + Trust + PMF Audit
+### Chief UX, Trust & Category Auditor Report — Launch Readiness
+
+---
+
+## 1. AUTH + ONBOARDING
+
+**Critical Launch Blockers**
+The binary choice "Create New Sanctuary / Join Existing Sanctuary" is presented before the user has any emotional context for what a Sanctuary is. A first-time user seeing this screen has zero framework. They don't know if they're creating an account, a group, a folder, or something medical. This is a high-probability drop-off point.
+
+The invite code is 8 characters, alphanumeric, shared via WhatsApp or spoken aloud in a family group. Real Indian family dynamics mean: the elderly grandmother does not type ABCD1234 correctly. She types abcd1234 or ABDC1234. Auto-uppercase in the frontend helps, but character confusion (B vs 8, G vs 6) in a health app can kill trust fast.
+
+**UX Flaws**
+Role selection during onboarding (Caregiver / Family Member / Patient) is asking a person to self-categorize before they understand the product. Most Indian family caregivers don't think of themselves as "Caregiver" — they think of themselves as "son," "daughter," "wife." The clinical language creates distance.
+
+There is no explicit "what happens next" preview after signup. A user who creates a Sanctuary lands in a dashboard with no prescriptions, no members, no medications. Without a strong empty-state narrative, this feels broken.
+
+**Trust Flaws**
+Clerk's hosted UI for forgot password will visually break the Renomedy brand experience. The user leaves your app, sees a generic Clerk email, and the trust continuity breaks. For a health app, brand continuity = trust continuity.
+
+**Emotional Friction**
+The onboarding is functionally correct but emotionally cold. There is no moment that says: "You are doing something important for your family." The signup experience should feel like the beginning of protection, not a form.
+
+**Recommended Fixes**
+Before the Create/Join choice, add a single-screen emotional anchor: "Renomedy helps your family never miss a medicine, never misread a prescription." Then offer the choice.
+
+Replace role labels during onboarding: "I manage medicines for my family" (maps to Caregiver), "I am joining my family's care space" (maps to Patient/Member). Map to system roles invisibly.
+
+Add an animated onboarding preview — even 3 static illustrated cards — so the user knows what they're building before they build it.
+
+**Priority: Critical**
+
+---
+
+## 2. SANCTUARY BRAND PSYCHOLOGY
+
+**Critical Launch Blockers**
+"Sanctuary" works emotionally for English-comfortable urban users. For a Hindi-speaking grandmother in Lucknow or a Tamil-speaking parent in Coimbatore, "Sanctuary" means nothing — or worse, it sounds like a wellness retreat or a religious space. There is no regional language fallback or contextual explanation baked into the architecture.
+
+**UX Flaws**
+Every screen uses "Sanctuary" as a noun, but no screen explains the metaphor on first encounter. "Your Sanctuary" as a dashboard header without subtext ("Your private family care space") leaves new users interpreting it through their own lens — which may not be health.
+
+**Trust Flaws**
+Trust in India in health apps is built on two things: institutional familiarity (doctor-associated, hospital-looking) and family recognition (feels like something my mother would approve). "Sanctuary" is neither. It is emotionally strong for the English-literate urban caregiver but risks feeling foreign to the actual decision-maker in a multigenerational family — often an older parent or joint family head.
+
+**Emotional Friction**
+The word "Sanctuary" is doing a lot of work alone. It needs a consistent emotional support system: a tagline, a color palette that feels safe (not clinical, not techy), and helper copy that reinforces "this is your family's safe health home" at every touchpoint.
+
+**PMF Threat**
+If the name requires explanation to be understood, the name is doing negative work in word-of-mouth. When a caregiver tells their sibling "join my Sanctuary," the sibling's first reaction should not be "what is that?" — but currently it likely would be.
+
+**Recommended Fixes**
+Add a permanent subtitle everywhere "Sanctuary" appears: "Your Family's Private Care Space." This costs zero extra development and eliminates 90% of the brand confusion.
+
+Consider having the Sanctuary auto-name itself "[Family Surname] Sanctuary" — so it immediately becomes "The Sharma Sanctuary," not an abstract product feature. The architecture already does this (defaults to "{firstName}'s Sanctuary") but push toward family surname if available.
+
+Create a 15-word "what is Sanctuary" explainer that appears exactly once on the first dashboard visit, then disappears. Don't repeat it — but don't skip it.
+
+**Priority: High**
+
+---
+
+## 3. MEMBER SYSTEM
+
+**Critical Launch Blockers**
+The architecture assigns a membership role (owner/caregiver) AND a family member role (caregiver/patient/family_member) to the same person. This dual-role model will produce visible confusion in the UI. A user who is a "caregiver membership role" joining as a "patient family member role" will see inconsistent permission behavior that they cannot explain and will interpret as a bug.
+
+**UX Flaws**
+The invite preview — "You are joining The Sharma Sanctuary" — is in the architecture as a validation endpoint but not described as a designed UX moment. This preview is the single highest-trust moment in the member journey. If it looks like an API response wrapped in a modal, the emotional impact is zero.
+
+**Role Confusion**
+The roles "caregiver," "patient," and "family_member" will confuse real users. A 65-year-old father joining his son's Sanctuary doesn't know if he is a "patient" or a "family member." Asking him to choose before he understands the implications creates anxiety in a health context.
+
+**Trust Flaws**
+There is no visible indication of what a new member can and cannot see after joining. Can the patient see all prescriptions? Can the caregiver see payment history? Without permission transparency, members will default to distrust — especially in privacy-sensitive Indian family dynamics where medication history can carry stigma.
+
+**Recommended Fixes**
+Collapse the dual-role system into one visible identity during onboarding. Internally keep the two-layer model, but show the user only one label: "Care Manager," "Family Member," or "Patient." Let the system infer the right permission combination.
+
+Design the invite preview screen as a dedicated, branded moment — not a modal. Full screen, show the Sanctuary name large, show who invited them, show what they'll have access to. Make it feel like walking through a door, not clicking OK on a dialog.
+
+Add a "What can I see?" help link in the member dashboard that shows a simple permission summary. This single addition will reduce trust anxiety dramatically.
+
+**Priority: Critical**
+
+---
+
+## 4. PAYMENT + TRUST
+
+**Critical Launch Blockers**
+The payment is triggered from a "Pricing tab" — meaning the user has to navigate away from the functional part of the app to find and initiate payment. This creates a cold commercial moment in what should be a warm, protective product experience. Payment should feel like unlocking more care, not purchasing a software plan.
+
+**UX Flaws**
+Plan names "Free / Care / Family Plus" are fine but the CTA "Protect Your Family" is on the Care plan only. The Family Plus plan should have an even stronger CTA. Currently the architecture doesn't differentiate the emotional pitch between plans.
+
+**Trust Flaws**
+Razorpay is trusted in India, but the moment the checkout opens in a WebView, the user sees Razorpay branding, not Renomedy branding. For a first-time health app payment, this context switch reduces trust. A brief "You're paying securely via Razorpay — India's trusted payment gateway" explainer before the checkout opens would significantly reduce abandonment.
+
+The mock mode implementation is architecturally smart but carries a real risk: if mock mode is accidentally left active in a build that reaches real users, subscriptions will appear to activate without real payment. This needs a hard environment check, not a soft flag.
+
+**Conversion Blockers**
+₹199/month for a Care plan needs a reason at the moment of payment. The architecture doesn't describe a value summary at checkout time. The user who clicks "Protect Your Family" should see, in that moment: "Unlimited prescription scanning. Medicine reminders for the whole family. Never miss a refill." Without this, ₹199 feels arbitrary.
+
+**PMF Threat**
+"Sanctuary-wide unlock" is strategically correct (one payer, whole family benefits) but it's not communicated as a selling point. The admin paying ₹199 should feel like they're doing something for their family, not paying for their own features. "Your family gets premium care when you activate" is the right emotional frame — and it's missing.
+
+**Recommended Fixes**
+Move payment initiation closer to the value moment. After a successful OCR prescription scan, trigger a gentle "Unlock unlimited scans for your family" nudge. This is conversion engineering — payment at peak value, not in a pricing tab.
+
+Add a pre-Razorpay bridge screen: Renomedy branded, showing what they're unlocking, with a single "Continue to Secure Payment" button. This keeps brand continuity before the Razorpay handoff.
+
+**Priority: Critical**
+
+---
+
+## 5. OCR + PRESCRIPTION TRUST
+
+**Critical Launch Blockers**
+The architecture describes Gemini Vision → parse → verify flow but does not describe what confidence score threshold triggers manual verification. If a prescription is 70% correctly parsed, does the user see "here are your medicines" or "please verify these medicines"? This distinction is the difference between dangerous over-trust and healthy caution.
+
+There is no safety disclaimer architecture described. In India, where patients self-medicate based on partial prescription understanding, an app showing parsed medication data without a "consult your doctor before changing doses" disclaimer carries real liability and trust risk.
+
+**Trust Flaws**
+If OCR produces wrong output — wrong medicine name, wrong dosage — and a family member acts on it, the trust event is catastrophic. Not just for the user, but for word-of-mouth. One bad OCR story spreads in a family WhatsApp group faster than ten good ones. The current architecture treats OCR as a parsing problem, not a trust design problem.
+
+**UX Flaws**
+"User verifies parsed data" is described in the journey, but there is no design language around what verification feels like. Is it a checklist? A swipe? A tap-to-confirm? The verification UX is the most critical trust-building moment in the product and it's currently described as a step, not an experience.
+
+**Emotional Friction**
+Indian families see prescriptions as sacred documents from the doctor. Watching an app "read" a prescription and produce a list of medicines creates a moment of: "Is this right? Can I trust this?" The current architecture has no reassurance layer at this moment.
+
+**Recommended Fixes**
+Design OCR output as "Doctor's Instructions" not "Parsed Medications." Frame it from the doctor's authority, not from the app's capability. "Here's what Dr. Kumar prescribed" feels safer than "Here are your medications."
+
+Add a confidence indicator that's human-readable: not a percentage, but a visual signal: "Clearly read" (green), "Please double-check" (yellow), "Could not read clearly — please re-upload" (red).
+
+Add a permanent, non-intrusive disclaimer on the prescription view: "Always follow your doctor's instructions. Renomedy helps you track, not prescribe."
+
+**Priority: Critical**
+
+---
+
+## 6. NOTIFICATIONS + RETENTION
+
+**Critical Launch Blockers**
+The notification permission request is triggered "on first dashboard visit" — which means a user who just signed up, joined a Sanctuary, and landed on a dashboard for the first time is immediately asked for notification permission. They have zero context for why Renomedy needs to send them notifications. This is the worst possible moment to ask. Permission denial rate at this stage will be extremely high.
+
+**Notification Fatigue**
+The architecture describes "basic medication reminders" but does not describe the maximum notification volume per day. A family with 3 members, each on 4 medications, 3 times a day = 36 notifications per day from one app. This will cause immediate notification disabling, which destroys the retention loop.
+
+**Caregiver Reassurance**
+The architecture is built around patient reminders — but the highest-anxiety user is the caregiver who is away from the patient. There is no described notification for the caregiver: "Your mother has not marked her 9pm medicine as taken." This "caregiver confirmation" notification is the highest-value notification in the system and it's missing from the architecture.
+
+**Habit Loop Weakness**
+The current notification model is purely functional (reminder → take medicine → mark done). There is no positive reinforcement loop: "Your mother completed all her medicines this week." Without positive feedback, the habit loop is built on anxiety, not care — and anxiety-based loops have high churn.
+
+**Recommended Fixes**
+Move notification permission request to the first time a medication schedule is created or the first time a family member is added — not dashboard arrival. At that moment, say: "Your family will receive medicine reminders. Enable notifications to make sure no dose is missed." This contextual request will have dramatically higher acceptance.
+
+Implement a daily maximum notification cap per user: suggest 6-8 per day maximum. Let caregivers configure this.
+
+Add a weekly "Sanctuary Report" notification: "The Sharma Sanctuary had a great week — 94% doses taken." This single notification type is the highest-retention touchpoint in the system.
+
+**Priority: High**
+
+---
+
+## 7. CATEGORY DOMINATION
+
+**Current Honest Assessment**
+This architecture, as built, feels like a well-engineered family health management app with good OCR. It does not yet feel like "India's Prescription Clarity + Family Medication Sanctuary." The gap is not technical — it's narrative and experiential.
+
+The category-defining strength is the intersection of three things that no competitor owns simultaneously: prescription literacy (OCR + translation), family care coordination (Sanctuary + roles), and medication continuity (schedules + reminders). But these three things are not yet connected into a single emotional narrative in the UX.
+
+**Biggest PMF Threats**
+The primary PMF threat is that caregivers download the app, scan one prescription, and then don't return because there's no compelling daily reason to open Renomedy. Prescription scanning is an episodic behavior (every 30-90 days). The daily retention hook must be the medication tracker — but the tracker's UX is currently described as functional, not magnetic.
+
+The secondary PMF threat is that the product works beautifully for nuclear family caregivers in English-comfortable urban homes but fails for the actual majority of Indian medication management situations: multigenerational homes, regional language users, elderly primary patients.
+
+**Category Moat Strengths**
+Sanctuary as a branded safe space for family health is genuinely differentiated if executed with emotional depth. No current Indian health app has claimed this emotional territory.
+
+Prescription OCR as a trust-entry point is strategically sound. It creates an immediate, tangible value moment that requires no behavior change from the user — they were already holding a prescription.
+
+The family-wide subscription model (one payer, whole family benefits) is the right economic model for Indian family dynamics and is not currently offered by competitors.
+
+---
+
+## FINAL DELIVERABLES
+
+### Top 10 Launch Blockers
+
+1. Onboarding presents "Create/Join Sanctuary" before explaining what a Sanctuary is — cold drop-off
+2. No OCR confidence UX or safety disclaimer — prescription trust is unguarded
+3. Dual-role system (membership role + family member role) will produce visible permission confusion
+4. Notification permission requested at worst possible moment — high denial rate expected
+5. Payment initiated from a cold "Pricing tab" rather than from a value moment — low conversion
+6. No caregiver "confirmation" notification (patient didn't take medicine) — missing the highest-value retention hook
+7. No pre-Razorpay bridge screen — trust continuity breaks at payment handoff
+8. Role self-selection (Caregiver/Patient/Family Member) uses clinical language users don't identify with
+9. "Sanctuary" brand name requires explanation to be understood — negative word-of-mouth friction
+10. Empty state after sanctuary creation has no emotional direction — feels broken to new users
+
+### Top 10 Trust Opportunities
+
+1. "Doctor's Instructions" framing for OCR output — borrows doctor's authority for prescription data
+2. Invite preview as a full-screen branded moment — "You're joining The Sharma Sanctuary" as an emotional door
+3. Pre-Razorpay bridge screen with what's being unlocked — keeps brand continuity before payment
+4. "Sanctuary-wide unlock" repositioned as "you're protecting your whole family" — caregiver identity moment
+5. Permission summary in member dashboard — "what can I see here" trust anchor
+6. Weekly Sanctuary Report notification — positive reinforcement replaces anxiety loop
+7. OCR confidence visual signal (Clearly Read / Please Check / Re-upload) — transparent system trust
+8. Permanent "consult your doctor" disclaimer on prescription view — liability protection + user trust
+9. Contextual notification permission request at first medication schedule creation — dramatically higher acceptance
+10. Family surname auto-applied to Sanctuary name — "The Sharma Sanctuary" feels owned and real
+
+### Top 10 UX Improvements
+
+1. Emotional anchor screen before Create/Join choice — "Here's what you're building"
+2. Replace clinical role labels with relational ones — "I manage my family's medicines" not "Caregiver"
+3. Design invite preview as a dedicated full-screen experience, not a modal
+4. Add "What can I see?" permission summary link in member dashboard
+5. Move payment nudge to immediately after first successful OCR scan — peak value moment
+6. Daily notification cap with caregiver-configurable preferences
+7. Add "caregiver away" notification type — "Your mother hasn't taken her 9pm medicine"
+8. Consistent "Your Family's Private Care Space" subtitle everywhere Sanctuary appears
+9. Weekly Sanctuary health summary as a notification and dashboard card
+10. Onboarding completion celebration moment — "Your Sanctuary is ready. Your family is protected." — before landing on dashboard
+
+### Biggest PMF Threats
+
+Episodic usage trap: OCR is used every 30-90 days. Without a compelling daily habit loop centered on the medication tracker, retention will collapse between prescription uploads. The daily tracker must become as emotionally compelling as the OCR feature — it currently is not.
+
+Regional language barrier: The entire UX is English-first. The real Indian caregiver market — particularly for elderly parent care — operates in regional languages. This is not a V1 blocker but it is a growth ceiling that will become visible fast.
+
+Over-trust in OCR: A single high-profile OCR error that causes a family to take wrong medication data seriously would be catastrophic for word-of-mouth in the Indian family WhatsApp ecosystem. The trust architecture around OCR needs to be treated as a product safety system, not just a UX detail.
+
+Competitor commoditization: The core OCR + reminders feature set can be replicated by a well-resourced competitor in 3-4 months. The Sanctuary emotional layer and the family-wide subscription model are the only durable moats — and they need to be felt in every screen, not just described in the architecture.
+
+### Biggest Category Moat Strengths
+
+Prescription literacy as the trust wedge is genuinely unique. No Indian consumer app has made prescription comprehension its primary value proposition. This is an unclaimed territory with massive reach across every family that has an elderly parent on medication.
+
+Sanctuary as a branded emotional container for family health is differentiated if built with emotional depth. The closest competitor is a WhatsApp group — and Renomedy can win that comparison if it delivers clarity that WhatsApp cannot.
+
+Family-wide subscription economics align with Indian family decision-making. The person who pays is the caregiver. The people who benefit are the whole family. This model creates a payer who feels like a protector, not a consumer — and that identity is extraordinarily powerful for retention and word-of-mouth.
+
+The combination of OCR + family coordination + medication continuity as a single system is not offered by any competitor. Each competitor owns one piece. Renomedy's moat is the connection between all three — but only if the UX makes that connection viscerally felt, not just functionally present.

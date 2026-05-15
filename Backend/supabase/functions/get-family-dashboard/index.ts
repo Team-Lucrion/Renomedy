@@ -1,4 +1,4 @@
-import { errorResponse, jsonResponse, swasthiTrustMetadata } from "../_shared/response.ts";
+import { errorResponse, jsonResponse, RenomedyTrustMetadata } from "../_shared/response.ts";
 import { ensureClosedBetaAccess, getBearerToken, getUserClient } from "../_shared/supabase.ts";
 
 Deno.serve(async (req) => {
@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
         ).length ?? 0
       },
       metadata: {
-        ...swasthiTrustMetadata,
+        ...RenomedyTrustMetadata,
         reminder: "Medication insights are adherence-support signals only and do not replace clinician guidance."
       }
     });

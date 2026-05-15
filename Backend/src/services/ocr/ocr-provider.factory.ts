@@ -1,14 +1,14 @@
 import { env } from "../../config/env";
-import { HttpOcrProvider } from "./http-ocr.provider";
 import { MockOcrProvider } from "./mock-ocr.provider";
+import { VisionGeminiOcrProvider } from "./vision-gemini-ocr.provider";
 import type { OcrProvider } from "./ocr-provider";
 
 export function createOcrProvider(): OcrProvider {
-  if (env.OCR_PROVIDER === "http") {
-    return new HttpOcrProvider();
+  if (env.OCR_PROVIDER === "mock") {
+    return new MockOcrProvider();
   }
 
-  return new MockOcrProvider();
+  return new VisionGeminiOcrProvider();
 }
 
 export function currentOcrProviderName() {

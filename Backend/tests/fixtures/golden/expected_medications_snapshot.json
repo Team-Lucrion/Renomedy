@@ -1,0 +1,24 @@
+[
+  {
+    "medicineName": "Metformin",
+    "dosage": "500 mg",
+    "strength": "500 mg",
+    "frequency": "Twice daily",
+    "duration": "30 days",
+    "instructions": "after food",
+    "shorthandDetected": [],
+    "confidence": "high",
+    "confidenceScore": 0.9,
+    "requiresManualVerification": false
+  },
+  {
+    "medicineName": "Atorvastatin",
+    "dosage": "20mg",
+    "strength": "20mg",
+    "frequency": "Bedtime",
+    "shorthandDetected": [],
+    "confidence": "medium",
+    "confidenceScore": 0.65,
+    "requiresManualVerification": true
+  }
+]

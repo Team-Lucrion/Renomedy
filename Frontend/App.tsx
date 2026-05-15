@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { ClerkProvider } from '@clerk/expo';
 import { Platform } from 'react-native';
@@ -15,6 +16,16 @@ const getTokenCache = () => {
 
 
 export default function App() {
+  if (!clerkPublishableKey) {
+    return (
+      <SafeAreaProvider>
+        <React.Fragment>
+          {/* Placeholder for missing clerk key */}
+        </React.Fragment>
+      </SafeAreaProvider>
+    );
+  }
+
   return (
     <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={getTokenCache()}>
       <SafeAreaProvider>

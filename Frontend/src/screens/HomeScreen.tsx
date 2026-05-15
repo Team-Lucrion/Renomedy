@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '@clerk/expo';
 import { useAppData } from '../context/AppDataContext';
+import { findFirst } from '../lib/collections';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 
@@ -32,7 +33,10 @@ function formatContinuityStatus(status?: string | null) {
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const { user } = useUser();
-  const { currentUser, familyGroups, familyMembers, overview, schedules, refillStates, error, betaBlocked, refreshAll } = useAppData();
+  const { currentUser, familyGroups, familyMembers, overview, schedules, refillStates, error, betaBlocked, refreshAll, activateBetaAccess } = useAppData();
+  const [inviteCode, setInviteCode] = useState('');
+  const [inviteError, setInviteError] = useState('');
+  const [isActivatingInvite, setIsActivatingInvite] = useState(false);
 
   const greetingName =
     currentUser?.full_name?.split(' ')[0] ??
@@ -40,18 +44,48 @@ export default function HomeScreen() {
     user?.fullName?.split(' ')[0] ??
     'Caregiver';
 
-  const refillAlerts = refillStates.filter((state) =>
-    ['risk_soon', 'will_run_out', 'out_of_stock'].includes(state.continuity_status ?? ''),
-  );
+  const refillAlerts = refillStates.filter((state) => {
+    const status = state.continuity_status ?? '';
+    return status === 'risk_soon' || status === 'will_run_out' || status === 'out_of_stock';
+  });
+  const currentMembership = familyGroups[0]?.family_group_memberships?.[0];
+  const canManageFamily = currentMembership?.role === 'owner' || currentMembership?.role === 'caregiver';
 
   const activeSchedules = schedules.slice(0, 4);
+  const allowAccess = async () => {
+    const normalizedCode = inviteCode.trim().toUpperCase();
+
+    console.log('[beta-invite] enteredCode', inviteCode);
+    console.log('[beta-invite] normalizedCode', normalizedCode);
+
+    if (!normalizedCode) {
+      setInviteError('Enter your beta invite code.');
+      return;
+    }
+
+    setInviteError('');
+    setIsActivatingInvite(true);
+
+    try {
+      await activateBetaAccess(normalizedCode);
+      setInviteCode('');
+    } catch (activationError) {
+      console.log('[beta-invite] activation error', activationError);
+      setInviteError(activationError instanceof Error ? activationError.message : 'Closed beta access required');
+    } finally {
+      setIsActivatingInvite(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <Ionicons name="menu" size={24} color={colors.primary} />
+        </TouchableOpacity>
+        <View style={styles.headerCopy}>
           <Text style={styles.greeting}>Good Morning, {greetingName}</Text>
-          <Text style={styles.subtitle}>Family Health Dashboard</Text>
+          <Text style={styles.subtitle}>Sanctuary Health Dashboard</Text>
         </View>
         <TouchableOpacity style={styles.profileButton} onPress={() => void refreshAll()}>
           <Ionicons name="refresh" size={24} color={colors.primary} />
@@ -72,13 +106,33 @@ export default function HomeScreen() {
             <Text style={styles.blockedBody}>
               Your Clerk account is signed in, but the backend is still waiting for an approved beta invite to unlock family and medication data.
             </Text>
+            <TextInput
+              autoCapitalize="characters"
+              autoCorrect={false}
+              editable={!isActivatingInvite}
+              onChangeText={setInviteCode}
+              placeholder="Renomedy-FOUNDER-001"
+              placeholderTextColor={colors.textMuted}
+              style={styles.inviteInput}
+              value={inviteCode}
+            />
+            {inviteError ? <Text style={styles.inviteError}>{inviteError}</Text> : null}
+            <TouchableOpacity
+              disabled={isActivatingInvite}
+              style={[styles.inviteButton, isActivatingInvite ? styles.inviteButtonDisabled : null]}
+              onPress={() => void allowAccess()}
+            >
+              <Text style={styles.inviteButtonText}>
+                {isActivatingInvite ? 'Checking invite...' : 'Unlock Beta Access'}
+              </Text>
+            </TouchableOpacity>
           </View>
         ) : null}
 
         <View style={styles.statsGrid}>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{overview?.family_members_count ?? familyMembers.length}</Text>
-            <Text style={styles.statLabel}>Family Members</Text>
+            <Text style={styles.statLabel}>Sanctuary Members</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{overview?.active_schedules_count ?? schedules.length}</Text>
@@ -96,10 +150,12 @@ export default function HomeScreen() {
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Family Overview</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('AddFamilyMember')}>
-              <Ionicons name="add-circle" size={24} color={colors.primary} />
-            </TouchableOpacity>
+            <Text style={styles.cardTitle}>Sanctuary Overview</Text>
+            {canManageFamily ? (
+              <TouchableOpacity onPress={() => navigation.navigate('AddFamilyMember')}>
+                <Ionicons name="add-circle" size={24} color={colors.primary} />
+              </TouchableOpacity>
+            ) : null}
           </View>
 
           {familyGroups.length > 0 ? (
@@ -110,14 +166,14 @@ export default function HomeScreen() {
               ) : null}
             </>
           ) : (
-            <Text style={styles.emptyStateText}>No family group has been created or joined yet.</Text>
+            <Text style={styles.emptyStateText}>No sanctuary has been created or joined yet.</Text>
           )}
 
           <View style={styles.familyList}>
             {familyMembers.map((member) => (
               <View key={member.id} style={styles.familyMemberBadge}>
                 <Ionicons name="person" size={16} color={colors.surface} />
-                <Text style={styles.familyMemberName}>{member.full_name}</Text>
+                <Text style={styles.familyMemberName}>{member.name ?? member.full_name}</Text>
               </View>
             ))}
           </View>
@@ -130,11 +186,12 @@ export default function HomeScreen() {
               <Text style={styles.alertTitle}>Refill Continuity Alert</Text>
             </View>
             {refillAlerts.map((alert) => {
-              const member = familyMembers.find((item) => item.id === schedules.find((schedule) => schedule.id === alert.medication_schedule_id)?.family_member_id);
+              const schedule = findFirst(schedules, (item) => item.id === alert.medication_schedule_id);
+              const member = findFirst(familyMembers, (item) => item.id === schedule?.family_member_id);
 
               return (
                 <View key={alert.medication_schedule_id} style={styles.alertItem}>
-                  <Text style={styles.alertMedName}>{member?.full_name ?? 'Family member'}</Text>
+                  <Text style={styles.alertMedName}>{member?.name ?? member?.full_name ?? 'Family member'}</Text>
                   <Text style={styles.alertMedRisk}>{formatContinuityStatus(alert.continuity_status)}</Text>
                 </View>
               );
@@ -146,7 +203,7 @@ export default function HomeScreen() {
           <Text style={styles.sectionTitle}>Active Medication Schedules</Text>
           {activeSchedules.length > 0 ? (
             activeSchedules.map((schedule) => {
-              const member = familyMembers.find((item) => item.id === schedule.family_member_id);
+              const member = findFirst(familyMembers, (item) => item.id === schedule.family_member_id);
               const medicationName =
                 schedule.prescription_medications?.medicine_name ??
                 schedule.prescription_medications?.brand_name ??
@@ -161,12 +218,12 @@ export default function HomeScreen() {
                       {schedule.prescription_medications?.dosage ? ` ${schedule.prescription_medications.dosage}` : ''}
                     </Text>
                     <Text style={styles.medTime}>
-                      {formatReminderTime(schedule.reminder_times)} • For {member?.full_name ?? 'Family member'}
+                      {formatReminderTime(schedule.reminder_times)} | For {member?.name ?? member?.full_name ?? 'Family member'}
                     </Text>
                   </View>
                   <TouchableOpacity
                     style={styles.medButton}
-                    onPress={() => navigation.navigate('Tracker' as never)}
+                    onPress={() => navigation.dispatch(DrawerActions.jumpTo('Medications'))}
                   >
                     <Ionicons name="chevron-forward-circle-outline" size={28} color={colors.success} />
                   </TouchableOpacity>
@@ -191,13 +248,24 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
-    paddingTop: 60,
+    paddingTop: 52,
     paddingBottom: spacing.md,
     backgroundColor: colors.surface,
+    gap: spacing.md,
     ...shadows.sm,
+  },
+  menuButton: {
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: borderRadius.pill,
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
+  headerCopy: {
+    flex: 1,
   },
   greeting: {
     ...typography.h2,
@@ -244,6 +312,35 @@ const styles = StyleSheet.create({
   blockedBody: {
     ...typography.bodySmall,
     color: colors.text,
+  },
+  inviteInput: {
+    backgroundColor: colors.surface,
+    borderColor: '#FBD38D',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    color: colors.text,
+    fontSize: 14,
+    minHeight: 48,
+    paddingHorizontal: spacing.md,
+  },
+  inviteError: {
+    ...typography.bodySmall,
+    color: colors.danger,
+  },
+  inviteButton: {
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.md,
+    minHeight: 48,
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
+  },
+  inviteButtonDisabled: {
+    opacity: 0.7,
+  },
+  inviteButtonText: {
+    ...typography.label,
+    color: colors.surface,
   },
   statsGrid: {
     flexDirection: 'row',
@@ -379,3 +476,4 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
   },
 });
+

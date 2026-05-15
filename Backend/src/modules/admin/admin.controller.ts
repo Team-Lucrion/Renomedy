@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { ok } from "../../utils/api-response";
 import {
   createBetaInvite,
+  assignUserSubscription,
   dismissFailedAlert,
   listBetaInvites,
   listBetaUsers,
@@ -43,4 +44,9 @@ export async function retryFailedAlertHandler(req: Request, res: Response) {
 export async function dismissFailedAlertHandler(req: Request, res: Response) {
   const data = await dismissFailedAlert(req.auth!.token, req.params.alertId);
   return ok(res, data, "Alert dismissed");
+}
+
+export async function assignUserSubscriptionHandler(req: Request, res: Response) {
+  const data = await assignUserSubscription(req.auth!.token, req.body);
+  return ok(res, data, "Subscription assigned");
 }

@@ -485,11 +485,11 @@ insert into storage.buckets (id, name, public)
 values ('prescriptions', 'prescriptions', false)
 on conflict (id) do update set public = excluded.public;
 
-drop policy if exists "Swasthi prescription uploads private read" on storage.objects;
-drop policy if exists "Swasthi prescription uploads private insert" on storage.objects;
-drop policy if exists "Swasthi prescription uploads private update" on storage.objects;
+drop policy if exists "Renomedy prescription uploads private read" on storage.objects;
+drop policy if exists "Renomedy prescription uploads private insert" on storage.objects;
+drop policy if exists "Renomedy prescription uploads private update" on storage.objects;
 
-create policy "Swasthi prescription uploads private read"
+create policy "Renomedy prescription uploads private read"
 on storage.objects
 for select
 using (
@@ -497,7 +497,7 @@ using (
   and split_part(name, '/', 1) = public.current_clerk_user_id()
 );
 
-create policy "Swasthi prescription uploads private insert"
+create policy "Renomedy prescription uploads private insert"
 on storage.objects
 for insert
 with check (
@@ -505,7 +505,7 @@ with check (
   and split_part(name, '/', 1) = public.current_clerk_user_id()
 );
 
-create policy "Swasthi prescription uploads private update"
+create policy "Renomedy prescription uploads private update"
 on storage.objects
 for update
 using (

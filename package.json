@@ -1,5 +1,5 @@
 {
-  "name": "swasthi",
+  "name": "renomedy",
   "private": true,
   "workspaces": [
     "Frontend",
@@ -11,5 +11,10 @@
     "typecheck:frontend": "npm --prefix Frontend run typecheck",
     "typecheck:backend": "npm --prefix Backend run typecheck",
     "typecheck": "npm run typecheck:backend && npm run typecheck:frontend"
+  },
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native-worklets": "0.5.1"
   }
 }

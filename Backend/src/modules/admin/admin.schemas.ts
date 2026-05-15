@@ -7,3 +7,9 @@ export const createBetaInviteSchema = z.object({
   notes: z.string().optional(),
   expires_at: z.string().optional()
 });
+
+export const assignSubscriptionSchema = z.object({
+  user_id: z.string().uuid(),
+  plan_slug: z.enum(["free", "care", "family_plus"]),
+  billing_cycle: z.enum(["monthly", "yearly", "lifetime"])
+});

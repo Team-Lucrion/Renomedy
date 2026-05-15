@@ -1,5 +1,5 @@
 import { adminClient, ensureClosedBetaAccess, getBearerToken, writeAuditLog } from "../_shared/supabase.ts";
-import { errorResponse, jsonResponse, swasthiTrustMetadata } from "../_shared/response.ts";
+import { errorResponse, jsonResponse, RenomedyTrustMetadata } from "../_shared/response.ts";
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
       success: true,
       function: "join-family-group",
       data: family,
-      metadata: swasthiTrustMetadata
+      metadata: RenomedyTrustMetadata
     });
   } catch (error) {
     return errorResponse(401, error instanceof Error ? error.message : "Unauthorized");

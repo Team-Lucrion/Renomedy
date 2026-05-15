@@ -8,7 +8,7 @@ export async function getFamilyOverview(jwt: string) {
 
   const [{ data: members, error: membersError }, { data: schedules, error: schedulesError }, { data: doseLogs, error: doseError }, { data: refillStates, error: refillError }] =
     await Promise.all([
-      sb.from("family_members").select("id"),
+      sb.from("family_members").select("id").eq("is_archived", false),
       sb.from("medication_schedules").select("id, status"),
       sb.from("dose_logs").select("id, status, created_at").gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
       sb.from("refill_states").select("id, continuity_status")

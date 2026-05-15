@@ -1,4 +1,4 @@
-import { errorResponse, jsonResponse, swasthiTrustMetadata } from "../_shared/response.ts";
+import { errorResponse, jsonResponse, RenomedyTrustMetadata } from "../_shared/response.ts";
 import {
   createSignedPrescriptionUrl,
   ensureClosedBetaAccess,
@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
         image_url: await createSignedPrescriptionUrl(storagePath)
       },
       metadata: {
-        ...swasthiTrustMetadata,
+        ...RenomedyTrustMetadata,
         prescription_notice:
           "Uploaded prescriptions and OCR text are informational and must be verified by user/pharmacist/doctor."
       }

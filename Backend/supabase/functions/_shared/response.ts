@@ -15,10 +15,10 @@ export function errorResponse(status: number, message: string, details?: unknown
   });
 }
 
-export const swasthiTrustMetadata = {
+export const RenomedyTrustMetadata = {
   trust_rules: {
-    no_diagnosis: "Swasthi does not diagnose medical conditions.",
-    no_doctor_replacement: "Swasthi does not replace doctors or licensed pharmacists.",
+    no_diagnosis: "Renomedy does not diagnose medical conditions.",
+    no_doctor_replacement: "Renomedy does not replace doctors or licensed pharmacists.",
     verification_required:
       "Prescription shorthand explanations and OCR interpretations require human verification.",
   },

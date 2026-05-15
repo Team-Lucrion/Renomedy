@@ -1,4 +1,4 @@
-import { errorResponse, jsonResponse, swasthiTrustMetadata } from "../_shared/response.ts";
+import { errorResponse, jsonResponse, RenomedyTrustMetadata } from "../_shared/response.ts";
 import { ensureClosedBetaAccess, getBearerToken, getUserClient, writeAuditLog } from "../_shared/supabase.ts";
 
 Deno.serve(async (req) => {
@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
         medications_detected: medications.length
       },
       metadata: {
-        ...swasthiTrustMetadata,
+        ...RenomedyTrustMetadata,
         ocr_status: "human_verification_required"
       }
     });

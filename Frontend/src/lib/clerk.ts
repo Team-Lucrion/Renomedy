@@ -1,9 +1,9 @@
 import * as Linking from 'expo-linking';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
+3
 if (!publishableKey) {
-  throw new Error(
+  console.error(
     'Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY. Add it to your Expo environment before starting the app.',
   );
 }

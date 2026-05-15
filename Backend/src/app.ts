@@ -14,9 +14,11 @@ import { usersRouter } from "./modules/users/users.routes";
 import { familyRouter } from "./modules/family/family.routes";
 import { prescriptionsRouter } from "./modules/prescriptions/prescriptions.routes";
 import { medicationsRouter } from "./modules/medications/medications.routes";
-import { notificationsRouter } from "./modules/notifications/notifications.routes";
 import { dashboardRouter } from "./modules/dashboard/dashboard.routes";
 import { adminRouter } from "./modules/admin/admin.routes";
+import { subscriptionsRouter } from "./modules/subscriptions/subscriptions.routes";
+import { paymentsRouter } from "./modules/payments/payments.routes";
+import { notificationsRouter } from "./modules/notifications/notifications.routes";
 import { corsAllowedOrigins } from "./config/env";
 import { asyncHandler } from "./utils/async-handler";
 
@@ -52,15 +54,18 @@ app.use(
 app.use(apiRateLimiter);
 app.use(observabilityMiddleware);
 
-app.get("/health", (_req, res) => res.status(200).json({ status: "ok", service: "swasthi-backend" }));
+app.get("/health", (_req, res) => res.status(200).json({ status: "ok", service: "renomedy-backend" }));
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/family", familyRouter);
 app.use("/prescriptions", prescriptionsRouter);
+app.use("/api/prescriptions", prescriptionsRouter);
 app.use("/medications", medicationsRouter);
 app.use("/notifications", notificationsRouter);
 app.use("/dashboard", dashboardRouter);
+app.use("/subscriptions", subscriptionsRouter);
+app.use("/payments", paymentsRouter);
 app.use("/admin", adminRouter);
 
 app.use(notFoundHandler);

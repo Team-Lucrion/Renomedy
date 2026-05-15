@@ -1,4 +1,4 @@
-# Swasthi: User Acquisition & Community Intelligence Playbook
+# Renomedy: User Acquisition & Community Intelligence Playbook
 
 ## 1. Platform-by-Platform User Map
 
@@ -30,7 +30,7 @@
 
 ## 2. User Journey & Pain-Intent Mapping
 
-| Moment | User Intent | Swasthi Entry Point |
+| Moment | User Intent | Renomedy Entry Point |
 | :--- | :--- | :--- |
 | **Post-Doctor Visit** | "What do these 5 medicines do?" | OCR Scan for "Clarity Summary." |
 | **Pharmacy Counter** | "Is there a cheaper generic?" | Brand-to-Generic Clarity. |

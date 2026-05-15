@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Swasthi — Your Family's Medication Clarity System</title>
+  <title>Renomedy — Your Family's Medication Clarity System</title>
 
   <link rel="icon" type="image/png" href="https://your-favicon-link-here.com/favicon.png">
   <link rel="apple-touch-icon" href="https://your-favicon-link-here.com/favicon.png">
@@ -146,9 +146,9 @@
     <nav>
       <div class="logo-mark fade-up">
         <div class="logo-icon">
-          <img src="https://your-logo-link-here.com/logo.png" alt="Swasthi Logo">
+          <img src="https://your-logo-link-here.com/logo.png" alt="Renomedy Logo">
         </div>
-        <span class="logo-text">Swasthi</span>
+        <span class="logo-text">Renomedy</span>
       </div>
       <div class="trust-badge fade-up delay-1">
         <span class="dot"></span> Private, Secure & AI-Assisted
@@ -180,12 +180,12 @@
             <input type="email" id="emailInput" placeholder="you@email.com" autocomplete="email" required>
             <button class="btn-cta" id="ctaBtn" onclick="handleSignup()">Get Early Access</button>
           </div>
-          <p class="form-note"><strong>No spam, ever.</strong> We'll reach out when Swasthi is ready for your family.</p>
+          <p class="form-note"><strong>No spam, ever.</strong> We'll reach out when Renomedy is ready for your family.</p>
         </div>
 
         <div class="success-msg" id="successMsg">
           <h4>✦ You're on the list</h4>
-          <p>We'll reach out when Swasthi is ready. Thank you for being an early believer.</p>
+          <p>We'll reach out when Renomedy is ready. Thank you for being an early believer.</p>
         </div>
 
         <div class="trust-chips fade-up delay-5">
@@ -278,7 +278,7 @@
     </main>
 
     <footer class="fade-up delay-7">
-      © 2026 <span>Swasthi</span>. Made with care in India. · Not a medical device · Not for diagnosis
+      © 2026 <span>Renomedy</span>. Made with care in India. · Not a medical device · Not for diagnosis
     </footer>
   </div>
 
@@ -287,7 +287,7 @@
   <script>
     const SUPABASE_URL = "https://gntncwnkuxwtfkxkqrme.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdudG5jd25rdXh3dGZreGtxcm1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NjQ2NjIsImV4cCI6MjA5MDU0MDY2Mn0.f-cWjCy-dJH_cgaeh2dhv5d_oSloMDIzdrkB_WqTPeE";
-    const TABLE_NAME = "swasthi_waitlist";
+    const TABLE_NAME = "Renomedy_waitlist";
     const POSTHOG_KEY = "phc_mfdquhJipR59wHYfEK2Y7EUGKdnLQiQyx9MimmzHxS4D";
 
     const params = new URLSearchParams(window.location.search);
@@ -308,7 +308,7 @@
       posthog.init(POSTHOG_KEY, { api_host: "https://app.posthog.com" });
     })();
 
-    window.addEventListener("load", () => track("landing_page_viewed", { page: "swasthi_waitlist" }));
+    window.addEventListener("load", () => track("landing_page_viewed", { page: "Renomedy_waitlist" }));
 
     async function insertToSupabase(email) {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {

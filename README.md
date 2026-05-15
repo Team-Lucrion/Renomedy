@@ -1,9 +1,9 @@
-# Swasthi
+# Renomedy
 
-Swasthi is split into two applications inside one workspace:
+Renomedy is split into two applications inside one workspace:
 
 - `Frontend/` contains the Expo React Native app.
-- `Backend/` contains the Express + Supabase + Clerk API.
+- `Backend/` contains the Express API and the canonical prescription pipeline: **Google Cloud Vision** for OCR text extraction and **Google Gemini** for structured medicine parsing (`OCR_PROVIDER=vision_gemini`).
 
 ## Integrated local setup
 
@@ -32,4 +32,5 @@ Swasthi is split into two applications inside one workspace:
 - Frontend authentication is handled by Clerk Expo.
 - Frontend API calls send the Clerk bearer token to the backend.
 - Backend validates the token, maps the Clerk user to the local `users` table, and serves family, medication, dashboard, and prescription data.
+- Prescription OCR is handled by `Backend/src/services/ocr/vision-gemini-ocr.provider.ts`: **Google Cloud Vision** extracts text; **Gemini** structures medicines. Set `OCR_PROVIDER=mock` only for tests or demos without Vision/Gemini credentials.
 - `CORS_ALLOWED_ORIGINS` in `Backend/.env` controls which browser origins may call the API. Native mobile requests without a browser origin remain allowed.

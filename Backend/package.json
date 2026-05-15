@@ -1,7 +1,7 @@
 {
-  "name": "swasthi-backend",
+  "name": "renomedy-backend",
   "version": "1.0.0",
-  "description": "Swasthi backend API - Prescription Clarity + Family Medication Governance",
+  "description": "Renomedy backend API - Prescription Clarity + Family Medication Governance",
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
@@ -12,17 +12,19 @@
     "test": "npm run build && node --test ./tests/*.test.js"
   },
   "keywords": [
-    "swasthi",
+    "renomedy",
     "healthcare",
     "clerk",
     "supabase",
     "express",
     "typescript"
   ],
-  "author": "Swasthi",
+  "author": "Renomedy",
   "license": "UNLICENSED",
   "dependencies": {
     "@clerk/backend": "^1.24.3",
+    "@google/genai": "^2.0.1",
+    "google-auth-library": "^9.15.1",
     "@sentry/node": "^10.51.0",
     "@supabase/supabase-js": "^2.49.8",
     "cors": "^2.8.5",

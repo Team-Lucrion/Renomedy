@@ -12,3 +12,7 @@ export const notificationPreferencesSchema = z.object({
   quiet_hours_start: z.string().optional(),
   quiet_hours_end: z.string().optional()
 });
+
+export const unregisterTokenSchema = z.object({
+  fcm_token: z.string().min(8).optional()
+});

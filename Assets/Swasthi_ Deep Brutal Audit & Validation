@@ -1,4 +1,4 @@
-# Swasthi: Deep Brutal Audit & Validation
+# Renomedy: Deep Brutal Audit & Validation
 **Auditor:** Manus AI (Elite Startup Validator & Healthcare Strategist)
 **Context:** India-first Healthtech Market Analysis
 
@@ -41,8 +41,8 @@
 1. **Practo/1mg/PharmEasy:** They solve "Buying" and "Booking." Their record storage is a "feature," not a "product." They have a **Transactional Bias**; they want you to spend, not necessarily *understand*.
 2. **ABDM:** Provides the infrastructure (ABHA), but the UI/UX is currently unusable for the average family.
 3. **Gaps:** None of the giants offer **"Interpretation"** or **"Family Governance."**
-4. **Wedge:** **Neutrality + Interpretation.** Swasthi doesn't sell pills, so it can be the "Truth Layer."
-5. **Moat:** **The Family Health Graph.** Once 3 generations of meds are in Swasthi, leaving is impossible.
+4. **Wedge:** **Neutrality + Interpretation.** Renomedy doesn't sell pills, so it can be the "Truth Layer."
+5. **Moat:** **The Family Health Graph.** Once 3 generations of meds are in Renomedy, leaving is impossible.
 
 ---
 

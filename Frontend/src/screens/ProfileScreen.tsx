@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useClerk, useUser } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import ConfirmActionModal from '../components/ConfirmActionModal';
 import { useAppData } from '../context/AppDataContext';
+import { unregisterStoredNotifications } from '../lib/notifications';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
 function formatBetaStatus(status?: string | null) {
@@ -17,22 +20,49 @@ function formatBetaStatus(status?: string | null) {
 }
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
   const { signOut } = useClerk();
   const { user } = useUser();
-  const { currentUser, familyGroups, familyMembers, refreshAll, error, betaBlocked } = useAppData();
+  const { currentUser, familyGroups, familyMembers, refreshAll, error, betaBlocked, leaveSanctuary, unregisterNotificationToken, sendTestPush } = useAppData();
+  const [isLeaving, setIsLeaving] = useState(false);
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+  const [actionMessage, setActionMessage] = useState('');
 
   const displayName =
     currentUser?.full_name ??
     user?.fullName ??
-    'Swasthi Caregiver';
+    'Renomedy Caregiver';
 
   const email =
     user?.primaryEmailAddress?.emailAddress ??
     'No email available';
 
+  const currentSanctuary = familyGroups[0] ?? null;
+
+  const handleSignOut = async () => {
+    await unregisterStoredNotifications(unregisterNotificationToken);
+    await signOut();
+  };
+
+  const handleLeaveSanctuary = async () => {
+    setIsLeaving(true);
+    try {
+      await leaveSanctuary();
+      setShowLeaveConfirm(false);
+      setActionMessage('You have left the sanctuary.');
+    } catch (leaveError) {
+      setActionMessage(leaveError instanceof Error ? leaveError.message : 'Unable to leave sanctuary.');
+    } finally {
+      setIsLeaving(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <Ionicons name="menu" size={24} color={colors.primary} />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile & Settings</Text>
       </View>
 
@@ -46,7 +76,11 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Backend Status</Text>
+          <Text style={styles.sectionTitle}>Sanctuary Status</Text>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Current sanctuary</Text>
+            <Text style={styles.detailValue}>{currentSanctuary?.family_name ?? 'Not joined'}</Text>
+          </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Beta access</Text>
             <Text style={styles.detailValue}>{formatBetaStatus(currentUser?.beta_access_status)}</Text>
@@ -56,18 +90,19 @@ export default function ProfileScreen() {
             <Text style={styles.detailValue}>{currentUser?.onboarding_complete ? 'Complete' : 'Pending'}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Family groups</Text>
+            <Text style={styles.detailLabel}>Sanctuaries</Text>
             <Text style={styles.detailValue}>{familyGroups.length}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Family members</Text>
+            <Text style={styles.detailLabel}>Sanctuary members</Text>
             <Text style={styles.detailValue}>{familyMembers.length}</Text>
           </View>
           {betaBlocked ? (
             <Text style={styles.noticeText}>
-              This account is authenticated, but backend family and medication data is blocked until beta access is approved.
+              This account is authenticated, but sanctuary and medication data is blocked until beta access is approved.
             </Text>
           ) : null}
+          {actionMessage ? <Text style={styles.noticeText}>{actionMessage}</Text> : null}
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
 
@@ -76,10 +111,32 @@ export default function ProfileScreen() {
           <Text style={styles.secondaryButtonText}>Refresh Backend Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.logoutButton} onPress={() => void signOut()}>
+        <TouchableOpacity style={styles.secondaryButton} onPress={() => void sendTestPush()}>
+          <Ionicons name="notifications-outline" size={18} color={colors.primary} />
+          <Text style={styles.secondaryButtonText}>Send Test Push</Text>
+        </TouchableOpacity>
+
+        {currentSanctuary ? (
+          <TouchableOpacity style={styles.leaveButton} onPress={() => setShowLeaveConfirm(true)}>
+            <Text style={styles.leaveText}>Leave Sanctuary</Text>
+          </TouchableOpacity>
+        ) : null}
+
+        <TouchableOpacity style={styles.logoutButton} onPress={() => void handleSignOut()}>
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <ConfirmActionModal
+        visible={showLeaveConfirm}
+        title="Leave sanctuary?"
+        message="You will lose access to shared prescriptions, reminders, and family coordination until you join again."
+        confirmLabel="Leave sanctuary"
+        destructive
+        loading={isLeaving}
+        onConfirm={() => void handleLeaveSanctuary()}
+        onCancel={() => setShowLeaveConfirm(false)}
+      />
     </View>
   );
 }
@@ -90,11 +147,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.md,
     paddingHorizontal: spacing.lg,
-    paddingTop: 60,
+    paddingTop: 52,
     paddingBottom: spacing.md,
     backgroundColor: colors.surface,
     ...shadows.sm,
+  },
+  menuButton: {
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: borderRadius.pill,
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
   },
   headerTitle: {
     ...typography.h2,
@@ -175,6 +243,18 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     ...typography.label,
     color: colors.primary,
+  },
+  leaveButton: {
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.warning,
+  },
+  leaveText: {
+    ...typography.label,
+    color: colors.warning,
   },
   logoutButton: {
     backgroundColor: colors.surface,

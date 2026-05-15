@@ -3,6 +3,7 @@ import { getCurrentUserRecord } from "../../services/current-user.service";
 import { dismissAlert, retryAlert } from "../../services/notification/notification.service";
 import { HttpError } from "../../utils/http-error";
 import { writeAuditLog } from "../../services/audit.service";
+import { assignManualSubscription } from "../subscriptions/subscriptions.service";
 
 function normalizedInviteCode() {
   return Math.random().toString(36).slice(2, 8).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
@@ -124,4 +125,8 @@ export async function dismissFailedAlert(jwt: string, alertId: string) {
     entityId: alertId
   });
   return alert;
+}
+
+export async function assignUserSubscription(jwt: string, input: { user_id: string; plan_slug: "free" | "care" | "family_plus"; billing_cycle: "monthly" | "yearly" | "lifetime" }) {
+  return assignManualSubscription(jwt, input);
 }

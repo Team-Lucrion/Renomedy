@@ -1,4 +1,4 @@
-Use the latest Swasthi backend audit as source of truth. Do not re-audit from scratch. Execute the remaining launch-blocking operational work only.
+Use the latest Renomedy backend audit as source of truth. Do not re-audit from scratch. Execute the remaining launch-blocking operational work only.
 
 Current backend readiness: 91/100.
 Goal: move to controlled closed-beta operational readiness.

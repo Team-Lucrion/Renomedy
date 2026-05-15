@@ -1,10 +1,12 @@
 import React from 'react';
-import { useAuth } from '@clerk/expo';
+import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { useAuth, useUser } from '@clerk/expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../theme/theme';
+import { borderRadius, colors, spacing, typography } from '../theme/theme';
 import { useAppData } from '../context/AppDataContext';
 
 // Screens
@@ -16,90 +18,229 @@ import PrescriptionHubScreen from '../screens/PrescriptionHubScreen';
 import MedicationActivationScreen from '../screens/MedicationActivationScreen';
 import TrackerScreen from '../screens/TrackerScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
+import FamilyScreen from '../screens/FamilyScreen';
+import PricingScreen from '../screens/PricingScreen';
+import FamilyMemberDetailsScreen from '../screens/FamilyMemberDetailsScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
+  Onboarding: undefined;
   MainTabs: undefined;
-  AddFamilyMember: undefined;
+  AddFamilyMember: { memberId?: string } | undefined;
+  FamilyMemberDetails: { memberId: string };
   MedicationActivation: { medicationId: string } | undefined;
 };
 
 export type MainTabParamList = {
-  Home: undefined;
-  Prescription: undefined;
-  Tracker: undefined;
-  Profile: undefined;
+  Dashboard: undefined;
+  Prescriptions: undefined;
+  Medications: undefined;
+  Sanctuary: undefined;
+  Pricing: undefined;
+  Settings: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator<MainTabParamList>();
+const Drawer = createDrawerNavigator<MainTabParamList>();
+
+function roleLabel(role?: string | null) {
+  if (role === 'caregiver') return 'Care Manager';
+  if (role === 'patient') return 'Patient';
+  if (role === 'self') return 'Patient';
+  return 'Family Member';
+}
+
+function drawerIcon(routeName: keyof MainTabParamList, focused: boolean): keyof typeof Ionicons.glyphMap {
+  const icons: Record<keyof MainTabParamList, [keyof typeof Ionicons.glyphMap, keyof typeof Ionicons.glyphMap]> = {
+    Dashboard: ['grid', 'grid-outline'],
+    Prescriptions: ['document-text', 'document-text-outline'],
+    Medications: ['medical', 'medical-outline'],
+    Sanctuary: ['people', 'people-outline'],
+    Pricing: ['card', 'card-outline'],
+    Settings: ['settings', 'settings-outline'],
+  };
+
+  return focused ? icons[routeName][0] : icons[routeName][1];
+}
+
+function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const { user } = useUser();
+  const { currentUser, familyGroups, subscriptionSummary } = useAppData();
+  const displayName = currentUser?.full_name ?? user?.fullName ?? 'Renomedy Family';
+  const familyName = familyGroups[0]?.family_name ?? 'Family not set';
+  const planName = subscriptionSummary?.plan?.display_name ?? 'Free';
+
+  return (
+    <View style={drawerStyles.container}>
+      <View style={drawerStyles.profileBlock}>
+        <View style={drawerStyles.avatar}>
+          <Text style={drawerStyles.avatarText}>{displayName[0]?.toUpperCase() ?? 'S'}</Text>
+        </View>
+        <Text style={drawerStyles.name}>{displayName}</Text>
+        <Text style={drawerStyles.familyName}>{familyName}</Text>
+        <Text style={drawerStyles.planName}>{planName} Plan</Text>
+        <View style={drawerStyles.roleBadge}>
+          <Text style={drawerStyles.roleBadgeText}>{roleLabel(currentUser?.role)}</Text>
+        </View>
+      </View>
+
+      <View style={drawerStyles.menu}>
+        {props.state.routes.map((route, index) => {
+          const focused = props.state.index === index;
+          const routeName = route.name as keyof MainTabParamList;
+
+          return (
+            <TouchableOpacity
+              key={route.key}
+              activeOpacity={0.82}
+              onPress={() => props.navigation.navigate(routeName)}
+              style={[drawerStyles.menuItem, focused ? drawerStyles.menuItemActive : null]}
+            >
+              <Ionicons
+                name={drawerIcon(routeName, focused)}
+                size={20}
+                color={focused ? colors.primary : colors.textMuted}
+              />
+              <Text style={[drawerStyles.menuText, focused ? drawerStyles.menuTextActive : null]}>
+                {route.name}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
 
 const MainTabs = () => {
   return (
-    <Tab.Navigator
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: keyof typeof Ionicons.glyphMap = 'home';
-
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Prescription') {
-            iconName = focused ? 'document-text' : 'document-text-outline';
-          } else if (route.name === 'Tracker') {
-            iconName = focused ? 'medical' : 'medical-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textMuted,
+        drawerActiveTintColor: colors.primary,
+        drawerInactiveTintColor: colors.textMuted,
         headerShown: false,
-        tabBarStyle: {
+        headerTintColor: colors.primary,
+        overlayColor: 'rgba(0, 109, 119, 0.18)',
+        sceneContainerStyle: { backgroundColor: colors.background },
+        drawerStyle: {
           backgroundColor: colors.surface,
-          borderTopColor: colors.border,
-          paddingBottom: 5,
-          paddingTop: 5,
-          height: 60,
+          width: 296,
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Prescription" component={PrescriptionHubScreen} />
-      <Tab.Screen name="Tracker" component={TrackerScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-    </Tab.Navigator>
+      <Drawer.Screen name="Dashboard" component={HomeScreen} />
+      <Drawer.Screen name="Prescriptions" component={PrescriptionHubScreen} />
+      <Drawer.Screen name="Medications" component={TrackerScreen} />
+      <Drawer.Screen name="Sanctuary" component={FamilyScreen} />
+      <Drawer.Screen name="Pricing" component={PricingScreen} />
+      <Drawer.Screen name="Settings" component={ProfileScreen} />
+    </Drawer.Navigator>
   );
 };
 
 export default function AppNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
-  const { isLoading } = useAppData();
+  const { currentUser, familyGroups, isLoading } = useAppData();
 
   if (!isLoaded || (isSignedIn && isLoading)) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Splash" component={SplashScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+    // Render splash screen as a loading view outside of the navigator
+    // to prevent navigation actions from firing before screens exist
+    return <SplashScreen navigation={null as any} />;
   }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isSignedIn ? (
           <Stack.Screen name="Login" component={LoginScreen} />
+        ) : (!currentUser?.onboarding_complete || familyGroups.length === 0) ? (
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         ) : (
           <Stack.Screen name="MainTabs" component={MainTabs} />
         )}
-        <Stack.Screen name="AddFamilyMember" component={AddFamilyMemberScreen} options={{ headerShown: true, title: 'Add Family Member', headerTintColor: colors.primary }} />
-        <Stack.Screen name="MedicationActivation" component={MedicationActivationScreen} options={{ headerShown: true, title: 'Activate Tracking', headerTintColor: colors.primary }} />
+        <Stack.Screen name="AddFamilyMember" component={AddFamilyMemberScreen} options={{ headerShown: true, title: '', headerTintColor: colors.primary, headerShadowVisible: false }} />
+        <Stack.Screen name="FamilyMemberDetails" component={FamilyMemberDetailsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="MedicationActivation" component={MedicationActivationScreen} options={{ headerShown: true, title: '', headerTintColor: colors.primary, headerShadowVisible: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const drawerStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.surface,
+    paddingHorizontal: spacing.md,
+    paddingTop: 58,
+  },
+  profileBlock: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    paddingBottom: spacing.lg,
+  },
+  avatar: {
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: 28,
+    height: 56,
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+    width: 56,
+  },
+  avatarText: {
+    ...typography.h3,
+    color: colors.surface,
+  },
+  name: {
+    ...typography.h3,
+  },
+  familyName: {
+    ...typography.bodySmall,
+    marginTop: 4,
+  },
+  planName: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  roleBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: `${colors.secondary}28`,
+    borderRadius: borderRadius.pill,
+    marginTop: spacing.sm,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  roleBadgeText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
+  },
+  menu: {
+    gap: spacing.xs,
+    paddingTop: spacing.lg,
+  },
+  menuItem: {
+    alignItems: 'center',
+    borderRadius: borderRadius.md,
+    flexDirection: 'row',
+    gap: spacing.md,
+    minHeight: 48,
+    paddingHorizontal: spacing.md,
+  },
+  menuItemActive: {
+    backgroundColor: `${colors.secondary}22`,
+  },
+  menuText: {
+    ...typography.label,
+    color: colors.textMuted,
+    fontSize: 15,
+  },
+  menuTextActive: {
+    color: colors.primary,
+  },
+});

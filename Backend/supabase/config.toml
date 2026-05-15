@@ -1,4 +1,4 @@
-project_id = "swasthi-backend-local"
+project_id = "Renomedy-backend-local"
 
 [api]
 enabled = true

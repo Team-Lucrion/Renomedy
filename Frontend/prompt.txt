@@ -1,4 +1,4 @@
-Modify the existing Swasthi Expo React Native frontend to use Clerk authentication.
+Modify the existing Renomedy Expo React Native frontend to use Clerk authentication.
 
 Important:
 Do NOT redesign or rebuild the existing UI.
@@ -38,4 +38,4 @@ Important:
 - Keep the app demo-ready.
 
 Expected output:
-A working Expo app where the existing Swasthi frontend uses Clerk authentication instead of the previous auth system.
+A working Expo app where the existing Renomedy frontend uses Clerk authentication instead of the previous auth system.

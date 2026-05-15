@@ -1,0 +1,288 @@
+Use the attached files as Renomedy’s complete implementation constitution:
+
+1. architecture.txt = PRIMARY SOURCE OF TRUTH (system design, backend/frontend architecture, DB schema, route map)
+2. execution plan.txt = EXECUTION SEQUENCING + CHECKPOINT ORDER
+3. claude audit.txt = UX / TRUST / PMF launch-critical fixes
+4. Renomedy_Launch-Readiness_Operational_Audit_Report.pdf = OPERATIONAL / LAUNCH BLOCKERS + simplification
+
+INSTRUCTION HIERARCHY:
+Architecture > Execution Plan > Audit Fixes
+
+IMPORTANT:
+Do NOT redesign Renomedy from scratch.
+Do NOT rebuild existing Clerk auth.
+Do NOT break the proven OCR pipeline.
+Do NOT create duplicate Sanctuary/family systems.
+Do NOT overengineer.
+Do NOT expand beyond launch-critical scope unless architecture requires it.
+
+MISSION:
+Continue implementation exactly according to approved architecture and execution plan, while integrating only the highest-priority trust + operational fixes from the audits.
+
+--------------------------------------------------
+CORE PRODUCT RULE
+--------------------------------------------------
+
+Frontend brand:
+SANCTUARY = emotional family health space
+
+Backend infrastructure:
+family_groups + family_group_memberships = structural system
+
+Renomedy’s launch-critical loop:
+Signup/Login
+→ Understand Sanctuary
+→ Create or Join Sanctuary
+→ Invite family
+→ OCR prescription
+→ Verify trust
+→ Manage meds
+→ Pay
+→ Unlock premium
+→ Notifications
+
+--------------------------------------------------
+PHASE EXECUTION ORDER (MANDATORY)
+--------------------------------------------------
+
+PHASE 1 — AUTH + SANCTUARY FOUNDATION
+Implement:
+- AppNavigator post-auth routing
+- Signed out → Login
+- Signed in + no sanctuary → Onboarding
+- Signed in + sanctuary → Dashboard
+- Create Sanctuary
+- Join Existing Sanctuary
+- Invite code generation
+- Invite expiry
+- Duplicate prevention
+- Existing sanctuary handling
+- Family → Sanctuary frontend rename
+
+MANDATORY UX/TRUST FIXES:
+- Before Create/Join, add emotional explainer:
+  “Renomedy helps your family never miss a medicine, never misread a prescription.”
+- Add Sanctuary subtitle everywhere first-touch:
+  “Your Family’s Private Care Space”
+- Replace role labels:
+  “I manage medicines for my family”
+  “I am joining my family’s care space”
+
+CHECKPOINT:
+Signup/Login → Create/Join Sanctuary → Dashboard
+
+--------------------------------------------------
+PHASE 2 — ROLE SYSTEM (V1 ONLY)
+--------------------------------------------------
+
+Implement:
+- owner/admin
+- caregiver
+- patient
+
+IMPORTANT:
+- Keep backend role structure clean
+- Avoid visible dual-role confusion
+- Frontend should show only human-readable role identities
+- Patient must still mark meds without admin friction
+
+DEFER:
+- viewer
+- advanced RBAC
+
+--------------------------------------------------
+PHASE 3 — INVITE SYSTEM
+--------------------------------------------------
+
+Implement:
+- generate/regenerate invite
+- validate invite
+- expiry
+- join preview
+- role assignment
+- copy/share
+- invalid/expired states
+
+MANDATORY TRUST FIX:
+Invite preview should be a branded moment:
+“You are joining [Sanctuary Name]”
+
+Not a raw modal.
+
+CHECKPOINT:
+Admin invites → Member joins → Correct sanctuary + role
+
+--------------------------------------------------
+PHASE 4 — OCR TRUST LAYER
+--------------------------------------------------
+
+Preserve existing OCR architecture:
+Upload → Vision → Parse → Verify
+
+ADD TRUST LAYER:
+- “Doctor’s Instructions” framing
+- Clearly Read
+- Please Double-Check
+- Could Not Read Clearly
+- Mandatory disclaimer:
+  “Renomedy helps you understand and track. Always follow your doctor’s instructions.”
+
+MANDATORY:
+Confidence must be visible before save.
+
+--------------------------------------------------
+PHASE 5 — RAZORPAY + SANCTUARY PREMIUM
+--------------------------------------------------
+
+Implement:
+- create order
+- verify payment
+- webhook
+- payment success/failure
+- sanctuary-wide unlock
+- mock mode if keys unavailable
+- manual “Check Payment Status” fallback
+
+MANDATORY TRUST FIX:
+Before Razorpay:
+“You’re unlocking premium care for your whole Sanctuary.”
+Explain:
+Unlimited scans + reminders + family continuity
+
+CHECKPOINT:
+Payment → Verification → Premium active
+
+--------------------------------------------------
+PHASE 6 — NOTIFICATIONS V1
+--------------------------------------------------
+
+Implement:
+- token registration
+- FCM
+- medication reminders
+- token cleanup on logout/login refresh
+
+MANDATORY UX FIX:
+Do NOT ask permission immediately after signup.
+Ask only after:
+- first medication schedule
+OR
+- first family member added
+
+DEFER:
+- escalation
+- advanced retention
+- regionalization
+
+--------------------------------------------------
+PHASE 7 — SAFETY + ACCOUNT
+--------------------------------------------------
+
+Implement:
+- logout
+- leave sanctuary
+- remove member
+- audit logs
+- beta gate cleanup (DB/auto-approve)
+
+DEFER:
+- ownership transfer if blocking
+
+--------------------------------------------------
+PHASE 8 — EMPTY STATES + POLISH
+--------------------------------------------------
+
+Implement:
+- no sanctuary
+- invalid invite
+- payment failed
+- no meds
+- no prescriptions
+- denied notifications
+- onboarding completion celebration:
+  “Your Sanctuary is ready. Your family is protected.”
+
+--------------------------------------------------
+GLOBAL VALIDATION RULE
+--------------------------------------------------
+
+Before next phase:
+- Code compiles
+- DB migration works
+- Route works
+- Core path tested
+- No blocker bugs
+
+If checkpoint fails:
+STOP
+FIX
+THEN CONTINUE
+
+--------------------------------------------------
+BUILD NOW / DEFER
+--------------------------------------------------
+
+BUILD NOW:
+- Auth
+- Sanctuary
+- Invite
+- OCR trust
+- Razorpay
+- Basic notifications
+- Safety
+
+DEFER:
+- Viewer role
+- Multi-sanctuary
+- Ownership transfer
+- Advanced escalation
+- Deep analytics
+- Regional language
+- NRI
+
+--------------------------------------------------
+BETA GATE RULE
+--------------------------------------------------
+
+Current beta restrictions must NOT block launch.
+Move beta gate to DB flag or auto-approve for launch readiness.
+
+--------------------------------------------------
+OUTPUT REQUIRED AFTER EACH PHASE
+--------------------------------------------------
+
+Provide:
+- Files changed
+- DB migrations
+- Validation completed
+- Remaining blockers
+- Risks
+- What was deferred
+
+--------------------------------------------------
+FINAL SUCCESS DEFINITION
+--------------------------------------------------
+
+A user can:
+Sign up
+→ Understand Renomedy
+→ Create or Join Sanctuary
+→ Invite family
+→ Decode prescription
+→ Trust OCR
+→ Manage medications
+→ Pay
+→ Unlock premium
+→ Receive reminders
+
+If this works:
+Renomedy is launch-ready.
+
+FINAL RULE:
+Warp already architected.
+Claude already stress-tested trust.
+Operational audit already simplified execution.
+
+Your job:
+EXECUTE.
+NOT RE-STRATEGIZE.

@@ -40,17 +40,11 @@ export const typography = {
 
 export const shadows = {
   sm: {
-    shadowColor: '#006D77',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
+    boxShadow: '0px 2px 4px rgba(0, 109, 119, 0.05)',
     elevation: 2,
   },
   md: {
-    shadowColor: '#006D77',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    boxShadow: '0px 6px 12px rgba(0, 109, 119, 0.08)',
     elevation: 4,
   },
 };

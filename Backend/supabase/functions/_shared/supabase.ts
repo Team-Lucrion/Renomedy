@@ -37,12 +37,15 @@ export function jsonHeaders(extra?: HeadersInit) {
 }
 
 export function getBearerToken(req: Request) {
-  const authHeader = req.headers.get("authorization") ?? req.headers.get("Authorization");
+  const authHeader = req.headers.get("Authorization") ?? req.headers.get("authorization");
+  console.log("[edge-auth] authorization header present", Boolean(authHeader));
   if (!authHeader?.startsWith("Bearer ")) {
     throw new Error("Missing bearer token");
   }
 
-  return authHeader.slice("Bearer ".length).trim();
+  const jwt = authHeader.slice("Bearer ".length).trim();
+  console.log("[edge-auth] bearer token present", Boolean(jwt));
+  return jwt;
 }
 
 export function getUserClient(jwt: string) {

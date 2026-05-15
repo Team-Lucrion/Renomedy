@@ -1,6 +1,6 @@
 export const TRUST_DISCLAIMER = {
-  noDiagnosis: "Swasthi explains prescriptions and adherence workflows; it does not diagnose conditions.",
-  noDoctorReplacement: "Swasthi does not replace doctors, pharmacists, or emergency medical care.",
+  noDiagnosis: "Renomedy explains prescriptions and adherence workflows; it does not diagnose conditions.",
+  noDoctorReplacement: "Renomedy does not replace doctors, pharmacists, or emergency medical care.",
   verificationRequired:
     "Prescription OCR and shorthand interpretation must be human-verified before medication action."
 };

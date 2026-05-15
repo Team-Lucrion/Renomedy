@@ -1,4 +1,4 @@
-# Swasthi Closed Beta Backend Readiness
+# Renomedy Closed Beta Backend Readiness
 
 ## 1. What Is Already Complete
 
@@ -10,19 +10,19 @@
 - Refill tracking updates after taken doses and raises refill-risk states.
 - Alerts now support dedupe keys, failure reasons, retry/dismiss founder actions, and invalid FCM token cleanup.
 - Audit logging exists across onboarding, family actions, upload/parse, medication activation, dose logs, alert failures, and founder actions.
-- Build passes and a small automated test suite now covers OCR provider selection, alert dedupe key logic, and refill continuity helpers.
+- Build passes and a small automated test suite now covers OCR provider selection (`mock` / `vision_gemini`), golden Gemini parse fixtures, alert dedupe key logic, and refill continuity helpers.
 
 ## 2. What Is Missing For Closed Beta
 
-- Real production OCR is not active until `OCR_PROVIDER=http` and a live OCR endpoint are configured.
+- Real production OCR requires `OCR_PROVIDER=vision_gemini` plus `GEMINI_API_KEY` and Google Vision credentials (`GOOGLE_APPLICATION_CREDENTIALS` or `GOOGLE_VISION_SERVICE_ACCOUNT_JSON`), with Vision API enabled on the GCP project.
 - End-to-end verification against live Supabase, Clerk, Storage, and Firebase credentials still needs to be run in the deployment environment.
 - There is still no founder web UI. Founder controls exist as backend endpoints only.
 - The automated tests cover critical decision logic, but not full authenticated request/DB integration.
 
 ## 3. Exact Schema Changes
 
-- Added migration: [20260506121000_closed_beta_readiness.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Swasthi/Backend/supabase/migrations/20260506121000_closed_beta_readiness.sql)
-- Added migration: [20260506153000_closed_beta_hardening.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Swasthi/Backend/supabase/migrations/20260506153000_closed_beta_hardening.sql)
+- Added migration: [20260506121000_closed_beta_readiness.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Renomedy/Backend/supabase/migrations/20260506121000_closed_beta_readiness.sql)
+- Added migration: [20260506153000_closed_beta_hardening.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Renomedy/Backend/supabase/migrations/20260506153000_closed_beta_hardening.sql)
 - New table: `beta_invites`
   - `invite_code`, `email`, `phone`, `clerk_user_id`, `status`, `approved_by_user_id`, `used_by_user_id`, `expires_at`, `notes`
 - `users` additions
@@ -161,7 +161,7 @@
 - Set `CLERK_WEBHOOK_SECRET` in the runtime environment that serves `POST /auth/clerk-webhook`.
 - In Clerk, point the webhook endpoint to the deployed `/auth/clerk-webhook` URL.
 - Subscribe the Clerk webhook to `user.created` and `user.deleted`. `user.updated` can remain enabled because the backend is idempotent.
-- Apply all Supabase migrations, including [20260507130500_webhook_audit_hardening.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Swasthi/Backend/supabase/migrations/20260507130500_webhook_audit_hardening.sql).
+- Apply all Supabase migrations, including [20260507130500_webhook_audit_hardening.sql](/C:/Users/Manjunath/Desktop/Rajath/Development/Shared%20Projects/Renomedy/Backend/supabase/migrations/20260507130500_webhook_audit_hardening.sql).
 - Confirm `FOUNDER_CLERK_USER_IDS` contains at least one real founder Clerk user id for `/admin/issues`.
 - Set valid Firebase Admin credentials and verify `FIREBASE_PROJECT_ID` is a single-line value in the deployed env file or secret manager.
 - Keep `OCR_PROVIDER=mock` only if the beta accepts manual prescription entry/verification during validation. Otherwise switch to live OCR before inviting families.

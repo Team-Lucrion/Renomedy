@@ -1,7 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useAppData } from '../context/AppDataContext';
+import { findFirst } from '../lib/collections';
+import { hasNotificationPromptBeenSeen, openNotificationSettings, setupMedicationNotifications } from '../lib/notifications';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 
 function formatContinuityStatus(status?: string | null) {
@@ -28,14 +31,17 @@ function statusTone(status?: string | null) {
 }
 
 export default function TrackerScreen() {
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState<'schedule' | 'refills'>('schedule');
-  const { familyMembers, schedules, refillStates, logDose, isLoading } = useAppData();
+  const { familyMembers, schedules, refillStates, logDose, isLoading, registerNotificationToken } = useAppData();
+  const [notificationState, setNotificationState] = useState<"idle" | "registered" | "denied" | "unsupported" | "error">("idle");
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const scheduleCards = useMemo(
     () =>
       schedules.map((schedule) => {
-        const member = familyMembers.find((item) => item.id === schedule.family_member_id);
-        const refillState = refillStates.find((item) => item.medication_schedule_id === schedule.id);
+        const member = findFirst(familyMembers, (item) => item.id === schedule.family_member_id);
+        const refillState = findFirst(refillStates, (item) => item.medication_schedule_id === schedule.id);
 
         return {
           id: schedule.id,
@@ -53,6 +59,41 @@ export default function TrackerScreen() {
       }),
     [familyMembers, refillStates, schedules],
   );
+
+  useEffect(() => {
+    let active = true;
+
+    const run = async () => {
+      if (schedules.length === 0) {
+        return;
+      }
+
+      const promptSeen = await hasNotificationPromptBeenSeen();
+      if (promptSeen && notificationState !== "idle") {
+        return;
+      }
+
+      const result = await setupMedicationNotifications(registerNotificationToken);
+      if (!active) {
+        return;
+      }
+
+      setNotificationState(result.status);
+      if (result.status === "denied") {
+        setNotificationMessage("Enable notifications to receive medicine reminders for this sanctuary.");
+      } else if (result.status === "unsupported" || result.status === "error") {
+        setNotificationMessage(result.reason);
+      } else {
+        setNotificationMessage("Medication reminders are active on this device.");
+      }
+    };
+
+    void run();
+
+    return () => {
+      active = false;
+    };
+  }, [notificationState, registerNotificationToken, schedules.length]);
 
   const renderSchedule = () => {
     if (scheduleCards.length === 0) {
@@ -123,8 +164,8 @@ export default function TrackerScreen() {
     return (
       <View style={styles.tabContent}>
         {refillStates.map((refill) => {
-          const schedule = schedules.find((item) => item.id === refill.medication_schedule_id);
-          const member = familyMembers.find((item) => item.id === schedule?.family_member_id);
+          const schedule = findFirst(schedules, (item) => item.id === refill.medication_schedule_id);
+          const member = findFirst(familyMembers, (item) => item.id === schedule?.family_member_id);
           const riskColor = statusTone(refill.continuity_status);
 
           return (
@@ -162,7 +203,12 @@ export default function TrackerScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Tracker & Alerts</Text>
+        <View style={styles.headerTop}>
+          <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Ionicons name="menu" size={24} color={colors.primary} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Medications</Text>
+        </View>
 
         <View style={styles.tabBar}>
           <TouchableOpacity
@@ -181,6 +227,21 @@ export default function TrackerScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {schedules.length > 0 && notificationMessage ? (
+          <View style={[styles.notificationCard, notificationState === 'registered' ? styles.notificationCardSuccess : styles.notificationCardWarning]}>
+            <Ionicons
+              name={notificationState === 'registered' ? 'notifications-outline' : 'alert-circle-outline'}
+              size={18}
+              color={notificationState === 'registered' ? colors.success : colors.warning}
+            />
+            <Text style={styles.notificationText}>{notificationMessage}</Text>
+            {notificationState === 'denied' ? (
+              <TouchableOpacity onPress={() => void openNotificationSettings()}>
+                <Text style={styles.notificationLink}>Open Settings</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
+        ) : null}
         {activeTab === 'schedule' ? renderSchedule() : renderRefills()}
       </ScrollView>
     </View>
@@ -193,14 +254,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    paddingTop: 60,
+    paddingTop: 52,
     backgroundColor: colors.surface,
     ...shadows.sm,
   },
+  headerTop: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginBottom: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  menuButton: {
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: borderRadius.pill,
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
   headerTitle: {
     ...typography.h2,
-    paddingHorizontal: spacing.lg,
-    marginBottom: spacing.md,
   },
   tabBar: {
     flexDirection: 'row',
@@ -230,6 +304,30 @@ const styles = StyleSheet.create({
   },
   tabContent: {
     gap: spacing.lg,
+  },
+  notificationCard: {
+    alignItems: 'center',
+    borderRadius: borderRadius.md,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+    padding: spacing.md,
+  },
+  notificationCardSuccess: {
+    backgroundColor: '#F0FFF4',
+  },
+  notificationCardWarning: {
+    backgroundColor: '#FFFAF0',
+  },
+  notificationText: {
+    ...typography.bodySmall,
+    color: colors.text,
+    flex: 1,
+  },
+  notificationLink: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
   },
   emptyCard: {
     backgroundColor: colors.surface,

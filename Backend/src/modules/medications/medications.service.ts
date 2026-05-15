@@ -1,14 +1,54 @@
-import { getUserSupabaseClient } from "../../lib/supabase";
+import { supabaseAdmin } from "../../lib/supabase";
 import { writeAuditLog } from "../../services/audit.service";
 import { ensureClosedBetaAccess } from "../../services/beta-access.service";
 import { HttpError } from "../../utils/http-error";
 import { deriveContinuityStatus, deriveProjectedRunoutDate } from "./refill.utils";
 
-export async function activateMedication(jwt: string, input: Record<string, unknown>) {
-  const sb = getUserSupabaseClient(jwt);
-  const currentUser = await ensureClosedBetaAccess(jwt);
+async function getAccessibleFamilyMemberIds(userId: string, familyMemberId?: string) {
+  const { data: memberships, error: membershipsError } = await supabaseAdmin
+    .from("family_group_memberships")
+    .select("family_group_id")
+    .eq("user_id", userId)
+    .eq("status", "active");
 
-  const { data: medication, error: medicationError } = await sb
+  if (membershipsError) {
+    throw new HttpError(500, "Failed to fetch family memberships", membershipsError);
+  }
+
+  const familyGroupIds = (memberships ?? []).map((membership) => membership.family_group_id);
+
+  if (familyGroupIds.length === 0) {
+    return [];
+  }
+
+  let membersQuery = supabaseAdmin
+    .from("family_members")
+    .select("id")
+    .in("family_group_id", familyGroupIds);
+  membersQuery = membersQuery.eq("is_archived", false);
+
+  if (familyMemberId) {
+    membersQuery = membersQuery.eq("id", familyMemberId);
+  }
+
+  const { data: members, error: membersError } = await membersQuery;
+
+  if (membersError) {
+    throw new HttpError(500, "Failed to fetch accessible family members", membersError);
+  }
+
+  return (members ?? []).map((member) => member.id);
+}
+
+export async function activateMedication(jwt: string, input: Record<string, unknown>) {
+  const currentUser = await ensureClosedBetaAccess(jwt);
+  const accessibleMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, String(input.family_member_id));
+
+  if (!accessibleMemberIds.includes(String(input.family_member_id))) {
+    throw new HttpError(403, "Family member is not accessible");
+  }
+
+  const { data: medication, error: medicationError } = await supabaseAdmin
     .from("prescription_medications")
     .select("id, prescription_id, requires_manual_verification, prescriptions!inner(verification_status)")
     .eq("id", String(input.prescription_medication_id))
@@ -41,10 +81,10 @@ export async function activateMedication(jwt: string, input: Record<string, unkn
   const { quantity_total: _quantityTotal, quantity_remaining: _quantityRemaining, daily_depletion: _dailyDepletion, projected_runout_date: _projectedRunoutDate, ...scheduleInput } =
     input;
 
-  const { data, error } = await sb.from("medication_schedules").insert(scheduleInput).select("*").single();
+  const { data, error } = await supabaseAdmin.from("medication_schedules").insert(scheduleInput).select("*").single();
   if (error) throw new HttpError(500, "Failed to activate medication schedule", error);
 
-  const { error: refillError } = await sb.from("refill_states").upsert(
+  const { error: refillError } = await supabaseAdmin.from("refill_states").upsert(
     {
       medication_schedule_id: data.id,
       quantity_total: quantityTotal,
@@ -68,26 +108,46 @@ export async function activateMedication(jwt: string, input: Record<string, unkn
 }
 
 export async function listSchedules(jwt: string, familyMemberId?: string) {
-  await ensureClosedBetaAccess(jwt);
-  const sb = getUserSupabaseClient(jwt);
-  let query = sb
+  const currentUser = await ensureClosedBetaAccess(jwt);
+  const familyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, familyMemberId);
+
+  if (familyMemberIds.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabaseAdmin
     .from("medication_schedules")
     .select("*, prescription_medications(medicine_name, brand_name, generic_name, dosage, frequency, timing, duration, food_timing, verified_at), refill_states(*)")
+    .in("family_member_id", familyMemberIds)
     .order("created_at", { ascending: false });
-  if (familyMemberId) query = query.eq("family_member_id", familyMemberId);
-  const { data, error } = await query;
+
   if (error) throw new HttpError(500, "Failed to list schedules", error);
   return data;
 }
 
 export async function logDose(jwt: string, input: Record<string, unknown>) {
-  const sb = getUserSupabaseClient(jwt);
   const currentUser = await ensureClosedBetaAccess(jwt);
-  const { data, error } = await sb.from("dose_logs").insert(input).select("*").single();
+  const { data: schedule, error: scheduleError } = await supabaseAdmin
+    .from("medication_schedules")
+    .select("id, family_member_id")
+    .eq("id", String(input.medication_schedule_id))
+    .single();
+
+  if (scheduleError || !schedule) {
+    throw new HttpError(404, "Medication schedule not found", scheduleError);
+  }
+
+  const accessibleMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, schedule.family_member_id);
+
+  if (!accessibleMemberIds.includes(schedule.family_member_id)) {
+    throw new HttpError(403, "Medication schedule is not accessible");
+  }
+
+  const { data, error } = await supabaseAdmin.from("dose_logs").insert(input).select("*").single();
   if (error) throw new HttpError(500, "Failed to log dose", error);
 
   if (data.status === "taken") {
-    const { data: refillState, error: refillFetchError } = await sb
+    const { data: refillState, error: refillFetchError } = await supabaseAdmin
       .from("refill_states")
       .select("*")
       .eq("medication_schedule_id", data.medication_schedule_id)
@@ -112,7 +172,7 @@ export async function logDose(jwt: string, input: Record<string, unknown>) {
         refillState.daily_depletion === null ? null : Number(refillState.daily_depletion)
       );
 
-      const { error: refillUpdateError } = await sb
+      const { error: refillUpdateError } = await supabaseAdmin
         .from("refill_states")
         .update({
           quantity_remaining: nextQuantityRemaining,
@@ -150,17 +210,32 @@ export async function logDose(jwt: string, input: Record<string, unknown>) {
 }
 
 export async function refillStatus(jwt: string, familyMemberId?: string) {
-  await ensureClosedBetaAccess(jwt);
-  const sb = getUserSupabaseClient(jwt);
-  const { data: schedules, error } = await sb.from("medication_schedules").select("id, family_member_id");
+  const currentUser = await ensureClosedBetaAccess(jwt);
+  const familyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, familyMemberId);
+
+  if (familyMemberIds.length === 0) {
+    return [];
+  }
+
+  const { data: schedules, error } = await supabaseAdmin
+    .from("medication_schedules")
+    .select("id, family_member_id")
+    .in("family_member_id", familyMemberIds);
+
   if (error) throw new HttpError(500, "Failed to fetch schedules", error);
+
   const scheduleIds = schedules
-    .filter((schedule) => (familyMemberId ? schedule.family_member_id === familyMemberId : true))
     .map((schedule) => schedule.id);
-  const { data, error: refillError } = await sb
+
+  if (scheduleIds.length === 0) {
+    return [];
+  }
+
+  const { data, error: refillError } = await supabaseAdmin
     .from("refill_states")
     .select("*")
-    .in("medication_schedule_id", scheduleIds.length ? scheduleIds : ["00000000-0000-0000-0000-000000000000"]);
+    .in("medication_schedule_id", scheduleIds);
+
   if (refillError) throw new HttpError(500, "Failed to fetch refill states", refillError);
   return data;
 }

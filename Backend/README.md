@@ -1,67 +1,52 @@
-# Swasthi Backend (Supabase + Clerk)
-This backend foundation is built for Swasthi’s caregiver-first medication governance MVP.
-Authentication is handled by Clerk. Supabase Auth is intentionally not used.
-Every application user must map to `users.clerk_user_id`.
+# Renomedy Backend
 
-## What is included
-- Supabase SQL migration for 12 tables:
-  - Core caregiver medication flow: `users`, `family_groups`, `family_members`, `prescriptions`, `prescription_medications`, `medication_schedules`, `dose_logs`
-  - Phase-2 skeletons: `notification_tokens`, `alerts`, `refill_states`, `audit_logs`, `consent_records`
-- Row Level Security enabled on all tables
-- Ownership-based RLS policies wired to Clerk JWT `sub` via helper functions
-- Seed dataset for doctor demo:
-  - Rajath user
-  - Patil Family group
-  - Mom and Dad members
-  - One sample prescription with 3 sample medicines:
-    - Metformin 500mg
-    - Atorvastatin 20mg
-    - Thyroxine 50mcg
-- Supabase Edge Function stubs:
-  - `sync-clerk-user`
-  - `create-family-group`
-  - `add-family-member`
-  - `upload-prescription`
-  - `save-ocr-parse`
-  - `activate-medication-schedule`
-  - `log-dose`
-  - `get-family-dashboard`
+Renomedy ships with a single canonical prescription OCR pipeline in Express:
 
-## Folder structure
-- `supabase/config.toml`
-- `supabase/migrations/20260504143000_init_swasthi_backend.sql`
-- `supabase/seed.sql`
-- `supabase/functions/_shared/response.ts`
-- `supabase/functions/<function-name>/index.ts`
+- `src/services/ocr/vision-gemini-ocr.provider.ts` — **Google Cloud Vision** (REST `images:annotate`: `DOCUMENT_TEXT_DETECTION`, then `TEXT_DETECTION` fallback) for OCR text, then **Google Gemini** for structured medicine JSON (same schema and post-processing as the previous in-process Gemini path).
+- `src/services/ocr/google-vision-text.ts` — Vision REST calls and OAuth via `google-auth-library` (cached `GoogleAuth` client).
+- `src/services/ocr/gemini-prescription-parse.ts` — shared Gemini prompt, JSON extraction, medicine normalization, and card payload building (used by golden tests).
+- `main.py` remains as an optional **legacy** FastAPI service (Tesseract + Groq). It is **not** used when `OCR_PROVIDER=vision_gemini`.
 
-## Local setup
-1. Install Supabase CLI.
-2. From this `Backend` directory, start Supabase:
-   - `supabase start`
-3. Apply migrations and seed:
-   - `supabase db reset`
-4. Serve all Edge Functions locally:
-   - `supabase functions serve`
-5. Test any function:
-   - `supabase functions invoke sync-clerk-user --no-verify-jwt --body '{"clerk_user_id":"user_rajath_demo"}'`
+## Prescription pipeline
 
-## Clerk integration note
-- Clerk is the identity provider.
-- Your API layer should pass Clerk JWTs to Supabase so RLS can resolve `auth.jwt()->>'sub'`.
-- `public.current_user_id()` maps the Clerk `sub` to `users.id`.
+1. React Native uploads the prescription image to the Renomedy API.
+2. The Express prescription module stores the image in Supabase.
+3. `VisionGeminiOcrProvider` calls Google Vision on the image bytes and normalizes OCR text.
+4. Gemini parses that text into the Renomedy medicine JSON schema.
+5. Express saves `raw_ocr_text`, `cleaned_ocr_text`, `parsed_medicine_json`, `prescription_medications`, and Gemini metadata on `prescriptions`.
 
-## Security model (MVP-safe baseline)
-- RLS is enabled on all tables.
-- Users can only read/write rows they own through ownership chains:
-  - Family groups by `owner_user_id`
-  - Family members via group ownership
-  - Prescriptions via family-member ownership
-  - Medications via prescription ownership
-  - Dose logs via schedule ownership
-- This keeps policies simple and secure for MVP while remaining extensible.
+## Environment
 
-## Trust and healthcare safety
-- Swasthi never diagnoses.
-- Swasthi never replaces doctors.
-- OCR/prescription interpretation outputs require human verification.
-- Edge function stubs include disclaimer metadata in responses where relevant.
+Add these variables to `Backend/.env` for production scanning:
+
+- `OCR_PROVIDER=vision_gemini` (default) or `OCR_PROVIDER=mock` for automated tests / demos without cloud credentials
+- `GEMINI_API_KEY`
+- `GEMINI_MODEL` (default `gemini-2.0-flash`)
+- **One** of:
+  - `GOOGLE_APPLICATION_CREDENTIALS` — path to a GCP service account JSON with Vision API enabled, or
+  - `GOOGLE_VISION_SERVICE_ACCOUNT_JSON` — inline JSON for the same key (useful on some hosts)
+
+Also required for the rest of the API: `SUPABASE_*`, `CLERK_*`, etc. (see `.env.example`).
+
+Optional (legacy FastAPI only): `GROQ_API_KEY`, `OCR_API_URL`, `TESSERACT_CMD`, `FASTAPI_ALLOWED_ORIGINS`.
+
+## Local run
+
+1. `npm --prefix Backend install`
+2. `npm --prefix Backend run dev`
+
+## Tests
+
+- `npm --prefix Backend test` — builds TypeScript then runs `node --test` (includes golden parser fixtures under `tests/fixtures/golden/`).
+
+## Supabase fields used by the pipeline
+
+- `prescription_uploads` — storage metadata
+- `prescriptions.raw_ocr_text`, `cleaned_ocr_text`, `parsed_medicine_json`, `parse_status`, `ocr_provider`, `ocr_provider_metadata`
+- `prescriptions.ai_provider`, `ai_model`, `ai_raw_response` — Gemini metadata
+- `prescription_medications` — normalized rows for UI and continuity
+
+## Safety
+
+- OCR and model output are advisory; users verify or correct before save.
+- Parser instructions discourage hallucinated medicines and low-confidence handling maps to manual verification flags.

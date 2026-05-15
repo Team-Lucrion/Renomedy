@@ -8,7 +8,7 @@ import { startSchedulers } from "./services/scheduler/scheduler.service";
 initSentry();
 
 const server = app.listen(env.PORT, () => {
-  logger.info(`Swasthi backend running on port ${env.PORT}`);
+  logger.info(`Renomedy backend running on port ${env.PORT}`);
   startSchedulers();
 });
 

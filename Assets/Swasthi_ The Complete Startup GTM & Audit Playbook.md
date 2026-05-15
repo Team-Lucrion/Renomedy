@@ -1,13 +1,13 @@
-# Swasthi: The Complete Startup GTM & Audit Playbook
+# Renomedy: The Complete Startup GTM & Audit Playbook
 **India’s Family Medication Clarity Platform**
 
 ---
 
 ## I. The Brutal Audit: VC-Level Verdict
-Swasthi is a **High-Utility Painkiller** targeting the **"Chief Health Officer"** of the Indian family. 
+Renomedy is a **High-Utility Painkiller** targeting the **"Chief Health Officer"** of the Indian family. 
 
 ### The Core Thesis
-The "Execution Gap" in Indian healthcare is a multibillion-dollar problem. While e-pharmacies have solved "Buying," and Practo has solved "Booking," no one has solved **"Understanding & Continuity."** Swasthi’s wedge is **Prescription Literacy**.
+The "Execution Gap" in Indian healthcare is a multibillion-dollar problem. While e-pharmacies have solved "Buying," and Practo has solved "Booking," no one has solved **"Understanding & Continuity."** Renomedy’s wedge is **Prescription Literacy**.
 
 ### Key Scores
 - **PMF Score**: 8.5/10 (High demand, low direct competition).
@@ -32,7 +32,7 @@ We move from "Health Content" to **"Caregiver Anxiety Relief."**
 1. **Hook**: "Stop taking [Medicine] with [Common Food]!"
 2. **The Mirror**: Visualizing the chaos of Indian family medication files.
 3. **The Reveal**: Decoding the "Hidden" shorthand on the prescription.
-4. **The Relief**: Swasthi's "Family Dashboard" providing instant clarity.
+4. **The Relief**: Renomedy's "Family Dashboard" providing instant clarity.
 5. **The Share**: "Send this to your family WhatsApp group to save a life."
 
 ---
@@ -52,7 +52,7 @@ We move from "Health Content" to **"Caregiver Anxiety Relief."**
 ---
 
 ## V. Final Recommendation: Should You Build This?
-**YES.** Swasthi is "India-Strong." It taps into the deep cultural value of **"Seva"** (service to elders) while solving a modern digital problem. 
+**YES.** Renomedy is "India-Strong." It taps into the deep cultural value of **"Seva"** (service to elders) while solving a modern digital problem. 
 
 **Execution Priority**:
 1. **Accuracy over Everything**: One wrong OCR interpretation can kill the brand.
@@ -61,4 +61,4 @@ We move from "Health Content" to **"Caregiver Anxiety Relief."**
 
 ---
 
-> **"In a market of sellers, be the one who explains."** — The Swasthi Philosophy.
+> **"In a market of sellers, be the one who explains."** — The Renomedy Philosophy.
