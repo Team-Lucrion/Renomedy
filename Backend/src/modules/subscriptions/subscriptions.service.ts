@@ -27,7 +27,7 @@ export type SubscriptionPlan = {
 };
 
 const founderIds = env.FOUNDER_CLERK_USER_IDS.split(",")
-  .map((value) => value.trim())
+  .map((value: string) => value.trim())
   .filter(Boolean);
 
 export const Renomedy_PLANS: SubscriptionPlan[] = [

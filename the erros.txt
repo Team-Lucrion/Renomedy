@@ -1,0 +1,1921 @@
+C:\Users\Manjunath\Desktop\Rajath\Development\Renomedy\Backend>npm run typecheck
+
+> renomedy-backend@1.0.0 typecheck
+> tsc --noEmit
+
+src/config/env.ts:6:21 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6 const envSchema = z.object({
+                      ~~~~~~
+
+src/config/env.ts:7:15 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+                ~~~~
+
+src/config/env.ts:8:11 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   PORT: z.coerce.number().int().positive().default(4000),
+            ~~~~~~
+
+src/config/env.ts:9:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   SUPABASE_URL: z.string().url(),
+                    ~~~~~~
+
+src/config/env.ts:10:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   SUPABASE_ANON_KEY: z.string().min(1),
+                          ~~~~~~
+
+src/config/env.ts:11:32 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+                                  ~~~~~~
+
+src/config/env.ts:12:30 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   SUPABASE_STORAGE_BUCKET: z.string().default("prescriptions"),
+                                ~~~~~~
+
+src/config/env.ts:13:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   CLERK_SECRET_KEY: z.string().min(1),
+                         ~~~~~~
+
+src/config/env.ts:14:27 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14   CLERK_WEBHOOK_SECRET: z.string().min(1),
+                             ~~~~~~
+
+src/config/env.ts:15:27 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+15   CORS_ALLOWED_ORIGINS: z.string().default(""),
+                             ~~~~~~
+
+src/config/env.ts:16:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16   SENTRY_DSN: z.string().url().optional(),
+                   ~~~~~~
+
+src/config/env.ts:17:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   SENTRY_ENVIRONMENT: z.string().optional(),
+                           ~~~~~~
+
+src/config/env.ts:18:32 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0),
+                                  ~~~~~~
+
+src/config/env.ts:19:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   POSTHOG_ENABLED: z.string().default("false"),
+                        ~~~~~~
+
+src/config/env.ts:20:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   POSTHOG_API_KEY: z.string().optional(),
+                        ~~~~~~
+
+src/config/env.ts:21:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   POSTHOG_HOST: z.string().url().default("https://us.i.posthog.com"),
+                     ~~~~~~
+
+src/config/env.ts:22:26 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   FIREBASE_PROJECT_ID: z.string().optional(),
+                            ~~~~~~
+
+src/config/env.ts:23:28 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   FIREBASE_CLIENT_EMAIL: z.string().optional(),
+                              ~~~~~~
+
+src/config/env.ts:24:27 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   FIREBASE_PRIVATE_KEY: z.string().optional(),
+                             ~~~~~~
+
+src/config/env.ts:25:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+25   RAZORPAY_KEY_ID: z.string().optional(),
+                        ~~~~~~
+
+src/config/env.ts:26:26 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+26   RAZORPAY_KEY_SECRET: z.string().optional(),
+                            ~~~~~~
+
+src/config/env.ts:27:30 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+27   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
+                                ~~~~~~
+
+src/config/env.ts:28:19 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+28   OCR_PROVIDER: z.enum(["mock", "vision_gemini"]).default("vision_gemini"),
+                     ~~~~
+
+src/config/env.ts:29:18 - error TS2339: Property 'preprocess' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29   OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+                    ~~~~~~~~~~
+
+src/config/env.ts:29:30 - error TS7006: Parameter 'v' implicitly has an 'any' type.
+
+29   OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+                                ~
+
+src/config/env.ts:29:85 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29   OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+                                                                                       ~~~~~~
+
+src/config/env.ts:30:18 - error TS2339: Property 'preprocess' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+30   OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+                    ~~~~~~~~~~
+
+src/config/env.ts:30:30 - error TS7006: Parameter 'v' implicitly has an 'any' type.
+
+30   OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+                                ~
+
+src/config/env.ts:30:85 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+30   OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+                                                                                       ~~~~~~
+
+src/config/env.ts:31:21 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+31   OCR_TIMEOUT_MS: z.coerce.number().int().positive().default(30000),
+                       ~~~~~~
+
+src/config/env.ts:32:21 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+32   GEMINI_API_KEY: z.string().optional(),
+                       ~~~~~~
+
+src/config/env.ts:33:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+33   GEMINI_MODEL: z.string().default("gemini-2.0-flash"),
+                     ~~~~~~
+
+src/config/env.ts:34:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+34   GROQ_API_KEY: z.string().optional(),
+                     ~~~~~~
+
+src/config/env.ts:35:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+35   GROQ_MODEL: z.string().default("llama-3.3-70b-versatile"),
+                   ~~~~~~
+
+src/config/env.ts:36:37 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   GOOGLE_APPLICATION_CREDENTIALS: z.string().optional(),
+                                       ~~~~~~
+
+src/config/env.ts:37:41 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   GOOGLE_VISION_SERVICE_ACCOUNT_JSON: z.string().optional(),
+                                           ~~~~~~
+
+src/config/env.ts:38:29 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   FOUNDER_CLERK_USER_IDS: z.string().default(""),
+                               ~~~~~~
+
+src/config/env.ts:39:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+39   APP_TIMEZONE: z.string().default("Asia/Kolkata"),
+                     ~~~~~~
+
+src/config/env.ts:40:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+40   ENABLE_SCHEDULER: z.string().default("true"),
+                         ~~~~~~
+
+src/config/env.ts:41:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+41   CRON_REMINDER_SCAN: z.string().default("*/5 * * * *"),
+                           ~~~~~~
+
+src/config/env.ts:42:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+42   CRON_REFILL_SCAN: z.string().default("0 */6 * * *"),
+                         ~~~~~~
+
+src/config/env.ts:43:31 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+43   API_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60000),
+                                 ~~~~~~
+
+src/config/env.ts:44:25 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+44   API_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120)
+                           ~~~~~~
+
+src/config/env.ts:56:9 - error TS7006: Parameter 'origin' implicitly has an 'any' type.
+
+56   .map((origin) => origin.trim())
+           ~~~~~~
+
+src/middleware/founder.ts:6:9 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+6   .map((value) => value.trim())
+          ~~~~~
+
+src/middleware/validate.ts:2:15 - error TS2614: Module '"zod"' has no exported member 'AnyZodObject'. Did you mean to use 'import AnyZodObject from "zod"' instead?
+
+2 import type { AnyZodObject } from "zod";
+                ~~~~~~~~~~~~
+
+src/modules/admin/admin.schemas.ts:3:41 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const createBetaInviteSchema = z.object({
+                                          ~~~~~~
+
+src/modules/admin/admin.schemas.ts:4:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   email: z.string().email().optional(),
+             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:5:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   phone: z.string().min(8).optional(),
+             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:6:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   clerk_user_id: z.string().min(3).optional(),
+                     ~~~~~~
+
+src/modules/admin/admin.schemas.ts:7:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   notes: z.string().optional(),
+             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:8:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   expires_at: z.string().optional()
+                  ~~~~~~
+
+src/modules/admin/admin.schemas.ts:11:43 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11 export const assignSubscriptionSchema = z.object({
+                                             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:12:14 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   user_id: z.string().uuid(),
+                ~~~~~~
+
+src/modules/admin/admin.schemas.ts:13:16 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   plan_slug: z.enum(["free", "care", "family_plus"]),
+                  ~~~~
+
+src/modules/admin/admin.schemas.ts:14:20 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14   billing_cycle: z.enum(["monthly", "yearly", "lifetime"])
+                      ~~~~
+
+src/modules/auth/auth.schemas.ts:3:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const syncClerkUserSchema = z.object({
+                                       ~~~~~~
+
+src/modules/auth/auth.schemas.ts:4:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   full_name: z.string().min(1).optional(),
+                 ~~~~~~
+
+src/modules/auth/auth.schemas.ts:5:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   email: z.string().email().optional(),
+             ~~~~~~
+
+src/modules/auth/auth.schemas.ts:6:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   phone: z.string().optional(),
+             ~~~~~~
+
+src/modules/auth/auth.schemas.ts:7:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   role: z.enum(["self", "caregiver"]).default("caregiver"),
+            ~~~~
+
+src/modules/auth/auth.schemas.ts:8:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   preferred_language: z.string().default("en")
+                          ~~~~~~
+
+src/modules/family/family.schemas.ts:3:37 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const createFamilySchema = z.object({
+                                      ~~~~~~
+
+src/modules/family/family.schemas.ts:4:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   family_name: z.string().min(2),
+                   ~~~~~~
+
+src/modules/family/family.schemas.ts:5:18 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   member_role: z.enum(["caregiver", "patient", "family_member"]).default("caregiver"),
+                   ~~~~
+
+src/modules/family/family.schemas.ts:6:26 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   invite_family_later: z.boolean().optional(),
+                           ~~~~~~~
+
+src/modules/family/family.schemas.ts:9:35 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9 export const joinFamilySchema = z.object({
+                                    ~~~~~~
+
+src/modules/family/family.schemas.ts:10:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   invite_code: z.string().trim().min(6).max(16),
+                    ~~~~~~
+
+src/modules/family/family.schemas.ts:11:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   role: z.enum(["caregiver", "patient", "family_member"]).optional()
+             ~~~~
+
+src/modules/family/family.schemas.ts:14:40 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14 export const addFamilyMemberSchema = z.object({
+                                          ~~~~~~
+
+src/modules/family/family.schemas.ts:15:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+15   family_group_id: z.string().uuid(),
+                        ~~~~~~
+
+src/modules/family/family.schemas.ts:16:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16   full_name: z.string().min(1),
+                  ~~~~~~
+
+src/modules/family/family.schemas.ts:17:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   relationship: z.string().min(1),
+                     ~~~~~~
+
+src/modules/family/family.schemas.ts:18:10 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   age: z.number().int().min(0).max(120).optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:19:10 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   dob: z.string().optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:20:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   gender: z.string().optional(),
+               ~~~~~~
+
+src/modules/family/family.schemas.ts:21:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   role: z.enum(["caregiver", "patient", "family_member"]).default("family_member"),
+             ~~~~
+
+src/modules/family/family.schemas.ts:22:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                   ~~~~~~
+
+src/modules/family/family.schemas.ts:22:37 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                                       ~~~~~~
+
+src/modules/family/family.schemas.ts:22:72 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                                                                          ~~~~~~
+
+src/modules/family/family.schemas.ts:22:110 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                                                                                                                ~~~~~~
+
+src/modules/family/family.schemas.ts:23:25 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   chronic_conditions: z.array(z.string()).default([]),
+                           ~~~~~
+
+src/modules/family/family.schemas.ts:23:33 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   chronic_conditions: z.array(z.string()).default([]),
+                                   ~~~~~~
+
+src/modules/family/family.schemas.ts:24:16 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   allergies: z.array(z.string()).default([]),
+                  ~~~~~
+
+src/modules/family/family.schemas.ts:24:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   allergies: z.array(z.string()).default([]),
+                          ~~~~~~
+
+src/modules/family/family.schemas.ts:25:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+25   notes: z.string().optional(),
+              ~~~~~~
+
+src/modules/family/family.schemas.ts:26:27 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+26   is_primary_dependent: z.boolean().default(false)
+                             ~~~~~~~
+
+src/modules/family/family.schemas.ts:29:43 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29 export const updateFamilyMemberSchema = z.object({
+                                             ~~~~~~
+
+src/modules/family/family.schemas.ts:30:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+30   full_name: z.string().min(1).optional(),
+                  ~~~~~~
+
+src/modules/family/family.schemas.ts:31:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+31   relationship: z.string().min(1).optional(),
+                     ~~~~~~
+
+src/modules/family/family.schemas.ts:32:10 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+32   age: z.number().int().min(0).max(120).nullable().optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:33:10 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+33   dob: z.string().nullable().optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:34:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+34   gender: z.string().nullable().optional(),
+               ~~~~~~
+
+src/modules/family/family.schemas.ts:35:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+35   role: z.enum(["caregiver", "patient", "family_member"]).optional(),
+             ~~~~
+
+src/modules/family/family.schemas.ts:36:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                   ~~~~~~
+
+src/modules/family/family.schemas.ts:36:37 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                                       ~~~~~~
+
+src/modules/family/family.schemas.ts:36:72 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                                                                          ~~~~~~
+
+src/modules/family/family.schemas.ts:36:110 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                                                                                                                ~~~~~~
+
+src/modules/family/family.schemas.ts:37:25 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   chronic_conditions: z.array(z.string()).optional(),
+                           ~~~~~
+
+src/modules/family/family.schemas.ts:37:33 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   chronic_conditions: z.array(z.string()).optional(),
+                                   ~~~~~~
+
+src/modules/family/family.schemas.ts:38:16 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   allergies: z.array(z.string()).optional(),
+                  ~~~~~
+
+src/modules/family/family.schemas.ts:38:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   allergies: z.array(z.string()).optional(),
+                          ~~~~~~
+
+src/modules/family/family.schemas.ts:39:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+39   notes: z.string().nullable().optional(),
+              ~~~~~~
+
+src/modules/family/family.schemas.ts:40:27 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+40   is_primary_dependent: z.boolean().optional()
+                             ~~~~~~~
+
+src/modules/medications/medications.schemas.ts:3:43 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const activateMedicationSchema = z.object({
+                                            ~~~~~~
+
+src/modules/medications/medications.schemas.ts:4:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   family_member_id: z.string().uuid(),
+                        ~~~~~~
+
+src/modules/medications/medications.schemas.ts:5:33 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   prescription_medication_id: z.string().uuid(),
+                                  ~~~~~~
+
+src/modules/medications/medications.schemas.ts:6:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   start_date: z.string(),
+                  ~~~~~~
+
+src/modules/medications/medications.schemas.ts:7:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   end_date: z.string().optional(),
+                ~~~~~~
+
+src/modules/medications/medications.schemas.ts:8:21 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   reminder_times: z.array(z.string()).default([]),
+                      ~~~~~
+
+src/modules/medications/medications.schemas.ts:8:29 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   reminder_times: z.array(z.string()).default([]),
+                              ~~~~~~
+
+src/modules/medications/medications.schemas.ts:9:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   food_relation: z.string().optional(),
+                     ~~~~~~
+
+src/modules/medications/medications.schemas.ts:10:28 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   refill_threshold_days: z.number().int().min(1).max(30).default(3),
+                              ~~~~~~
+
+src/modules/medications/medications.schemas.ts:11:21 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   quantity_total: z.number().int().positive().optional(),
+                       ~~~~~~
+
+src/modules/medications/medications.schemas.ts:12:25 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   quantity_remaining: z.number().int().min(0).optional(),
+                           ~~~~~~
+
+src/modules/medications/medications.schemas.ts:13:22 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   daily_depletion: z.number().positive().optional(),
+                        ~~~~~~
+
+src/modules/medications/medications.schemas.ts:14:28 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14   projected_runout_date: z.string().optional()
+                              ~~~~~~
+
+src/modules/medications/medications.schemas.ts:17:32 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17 export const doseLogSchema = z.object({
+                                  ~~~~~~
+
+src/modules/medications/medications.schemas.ts:18:29 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   medication_schedule_id: z.string().uuid(),
+                               ~~~~~~
+
+src/modules/medications/medications.schemas.ts:19:21 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   scheduled_time: z.string(),
+                       ~~~~~~
+
+src/modules/medications/medications.schemas.ts:20:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   taken_time: z.string().optional(),
+                   ~~~~~~
+
+src/modules/medications/medications.schemas.ts:21:13 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   status: z.enum(["taken", "missed", "skipped", "snoozed"]),
+               ~~~~
+
+src/modules/medications/medications.schemas.ts:22:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   notes: z.string().optional()
+              ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:3:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const registerTokenSchema = z.object({
+                                       ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:4:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   fcm_token: z.string().min(8),
+                 ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:5:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   platform: z.string().min(2)
+                ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:8:48 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8 export const notificationPreferencesSchema = z.object({
+                                                 ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:9:24 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   reminders_enabled: z.boolean(),
+                         ~~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:10:28 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   refill_alerts_enabled: z.boolean(),
+                              ~~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:11:33 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   missed_dose_alerts_enabled: z.boolean(),
+                                   ~~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:12:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   quiet_hours_start: z.string().optional(),
+                          ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:13:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   quiet_hours_end: z.string().optional()
+                        ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:16:40 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16 export const unregisterTokenSchema = z.object({
+                                          ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:17:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   fcm_token: z.string().min(8).optional()
+                  ~~~~~~
+
+src/modules/payments/payments.schemas.ts:3:36 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const createOrderSchema = z.object({
+                                     ~~~~~~
+
+src/modules/payments/payments.schemas.ts:4:16 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   plan_slug: z.enum(["care", "family_plus"]),
+                 ~~~~
+
+src/modules/payments/payments.schemas.ts:5:20 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   billing_cycle: z.enum(["monthly", "yearly"]).default("monthly"),
+                     ~~~~
+
+src/modules/payments/payments.schemas.ts:8:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8 export const verifyPaymentSchema = z.object({
+                                       ~~~~~~
+
+src/modules/payments/payments.schemas.ts:9:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   razorpay_order_id: z.string().min(1),
+                         ~~~~~~
+
+src/modules/payments/payments.schemas.ts:10:26 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   razorpay_payment_id: z.string().min(1),
+                            ~~~~~~
+
+src/modules/payments/payments.schemas.ts:11:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   razorpay_signature: z.string().min(1),
+                           ~~~~~~
+
+src/modules/payments/payments.schemas.ts:14:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14 export const paymentStatusSchema = z.object({
+                                        ~~~~~~
+
+src/modules/payments/payments.schemas.ts:15:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+15   razorpay_order_id: z.string().min(1),
+                          ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:3:47 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const uploadPrescriptionBodySchema = z.object({
+                                                ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:4:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   family_member_id: z.string().uuid(),
+                        ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:5:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   doctor_name: z.string().optional(),
+                   ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:6:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   hospital_name: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:7:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   prescription_date: z.string().optional()
+                         ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:12:42 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12 export const parsePrescriptionSchema = z.object({
+                                            ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:13:20 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   force_reparse: z.boolean().default(false)
+                      ~~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:16:47 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16 export const updateParsedMedicationSchema = z.object({
+                                                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:17:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   medicine_name: z.string().min(1).optional(),
+                      ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:18:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   brand_name: z.string().optional(),
+                   ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:19:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   generic_name: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:20:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   dosage: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:21:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   frequency: z.string().optional(),
+                  ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:22:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   timing: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:23:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   duration: z.string().optional(),
+                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:24:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   food_timing: z.string().optional(),
+                    ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:25:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+25   instructions: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:26:23 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+26   confidence_score: z.number().min(0).max(1).optional(),
+                         ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:27:35 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+27   requires_manual_verification: z.boolean().optional(),
+                                     ~~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:28:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+28   verification_notes: z.string().optional(),
+                           ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:29:26 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29   verification_status: z.enum(["unverified", "user_verified", "pharmacist_verified", "doctor_verified"]).optional()
+                            ~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:32:47 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+32 export const createManualMedicationSchema = z.object({
+                                                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:33:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+33   medicine_name: z.string().min(1),
+                      ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:34:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+34   brand_name: z.string().optional(),
+                   ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:35:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+35   generic_name: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:36:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   dosage: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:37:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   frequency: z.string().optional(),
+                  ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:38:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   timing: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:39:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+39   duration: z.string().optional(),
+                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:40:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+40   food_timing: z.string().optional(),
+                    ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:41:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+41   instructions: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:42:23 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+42   confidence_score: z.number().min(0).max(1).optional(),
+                         ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:43:35 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+43   requires_manual_verification: z.boolean().optional(),
+                                     ~~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:44:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+44   verification_notes: z.string().optional(),
+                           ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:45:26 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+45   verification_status: z.enum(["unverified", "user_verified", "pharmacist_verified", "doctor_verified"]).optional()
+                            ~~~~
+
+src/modules/subscriptions/subscriptions.service.ts:30:9 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+30   .map((value) => value.trim())
+           ~~~~~
+
+src/modules/users/users.schemas.ts:3:35 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const onboardingSchema = z.object({
+                                    ~~~~~~
+
+src/modules/users/users.schemas.ts:4:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   full_name: z.string().min(1).optional(),
+                 ~~~~~~
+
+src/modules/users/users.schemas.ts:5:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   role: z.enum(["self", "caregiver"]).optional(),
+            ~~~~
+
+src/modules/users/users.schemas.ts:6:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   preferred_language: z.string().optional(),
+                          ~~~~~~
+
+src/modules/users/users.schemas.ts:7:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   invite_code: z.string().min(6).optional(),
+                   ~~~~~~
+
+src/modules/users/users.schemas.ts:8:26 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   onboarding_complete: z.boolean()
+                           ~~~~~~~
+
+src/services/notification/fcm.service.ts:1:19 - error TS7016: Could not find a declaration file for module 'firebase-admin'. 'C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/firebase-admin/lib/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/firebase-admin` if it exists or add a new declaration (.d.ts) file containing `declare module 'firebase-admin';`
+
+1 import admin from "firebase-admin";
+                    ~~~~~~~~~~~~~~~~
+
+
+Found 186 errors in 13 files.
+
+Errors  Files
+    44  src/config/env.ts:6
+     1  src/middleware/founder.ts:6
+     1  src/middleware/validate.ts:2
+    10  src/modules/admin/admin.schemas.ts:3
+     6  src/modules/auth/auth.schemas.ts:3
+    42  src/modules/family/family.schemas.ts:3
+    19  src/modules/medications/medications.schemas.ts:3
+    11  src/modules/notifications/notifications.schemas.ts:3
+     9  src/modules/payments/payments.schemas.ts:3
+    35  src/modules/prescriptions/prescriptions.schemas.ts:3
+     1  src/modules/subscriptions/subscriptions.service.ts:30
+     6  src/modules/users/users.schemas.ts:3
+     1  src/services/notification/fcm.service.ts:1
+npm error Lifecycle script `typecheck` failed with error:
+npm error code 2
+npm error path C:\Users\Manjunath\Desktop\Rajath\Development\Renomedy\Backend
+npm error workspace renomedy-backend@1.0.0
+npm error location C:\Users\Manjunath\Desktop\Rajath\Development\Renomedy\Backend
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c tsc --noEmit
+
+C:\Users\Manjunath\Desktop\Rajath\Development\Renomedy\Backend>npm run typecheck
+
+> renomedy-backend@1.0.0 typecheck
+> tsc --noEmit
+
+src/config/env.ts:6:21 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6 const envSchema = z.object({
+                      ~~~~~~
+
+src/config/env.ts:7:15 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+                ~~~~
+
+src/config/env.ts:8:11 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   PORT: z.coerce.number().int().positive().default(4000),
+            ~~~~~~
+
+src/config/env.ts:9:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   SUPABASE_URL: z.string().url(),
+                    ~~~~~~
+
+src/config/env.ts:10:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   SUPABASE_ANON_KEY: z.string().min(1),
+                          ~~~~~~
+
+src/config/env.ts:11:32 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+                                  ~~~~~~
+
+src/config/env.ts:12:30 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   SUPABASE_STORAGE_BUCKET: z.string().default("prescriptions"),
+                                ~~~~~~
+
+src/config/env.ts:13:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   CLERK_SECRET_KEY: z.string().min(1),
+                         ~~~~~~
+
+src/config/env.ts:14:27 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14   CLERK_WEBHOOK_SECRET: z.string().min(1),
+                             ~~~~~~
+
+src/config/env.ts:15:27 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+15   CORS_ALLOWED_ORIGINS: z.string().default(""),
+                             ~~~~~~
+
+src/config/env.ts:16:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16   SENTRY_DSN: z.string().url().optional(),
+                   ~~~~~~
+
+src/config/env.ts:17:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   SENTRY_ENVIRONMENT: z.string().optional(),
+                           ~~~~~~
+
+src/config/env.ts:18:32 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0),
+                                  ~~~~~~
+
+src/config/env.ts:19:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   POSTHOG_ENABLED: z.string().default("false"),
+                        ~~~~~~
+
+src/config/env.ts:20:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   POSTHOG_API_KEY: z.string().optional(),
+                        ~~~~~~
+
+src/config/env.ts:21:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   POSTHOG_HOST: z.string().url().default("https://us.i.posthog.com"),
+                     ~~~~~~
+
+src/config/env.ts:22:26 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   FIREBASE_PROJECT_ID: z.string().optional(),
+                            ~~~~~~
+
+src/config/env.ts:23:28 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   FIREBASE_CLIENT_EMAIL: z.string().optional(),
+                              ~~~~~~
+
+src/config/env.ts:24:27 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   FIREBASE_PRIVATE_KEY: z.string().optional(),
+                             ~~~~~~
+
+src/config/env.ts:25:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+25   RAZORPAY_KEY_ID: z.string().optional(),
+                        ~~~~~~
+
+src/config/env.ts:26:26 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+26   RAZORPAY_KEY_SECRET: z.string().optional(),
+                            ~~~~~~
+
+src/config/env.ts:27:30 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+27   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
+                                ~~~~~~
+
+src/config/env.ts:28:19 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+28   OCR_PROVIDER: z.enum(["mock", "vision_gemini"]).default("vision_gemini"),
+                     ~~~~
+
+src/config/env.ts:29:18 - error TS2339: Property 'preprocess' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29   OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+                    ~~~~~~~~~~
+
+src/config/env.ts:29:30 - error TS7006: Parameter 'v' implicitly has an 'any' type.
+
+29   OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+                                ~
+
+src/config/env.ts:29:85 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29   OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+                                                                                       ~~~~~~
+
+src/config/env.ts:30:18 - error TS2339: Property 'preprocess' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+30   OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+                    ~~~~~~~~~~
+
+src/config/env.ts:30:30 - error TS7006: Parameter 'v' implicitly has an 'any' type.
+
+30   OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+                                ~
+
+src/config/env.ts:30:85 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+30   OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+                                                                                       ~~~~~~
+
+src/config/env.ts:31:21 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+31   OCR_TIMEOUT_MS: z.coerce.number().int().positive().default(30000),
+                       ~~~~~~
+
+src/config/env.ts:32:21 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+32   GEMINI_API_KEY: z.string().optional(),
+                       ~~~~~~
+
+src/config/env.ts:33:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+33   GEMINI_MODEL: z.string().default("gemini-2.0-flash"),
+                     ~~~~~~
+
+src/config/env.ts:34:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+34   GROQ_API_KEY: z.string().optional(),
+                     ~~~~~~
+
+src/config/env.ts:35:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+35   GROQ_MODEL: z.string().default("llama-3.3-70b-versatile"),
+                   ~~~~~~
+
+src/config/env.ts:36:37 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   GOOGLE_APPLICATION_CREDENTIALS: z.string().optional(),
+                                       ~~~~~~
+
+src/config/env.ts:37:41 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   GOOGLE_VISION_SERVICE_ACCOUNT_JSON: z.string().optional(),
+                                           ~~~~~~
+
+src/config/env.ts:38:29 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   FOUNDER_CLERK_USER_IDS: z.string().default(""),
+                               ~~~~~~
+
+src/config/env.ts:39:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+39   APP_TIMEZONE: z.string().default("Asia/Kolkata"),
+                     ~~~~~~
+
+src/config/env.ts:40:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+40   ENABLE_SCHEDULER: z.string().default("true"),
+                         ~~~~~~
+
+src/config/env.ts:41:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+41   CRON_REMINDER_SCAN: z.string().default("*/5 * * * *"),
+                           ~~~~~~
+
+src/config/env.ts:42:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+42   CRON_REFILL_SCAN: z.string().default("0 */6 * * *"),
+                         ~~~~~~
+
+src/config/env.ts:43:31 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+43   API_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60000),
+                                 ~~~~~~
+
+src/config/env.ts:44:25 - error TS2339: Property 'coerce' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+44   API_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120)
+                           ~~~~~~
+
+src/config/env.ts:56:9 - error TS7006: Parameter 'origin' implicitly has an 'any' type.
+
+56   .map((origin) => origin.trim())
+           ~~~~~~
+
+src/middleware/founder.ts:6:9 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+6   .map((value) => value.trim())
+          ~~~~~
+
+src/middleware/validate.ts:2:15 - error TS2614: Module '"zod"' has no exported member 'AnyZodObject'. Did you mean to use 'import AnyZodObject from "zod"' instead?
+
+2 import type { AnyZodObject } from "zod";
+                ~~~~~~~~~~~~
+
+src/modules/admin/admin.schemas.ts:3:41 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const createBetaInviteSchema = z.object({
+                                          ~~~~~~
+
+src/modules/admin/admin.schemas.ts:4:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   email: z.string().email().optional(),
+             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:5:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   phone: z.string().min(8).optional(),
+             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:6:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   clerk_user_id: z.string().min(3).optional(),
+                     ~~~~~~
+
+src/modules/admin/admin.schemas.ts:7:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   notes: z.string().optional(),
+             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:8:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   expires_at: z.string().optional()
+                  ~~~~~~
+
+src/modules/admin/admin.schemas.ts:11:43 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11 export const assignSubscriptionSchema = z.object({
+                                             ~~~~~~
+
+src/modules/admin/admin.schemas.ts:12:14 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   user_id: z.string().uuid(),
+                ~~~~~~
+
+src/modules/admin/admin.schemas.ts:13:16 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   plan_slug: z.enum(["free", "care", "family_plus"]),
+                  ~~~~
+
+src/modules/admin/admin.schemas.ts:14:20 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14   billing_cycle: z.enum(["monthly", "yearly", "lifetime"])
+                      ~~~~
+
+src/modules/auth/auth.schemas.ts:3:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const syncClerkUserSchema = z.object({
+                                       ~~~~~~
+
+src/modules/auth/auth.schemas.ts:4:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   full_name: z.string().min(1).optional(),
+                 ~~~~~~
+
+src/modules/auth/auth.schemas.ts:5:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   email: z.string().email().optional(),
+             ~~~~~~
+
+src/modules/auth/auth.schemas.ts:6:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   phone: z.string().optional(),
+             ~~~~~~
+
+src/modules/auth/auth.schemas.ts:7:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   role: z.enum(["self", "caregiver"]).default("caregiver"),
+            ~~~~
+
+src/modules/auth/auth.schemas.ts:8:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   preferred_language: z.string().default("en")
+                          ~~~~~~
+
+src/modules/family/family.schemas.ts:3:37 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const createFamilySchema = z.object({
+                                      ~~~~~~
+
+src/modules/family/family.schemas.ts:4:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   family_name: z.string().min(2),
+                   ~~~~~~
+
+src/modules/family/family.schemas.ts:5:18 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   member_role: z.enum(["caregiver", "patient", "family_member"]).default("caregiver"),
+                   ~~~~
+
+src/modules/family/family.schemas.ts:6:26 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   invite_family_later: z.boolean().optional(),
+                           ~~~~~~~
+
+src/modules/family/family.schemas.ts:9:35 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9 export const joinFamilySchema = z.object({
+                                    ~~~~~~
+
+src/modules/family/family.schemas.ts:10:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   invite_code: z.string().trim().min(6).max(16),
+                    ~~~~~~
+
+src/modules/family/family.schemas.ts:11:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   role: z.enum(["caregiver", "patient", "family_member"]).optional()
+             ~~~~
+
+src/modules/family/family.schemas.ts:14:40 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14 export const addFamilyMemberSchema = z.object({
+                                          ~~~~~~
+
+src/modules/family/family.schemas.ts:15:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+15   family_group_id: z.string().uuid(),
+                        ~~~~~~
+
+src/modules/family/family.schemas.ts:16:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16   full_name: z.string().min(1),
+                  ~~~~~~
+
+src/modules/family/family.schemas.ts:17:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   relationship: z.string().min(1),
+                     ~~~~~~
+
+src/modules/family/family.schemas.ts:18:10 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   age: z.number().int().min(0).max(120).optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:19:10 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   dob: z.string().optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:20:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   gender: z.string().optional(),
+               ~~~~~~
+
+src/modules/family/family.schemas.ts:21:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   role: z.enum(["caregiver", "patient", "family_member"]).default("family_member"),
+             ~~~~
+
+src/modules/family/family.schemas.ts:22:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                   ~~~~~~
+
+src/modules/family/family.schemas.ts:22:37 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                                       ~~~~~~
+
+src/modules/family/family.schemas.ts:22:72 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                                                                          ~~~~~~
+
+src/modules/family/family.schemas.ts:22:110 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).optional(),
+                                                                                                                ~~~~~~
+
+src/modules/family/family.schemas.ts:23:25 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   chronic_conditions: z.array(z.string()).default([]),
+                           ~~~~~
+
+src/modules/family/family.schemas.ts:23:33 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   chronic_conditions: z.array(z.string()).default([]),
+                                   ~~~~~~
+
+src/modules/family/family.schemas.ts:24:16 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   allergies: z.array(z.string()).default([]),
+                  ~~~~~
+
+src/modules/family/family.schemas.ts:24:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   allergies: z.array(z.string()).default([]),
+                          ~~~~~~
+
+src/modules/family/family.schemas.ts:25:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+25   notes: z.string().optional(),
+              ~~~~~~
+
+src/modules/family/family.schemas.ts:26:27 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+26   is_primary_dependent: z.boolean().default(false)
+                             ~~~~~~~
+
+src/modules/family/family.schemas.ts:29:43 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29 export const updateFamilyMemberSchema = z.object({
+                                             ~~~~~~
+
+src/modules/family/family.schemas.ts:30:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+30   full_name: z.string().min(1).optional(),
+                  ~~~~~~
+
+src/modules/family/family.schemas.ts:31:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+31   relationship: z.string().min(1).optional(),
+                     ~~~~~~
+
+src/modules/family/family.schemas.ts:32:10 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+32   age: z.number().int().min(0).max(120).nullable().optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:33:10 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+33   dob: z.string().nullable().optional(),
+            ~~~~~~
+
+src/modules/family/family.schemas.ts:34:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+34   gender: z.string().nullable().optional(),
+               ~~~~~~
+
+src/modules/family/family.schemas.ts:35:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+35   role: z.enum(["caregiver", "patient", "family_member"]).optional(),
+             ~~~~
+
+src/modules/family/family.schemas.ts:36:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                   ~~~~~~
+
+src/modules/family/family.schemas.ts:36:37 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                                       ~~~~~~
+
+src/modules/family/family.schemas.ts:36:72 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                                                                          ~~~~~~
+
+src/modules/family/family.schemas.ts:36:110 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   avatar_url: z.string().url().or(z.string().startsWith("file:")).or(z.string().startsWith("content:")).or(z.string().startsWith("ph://")).nullable().optional(),
+                                                                                                                ~~~~~~
+
+src/modules/family/family.schemas.ts:37:25 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   chronic_conditions: z.array(z.string()).optional(),
+                           ~~~~~
+
+src/modules/family/family.schemas.ts:37:33 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   chronic_conditions: z.array(z.string()).optional(),
+                                   ~~~~~~
+
+src/modules/family/family.schemas.ts:38:16 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   allergies: z.array(z.string()).optional(),
+                  ~~~~~
+
+src/modules/family/family.schemas.ts:38:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   allergies: z.array(z.string()).optional(),
+                          ~~~~~~
+
+src/modules/family/family.schemas.ts:39:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+39   notes: z.string().nullable().optional(),
+              ~~~~~~
+
+src/modules/family/family.schemas.ts:40:27 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+40   is_primary_dependent: z.boolean().optional()
+                             ~~~~~~~
+
+src/modules/medications/medications.schemas.ts:3:43 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const activateMedicationSchema = z.object({
+                                            ~~~~~~
+
+src/modules/medications/medications.schemas.ts:4:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   family_member_id: z.string().uuid(),
+                        ~~~~~~
+
+src/modules/medications/medications.schemas.ts:5:33 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   prescription_medication_id: z.string().uuid(),
+                                  ~~~~~~
+
+src/modules/medications/medications.schemas.ts:6:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   start_date: z.string(),
+                  ~~~~~~
+
+src/modules/medications/medications.schemas.ts:7:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   end_date: z.string().optional(),
+                ~~~~~~
+
+src/modules/medications/medications.schemas.ts:8:21 - error TS2339: Property 'array' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   reminder_times: z.array(z.string()).default([]),
+                      ~~~~~
+
+src/modules/medications/medications.schemas.ts:8:29 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   reminder_times: z.array(z.string()).default([]),
+                              ~~~~~~
+
+src/modules/medications/medications.schemas.ts:9:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   food_relation: z.string().optional(),
+                     ~~~~~~
+
+src/modules/medications/medications.schemas.ts:10:28 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   refill_threshold_days: z.number().int().min(1).max(30).default(3),
+                              ~~~~~~
+
+src/modules/medications/medications.schemas.ts:11:21 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   quantity_total: z.number().int().positive().optional(),
+                       ~~~~~~
+
+src/modules/medications/medications.schemas.ts:12:25 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   quantity_remaining: z.number().int().min(0).optional(),
+                           ~~~~~~
+
+src/modules/medications/medications.schemas.ts:13:22 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   daily_depletion: z.number().positive().optional(),
+                        ~~~~~~
+
+src/modules/medications/medications.schemas.ts:14:28 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14   projected_runout_date: z.string().optional()
+                              ~~~~~~
+
+src/modules/medications/medications.schemas.ts:17:32 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17 export const doseLogSchema = z.object({
+                                  ~~~~~~
+
+src/modules/medications/medications.schemas.ts:18:29 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   medication_schedule_id: z.string().uuid(),
+                               ~~~~~~
+
+src/modules/medications/medications.schemas.ts:19:21 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   scheduled_time: z.string(),
+                       ~~~~~~
+
+src/modules/medications/medications.schemas.ts:20:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   taken_time: z.string().optional(),
+                   ~~~~~~
+
+src/modules/medications/medications.schemas.ts:21:13 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   status: z.enum(["taken", "missed", "skipped", "snoozed"]),
+               ~~~~
+
+src/modules/medications/medications.schemas.ts:22:12 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   notes: z.string().optional()
+              ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:3:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const registerTokenSchema = z.object({
+                                       ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:4:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   fcm_token: z.string().min(8),
+                 ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:5:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   platform: z.string().min(2)
+                ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:8:48 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8 export const notificationPreferencesSchema = z.object({
+                                                 ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:9:24 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   reminders_enabled: z.boolean(),
+                         ~~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:10:28 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   refill_alerts_enabled: z.boolean(),
+                              ~~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:11:33 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   missed_dose_alerts_enabled: z.boolean(),
+                                   ~~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:12:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12   quiet_hours_start: z.string().optional(),
+                          ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:13:22 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   quiet_hours_end: z.string().optional()
+                        ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:16:40 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16 export const unregisterTokenSchema = z.object({
+                                          ~~~~~~
+
+src/modules/notifications/notifications.schemas.ts:17:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   fcm_token: z.string().min(8).optional()
+                  ~~~~~~
+
+src/modules/payments/payments.schemas.ts:3:36 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const createOrderSchema = z.object({
+                                     ~~~~~~
+
+src/modules/payments/payments.schemas.ts:4:16 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   plan_slug: z.enum(["care", "family_plus"]),
+                 ~~~~
+
+src/modules/payments/payments.schemas.ts:5:20 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   billing_cycle: z.enum(["monthly", "yearly"]).default("monthly"),
+                     ~~~~
+
+src/modules/payments/payments.schemas.ts:8:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8 export const verifyPaymentSchema = z.object({
+                                       ~~~~~~
+
+src/modules/payments/payments.schemas.ts:9:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+9   razorpay_order_id: z.string().min(1),
+                         ~~~~~~
+
+src/modules/payments/payments.schemas.ts:10:26 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+10   razorpay_payment_id: z.string().min(1),
+                            ~~~~~~
+
+src/modules/payments/payments.schemas.ts:11:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+11   razorpay_signature: z.string().min(1),
+                           ~~~~~~
+
+src/modules/payments/payments.schemas.ts:14:38 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+14 export const paymentStatusSchema = z.object({
+                                        ~~~~~~
+
+src/modules/payments/payments.schemas.ts:15:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+15   razorpay_order_id: z.string().min(1),
+                          ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:3:47 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const uploadPrescriptionBodySchema = z.object({
+                                                ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:4:23 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   family_member_id: z.string().uuid(),
+                        ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:5:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   doctor_name: z.string().optional(),
+                   ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:6:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   hospital_name: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:7:24 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   prescription_date: z.string().optional()
+                         ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:12:42 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+12 export const parsePrescriptionSchema = z.object({
+                                            ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:13:20 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+13   force_reparse: z.boolean().default(false)
+                      ~~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:16:47 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+16 export const updateParsedMedicationSchema = z.object({
+                                                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:17:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+17   medicine_name: z.string().min(1).optional(),
+                      ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:18:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+18   brand_name: z.string().optional(),
+                   ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:19:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+19   generic_name: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:20:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+20   dosage: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:21:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+21   frequency: z.string().optional(),
+                  ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:22:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+22   timing: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:23:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+23   duration: z.string().optional(),
+                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:24:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+24   food_timing: z.string().optional(),
+                    ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:25:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+25   instructions: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:26:23 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+26   confidence_score: z.number().min(0).max(1).optional(),
+                         ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:27:35 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+27   requires_manual_verification: z.boolean().optional(),
+                                     ~~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:28:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+28   verification_notes: z.string().optional(),
+                           ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:29:26 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+29   verification_status: z.enum(["unverified", "user_verified", "pharmacist_verified", "doctor_verified"]).optional()
+                            ~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:32:47 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+32 export const createManualMedicationSchema = z.object({
+                                                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:33:20 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+33   medicine_name: z.string().min(1),
+                      ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:34:17 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+34   brand_name: z.string().optional(),
+                   ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:35:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+35   generic_name: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:36:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+36   dosage: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:37:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+37   frequency: z.string().optional(),
+                  ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:38:13 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+38   timing: z.string().optional(),
+               ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:39:15 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+39   duration: z.string().optional(),
+                 ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:40:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+40   food_timing: z.string().optional(),
+                    ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:41:19 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+41   instructions: z.string().optional(),
+                     ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:42:23 - error TS2339: Property 'number' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+42   confidence_score: z.number().min(0).max(1).optional(),
+                         ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:43:35 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+43   requires_manual_verification: z.boolean().optional(),
+                                     ~~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:44:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+44   verification_notes: z.string().optional(),
+                           ~~~~~~
+
+src/modules/prescriptions/prescriptions.schemas.ts:45:26 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+45   verification_status: z.enum(["unverified", "user_verified", "pharmacist_verified", "doctor_verified"]).optional()
+                            ~~~~
+
+src/modules/subscriptions/subscriptions.service.ts:30:9 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+30   .map((value) => value.trim())
+           ~~~~~
+
+src/modules/users/users.schemas.ts:3:35 - error TS2339: Property 'object' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+3 export const onboardingSchema = z.object({
+                                    ~~~~~~
+
+src/modules/users/users.schemas.ts:4:16 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+4   full_name: z.string().min(1).optional(),
+                 ~~~~~~
+
+src/modules/users/users.schemas.ts:5:11 - error TS2339: Property 'enum' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+5   role: z.enum(["self", "caregiver"]).optional(),
+            ~~~~
+
+src/modules/users/users.schemas.ts:6:25 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+6   preferred_language: z.string().optional(),
+                          ~~~~~~
+
+src/modules/users/users.schemas.ts:7:18 - error TS2339: Property 'string' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+7   invite_code: z.string().min(6).optional(),
+                   ~~~~~~
+
+src/modules/users/users.schemas.ts:8:26 - error TS2339: Property 'boolean' does not exist on type 'typeof import("C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/zod/v3/external")'.
+
+8   onboarding_complete: z.boolean()
+                           ~~~~~~~
+
+src/services/notification/fcm.service.ts:1:19 - error TS7016: Could not find a declaration file for module 'firebase-admin'. 'C:/Users/Manjunath/Desktop/Rajath/Development/Renomedy/node_modules/firebase-admin/lib/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/firebase-admin` if it exists or add a new declaration (.d.ts) file containing `declare module 'firebase-admin';`
+
+1 import admin from "firebase-admin";
+                    ~~~~~~~~~~~~~~~~
+
+
+Found 186 errors in 13 files.
+
+Errors  Files
+    44  src/config/env.ts:6
+     1  src/middleware/founder.ts:6
+     1  src/middleware/validate.ts:2
+    10  src/modules/admin/admin.schemas.ts:3
+     6  src/modules/auth/auth.schemas.ts:3
+    42  src/modules/family/family.schemas.ts:3
+    19  src/modules/medications/medications.schemas.ts:3
+    11  src/modules/notifications/notifications.schemas.ts:3
+     9  src/modules/payments/payments.schemas.ts:3
+    35  src/modules/prescriptions/prescriptions.schemas.ts:3
+     1  src/modules/subscriptions/subscriptions.service.ts:30
+     6  src/modules/users/users.schemas.ts:3
+     1  src/services/notification/fcm.service.ts:1
+npm error Lifecycle script `typecheck` failed with error:
+npm error code 2
+npm error path C:\Users\Manjunath\Desktop\Rajath\Development\Renomedy\Backend
+npm error workspace renomedy-backend@1.0.0
+npm error location C:\Users\Manjunath\Desktop\Rajath\Development\Renomedy\Backend
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c tsc --noEmit

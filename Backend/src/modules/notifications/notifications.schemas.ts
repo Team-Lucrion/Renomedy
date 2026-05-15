@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 
 export const registerTokenSchema = z.object({
   fcm_token: z.string().min(8),

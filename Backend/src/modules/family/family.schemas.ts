@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 
 export const createFamilySchema = z.object({
   family_name: z.string().min(2),

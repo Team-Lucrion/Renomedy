@@ -3,7 +3,7 @@ import { env } from "../config/env";
 import { HttpError } from "../utils/http-error";
 
 const founderIds = env.FOUNDER_CLERK_USER_IDS.split(",")
-  .map((value) => value.trim())
+  .map((value: string) => value.trim())
   .filter(Boolean);
 
 export function requireFounder(req: Request, _res: Response, next: NextFunction) {

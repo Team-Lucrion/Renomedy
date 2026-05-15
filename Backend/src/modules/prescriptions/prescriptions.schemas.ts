@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 
 export const uploadPrescriptionBodySchema = z.object({
   family_member_id: z.string().uuid(),

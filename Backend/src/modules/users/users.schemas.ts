@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 
 export const onboardingSchema = z.object({
   full_name: z.string().min(1).optional(),

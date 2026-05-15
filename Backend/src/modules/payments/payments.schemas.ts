@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 
 export const createOrderSchema = z.object({
   plan_slug: z.enum(["care", "family_plus"]),

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { z } from "zod";
+import { z } from "zod/v3";
 
 dotenv.config();
 
@@ -26,8 +26,8 @@ const envSchema = z.object({
   RAZORPAY_KEY_SECRET: z.string().optional(),
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
   OCR_PROVIDER: z.enum(["mock", "vision_gemini"]).default("vision_gemini"),
-  OCR_API_URL: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
-  OCR_API_KEY: z.preprocess((v) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
+  OCR_API_URL: z.preprocess((v: unknown) => (v === "" || v === undefined ? undefined : v), z.string().url().optional()),
+  OCR_API_KEY: z.preprocess((v: unknown) => (v === "" || v === undefined ? undefined : v), z.string().optional()),
   OCR_TIMEOUT_MS: z.coerce.number().int().positive().default(30000),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().default("gemini-2.0-flash"),
@@ -53,5 +53,5 @@ export const env = parsed.data;
 export const isProduction = env.NODE_ENV === "production";
 export const corsAllowedOrigins = env.CORS_ALLOWED_ORIGINS
   .split(",")
-  .map((origin) => origin.trim())
+  .map((origin: string) => origin.trim())
   .filter(Boolean);
