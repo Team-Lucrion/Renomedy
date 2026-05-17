@@ -1,9 +1,15 @@
-Temporarily disable Razorpay payment flow for beta testing.
+Undo the recent temporary payment-disabling changes only.
 
 Requirements:
 
-1. App should run without Razorpay test keys.
-2. Pricing/payment screens should not block onboarding, OCR, family, or tracker testing.
-3. If payment env vars are missing, backend should warn but not crash.
-4. Add a feature flag like PAYMENTS_ENABLED=false.
-5. Keep Razorpay code intact for later.
+1. Revert any PAYMENTS_ENABLED=false or payment-bypass logic added for temporary beta testing.
+2. Restore original Razorpay payment flow.
+3. Keep the new real webhook implementation intact:
+
+* /payments/webhook
+* payment.captured
+* payment.failed
+
+4. Do NOT remove Vercel backend deployment setup.
+5. Do NOT change Clerk, OCR, or other backend systems.
+6. Show me exactly which files were reverted.
