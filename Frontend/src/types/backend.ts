@@ -4,6 +4,9 @@ export type BackendUser = {
   role?: "self" | "caregiver" | string | null;
   preferred_language?: string | null;
   beta_access_status?: "pending" | "active" | "revoked" | string;
+  beta_access_approved?: boolean | null;
+  beta_invite_code_used?: string | null;
+  beta_approved_at?: string | null;
   onboarding_complete?: boolean | null;
   last_sanctuary_id?: string | null;
 };

@@ -4,16 +4,12 @@ const assert = require("node:assert/strict");
 function loadFactoryWithEnv(overrides) {
   const previous = {
     OCR_PROVIDER: process.env.OCR_PROVIDER,
-    OCR_API_URL: process.env.OCR_API_URL,
-    OCR_API_KEY: process.env.OCR_API_KEY,
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     SUPABASE_STORAGE_BUCKET: process.env.SUPABASE_STORAGE_BUCKET,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
-    GROQ_API_KEY: process.env.GROQ_API_KEY,
-    GROQ_MODEL: process.env.GROQ_MODEL
+    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET
   };
 
   process.env.SUPABASE_URL = "https://example.supabase.co";
@@ -22,9 +18,6 @@ function loadFactoryWithEnv(overrides) {
   process.env.SUPABASE_STORAGE_BUCKET = "prescriptions";
   process.env.CLERK_SECRET_KEY = "clerk_secret";
   process.env.CLERK_WEBHOOK_SECRET = "clerk_webhook_secret";
-
-  delete process.env.OCR_API_URL;
-  delete process.env.OCR_API_KEY;
 
   Object.assign(process.env, overrides);
 

@@ -1,11 +1,13 @@
 import { z } from "zod/v3";
 
 export const createBetaInviteSchema = z.object({
+  code: z.string().trim().min(6).max(64).optional(),
+  name: z.string().min(1).optional(),
   email: z.string().email().optional(),
   phone: z.string().min(8).optional(),
-  clerk_user_id: z.string().min(3).optional(),
   notes: z.string().optional(),
-  expires_at: z.string().optional()
+  expires_at: z.string().optional(),
+  max_uses: z.coerce.number().int().positive().optional()
 });
 
 export const assignSubscriptionSchema = z.object({

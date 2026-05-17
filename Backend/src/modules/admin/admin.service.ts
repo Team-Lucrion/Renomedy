@@ -6,22 +6,27 @@ import { writeAuditLog } from "../../services/audit.service";
 import { assignManualSubscription } from "../subscriptions/subscriptions.service";
 
 function normalizedInviteCode() {
-  return Math.random().toString(36).slice(2, 8).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
+  return `RENO-BETA-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
 
-export async function createBetaInvite(jwt: string, input: { email?: string; phone?: string; clerk_user_id?: string; notes?: string; expires_at?: string }) {
+export async function createBetaInvite(jwt: string, input: { code?: string; name?: string; email?: string; phone?: string; notes?: string; expires_at?: string; max_uses?: number }) {
   const founder = await getCurrentUserRecord(jwt);
+  const code = (input.code?.trim().toUpperCase() || normalizedInviteCode());
   const { data, error } = await supabaseAdmin
     .from("beta_invites")
     .insert({
-      invite_code: normalizedInviteCode(),
+      code,
+      invite_code: code,
+      name: input.name ?? null,
       email: input.email ?? null,
       phone: input.phone ?? null,
-      clerk_user_id: input.clerk_user_id ?? null,
       notes: input.notes ?? null,
       expires_at: input.expires_at ?? null,
+      max_uses: input.max_uses ?? 1,
+      used_count: 0,
+      used_at: null,
       approved_by_user_id: founder.id,
-      status: "approved"
+      status: "unused"
     })
     .select("*")
     .single();

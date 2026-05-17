@@ -1,6 +1,5 @@
 import { getUserSupabaseClient, supabaseAdmin } from "../../lib/supabase";
 import { writeAuditLog } from "../../services/audit.service";
-import { activateBetaInvite } from "../../services/beta-access.service";
 import { getCurrentUserRecord } from "../../services/current-user.service";
 import { HttpError } from "../../utils/http-error";
 
@@ -25,23 +24,10 @@ export async function updateOnboarding(
   const currentUser = await getCurrentUserRecord(jwt);
   const { invite_code: _inviteCode, ...userUpdates } = input;
 
-  if (input.invite_code && currentUser.beta_access_status !== "active") {
-    const data = await activateBetaInvite(jwt, input.invite_code, userUpdates);
-    await writeAuditLog({
-      userId: currentUser.id,
-      action: "user.onboarding_updated",
-      entityType: "user",
-      entityId: currentUser.id,
-      metadata: { onboarding_complete: input.onboarding_complete }
-    });
-    return data;
-  }
-
   const { data, error } = await supabaseAdmin
     .from("users")
     .update({
       ...userUpdates,
-      beta_access_status: "active",
     })
     .eq("id", currentUser.id)
     .select("*")

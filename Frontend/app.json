@@ -1,30 +1,53 @@
 {
   "expo": {
     "name": "Renomedy",
-    "slug": "renomedy-app",
+    "slug": "renomedy",
     "scheme": "renomedy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/adaptive-icon.png",
+          "color": "#006D77"
+        }
+      ]
+    ],
+    "notification": {
+      "icon": "./assets/adaptive-icon.png",
+      "color": "#006D77",
+      "iosDisplayInForeground": true
+    },
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#F4F9F8"
     },
     "ios": {
+      "bundleIdentifier": "com.teamlucrion.renomedy",
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Renomedy uses the camera to scan prescription images for medicine decoding.",
-        "NSPhotoLibraryUsageDescription": "Renomedy uses your photo library so you can upload prescription images."
+        "NSCameraUsageDescription": "Renomedy uses camera access so users can upload prescriptions for clarity and medication organization.",
+        "NSPhotoLibraryUsageDescription": "Renomedy uses photo library access so users can upload prescriptions for clarity and medication organization.",
+        "NSUserNotificationsUsageDescription": "Renomedy uses notifications to send medication reminders and continuity updates for your private Sanctuary."
       }
     },
     "android": {
+      "package": "com.teamlucrion.renomedy",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#F4F9F8"
       },
+      "permissions": [
+        "CAMERA",
+        "READ_MEDIA_IMAGES",
+        "POST_NOTIFICATIONS",
+        "INTERNET"
+      ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },

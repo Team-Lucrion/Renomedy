@@ -2,10 +2,9 @@
 
 Renomedy ships with a single canonical prescription OCR pipeline in Express:
 
-- `src/services/ocr/vision-gemini-ocr.provider.ts` — **Google Cloud Vision** (REST `images:annotate`: `DOCUMENT_TEXT_DETECTION`, then `TEXT_DETECTION` fallback) for OCR text, then **Google Gemini** for structured medicine JSON (same schema and post-processing as the previous in-process Gemini path).
+- `src/services/ocr/vision-gemini-ocr.provider.ts` — **Google Cloud Vision** (REST `images:annotate`: `DOCUMENT_TEXT_DETECTION`, then `TEXT_DETECTION` fallback) for OCR text, then **Google Gemini** for structured medicine JSON.
 - `src/services/ocr/google-vision-text.ts` — Vision REST calls and OAuth via `google-auth-library` (cached `GoogleAuth` client).
 - `src/services/ocr/gemini-prescription-parse.ts` — shared Gemini prompt, JSON extraction, medicine normalization, and card payload building (used by golden tests).
-- `main.py` remains as an optional **legacy** FastAPI service (Tesseract + Groq). It is **not** used when `OCR_PROVIDER=vision_gemini`.
 
 ## Prescription pipeline
 
@@ -27,8 +26,6 @@ Add these variables to `Backend/.env` for production scanning:
   - `GOOGLE_VISION_SERVICE_ACCOUNT_JSON` — inline JSON for the same key (useful on some hosts)
 
 Also required for the rest of the API: `SUPABASE_*`, `CLERK_*`, etc. (see `.env.example`).
-
-Optional (legacy FastAPI only): `GROQ_API_KEY`, `OCR_API_URL`, `TESSERACT_CMD`, `FASTAPI_ALLOWED_ORIGINS`.
 
 ## Local run
 

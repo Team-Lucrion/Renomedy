@@ -1,25 +1,9 @@
-Backend typecheck blocker found.
+Temporarily disable Razorpay payment flow for beta testing.
 
-Primary issue:
-Zod is resolving incorrectly (z.object, z.string, z.enum etc all failing).
+Requirements:
 
-Task:
-1. Audit Backend package.json zod version
-2. Ensure correct compatible zod version for current codebase
-3. Fix zod imports globally without redesigning schemas
-4. Standardize all schema files
-5. Fix:
-- src/config/env.ts
-- all *.schemas.ts
-- middleware/validate.ts AnyZodObject typing
-6. Fix implicit any errors
-7. Fix firebase-admin typings issue safely
-8. Re-run backend typecheck
-
-IMPORTANT:
-Do NOT rewrite business logic.
-Do NOT redesign schemas.
-This is dependency + typing correction only.
-
-Goal:
-Restore previously working backend compile state.
+1. App should run without Razorpay test keys.
+2. Pricing/payment screens should not block onboarding, OCR, family, or tracker testing.
+3. If payment env vars are missing, backend should warn but not crash.
+4. Add a feature flag like PAYMENTS_ENABLED=false.
+5. Keep Razorpay code intact for later.

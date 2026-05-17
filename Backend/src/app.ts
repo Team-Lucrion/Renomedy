@@ -19,6 +19,7 @@ import { adminRouter } from "./modules/admin/admin.routes";
 import { subscriptionsRouter } from "./modules/subscriptions/subscriptions.routes";
 import { paymentsRouter } from "./modules/payments/payments.routes";
 import { notificationsRouter } from "./modules/notifications/notifications.routes";
+import { betaRouter } from "./modules/beta/beta.routes";
 import { corsAllowedOrigins } from "./config/env";
 import { asyncHandler } from "./utils/async-handler";
 
@@ -66,6 +67,7 @@ app.use("/notifications", notificationsRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/subscriptions", subscriptionsRouter);
 app.use("/payments", paymentsRouter);
+app.use("/beta", betaRouter);
 app.use("/admin", adminRouter);
 
 app.use(notFoundHandler);

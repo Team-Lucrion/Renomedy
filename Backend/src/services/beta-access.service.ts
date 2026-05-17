@@ -9,19 +9,21 @@ type JwtIdentity = {
 
 type BetaInviteRecord = {
   id: string;
-  invite_code?: string | null;
-  status?: "approved" | "consumed" | "revoked" | string | null;
-  is_active?: boolean | null;
-  used?: boolean | null;
+  code?: string | null;
+  status?: "unused" | "used" | "revoked" | string | null;
   email?: string | null;
-  clerk_user_id?: string | null;
   used_by_user_id?: string | null;
   expires_at?: string | null;
+  max_uses?: number | null;
+  used_count?: number | null;
 };
 
 type UserBetaAccessSnapshot = {
   id: string;
+  beta_access_approved?: boolean | null;
   beta_access_status?: string | null;
+  beta_invite_code_used?: string | null;
+  beta_approved_at?: string | null;
   beta_invite_id?: string | null;
   beta_access_granted_at?: string | null;
   beta_access_revoked_at?: string | null;
@@ -38,19 +40,8 @@ function decodeIdentity(jwt: string): JwtIdentity {
 
 export async function ensureClosedBetaAccess(jwt: string) {
   const currentUser = await getCurrentUserRecord(jwt);
-  // LAUNCH READINESS: Auto-approve all authenticated users.
-  // Beta gating disabled for production launch.
-  if (currentUser.beta_access_status !== "active") {
-    const { data: updated, error } = await supabaseAdmin
-      .from("users")
-      .update({ beta_access_status: "active" })
-      .eq("id", currentUser.id)
-      .select("*")
-      .single();
-    if (error || !updated) {
-      throw new HttpError(500, "Failed to auto-approve user access", error);
-    }
-    return updated;
+  if (!currentUser.beta_access_approved && currentUser.beta_access_status !== "active") {
+    throw new HttpError(403, "Beta invite required");
   }
   return currentUser;
 }
@@ -72,7 +63,7 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
   const { data: invite, error: inviteError } = await supabaseAdmin
     .from("beta_invites")
     .select("*")
-    .eq("invite_code", normalizedCode)
+    .eq("code", normalizedCode)
     .single<BetaInviteRecord>();
 
   console.log("[beta-invite] Supabase response data", invite);
@@ -91,11 +82,11 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     throw new HttpError(404, "Invalid beta invite code", inviteError);
   }
 
-  if (invite.status === "revoked" || invite.is_active === false) {
+  if (invite.status === "revoked") {
     throw new HttpError(403, "This beta invite has been revoked");
   }
 
-  if (invite.status === "consumed" || invite.used === true) {
+  if ((invite.used_count ?? 0) >= (invite.max_uses ?? 1) || invite.status === "used") {
     throw new HttpError(403, "This beta invite has already been used");
   }
 
@@ -107,14 +98,10 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     throw new HttpError(403, "This beta invite is issued for a different email address");
   }
 
-  if (invite.clerk_user_id && identity.sub && invite.clerk_user_id !== identity.sub) {
-    throw new HttpError(403, "This beta invite is issued for a different user");
-  }
-
   const activationTimestamp = new Date().toISOString();
   const { data: previousUser, error: previousUserError } = await supabaseAdmin
     .from("users")
-    .select("id, beta_access_status, beta_invite_id, beta_access_granted_at, beta_access_revoked_at")
+    .select("id, beta_access_approved, beta_access_status, beta_invite_code_used, beta_approved_at, beta_invite_id, beta_access_granted_at, beta_access_revoked_at")
     .eq("id", currentUser.id)
     .single<UserBetaAccessSnapshot>();
 
@@ -132,6 +119,9 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     .from("users")
     .update({
       ...userUpdates,
+      beta_access_approved: true,
+      beta_invite_code_used: normalizedCode,
+      beta_approved_at: activationTimestamp,
       beta_access_status: "active",
       beta_invite_id: invite.id,
       beta_access_granted_at: activationTimestamp,
@@ -151,23 +141,13 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     inviteId: invite.id
   });
 
-  const inviteUpdates: Partial<BetaInviteRecord> & { used_by_user_id?: string | null } = {};
-
-  if ("status" in invite) {
-    inviteUpdates.status = "consumed";
-  }
-
-  if ("used" in invite) {
-    inviteUpdates.used = true;
-  }
-
-  if ("used_by_user_id" in invite) {
-    inviteUpdates.used_by_user_id = currentUser.id;
-  }
-
-  if ("clerk_user_id" in invite) {
-    inviteUpdates.clerk_user_id = invite.clerk_user_id ?? identity.sub ?? null;
-  }
+  const nextUsedCount = (invite.used_count ?? 0) + 1;
+  const inviteUpdates: Partial<BetaInviteRecord> & { used_by_user_id?: string | null; used_at?: string | null } = {
+    used_count: nextUsedCount,
+    used_by_user_id: currentUser.id,
+    used_at: activationTimestamp,
+    status: nextUsedCount >= (invite.max_uses ?? 1) ? "used" : "unused"
+  };
 
   console.log("[beta-invite] marking invite used", {
     inviteId: invite.id,
@@ -176,14 +156,7 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
   });
 
   let inviteUpdateQuery = supabaseAdmin.from("beta_invites").update(inviteUpdates).eq("id", invite.id);
-
-  if ("used" in invite) {
-    inviteUpdateQuery = inviteUpdateQuery.eq("used", false);
-  }
-
-  if ("status" in invite && invite.status) {
-    inviteUpdateQuery = inviteUpdateQuery.eq("status", invite.status);
-  }
+  inviteUpdateQuery = inviteUpdateQuery.eq("used_count", invite.used_count ?? 0);
 
   const { data: consumedInvite, error: inviteUpdateError } = Object.keys(inviteUpdates).length
     ? await inviteUpdateQuery.select("id").single()
@@ -194,6 +167,9 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     const { error: rollbackError } = await supabaseAdmin
       .from("users")
       .update({
+        beta_access_approved: previousUser.beta_access_approved ?? false,
+        beta_invite_code_used: previousUser.beta_invite_code_used ?? null,
+        beta_approved_at: previousUser.beta_approved_at ?? null,
         beta_access_status: previousUser.beta_access_status ?? "pending",
         beta_invite_id: previousUser.beta_invite_id ?? null,
         beta_access_granted_at: previousUser.beta_access_granted_at ?? null,

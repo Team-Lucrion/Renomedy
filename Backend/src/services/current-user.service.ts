@@ -52,7 +52,7 @@ async function ensureCurrentUserExists(jwt: string) {
       },
       { onConflict: "clerk_user_id" }
     )
-    .select("id, clerk_user_id, role, beta_access_status, beta_invite_id")
+    .select("id, clerk_user_id, full_name, role, beta_access_status, beta_invite_id, beta_access_approved")
     .single();
 
   if (error || !data) {
@@ -66,7 +66,7 @@ export async function getCurrentUserRecord(jwt: string) {
   const sb = getUserSupabaseClient(jwt);
   const { data, error } = await sb
     .from("users")
-    .select("id, clerk_user_id, role, beta_access_status, beta_invite_id")
+    .select("id, clerk_user_id, full_name, role, beta_access_status, beta_invite_id, beta_access_approved")
     .single();
   if (!error && data) return data;
   return ensureCurrentUserExists(jwt);

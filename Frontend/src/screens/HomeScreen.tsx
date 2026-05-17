@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -33,10 +33,7 @@ function formatContinuityStatus(status?: string | null) {
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const { user } = useUser();
-  const { currentUser, familyGroups, familyMembers, overview, schedules, refillStates, error, betaBlocked, refreshAll, activateBetaAccess } = useAppData();
-  const [inviteCode, setInviteCode] = useState('');
-  const [inviteError, setInviteError] = useState('');
-  const [isActivatingInvite, setIsActivatingInvite] = useState(false);
+  const { currentUser, familyGroups, familyMembers, overview, schedules, refillStates, error, refreshAll } = useAppData();
 
   const greetingName =
     currentUser?.full_name?.split(' ')[0] ??
@@ -52,31 +49,6 @@ export default function HomeScreen() {
   const canManageFamily = currentMembership?.role === 'owner' || currentMembership?.role === 'caregiver';
 
   const activeSchedules = schedules.slice(0, 4);
-  const allowAccess = async () => {
-    const normalizedCode = inviteCode.trim().toUpperCase();
-
-    console.log('[beta-invite] enteredCode', inviteCode);
-    console.log('[beta-invite] normalizedCode', normalizedCode);
-
-    if (!normalizedCode) {
-      setInviteError('Enter your beta invite code.');
-      return;
-    }
-
-    setInviteError('');
-    setIsActivatingInvite(true);
-
-    try {
-      await activateBetaAccess(normalizedCode);
-      setInviteCode('');
-    } catch (activationError) {
-      console.log('[beta-invite] activation error', activationError);
-      setInviteError(activationError instanceof Error ? activationError.message : 'Closed beta access required');
-    } finally {
-      setIsActivatingInvite(false);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -97,35 +69,6 @@ export default function HomeScreen() {
           <View style={styles.backendMessageCard}>
             <Ionicons name="alert-circle-outline" size={18} color={colors.danger} />
             <Text style={styles.backendMessageText}>{error}</Text>
-          </View>
-        ) : null}
-
-        {betaBlocked ? (
-          <View style={styles.blockedCard}>
-            <Text style={styles.blockedTitle}>Closed beta access required</Text>
-            <Text style={styles.blockedBody}>
-              Your Clerk account is signed in, but the backend is still waiting for an approved beta invite to unlock family and medication data.
-            </Text>
-            <TextInput
-              autoCapitalize="characters"
-              autoCorrect={false}
-              editable={!isActivatingInvite}
-              onChangeText={setInviteCode}
-              placeholder="Renomedy-FOUNDER-001"
-              placeholderTextColor={colors.textMuted}
-              style={styles.inviteInput}
-              value={inviteCode}
-            />
-            {inviteError ? <Text style={styles.inviteError}>{inviteError}</Text> : null}
-            <TouchableOpacity
-              disabled={isActivatingInvite}
-              style={[styles.inviteButton, isActivatingInvite ? styles.inviteButtonDisabled : null]}
-              onPress={() => void allowAccess()}
-            >
-              <Text style={styles.inviteButtonText}>
-                {isActivatingInvite ? 'Checking invite...' : 'Unlock Beta Access'}
-              </Text>
-            </TouchableOpacity>
           </View>
         ) : null}
 
@@ -296,51 +239,6 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colors.danger,
     flex: 1,
-  },
-  blockedCard: {
-    backgroundColor: '#FFFAF0',
-    borderColor: '#FBD38D',
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    padding: spacing.lg,
-    gap: spacing.sm,
-  },
-  blockedTitle: {
-    ...typography.h3,
-    color: colors.warning,
-  },
-  blockedBody: {
-    ...typography.bodySmall,
-    color: colors.text,
-  },
-  inviteInput: {
-    backgroundColor: colors.surface,
-    borderColor: '#FBD38D',
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    color: colors.text,
-    fontSize: 14,
-    minHeight: 48,
-    paddingHorizontal: spacing.md,
-  },
-  inviteError: {
-    ...typography.bodySmall,
-    color: colors.danger,
-  },
-  inviteButton: {
-    alignItems: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.md,
-    minHeight: 48,
-    justifyContent: 'center',
-    paddingHorizontal: spacing.md,
-  },
-  inviteButtonDisabled: {
-    opacity: 0.7,
-  },
-  inviteButtonText: {
-    ...typography.label,
-    color: colors.surface,
   },
   statsGrid: {
     flexDirection: 'row',

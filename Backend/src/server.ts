@@ -1,11 +1,12 @@
+import { bootstrapApp } from "./bootstrap";
 import { env } from "./config/env";
 import { logger } from "./config/logger";
 import { app } from "./app";
 import { shutdownPostHog } from "./lib/posthog";
-import { captureException, flushSentry, initSentry } from "./lib/sentry";
+import { captureException, flushSentry } from "./lib/sentry";
 import { startSchedulers } from "./services/scheduler/scheduler.service";
 
-initSentry();
+bootstrapApp();
 
 const server = app.listen(env.PORT, () => {
   logger.info(`Renomedy backend running on port ${env.PORT}`);

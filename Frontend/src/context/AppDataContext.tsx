@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useAuth, useUser } from "@clerk/expo";
 import { api, ApiError } from "../lib/api";
+import { trackEvent } from "../lib/analytics";
 import { findFirst } from "../lib/collections";
 import type {
   BackendFamilyGroup,
@@ -98,6 +99,10 @@ function isForbiddenApiError(error: unknown) {
   return error instanceof ApiError && error.statusCode === 403;
 }
 
+function hasBetaAccess(user: BackendUser | null) {
+  return Boolean(user?.beta_access_approved || user?.beta_access_status === "active");
+}
+
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -145,6 +150,20 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
 
       const me = await api.get<BackendUser>("users/me");
       setCurrentUser(me);
+
+      if (!hasBetaAccess(me)) {
+        trackEvent("beta_gate_seen", { user_id: me.id });
+        trackEvent("beta_gate_blocked", { user_id: me.id });
+        setFamilyGroups([]);
+        setOverview(null);
+        setSchedules([]);
+        setRefillStates([]);
+        setPrescriptions([]);
+        setSubscriptionSummary(null);
+        setBetaBlocked(true);
+        setError("");
+        return;
+      }
 
       const featureResults = await Promise.allSettled([
         api.get<BackendFamilyGroup[]>("family/list"),
@@ -216,22 +235,12 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
 
   const activateBetaAccess = async (enteredCode: string) => {
     const normalizedCode = enteredCode.trim().toUpperCase();
-
-    console.log("[beta-invite] enteredCode", enteredCode);
-    console.log("[beta-invite] normalizedCode", normalizedCode);
-
-    const activatedUser = await api.patch<BackendUser>("users/onboarding", {
-      invite_code: normalizedCode,
-      onboarding_complete: true,
-    });
-
-    console.log("[beta-invite] activation response data", activatedUser);
-
-    if (!activatedUser) {
-      throw new Error("Closed beta access required");
-    }
-
-    setCurrentUser(activatedUser);
+    trackEvent("beta_code_entered", { invite_code: normalizedCode });
+    await api.post("beta/validate", { invite_code: normalizedCode });
+    trackEvent("beta_code_valid", { invite_code: normalizedCode });
+    const redeemed = await api.post<{ user: BackendUser }>("beta/redeem", { invite_code: normalizedCode });
+    trackEvent("beta_code_redeemed", { invite_code: normalizedCode });
+    setCurrentUser(redeemed.user);
     setBetaBlocked(false);
     setError("");
     await refreshAll();

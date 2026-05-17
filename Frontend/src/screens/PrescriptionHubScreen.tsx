@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
+  Linking,
   Platform,
   ScrollView,
+  Share,
   StyleSheet,
   Text,
   TextInput,
@@ -12,9 +14,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import * as Sharing from 'expo-sharing';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import RenoItModal from '../components/RenoItModal';
+import { captureRef } from 'react-native-view-shot';
 import { ApiError, api } from '../lib/api';
+import { trackRenoItEvent } from '../lib/analytics';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst, includesText } from '../lib/collections';
 import UpgradeModal from '../components/UpgradeModal';
@@ -23,6 +29,12 @@ import type {
   PrescriptionDetails,
   PrescriptionHistoryItem,
 } from '../types/backend';
+import {
+  RENO_IT_BADGE_CTA,
+  RENO_IT_BADGE_LABEL,
+  RENO_IT_LANDING_URL,
+  RENO_IT_TRUST_DISCLAIMER,
+} from '../config/renoIt';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
 type UploadState = 'idle' | 'preview' | 'uploading' | 'processing' | 'success' | 'error';
@@ -63,7 +75,9 @@ function getPrimaryUpload(item?: PrescriptionHistoryItem | PrescriptionDetails |
 function formatPrescriptionDate(value?: string | null) {
   if (!value) return 'Date unavailable';
   const parsed = new Date(value);
-  return isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString();
+  return isNaN(parsed.getTime())
+    ? value
+    : parsed.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function formatStatus(value?: string | null) {
@@ -288,6 +302,65 @@ function getDecodeFailureMessage(details?: PrescriptionDetails | null) {
   return 'We could not clearly read this prescription. Please upload a clearer image.';
 }
 
+function isPrescriptionVerified(status?: string | null) {
+  return Boolean(status && ['user_verified', 'pharmacist_verified', 'doctor_verified'].includes(status));
+}
+
+function buildMedicationLine(medication: ParsedPrescriptionMedication) {
+  const title = getMedicineTitle(medication);
+  const details = [
+    normalizeWhitespace(medication.frequency),
+    normalizeWhitespace(medication.timing || medication.food_timing),
+    normalizeWhitespace(medication.duration) ? `for ${normalizeWhitespace(medication.duration)}` : '',
+  ].filter(Boolean);
+
+  return details.length > 0 ? `${title}: ${details.join(', ')}` : title;
+}
+
+function buildRenoItShareText(details: PrescriptionDetails, medicines: ParsedPrescriptionMedication[]) {
+  const patientName = details.family_members?.full_name?.trim() || 'Family member';
+  const doctorLabel = normalizeWhitespace(details.doctor_name || details.hospital_name) || 'Doctor not listed';
+  const dateLabel = formatPrescriptionDate(details.prescription_date);
+  const summaryLines = medicines.slice(0, 4).map((medicine, index) => `${index + 1}. ${buildMedicationLine(medicine)}`);
+  const notes = medicines
+    .map((medicine) => normalizeWhitespace(medicine.instructions))
+    .filter(Boolean)
+    .slice(0, 2);
+
+  return [
+    `Prescription decoded for ${patientName}`,
+    `Doctor/Clinic: ${doctorLabel}`,
+    `Date: ${dateLabel}`,
+    '',
+    'Medicines:',
+    ...(summaryLines.length > 0 ? summaryLines : ['1. Prescription details need manual review before sharing.']),
+    ...(notes.length > 0 ? ['', `Notes: ${notes.join(' | ')}`] : []),
+    '',
+    RENO_IT_BADGE_LABEL,
+    RENO_IT_BADGE_CTA,
+    RENO_IT_LANDING_URL,
+  ].join('\n');
+}
+
+function getRenoItTimingBadge(medication: ParsedPrescriptionMedication) {
+  const timing = normalizeWhitespace(medication.timing || medication.food_timing);
+  if (timing) return timing;
+
+  const frequency = normalizeWhitespace(medication.frequency);
+  if (frequency) return frequency;
+
+  return 'As directed';
+}
+
+function getRenoItInstructionLine(medication: ParsedPrescriptionMedication) {
+  const parts = [
+    normalizeWhitespace(medication.instructions),
+    normalizeWhitespace(medication.duration) ? `for ${normalizeWhitespace(medication.duration)}` : '',
+  ].filter(Boolean);
+
+  return parts[0] || 'Follow the prescribed dose and timing.';
+}
+
 function getPrescriptionFromApiError(error: ApiError) {
   if (!error.details || typeof error.details !== 'object') {
     return null;
@@ -345,6 +418,9 @@ export default function PrescriptionHubScreen() {
   const [manualMedicationError, setManualMedicationError] = useState('');
   const [isSavingMedication, setIsSavingMedication] = useState(false);
   const [showOcrDetails, setShowOcrDetails] = useState(false);
+  const [isRenoItModalVisible, setIsRenoItModalVisible] = useState(false);
+  const [isRenoItSharing, setIsRenoItSharing] = useState(false);
+  const renoItCardRef = useRef<View | null>(null);
 
   const targetFamilyMember = familyMembers[0] ?? null;
   const recentPrescriptions = useMemo(() => {
@@ -357,6 +433,10 @@ export default function PrescriptionHubScreen() {
   const decodedMedicines = getAnalysisMedicines(decodedPrescription);
   const cleanedOcrText = decodedPrescription?.cleaned_ocr_text ?? decodedPrescription?.raw_ocr_text ?? ocrPreviewText;
   const prescriptionAnalysisMeta = getPrescriptionAnalysisMeta(decodedPrescription);
+  const isDecodedPrescriptionVerified = isPrescriptionVerified(decodedPrescription?.verification_status);
+  const hasShareRisk =
+    !isDecodedPrescriptionVerified || decodedMedicines.some((medicine) => medicine.requires_manual_verification);
+  const renoItShareText = decodedPrescription ? buildRenoItShareText(decodedPrescription, decodedMedicines) : '';
   const pipelineMeta = [
     decodedPrescription?.ai_provider ? `AI: ${decodedPrescription.ai_provider}` : null,
     decodedPrescription?.ai_model ? `Model: ${decodedPrescription.ai_model}` : null,
@@ -579,6 +659,8 @@ export default function PrescriptionHubScreen() {
     setIsManualFormVisible(false);
     setManualMedicationError('');
     setShowOcrDetails(false);
+    setIsRenoItModalVisible(false);
+    setIsRenoItSharing(false);
   };
 
   const openPrescriptionDetails = async (prescriptionId: string) => {
@@ -594,6 +676,8 @@ export default function PrescriptionHubScreen() {
       setShowOcrDetails(false);
       setProcessingStage('idle');
       setUploadProgress(1);
+      setIsRenoItModalVisible(false);
+      setIsRenoItSharing(false);
     } catch (loadFailure) {
       setUploadState('error');
       setUploadError(loadFailure instanceof Error ? loadFailure.message : 'Unable to load prescription details.');
@@ -663,6 +747,99 @@ export default function PrescriptionHubScreen() {
       setManualMedicationError(saveFailure instanceof Error ? saveFailure.message : 'Unable to save the medicine.');
     } finally {
       setIsSavingMedication(false);
+    }
+  };
+
+  const openRenoIt = () => {
+    if (!decodedPrescription || decodedMedicines.length === 0) {
+      return;
+    }
+
+    trackRenoItEvent('reno_it_opened', {
+      prescription_id: decodedPrescription.id,
+      verification_status: decodedPrescription.verification_status ?? 'unknown',
+      medicine_count: decodedMedicines.length,
+      has_share_risk: hasShareRisk,
+    });
+    trackRenoItEvent('reno_it_popup_seen', {
+      prescription_id: decodedPrescription.id,
+    });
+    setIsRenoItModalVisible(true);
+  };
+
+  const shareRenoItToWhatsApp = async () => {
+    if (!decodedPrescription) {
+      return;
+    }
+
+    setIsRenoItSharing(true);
+    trackRenoItEvent('reno_it_whatsapp_share_clicked', {
+      prescription_id: decodedPrescription.id,
+      share_mode: 'card_image_preferred',
+    });
+
+    try {
+      let sharedAsImage = false;
+      if (renoItCardRef.current && Platform.OS !== 'web') {
+        const isSharingAvailable = await Sharing.isAvailableAsync();
+        if (isSharingAvailable) {
+          const imageUri = await captureRef(renoItCardRef, {
+            format: 'png',
+            quality: 1,
+            result: 'tmpfile',
+          });
+
+          await Sharing.shareAsync(imageUri, {
+            dialogTitle: 'Share Reno It card',
+            mimeType: 'image/png',
+          });
+          sharedAsImage = true;
+        }
+      }
+
+      if (!sharedAsImage) {
+        const encodedText = encodeURIComponent(renoItShareText);
+        const nativeWhatsappUrl = `whatsapp://send?text=${encodedText}`;
+        const webWhatsappUrl = `https://wa.me/?text=${encodedText}`;
+
+        let opened = false;
+        if (Platform.OS !== 'web') {
+          const canOpenNative = await Linking.canOpenURL(nativeWhatsappUrl);
+          if (canOpenNative) {
+            await Linking.openURL(nativeWhatsappUrl);
+            opened = true;
+          }
+        }
+
+        if (!opened) {
+          const canOpenWeb = await Linking.canOpenURL(webWhatsappUrl);
+          if (canOpenWeb) {
+            await Linking.openURL(webWhatsappUrl);
+            opened = true;
+          }
+        }
+
+        if (!opened) {
+          await Share.share({
+            message: renoItShareText,
+            title: 'Reno It',
+          });
+        }
+      }
+
+      trackRenoItEvent('reno_it_share_success', {
+        prescription_id: decodedPrescription.id,
+        share_mode: sharedAsImage ? 'card_image' : 'text_fallback',
+      });
+      setIsRenoItModalVisible(false);
+    } catch (shareError) {
+      trackRenoItEvent('reno_it_share_failed', {
+        prescription_id: decodedPrescription.id,
+        reason: shareError instanceof Error ? shareError.message : 'unknown_error',
+      });
+      setUploadError('Unable to open WhatsApp right now. Try again in a moment.');
+    } finally {
+      setIsRenoItSharing(false);
     }
   };
 
@@ -998,6 +1175,108 @@ export default function PrescriptionHubScreen() {
               {renderMedicineCards(decodedMedicines)}
             </View>
 
+            {decodedMedicines.length > 0 ? (
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>Reno It</Text>
+                  <View style={styles.renoItStatusPill}>
+                    <Text style={styles.renoItStatusText}>
+                      {isDecodedPrescriptionVerified ? 'Ready to share' : 'Share with care'}
+                    </Text>
+                  </View>
+                </View>
+
+                <Text style={styles.manualHelpText}>
+                  Turn this decoded prescription into a calm, family-friendly WhatsApp card.
+                </Text>
+
+                {hasShareRisk ? (
+                  <View style={styles.renoItWarningCard}>
+                    <Ionicons name="alert-circle-outline" size={18} color={colors.warning} />
+                    <Text style={styles.renoItWarningText}>
+                      Please verify medicines before sharing with family.
+                    </Text>
+                  </View>
+                ) : null}
+
+                <View style={styles.renoItCardShell}>
+                  <View collapsable={false} ref={renoItCardRef} style={styles.renoItCard}>
+                    <View style={styles.renoItCardTop}>
+                      <View style={styles.renoItHeaderCopy}>
+                        <Text style={styles.renoItTopEyebrow}>PRESCRIPTION FOR</Text>
+                        <Text style={styles.renoItPatientName}>
+                          {decodedPrescription.family_members?.full_name?.trim() || 'Family member'}
+                        </Text>
+                        <Text style={styles.renoItDoctorLine}>
+                          {normalizeWhitespace(decodedPrescription.doctor_name || decodedPrescription.hospital_name) || 'Doctor / clinic pending'}
+                        </Text>
+                      </View>
+                      <View style={styles.renoItDateBadge}>
+                        <Text style={styles.renoItDateBadgeText}>
+                          {formatPrescriptionDate(decodedPrescription.prescription_date)}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.renoItBody}>
+                      {decodedMedicines.map((medicine) => (
+                        <View key={`reno-${medicine.id}`} style={styles.renoItListRow}>
+                          <View style={styles.renoItListIcon}>
+                            <Ionicons name="grid-outline" size={15} color={colors.primary} />
+                          </View>
+                          <View style={styles.renoItListCopy}>
+                            <Text style={styles.renoItListTitle}>{getMedicineTitle(medicine)}</Text>
+                            <Text style={styles.renoItListSubline}>{getHowToTakeText(medicine)}</Text>
+                          </View>
+                          <View style={styles.renoItListPill}>
+                            <Text style={styles.renoItListPillText}>{getRenoItTimingBadge(medicine)}</Text>
+                          </View>
+                        </View>
+                      ))}
+
+                      <View style={styles.renoItNotesCard}>
+                        <Ionicons name="warning-outline" size={16} color="#BE7B12" />
+                        <Text style={styles.renoItNotesText}>
+                          {decodedMedicines
+                            .map((medicine) => getRenoItInstructionLine(medicine))
+                            .filter(Boolean)
+                            .slice(0, 2)
+                            .join(' ')
+                            .trim() || 'Doctor notes will appear here when available.'}
+                        </Text>
+                      </View>
+
+                      <View style={styles.renoItTrustCard}>
+                        <View style={styles.renoItTrustDot} />
+                        <Text style={styles.renoItTrustText}>{RENO_IT_TRUST_DISCLAIMER}</Text>
+                      </View>
+
+                      <TouchableOpacity
+                        style={styles.renoItBottomBadge}
+                        onPress={() => void Linking.openURL(RENO_IT_LANDING_URL)}
+                      >
+                        <View style={styles.renoItBottomBadgeIcon}>
+                          <Ionicons name="layers-outline" size={18} color={colors.surface} />
+                        </View>
+                        <View style={styles.renoItBottomBadgeCopy}>
+                          <Text style={styles.renoItBottomBadgeTitle}>{RENO_IT_BADGE_LABEL}</Text>
+                          <Text style={styles.renoItBottomBadgeSubtitle}>{RENO_IT_BADGE_CTA}</Text>
+                        </View>
+                        <View style={styles.renoItBottomBadgeArrow}>
+                          <Ionicons name="arrow-forward" size={16} color={colors.surface} />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+
+                <TouchableOpacity style={styles.processButton} onPress={openRenoIt}>
+                  <Text style={styles.processButtonText}>Reno It</Text>
+                  <Ionicons name="logo-whatsapp" size={19} color={colors.surface} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>OCR and AI details</Text>
@@ -1184,6 +1463,12 @@ export default function PrescriptionHubScreen() {
         title="Unlimited scans are in Care"
         message={upgradeMessage}
         onClose={() => setUpgradeMessage('')}
+      />
+      <RenoItModal
+        visible={isRenoItModalVisible}
+        loading={isRenoItSharing}
+        onConfirm={() => void shareRenoItToWhatsApp()}
+        onCancel={() => setIsRenoItModalVisible(false)}
       />
     </View>
   );
@@ -1737,6 +2022,213 @@ const styles = StyleSheet.create({
   manualHelpText: {
     ...typography.bodySmall,
     color: colors.textMuted,
+  },
+  renoItStatusPill: {
+    backgroundColor: '#E6F4F1',
+    borderRadius: borderRadius.pill,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  renoItStatusText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
+  },
+  renoItWarningCard: {
+    alignItems: 'center',
+    backgroundColor: '#FFF9EB',
+    borderColor: '#F1D59B',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  renoItWarningText: {
+    ...typography.bodySmall,
+    color: '#8A630F',
+    flex: 1,
+    lineHeight: 20,
+  },
+  renoItCardShell: {
+    alignItems: 'center',
+  },
+  renoItCard: {
+    backgroundColor: '#F7F7F5',
+    borderRadius: borderRadius.lg,
+    overflow: 'hidden',
+    width: '100%',
+    ...shadows.md,
+  },
+  renoItCardTop: {
+    backgroundColor: '#20A273',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  renoItHeaderCopy: {
+    flex: 1,
+  },
+  renoItTopEyebrow: {
+    ...typography.bodySmall,
+    color: '#DDF8EE',
+    fontSize: 11,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  renoItPatientName: {
+    ...typography.h3,
+    color: colors.surface,
+    fontSize: 27,
+    fontWeight: '700',
+    marginTop: spacing.xs,
+  },
+  renoItDoctorLine: {
+    ...typography.bodySmall,
+    color: '#E5FFF6',
+    fontSize: 14,
+    marginTop: spacing.xs,
+  },
+  renoItDateBadge: {
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderRadius: borderRadius.pill,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+  },
+  renoItDateBadgeText: {
+    ...typography.bodySmall,
+    color: colors.surface,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  renoItBody: {
+    backgroundColor: '#F7F7F5',
+    padding: spacing.md,
+    gap: spacing.sm,
+  },
+  renoItListRow: {
+    alignItems: 'center',
+    borderBottomColor: '#E1E2DE',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    paddingVertical: 12,
+  },
+  renoItListIcon: {
+    alignItems: 'center',
+    backgroundColor: '#DBF0E8',
+    borderRadius: 12,
+    height: 28,
+    justifyContent: 'center',
+    width: 28,
+  },
+  renoItListCopy: {
+    flex: 1,
+  },
+  renoItListTitle: {
+    ...typography.label,
+    color: '#1E2328',
+    fontSize: 16,
+  },
+  renoItListSubline: {
+    ...typography.bodySmall,
+    color: '#4E555B',
+    marginTop: 2,
+  },
+  renoItListPill: {
+    backgroundColor: '#D7F0E5',
+    borderRadius: borderRadius.md,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  renoItListPillText: {
+    ...typography.bodySmall,
+    color: '#1B6F58',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  renoItNotesCard: {
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF7E8',
+    borderColor: '#EDCA7B',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+    padding: spacing.md,
+  },
+  renoItNotesText: {
+    ...typography.bodySmall,
+    color: '#7A5814',
+    flex: 1,
+    lineHeight: 20,
+  },
+  renoItTrustCard: {
+    alignItems: 'center',
+    backgroundColor: '#F0F1EF',
+    borderColor: '#D7D9D5',
+    borderRadius: borderRadius.pill,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 12,
+  },
+  renoItTrustDot: {
+    backgroundColor: '#20A273',
+    borderRadius: borderRadius.pill,
+    height: 8,
+    width: 8,
+  },
+  renoItTrustText: {
+    ...typography.bodySmall,
+    color: '#343A40',
+    flex: 1,
+    lineHeight: 19,
+  },
+  renoItBottomBadge: {
+    alignItems: 'center',
+    backgroundColor: '#20A273',
+    borderRadius: borderRadius.md,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 12,
+  },
+  renoItBottomBadgeIcon: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.14)',
+    borderRadius: 16,
+    height: 32,
+    justifyContent: 'center',
+    width: 32,
+  },
+  renoItBottomBadgeCopy: {
+    flex: 1,
+  },
+  renoItBottomBadgeTitle: {
+    ...typography.bodySmall,
+    color: colors.surface,
+    fontWeight: '700',
+  },
+  renoItBottomBadgeSubtitle: {
+    ...typography.bodySmall,
+    color: '#D6F7EB',
+    marginTop: 2,
+  },
+  renoItBottomBadgeArrow: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.14)',
+    borderRadius: 14,
+    height: 28,
+    justifyContent: 'center',
+    width: 28,
   },
   manualFormCard: {
     backgroundColor: colors.surface,

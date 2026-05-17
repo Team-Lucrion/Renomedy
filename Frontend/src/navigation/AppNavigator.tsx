@@ -22,10 +22,12 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import FamilyScreen from '../screens/FamilyScreen';
 import PricingScreen from '../screens/PricingScreen';
 import FamilyMemberDetailsScreen from '../screens/FamilyMemberDetailsScreen';
+import BetaInviteScreen from '../screens/BetaInviteScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
+  BetaInvite: undefined;
   Onboarding: undefined;
   MainTabs: undefined;
   AddFamilyMember: { memberId?: string } | undefined;
@@ -144,6 +146,7 @@ const MainTabs = () => {
 export default function AppNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
   const { currentUser, familyGroups, isLoading } = useAppData();
+  const betaApproved = Boolean(currentUser?.beta_access_approved || currentUser?.beta_access_status === 'active');
 
   if (!isLoaded || (isSignedIn && isLoading)) {
     // Render splash screen as a loading view outside of the navigator
@@ -156,6 +159,8 @@ export default function AppNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isSignedIn ? (
           <Stack.Screen name="Login" component={LoginScreen} />
+        ) : !betaApproved ? (
+          <Stack.Screen name="BetaInvite" component={BetaInviteScreen} />
         ) : (!currentUser?.onboarding_complete || familyGroups.length === 0) ? (
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         ) : (
