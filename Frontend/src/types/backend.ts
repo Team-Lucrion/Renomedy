@@ -243,3 +243,30 @@ export type ParsePrescriptionResult = {
   aiProvider?: string | null;
   aiModel?: string | null;
 };
+
+export type ScannedMedicine = {
+  name: string;
+  strength?: string;
+  dose?: string;
+  frequency?: string;
+  frequencyMeaning?: string;
+  foodTiming?: string;
+  durationDays?: number | null;
+  instructions?: string;
+  confidence?: number;
+  needsReview: boolean;
+};
+
+export type ScanPrescriptionResponse = {
+  success: boolean;
+  rawText?: string;
+  confidence?: number;
+  medicines: ScannedMedicine[];
+  warnings?: string[];
+  status?: "pending_verification" | "failed";
+  error?: string;
+  message?: string;
+  prescriptionId?: string;
+  prescription?: PrescriptionDetails | null;
+  uploadError?: string | null;
+};

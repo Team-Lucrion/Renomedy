@@ -4,12 +4,14 @@ import { logger } from "./config/logger";
 import { app } from "./app";
 import { shutdownPostHog } from "./lib/posthog";
 import { captureException, flushSentry } from "./lib/sentry";
+import { logGoogleVisionAuthDiagnostic } from "./services/ocr/google-vision-text";
 import { startSchedulers } from "./services/scheduler/scheduler.service";
 
 bootstrapApp();
 
 const server = app.listen(env.PORT, () => {
   logger.info(`Renomedy backend running on port ${env.PORT}`);
+  void logGoogleVisionAuthDiagnostic();
   startSchedulers();
 });
 

@@ -9,6 +9,7 @@ import {
   getPrescriptionHandler,
   getPrescriptionHistoryHandler,
   parsePrescriptionHandler,
+  scanPrescriptionHandler,
   updateParsedMedicationHandler,
   uploadPrescriptionHandler
 } from "./prescriptions.controller";
@@ -20,7 +21,7 @@ import {
   uploadPrescriptionBodySchema
 } from "./prescriptions.schemas";
 
-const upload = multer({
+export const prescriptionUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 8 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
@@ -34,9 +35,10 @@ const upload = multer({
 });
 
 export const prescriptionsRouter = Router();
+export const prescriptionScanRouter = Router();
 
-prescriptionsRouter.post("/upload", requireAuth, upload.single("file"), validateBody(uploadPrescriptionBodySchema), asyncHandler(uploadPrescriptionHandler));
-prescriptionsRouter.post("/decode", requireAuth, upload.single("file"), validateBody(decodePrescriptionBodySchema), asyncHandler(decodePrescriptionHandler));
+prescriptionsRouter.post("/upload", requireAuth, prescriptionUpload.single("file"), validateBody(uploadPrescriptionBodySchema), asyncHandler(uploadPrescriptionHandler));
+prescriptionsRouter.post("/decode", requireAuth, prescriptionUpload.single("file"), validateBody(decodePrescriptionBodySchema), asyncHandler(decodePrescriptionHandler));
 prescriptionsRouter.get("/history", requireAuth, asyncHandler(getPrescriptionHistoryHandler));
 prescriptionsRouter.get("/:id", requireAuth, asyncHandler(getPrescriptionHandler));
 prescriptionsRouter.post("/:id/parse", requireAuth, validateBody(parsePrescriptionSchema), asyncHandler(parsePrescriptionHandler));
@@ -46,4 +48,12 @@ prescriptionsRouter.patch(
   requireAuth,
   validateBody(updateParsedMedicationSchema),
   asyncHandler(updateParsedMedicationHandler)
+);
+
+prescriptionScanRouter.post(
+  "/scan-prescription",
+  requireAuth,
+  prescriptionUpload.single("file"),
+  validateBody(decodePrescriptionBodySchema),
+  asyncHandler(scanPrescriptionHandler)
 );

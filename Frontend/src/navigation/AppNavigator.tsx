@@ -6,8 +6,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { borderRadius, colors, spacing, typography } from '../theme/theme';
 import { useAppData } from '../context/AppDataContext';
+import { useLanguage } from '../context/LanguageContext';
 
 // Screens
 import SplashScreen from '../screens/SplashScreen';
@@ -23,12 +25,14 @@ import FamilyScreen from '../screens/FamilyScreen';
 import PricingScreen from '../screens/PricingScreen';
 import FamilyMemberDetailsScreen from '../screens/FamilyMemberDetailsScreen';
 import BetaInviteScreen from '../screens/BetaInviteScreen';
+import LanguageSetupScreen from '../screens/LanguageSetupScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
   BetaInvite: undefined;
   Onboarding: undefined;
+  LanguageSetup: undefined;
   MainTabs: undefined;
   AddFamilyMember: { memberId?: string } | undefined;
   FamilyMemberDetails: { memberId: string };
@@ -48,10 +52,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<MainTabParamList>();
 
 function roleLabel(role?: string | null) {
-  if (role === 'caregiver') return 'Care Manager';
-  if (role === 'patient') return 'Patient';
-  if (role === 'self') return 'Patient';
-  return 'Family Member';
+  if (role === 'caregiver') return 'onboarding.roles.caregiverTitle';
+  if (role === 'patient') return 'family.roles.patient';
+  if (role === 'self') return 'family.roles.patient';
+  return 'family.roles.member';
 }
 
 function drawerIcon(routeName: keyof MainTabParamList, focused: boolean): keyof typeof Ionicons.glyphMap {
@@ -68,10 +72,11 @@ function drawerIcon(routeName: keyof MainTabParamList, focused: boolean): keyof 
 }
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const { t } = useTranslation();
   const { user } = useUser();
   const { currentUser, familyGroups, subscriptionSummary } = useAppData();
-  const displayName = currentUser?.full_name ?? user?.fullName ?? 'Renomedy Family';
-  const familyName = familyGroups[0]?.family_name ?? 'Family not set';
+  const displayName = currentUser?.full_name ?? user?.fullName ?? t('common.appName');
+  const familyName = familyGroups[0]?.family_name ?? t('family.titleFallback');
   const planName = subscriptionSummary?.plan?.display_name ?? 'Free';
 
   return (
@@ -82,9 +87,9 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
         </View>
         <Text style={drawerStyles.name}>{displayName}</Text>
         <Text style={drawerStyles.familyName}>{familyName}</Text>
-        <Text style={drawerStyles.planName}>{planName} Plan</Text>
+        <Text style={drawerStyles.planName}>{planName}</Text>
         <View style={drawerStyles.roleBadge}>
-          <Text style={drawerStyles.roleBadgeText}>{roleLabel(currentUser?.role)}</Text>
+          <Text style={drawerStyles.roleBadgeText}>{t(roleLabel(currentUser?.role))}</Text>
         </View>
       </View>
 
@@ -106,7 +111,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
                 color={focused ? colors.primary : colors.textMuted}
               />
               <Text style={[drawerStyles.menuText, focused ? drawerStyles.menuTextActive : null]}>
-                {route.name}
+                {t(`navigation.${route.name.toLowerCase()}`)}
               </Text>
             </TouchableOpacity>
           );
@@ -117,6 +122,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 }
 
 const MainTabs = () => {
+  const { t } = useTranslation();
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -133,22 +139,23 @@ const MainTabs = () => {
         },
       })}
     >
-      <Drawer.Screen name="Dashboard" component={HomeScreen} />
-      <Drawer.Screen name="Prescriptions" component={PrescriptionHubScreen} />
-      <Drawer.Screen name="Medications" component={TrackerScreen} />
-      <Drawer.Screen name="Sanctuary" component={FamilyScreen} />
-      <Drawer.Screen name="Pricing" component={PricingScreen} />
-      <Drawer.Screen name="Settings" component={ProfileScreen} />
+      <Drawer.Screen name="Dashboard" component={HomeScreen} options={{ drawerLabel: t('navigation.dashboard') }} />
+      <Drawer.Screen name="Prescriptions" component={PrescriptionHubScreen} options={{ drawerLabel: t('navigation.prescriptions') }} />
+      <Drawer.Screen name="Medications" component={TrackerScreen} options={{ drawerLabel: t('navigation.medications') }} />
+      <Drawer.Screen name="Sanctuary" component={FamilyScreen} options={{ drawerLabel: t('navigation.sanctuary') }} />
+      <Drawer.Screen name="Pricing" component={PricingScreen} options={{ drawerLabel: t('navigation.pricing') }} />
+      <Drawer.Screen name="Settings" component={ProfileScreen} options={{ drawerLabel: t('navigation.settings') }} />
     </Drawer.Navigator>
   );
 };
 
 export default function AppNavigator() {
+  const { isReady, hasExplicitLanguagePreference } = useLanguage();
   const { isLoaded, isSignedIn } = useAuth();
   const { currentUser, familyGroups, isLoading } = useAppData();
   const betaApproved = Boolean(currentUser?.beta_access_approved || currentUser?.beta_access_status === 'active');
 
-  if (!isLoaded || (isSignedIn && isLoading)) {
+  if (!isReady || !isLoaded || (isSignedIn && isLoading)) {
     // Render splash screen as a loading view outside of the navigator
     // to prevent navigation actions from firing before screens exist
     return <SplashScreen navigation={null as any} />;
@@ -163,6 +170,8 @@ export default function AppNavigator() {
           <Stack.Screen name="BetaInvite" component={BetaInviteScreen} />
         ) : (!currentUser?.onboarding_complete || familyGroups.length === 0) ? (
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        ) : !hasExplicitLanguagePreference ? (
+          <Stack.Screen name="LanguageSetup" component={LanguageSetupScreen} />
         ) : (
           <Stack.Screen name="MainTabs" component={MainTabs} />
         )}

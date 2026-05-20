@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst } from '../lib/collections';
 import { hasNotificationPromptBeenSeen, openNotificationSettings, setupMedicationNotifications } from '../lib/notifications';
@@ -31,11 +32,12 @@ function statusTone(status?: string | null) {
 }
 
 export default function TrackerScreen() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState<'schedule' | 'refills'>('schedule');
   const { familyMembers, schedules, refillStates, logDose, isLoading, registerNotificationToken } = useAppData();
-  const [notificationState, setNotificationState] = useState<"idle" | "registered" | "denied" | "unsupported" | "error">("idle");
-  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationState, setNotificationState] = useState<'idle' | 'registered' | 'denied' | 'unsupported' | 'error'>('idle');
+  const [notificationMessage, setNotificationMessage] = useState('');
 
   const scheduleCards = useMemo(
     () =>
@@ -45,19 +47,19 @@ export default function TrackerScreen() {
 
         return {
           id: schedule.id,
-          memberName: member?.full_name ?? 'Family member',
+          memberName: member?.full_name ?? t('tracker.familyMemberFallback'),
           medicationName:
             schedule.prescription_medications?.medicine_name ??
             schedule.prescription_medications?.brand_name ??
             schedule.prescription_medications?.generic_name ??
-            'Medication',
+            t('tracker.medicationFallback'),
           dosage: schedule.prescription_medications?.dosage ?? '',
-          reminderTimes: schedule.reminder_times?.join(', ') ?? 'No reminder times',
+          reminderTimes: schedule.reminder_times?.join(', ') ?? t('tracker.noReminderTimes'),
           scheduleStatus: schedule.status ?? 'active',
           refillStatus: refillState?.continuity_status ?? null,
         };
       }),
-    [familyMembers, refillStates, schedules],
+    [familyMembers, refillStates, schedules, t],
   );
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export default function TrackerScreen() {
       }
 
       const promptSeen = await hasNotificationPromptBeenSeen();
-      if (promptSeen && notificationState !== "idle") {
+      if (promptSeen && notificationState !== 'idle') {
         return;
       }
 
@@ -79,12 +81,12 @@ export default function TrackerScreen() {
       }
 
       setNotificationState(result.status);
-      if (result.status === "denied") {
-        setNotificationMessage("Enable notifications to receive medicine reminders for this sanctuary.");
-      } else if (result.status === "unsupported" || result.status === "error") {
+      if (result.status === 'denied') {
+        setNotificationMessage(t('tracker.notificationsDenied'));
+      } else if (result.status === 'unsupported' || result.status === 'error') {
         setNotificationMessage(result.reason);
       } else {
-        setNotificationMessage("Medication reminders are active on this device.");
+        setNotificationMessage(t('tracker.notificationsActive'));
       }
     };
 
@@ -93,14 +95,14 @@ export default function TrackerScreen() {
     return () => {
       active = false;
     };
-  }, [notificationState, registerNotificationToken, schedules.length]);
+  }, [notificationState, registerNotificationToken, schedules.length, t]);
 
   const renderSchedule = () => {
     if (scheduleCards.length === 0) {
       return (
         <View style={styles.emptyCard}>
           <Text style={styles.emptyText}>
-            {isLoading ? 'Loading schedules...' : 'No medication schedules are active yet.'}
+            {isLoading ? t('tracker.loadingSchedules') : t('tracker.noSchedules')}
           </Text>
         </View>
       );
@@ -124,8 +126,10 @@ export default function TrackerScreen() {
                   {med.dosage ? ` ${med.dosage}` : ''}
                 </Text>
                 <Text style={styles.medInstructions}>
-                  Status: {med.scheduleStatus}
-                  {med.refillStatus ? ` • Refill ${formatContinuityStatus(med.refillStatus)}` : ''}
+                  {t('tracker.scheduleStatusLine', {
+                    status: med.scheduleStatus,
+                    refill: med.refillStatus ? t('tracker.refillSuffix', { status: formatContinuityStatus(med.refillStatus) }) : '',
+                  })}
                 </Text>
               </View>
 
@@ -155,7 +159,7 @@ export default function TrackerScreen() {
       return (
         <View style={styles.emptyCard}>
           <Text style={styles.emptyText}>
-            {isLoading ? 'Loading refill continuity...' : 'No refill tracking has been initialized yet.'}
+            {isLoading ? t('tracker.loadingRefills') : t('tracker.noRefills')}
           </Text>
         </View>
       );
@@ -174,13 +178,15 @@ export default function TrackerScreen() {
                 <Text style={styles.medName}>
                   {schedule?.prescription_medications?.medicine_name ??
                     schedule?.prescription_medications?.brand_name ??
-                    'Medication'}
+                    t('tracker.medicationFallback')}
                 </Text>
-                <Text style={styles.medInstructions}>For {member?.full_name ?? 'Family member'}</Text>
+                <Text style={styles.medInstructions}>
+                  {t('tracker.forMember', { name: member?.full_name ?? t('tracker.familyMemberFallback') })}
+                </Text>
               </View>
               <View style={styles.refillStatus}>
                 <Text style={styles.dosesText}>
-                  {refill.quantity_remaining ?? '-'} doses left
+                  {t('tracker.dosesLeft', { count: refill.quantity_remaining ?? '-' })}
                 </Text>
                 <View
                   style={[
@@ -207,7 +213,7 @@ export default function TrackerScreen() {
           <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             <Ionicons name="menu" size={24} color={colors.primary} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Medications</Text>
+          <Text style={styles.headerTitle}>{t('tracker.title')}</Text>
         </View>
 
         <View style={styles.tabBar}>
@@ -215,13 +221,13 @@ export default function TrackerScreen() {
             style={[styles.tab, activeTab === 'schedule' && styles.activeTab]}
             onPress={() => setActiveTab('schedule')}
           >
-            <Text style={[styles.tabText, activeTab === 'schedule' && styles.activeTabText]}>Schedule</Text>
+            <Text style={[styles.tabText, activeTab === 'schedule' && styles.activeTabText]}>{t('tracker.scheduleTab')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.tab, activeTab === 'refills' && styles.activeTab]}
             onPress={() => setActiveTab('refills')}
           >
-            <Text style={[styles.tabText, activeTab === 'refills' && styles.activeTabText]}>Refills</Text>
+            <Text style={[styles.tabText, activeTab === 'refills' && styles.activeTabText]}>{t('tracker.refillsTab')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -237,7 +243,7 @@ export default function TrackerScreen() {
             <Text style={styles.notificationText}>{notificationMessage}</Text>
             {notificationState === 'denied' ? (
               <TouchableOpacity onPress={() => void openNotificationSettings()}>
-                <Text style={styles.notificationLink}>Open Settings</Text>
+                <Text style={styles.notificationLink}>{t('tracker.openSettings')}</Text>
               </TouchableOpacity>
             ) : null}
           </View>

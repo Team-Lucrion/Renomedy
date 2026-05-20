@@ -1,9 +1,25 @@
-import * as Sentry from "@sentry/node";
 import type { Request } from "express";
 import { env } from "../config/env";
 import { logger } from "../config/logger";
 
 let sentryInitialized = false;
+let sentryImportFailed = false;
+
+type SentryModule = typeof import("@sentry/node");
+
+function getSentry(): SentryModule | null {
+  if (sentryImportFailed) {
+    return null;
+  }
+
+  try {
+    return require("@sentry/node") as SentryModule;
+  } catch (error) {
+    sentryImportFailed = true;
+    logger.warn({ err: error }, "Sentry package could not be loaded; continuing without Sentry");
+    return null;
+  }
+}
 
 export function isSentryEnabled() {
   return Boolean(env.SENTRY_DSN);
@@ -11,6 +27,11 @@ export function isSentryEnabled() {
 
 export function initSentry() {
   if (!isSentryEnabled() || sentryInitialized) {
+    return;
+  }
+
+  const Sentry = getSentry();
+  if (!Sentry) {
     return;
   }
 
@@ -26,6 +47,11 @@ export function initSentry() {
 
 export function captureException(error: unknown, req?: Request) {
   if (!isSentryEnabled()) {
+    return;
+  }
+
+  const Sentry = getSentry();
+  if (!Sentry) {
     return;
   }
 
@@ -55,6 +81,11 @@ export function captureException(error: unknown, req?: Request) {
 
 export async function flushSentry(timeoutMs = 2000) {
   if (!isSentryEnabled()) {
+    return;
+  }
+
+  const Sentry = getSentry();
+  if (!Sentry) {
     return;
   }
 

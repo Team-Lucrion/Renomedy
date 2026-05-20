@@ -1,4 +1,5 @@
 import { supabaseAdmin, getUserSupabaseClient } from "../lib/supabase";
+import { ensureFounderBetaBypass } from "./founder-bypass.service";
 import { HttpError } from "../utils/http-error";
 
 type JwtPayload = {
@@ -52,22 +53,22 @@ async function ensureCurrentUserExists(jwt: string) {
       },
       { onConflict: "clerk_user_id" }
     )
-    .select("id, clerk_user_id, full_name, role, beta_access_status, beta_invite_id, beta_access_approved")
+    .select("id, clerk_user_id, phone, full_name, role, beta_access_status, beta_invite_id, beta_access_approved")
     .single();
 
   if (error || !data) {
     throw new HttpError(500, "Failed to provision authenticated user", error);
   }
 
-  return data;
+  return ensureFounderBetaBypass(data, "current_user_provision");
 }
 
 export async function getCurrentUserRecord(jwt: string) {
   const sb = getUserSupabaseClient(jwt);
   const { data, error } = await sb
     .from("users")
-    .select("id, clerk_user_id, full_name, role, beta_access_status, beta_invite_id, beta_access_approved")
+    .select("id, clerk_user_id, phone, full_name, role, beta_access_status, beta_invite_id, beta_access_approved")
     .single();
-  if (!error && data) return data;
+  if (!error && data) return ensureFounderBetaBypass(data, "current_user_lookup");
   return ensureCurrentUserExists(jwt);
 }

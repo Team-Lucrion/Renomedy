@@ -21,6 +21,26 @@ test("golden: extractJsonPayload strips markdown fences", () => {
   assert.deepEqual(out, { medicines: [], warnings: [], ocr_quality: "low" });
 });
 
+test("golden: mapMedicinesToParseResult keeps plausible Gemini medicine names", () => {
+  const { mapMedicinesToParseResult } = require("../dist/services/ocr/gemini-prescription-parse.js");
+  const meds = mapMedicinesToParseResult([
+    {
+      medicine_name: "Metformin (Glyciphage) 500 mg",
+      generic_name: "Metformin",
+      dosage: "500 mg",
+      frequency: "BD",
+      duration: "30 days",
+      instructions: "after food",
+      confidence: "medium",
+    },
+  ]);
+
+  assert.equal(meds.length, 1);
+  assert.match(meds[0].medicineName, /Metformin/i);
+  assert.match(meds[0].medicineName, /Glyciphage/i);
+  assert.equal(meds[0].frequency, "Twice daily");
+});
+
 test("golden: min-1x1.png fixture exists for image pipeline smoke checks", () => {
   const pngPath = path.join(goldenDir, "min-1x1.png");
   assert.ok(fs.existsSync(pngPath), "min-1x1.png should exist (used for optional Vision smoke tests)");

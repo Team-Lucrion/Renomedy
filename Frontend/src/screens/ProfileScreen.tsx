@@ -3,9 +3,12 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import { useClerk, useUser } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ConfirmActionModal from '../components/ConfirmActionModal';
 import { useAppData } from '../context/AppDataContext';
+import { useLanguage } from '../context/LanguageContext';
 import { unregisterStoredNotifications } from '../lib/notifications';
+import type { AppLanguage } from '../localization/i18n';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
 function formatBetaStatus(status?: string | null) {
@@ -19,10 +22,14 @@ function formatBetaStatus(status?: string | null) {
     .join(' ');
 }
 
+const languageOptions: AppLanguage[] = ['en', 'hi', 'kn'];
+
 export default function ProfileScreen() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const { signOut } = useClerk();
   const { user } = useUser();
+  const { language, setAppLanguage } = useLanguage();
   const { currentUser, familyGroups, familyMembers, refreshAll, error, betaBlocked, leaveSanctuary, unregisterNotificationToken, sendTestPush } = useAppData();
   const [isLeaving, setIsLeaving] = useState(false);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
@@ -31,11 +38,11 @@ export default function ProfileScreen() {
   const displayName =
     currentUser?.full_name ??
     user?.fullName ??
-    'Renomedy Caregiver';
+    t('profile.defaultName');
 
   const email =
     user?.primaryEmailAddress?.emailAddress ??
-    'No email available';
+    t('profile.noEmail');
 
   const currentSanctuary = familyGroups[0] ?? null;
 
@@ -49,9 +56,9 @@ export default function ProfileScreen() {
     try {
       await leaveSanctuary();
       setShowLeaveConfirm(false);
-      setActionMessage('You have left the sanctuary.');
+      setActionMessage(t('profile.leftSanctuary'));
     } catch (leaveError) {
-      setActionMessage(leaveError instanceof Error ? leaveError.message : 'Unable to leave sanctuary.');
+      setActionMessage(leaveError instanceof Error ? leaveError.message : t('profile.leaveFailed'));
     } finally {
       setIsLeaving(false);
     }
@@ -63,7 +70,7 @@ export default function ProfileScreen() {
         <TouchableOpacity style={styles.menuButton} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
           <Ionicons name="menu" size={24} color={colors.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Profile & Settings</Text>
+        <Text style={styles.headerTitle}>{t('profile.title')}</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
@@ -76,62 +83,82 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Sanctuary Status</Text>
+          <Text style={styles.sectionTitle}>{t('profile.sanctuaryStatus')}</Text>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Current sanctuary</Text>
-            <Text style={styles.detailValue}>{currentSanctuary?.family_name ?? 'Not joined'}</Text>
+            <Text style={styles.detailLabel}>{t('profile.currentSanctuary')}</Text>
+            <Text style={styles.detailValue}>{currentSanctuary?.family_name ?? t('profile.notJoined')}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Beta access</Text>
+            <Text style={styles.detailLabel}>{t('profile.betaAccess')}</Text>
             <Text style={styles.detailValue}>{formatBetaStatus(currentUser?.beta_access_status)}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Onboarding</Text>
-            <Text style={styles.detailValue}>{currentUser?.onboarding_complete ? 'Complete' : 'Pending'}</Text>
+            <Text style={styles.detailLabel}>{t('profile.onboarding')}</Text>
+            <Text style={styles.detailValue}>{currentUser?.onboarding_complete ? t('profile.complete') : t('profile.pending')}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Sanctuaries</Text>
+            <Text style={styles.detailLabel}>{t('profile.sanctuaries')}</Text>
             <Text style={styles.detailValue}>{familyGroups.length}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Sanctuary members</Text>
+            <Text style={styles.detailLabel}>{t('profile.sanctuaryMembers')}</Text>
             <Text style={styles.detailValue}>{familyMembers.length}</Text>
           </View>
           {betaBlocked ? (
-            <Text style={styles.noticeText}>
-              This account is authenticated, but sanctuary and medication data is blocked until beta access is approved.
-            </Text>
+            <Text style={styles.noticeText}>{t('profile.blockedNotice')}</Text>
           ) : null}
           {actionMessage ? <Text style={styles.noticeText}>{actionMessage}</Text> : null}
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
 
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>{t('language.sectionTitle')}</Text>
+          <Text style={styles.detailLabel}>{t('language.current')}</Text>
+          <View style={styles.languageRow}>
+            {languageOptions.map((option) => {
+              const active = language === option;
+              const labelKey =
+                option === 'en' ? 'language.english' : option === 'hi' ? 'language.hindi' : 'language.kannada';
+
+              return (
+                <TouchableOpacity
+                  key={option}
+                  style={[styles.languageChip, active ? styles.languageChipActive : null]}
+                  onPress={() => void setAppLanguage(option)}
+                >
+                  <Text style={[styles.languageChipText, active ? styles.languageChipTextActive : null]}>{t(labelKey)}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
         <TouchableOpacity style={styles.secondaryButton} onPress={() => void refreshAll()}>
           <Ionicons name="refresh-outline" size={18} color={colors.primary} />
-          <Text style={styles.secondaryButtonText}>Refresh Backend Data</Text>
+          <Text style={styles.secondaryButtonText}>{t('profile.refreshBackend')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.secondaryButton} onPress={() => void sendTestPush()}>
           <Ionicons name="notifications-outline" size={18} color={colors.primary} />
-          <Text style={styles.secondaryButtonText}>Send Test Push</Text>
+          <Text style={styles.secondaryButtonText}>{t('profile.sendTestPush')}</Text>
         </TouchableOpacity>
 
         {currentSanctuary ? (
           <TouchableOpacity style={styles.leaveButton} onPress={() => setShowLeaveConfirm(true)}>
-            <Text style={styles.leaveText}>Leave Sanctuary</Text>
+            <Text style={styles.leaveText}>{t('profile.leaveSanctuary')}</Text>
           </TouchableOpacity>
         ) : null}
 
         <TouchableOpacity style={styles.logoutButton} onPress={() => void handleSignOut()}>
-          <Text style={styles.logoutText}>Log Out</Text>
+          <Text style={styles.logoutText}>{t('profile.logOut')}</Text>
         </TouchableOpacity>
       </ScrollView>
 
       <ConfirmActionModal
         visible={showLeaveConfirm}
-        title="Leave sanctuary?"
-        message="You will lose access to shared prescriptions, reminders, and family coordination until you join again."
-        confirmLabel="Leave sanctuary"
+        title={t('profile.leaveTitle')}
+        message={t('profile.leaveMessage')}
+        confirmLabel={t('profile.leaveSanctuary')}
         destructive
         loading={isLeaving}
         onConfirm={() => void handleLeaveSanctuary()}
@@ -228,6 +255,31 @@ const styles = StyleSheet.create({
   errorText: {
     ...typography.bodySmall,
     color: colors.danger,
+  },
+  languageRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  languageChip: {
+    backgroundColor: colors.background,
+    borderColor: colors.border,
+    borderRadius: borderRadius.pill,
+    borderWidth: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  languageChipActive: {
+    backgroundColor: `${colors.secondary}18`,
+    borderColor: colors.primary,
+  },
+  languageChipText: {
+    ...typography.bodySmall,
+    color: colors.textMuted,
+    fontWeight: '700',
+  },
+  languageChipTextActive: {
+    color: colors.primary,
   },
   secondaryButton: {
     flexDirection: 'row',

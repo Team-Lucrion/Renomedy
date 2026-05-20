@@ -22,6 +22,11 @@ function getOcrFailureMessage(metadata?: Record<string, unknown>) {
 }
 
 function getParseFailureMessage(ocrResult: ParsedOcrResult) {
+  const failureReason = ocrResult.providerMetadata?.failure_reason;
+  if (failureReason === "no_text_detected") {
+    return "We could not detect enough readable prescription text. Try a clearer image, tighter crop, and better lighting.";
+  }
+
   const providerError = ocrResult.providerMetadata?.error;
   if (typeof providerError === "string" && providerError.trim()) {
     return providerError;
@@ -303,6 +308,126 @@ export async function decodePrescriptionUpload(input: {
   const uploaded = await uploadPrescription(input);
   await parsePrescription(input.jwt, uploaded.id);
   return getPrescription(input.jwt, uploaded.id);
+}
+
+function mapFrequencyMeaning(value?: string | null) {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  if (normalized === "od") return "once daily";
+  if (normalized === "bd") return "twice daily";
+  if (normalized === "tds" || normalized === "tid") return "three times daily";
+  if (normalized === "qid") return "four times daily";
+  if (normalized === "hs") return "at bedtime";
+  if (normalized === "sos") return "as needed";
+  return normalized ? String(value) : undefined;
+}
+
+function mapDurationDays(value?: string | null) {
+  const match = String(value ?? "").match(/(\d+)/);
+  return match ? Number(match[1]) : null;
+}
+
+function deriveFoodTiming(value?: string | null) {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  if (!normalized) return undefined;
+  if (normalized.includes("after food")) return "after food";
+  if (normalized.includes("before food")) return "before food";
+  if (normalized.includes("with food")) return "with food";
+  return undefined;
+}
+
+function getPrescriptionMedicinesForScan(details: any) {
+  const stored = Array.isArray(details.prescription_medications) ? details.prescription_medications : [];
+  const fallback = Array.isArray(details.parsed_medicine_json?.medicines) ? details.parsed_medicine_json.medicines : [];
+
+  if (stored.length > 0) {
+    return stored.map((medicine: any) => ({
+      name: medicine.medicine_name ?? "",
+      strength: medicine.dosage ?? "",
+      dose: medicine.dosage ?? "",
+      frequency: medicine.frequency ?? "",
+      frequencyMeaning: mapFrequencyMeaning(medicine.frequency),
+      foodTiming: medicine.food_timing ?? deriveFoodTiming(medicine.timing),
+      durationDays: mapDurationDays(medicine.duration),
+      instructions: medicine.instructions ?? "",
+      confidence: typeof medicine.confidence_score === "number" ? medicine.confidence_score : 0,
+      needsReview: medicine.requires_manual_verification !== false
+    }));
+  }
+
+  return fallback.map((medicine: any) => ({
+    name: medicine.medicine_name ?? "",
+    strength: medicine.strength ?? medicine.dosage ?? "",
+    dose: medicine.dose ?? medicine.dosage ?? "",
+    frequency: medicine.frequency ?? "",
+    frequencyMeaning: mapFrequencyMeaning(medicine.frequency),
+    foodTiming: deriveFoodTiming(medicine.timing),
+    durationDays: mapDurationDays(medicine.duration),
+    instructions: medicine.instructions ?? "",
+    confidence:
+      typeof medicine.confidence_score === "number"
+        ? medicine.confidence_score
+        : medicine.confidence === "high"
+          ? 0.9
+          : medicine.confidence === "medium"
+            ? 0.7
+            : 0.4,
+    needsReview: medicine.requires_manual_verification !== false
+  }));
+}
+
+export function mapPrescriptionToScanResponse(details: any) {
+  const rawText = String(details.cleaned_ocr_text ?? details.raw_ocr_text ?? "").trim();
+  const medicines = getPrescriptionMedicinesForScan(details).filter((medicine: any) => medicine.name);
+  const upload = Array.isArray(details.prescription_uploads) ? details.prescription_uploads[0] : details.prescription_uploads;
+  const warnings = Array.isArray(details.parsed_medicine_json?.important_notes)
+    ? details.parsed_medicine_json.important_notes.filter((value: unknown) => typeof value === "string" && value.trim())
+    : [];
+  const confidence =
+    typeof details.parsed_medicine_json?.prescription_summary?.confidence_score === "number"
+      ? details.parsed_medicine_json.prescription_summary.confidence_score
+      : medicines.length > 0
+        ? medicines.reduce((sum: number, medicine: any) => sum + (medicine.confidence ?? 0), 0) / medicines.length
+        : undefined;
+
+  if (!rawText) {
+    return {
+      success: false,
+      error: "OCR_FAILED",
+      message: "We could not read this prescription clearly. Please retake the photo or enter details manually.",
+      medicines: [],
+      warnings,
+      status: "failed" as const,
+      prescriptionId: details.id,
+      prescription: details
+    };
+  }
+
+  if (medicines.length === 0) {
+    return {
+      success: false,
+      error: "PARSE_FAILED",
+      rawText,
+      medicines: [],
+      warnings,
+      message: "Text was extracted, but medicines could not be parsed safely.",
+      status: "failed" as const,
+      confidence,
+      prescriptionId: details.id,
+      prescription: details,
+      uploadError: upload?.last_error ?? null
+    };
+  }
+
+  return {
+    success: true,
+    rawText,
+    confidence,
+    medicines,
+    warnings,
+    status: "pending_verification" as const,
+    prescriptionId: details.id,
+    prescription: details
+  };
 }
 
 export async function parsePrescription(jwt: string, prescriptionId: string) {

@@ -4,6 +4,7 @@ import {
   SAFE_LOW_QUALITY_MESSAGE,
   assessOcrQuality,
   buildMedicineCardData,
+  cleanOcrText,
   mapMedicinesToParseResult,
   normalizeWhitespace,
   parseMedicinesFromOcrText,
@@ -16,26 +17,28 @@ export class VisionGeminiOcrProvider implements OcrProvider {
 
     try {
       rawText = await extractTextWithGoogleVision(imageBuffer);
+      const cleanedText = cleanOcrText(rawText);
 
-      if (!rawText || rawText.length < 15) {
+      if (!cleanedText || cleanedText.length < 15) {
         return {
           rawText,
-          cleanedText: rawText,
+          cleanedText,
           parseStatus: "failed",
           medications: [],
-          cardData: buildMedicineCardData([], "low", [SAFE_LOW_QUALITY_MESSAGE], rawText),
+          cardData: buildMedicineCardData([], "low", [SAFE_LOW_QUALITY_MESSAGE], cleanedText),
           aiProvider: "gemini",
           aiModel: env.GEMINI_MODEL,
           providerMetadata: {
             provider: "vision_gemini",
             ocr_engine: "google-cloud-vision",
-            error: SAFE_LOW_QUALITY_MESSAGE,
-            raw_text_preview: rawText.slice(0, 500),
+            failure_reason: "no_text_detected",
+            error: "Google Vision did not return enough readable prescription text from the image.",
+            raw_text_preview: cleanedText.slice(0, 500),
           },
         };
       }
 
-      const { parsed, rawResponse } = await parseMedicinesFromOcrText(rawText);
+      const { parsed, rawResponse } = await parseMedicinesFromOcrText(cleanedText);
       const medications = mapMedicinesToParseResult(Array.isArray(parsed.medicines) ? parsed.medicines : []);
       const warnings = (Array.isArray(parsed.warnings) ? parsed.warnings : [])
         .map((warning) => normalizeWhitespace(warning))
@@ -49,14 +52,14 @@ export class VisionGeminiOcrProvider implements OcrProvider {
 
       return {
         rawText,
-        cleanedText: rawText,
+        cleanedText,
         parseStatus: medications.length > 0 ? "parsed" : "failed",
         medications,
         cardData: buildMedicineCardData(
           medications,
           medications.length > 0 ? ocrQuality : "low",
           warnings.length > 0 ? warnings : medications.length > 0 ? [] : [SAFE_LOW_QUALITY_MESSAGE],
-          rawText
+          cleanedText
         ),
         aiProvider: "gemini",
         aiModel: env.GEMINI_MODEL,
@@ -67,27 +70,30 @@ export class VisionGeminiOcrProvider implements OcrProvider {
           ai_engine: "google-genai-gemini",
           warnings,
           parse_status: medications.length > 0 ? "parsed" : "failed",
+          failure_reason: medications.length > 0 ? undefined : "no_medicines_parsed",
           error: medications.length > 0 ? undefined : "Gemini did not return any valid medicines from the OCR text.",
-          raw_text_preview: rawText.slice(0, 500),
+          raw_text_preview: cleanedText.slice(0, 500),
         },
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : "Prescription decoding failed";
+      const cleanedText = cleanOcrText(rawText);
       return {
         rawText,
-        cleanedText: rawText,
+        cleanedText,
         parseStatus: "failed",
         medications: [],
-        cardData: buildMedicineCardData([], "low", [SAFE_LOW_QUALITY_MESSAGE], rawText),
+        cardData: buildMedicineCardData([], "low", [SAFE_LOW_QUALITY_MESSAGE], cleanedText),
         aiProvider: "gemini",
         aiModel: env.GEMINI_MODEL,
         providerMetadata: {
           provider: "vision_gemini",
           ocr_engine: "google-cloud-vision",
           ai_engine: "google-genai-gemini",
-          error: SAFE_LOW_QUALITY_MESSAGE,
+          failure_reason: "ocr_pipeline_error",
+          error: "Prescription decoding failed before any medicines could be extracted.",
           root_error: message,
-          raw_text_preview: rawText.slice(0, 500),
+          raw_text_preview: cleanedText.slice(0, 500),
         },
       };
     }

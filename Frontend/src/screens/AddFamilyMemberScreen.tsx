@@ -14,6 +14,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import UpgradeModal from '../components/UpgradeModal';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst } from '../lib/collections';
@@ -23,12 +24,7 @@ import { ApiError } from '../lib/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddFamilyMember'>;
 
-const roleOptions = [
-  { value: 'caregiver', label: 'Caregiver' },
-  { value: 'patient', label: 'Patient' },
-  { value: 'family_member', label: 'Family Member' },
-] as const;
-
+const roleOptions = ['caregiver', 'patient', 'family_member'] as const;
 const genderOptions = ['Female', 'Male', 'Other'] as const;
 const relationshipOptions = ['Mother', 'Father', 'Spouse', 'Child', 'Grandparent'] as const;
 
@@ -40,6 +36,7 @@ function splitCsv(value: string) {
 }
 
 export default function AddFamilyMemberScreen({ navigation, route }: Props) {
+  const { t } = useTranslation();
   const { addFamilyMember, updateFamilyMember, familyMembers } = useAppData();
   const member = useMemo(
     () => findFirst(familyMembers, (item) => item.id === route.params?.memberId),
@@ -89,7 +86,7 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permission.granted) {
-      setError('Photo library permission is required to set a sanctuary member avatar.');
+      setError(t('memberForm.photoPermission'));
       return;
     }
 
@@ -108,17 +105,17 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
 
   const validate = () => {
     if (!name.trim()) {
-      return 'Name is required.';
+      return t('memberForm.nameRequired');
     }
 
     if (!relationship.trim()) {
-      return 'Relationship is required.';
+      return t('memberForm.relationshipRequired');
     }
 
     if (age.trim()) {
       const numericAge = Number(age);
       if (!isFinite(numericAge) || numericAge < 0 || numericAge > 120) {
-        return 'Age must be between 0 and 120.';
+        return t('memberForm.ageInvalid');
       }
     }
 
@@ -168,16 +165,14 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
         return;
       }
 
-      setError(saveError instanceof Error ? saveError.message : 'Unable to save sanctuary member.');
+      setError(saveError instanceof Error ? saveError.message : t('memberForm.saveFailed'));
     } finally {
       setIsSaving(false);
     }
   };
 
-  const screenTitle = isEditMode ? 'Edit sanctuary profile' : 'Add sanctuary member';
-  const screenDescription = isEditMode
-    ? 'Update care profile details, relationship, and medication notes.'
-    : 'Create a clean care profile for prescriptions, reminders, and family coordination.';
+  const screenTitle = isEditMode ? t('memberForm.editTitle') : t('memberForm.addTitle');
+  const screenDescription = isEditMode ? t('memberForm.editDescription') : t('memberForm.addDescription');
 
   return (
     <KeyboardAvoidingView
@@ -204,10 +199,10 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
 
         <View style={styles.formCard}>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>{t('memberForm.fullName')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="e.g. Ramesh Sharma"
+              placeholder={t('memberForm.namePlaceholder')}
               value={name}
               onChangeText={setName}
               placeholderTextColor={colors.textMuted}
@@ -216,10 +211,10 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
 
           <View style={styles.inlineFields}>
             <View style={[styles.formGroup, styles.inlineField]}>
-              <Text style={styles.label}>Age</Text>
+              <Text style={styles.label}>{t('memberForm.age')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="68"
+                placeholder={t('memberForm.agePlaceholder')}
                 value={age}
                 onChangeText={setAge}
                 placeholderTextColor={colors.textMuted}
@@ -227,10 +222,10 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
               />
             </View>
             <View style={[styles.formGroup, styles.inlineField]}>
-              <Text style={styles.label}>Relationship</Text>
+              <Text style={styles.label}>{t('memberForm.relationship')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Father"
+                placeholder={t('memberForm.relationshipPlaceholder')}
                 value={relationship}
                 onChangeText={setRelationship}
                 placeholderTextColor={colors.textMuted}
@@ -239,7 +234,7 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Quick relationships</Text>
+            <Text style={styles.label}>{t('memberForm.quickRelationships')}</Text>
             <View style={styles.optionRow}>
               {relationshipOptions.map((option) => {
                 const active = relationship === option;
@@ -249,7 +244,9 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
                     style={[styles.optionChip, active ? styles.optionChipActive : null]}
                     onPress={() => setRelationship(option)}
                   >
-                    <Text style={[styles.optionChipText, active ? styles.optionChipTextActive : null]}>{option}</Text>
+                    <Text style={[styles.optionChipText, active ? styles.optionChipTextActive : null]}>
+                      {t(`memberForm.relationshipOptions.${option}`)}
+                    </Text>
                   </TouchableOpacity>
                 );
               })}
@@ -257,17 +254,19 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Role</Text>
+            <Text style={styles.label}>{t('memberForm.role')}</Text>
             <View style={styles.segmentedRow}>
               {roleOptions.map((option) => {
-                const active = role === option.value;
+                const active = role === option;
                 return (
                   <TouchableOpacity
-                    key={option.value}
+                    key={option}
                     style={[styles.segmentedButton, active ? styles.segmentedButtonActive : null]}
-                    onPress={() => setRole(option.value)}
+                    onPress={() => setRole(option)}
                   >
-                    <Text style={[styles.segmentedText, active ? styles.segmentedTextActive : null]}>{option.label}</Text>
+                    <Text style={[styles.segmentedText, active ? styles.segmentedTextActive : null]}>
+                      {t(`memberForm.roles.${option}`)}
+                    </Text>
                   </TouchableOpacity>
                 );
               })}
@@ -275,7 +274,7 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Gender</Text>
+            <Text style={styles.label}>{t('memberForm.gender')}</Text>
             <View style={styles.segmentedRow}>
               {genderOptions.map((option) => {
                 const active = gender === option;
@@ -285,7 +284,9 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
                     style={[styles.segmentedButton, active ? styles.segmentedButtonActive : null]}
                     onPress={() => setGender(active ? null : option)}
                   >
-                    <Text style={[styles.segmentedText, active ? styles.segmentedTextActive : null]}>{option}</Text>
+                    <Text style={[styles.segmentedText, active ? styles.segmentedTextActive : null]}>
+                      {t(`memberForm.genderOptions.${option}`)}
+                    </Text>
                   </TouchableOpacity>
                 );
               })}
@@ -293,10 +294,10 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Medication Profile</Text>
+            <Text style={styles.label}>{t('memberForm.medicationProfile')}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Diabetes, blood pressure, thyroid"
+              placeholder={t('memberForm.medicationProfilePlaceholder')}
               value={conditions}
               onChangeText={setConditions}
               multiline
@@ -306,10 +307,10 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Care Notes</Text>
+            <Text style={styles.label}>{t('memberForm.careNotes')}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Add practical notes for the family care team"
+              placeholder={t('memberForm.careNotesPlaceholder')}
               value={notes}
               onChangeText={setNotes}
               multiline
@@ -320,8 +321,8 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
 
           <View style={styles.switchGroup}>
             <View style={styles.switchLabelContainer}>
-              <Text style={styles.label}>Primary care profile</Text>
-              <Text style={styles.subLabel}>Use this for the person whose medicines need the most attention.</Text>
+              <Text style={styles.label}>{t('memberForm.primaryProfile')}</Text>
+              <Text style={styles.subLabel}>{t('memberForm.primaryProfileHelp')}</Text>
             </View>
             <Switch
               value={isPrimaryDependent}
@@ -334,10 +335,10 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
 
           <View style={styles.actionRow}>
             <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()} disabled={isSaving}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>{t('common.cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.saveButton} onPress={() => void handleSave()} disabled={isSaving}>
-              <Text style={styles.saveButtonText}>{isSaving ? 'Saving...' : 'Save Changes'}</Text>
+              <Text style={styles.saveButtonText}>{isSaving ? t('memberForm.saving') : t('common.saveChanges')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -345,7 +346,7 @@ export default function AddFamilyMemberScreen({ navigation, route }: Props) {
 
       <UpgradeModal
         visible={Boolean(upgradeMessage)}
-        title="Add more sanctuary members with Care"
+        title={t('memberForm.upgradeTitle')}
         message={upgradeMessage}
         onClose={() => setUpgradeMessage('')}
       />

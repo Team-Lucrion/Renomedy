@@ -4,20 +4,13 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '@clerk/expo';
+import { useTranslation } from 'react-i18next';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst } from '../lib/collections';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
-
-function formatReminderTime(reminderTimes?: string[] | null) {
-  if (!reminderTimes?.length) {
-    return 'No reminder times set';
-  }
-
-  return reminderTimes.join(', ');
-}
 
 function formatContinuityStatus(status?: string | null) {
   if (!status) {
@@ -31,6 +24,7 @@ function formatContinuityStatus(status?: string | null) {
 }
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp>();
   const { user } = useUser();
   const { currentUser, familyGroups, familyMembers, overview, schedules, refillStates, error, refreshAll } = useAppData();
@@ -56,8 +50,8 @@ export default function HomeScreen() {
           <Ionicons name="menu" size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.headerCopy}>
-          <Text style={styles.greeting}>Good Morning, {greetingName}</Text>
-          <Text style={styles.subtitle}>Sanctuary Health Dashboard</Text>
+          <Text style={styles.greeting}>{t('home.greeting', { name: greetingName })}</Text>
+          <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
         </View>
         <TouchableOpacity style={styles.profileButton} onPress={() => void refreshAll()}>
           <Ionicons name="refresh" size={24} color={colors.primary} />
@@ -75,25 +69,25 @@ export default function HomeScreen() {
         <View style={styles.statsGrid}>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{overview?.family_members_count ?? familyMembers.length}</Text>
-            <Text style={styles.statLabel}>Sanctuary Members</Text>
+            <Text style={styles.statLabel}>{t('home.sanctuaryMembers')}</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{overview?.active_schedules_count ?? schedules.length}</Text>
-            <Text style={styles.statLabel}>Active Schedules</Text>
+            <Text style={styles.statLabel}>{t('home.activeSchedules')}</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{overview?.missed_doses_last_24h ?? 0}</Text>
-            <Text style={styles.statLabel}>Missed in 24h</Text>
+            <Text style={styles.statLabel}>{t('home.missed24h')}</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{overview?.refill_risk_count ?? refillAlerts.length}</Text>
-            <Text style={styles.statLabel}>Refill Risks</Text>
+            <Text style={styles.statLabel}>{t('home.refillRisks')}</Text>
           </View>
         </View>
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Sanctuary Overview</Text>
+            <Text style={styles.cardTitle}>{t('home.overview')}</Text>
             {canManageFamily ? (
               <TouchableOpacity onPress={() => navigation.navigate('AddFamilyMember')}>
                 <Ionicons name="add-circle" size={24} color={colors.primary} />
@@ -105,11 +99,11 @@ export default function HomeScreen() {
             <>
               <Text style={styles.familyName}>{familyGroups[0].family_name}</Text>
               {familyGroups[0].invite_code ? (
-                <Text style={styles.inviteCode}>Invite code: {familyGroups[0].invite_code}</Text>
+                <Text style={styles.inviteCode}>{t('home.inviteCode', { code: familyGroups[0].invite_code })}</Text>
               ) : null}
             </>
           ) : (
-            <Text style={styles.emptyStateText}>No sanctuary has been created or joined yet.</Text>
+            <Text style={styles.emptyStateText}>{t('home.noSanctuary')}</Text>
           )}
 
           <View style={styles.familyList}>
@@ -126,7 +120,7 @@ export default function HomeScreen() {
           <View style={styles.alertCard}>
             <View style={styles.alertHeader}>
               <Ionicons name="warning" size={20} color={colors.warning} />
-              <Text style={styles.alertTitle}>Refill Continuity Alert</Text>
+              <Text style={styles.alertTitle}>{t('home.refillAlert')}</Text>
             </View>
             {refillAlerts.map((alert) => {
               const schedule = findFirst(schedules, (item) => item.id === alert.medication_schedule_id);
@@ -134,7 +128,7 @@ export default function HomeScreen() {
 
               return (
                 <View key={alert.medication_schedule_id} style={styles.alertItem}>
-                  <Text style={styles.alertMedName}>{member?.name ?? member?.full_name ?? 'Family member'}</Text>
+                  <Text style={styles.alertMedName}>{member?.name ?? member?.full_name ?? t('home.familyMemberFallback')}</Text>
                   <Text style={styles.alertMedRisk}>{formatContinuityStatus(alert.continuity_status)}</Text>
                 </View>
               );
@@ -143,7 +137,7 @@ export default function HomeScreen() {
         ) : null}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Active Medication Schedules</Text>
+          <Text style={styles.sectionTitle}>{t('home.activeMedicationSchedules')}</Text>
           {activeSchedules.length > 0 ? (
             activeSchedules.map((schedule) => {
               const member = findFirst(familyMembers, (item) => item.id === schedule.family_member_id);
@@ -161,7 +155,9 @@ export default function HomeScreen() {
                       {schedule.prescription_medications?.dosage ? ` ${schedule.prescription_medications.dosage}` : ''}
                     </Text>
                     <Text style={styles.medTime}>
-                      {formatReminderTime(schedule.reminder_times)} | For {member?.name ?? member?.full_name ?? 'Family member'}
+                      {(schedule.reminder_times?.length ? schedule.reminder_times.join(', ') : t('home.noReminderTimes'))}
+                      {' | '}
+                      {t('home.forMember', { name: member?.name ?? member?.full_name ?? t('home.familyMemberFallback') })}
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -175,7 +171,7 @@ export default function HomeScreen() {
             })
           ) : (
             <View style={styles.emptyCard}>
-              <Text style={styles.emptyStateText}>No active medication schedules yet.</Text>
+              <Text style={styles.emptyStateText}>{t('home.noSchedules')}</Text>
             </View>
           )}
         </View>
@@ -374,4 +370,3 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
   },
 });
-

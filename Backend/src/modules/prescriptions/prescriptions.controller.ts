@@ -5,6 +5,7 @@ import {
   decodePrescriptionUpload,
   getPrescription,
   getPrescriptionHistory,
+  mapPrescriptionToScanResponse,
   parsePrescription,
   updateParsedMedication,
   uploadPrescription
@@ -73,6 +74,19 @@ export async function decodePrescriptionHandler(req: Request, res: Response) {
   }
 
   return ok(res, data, "Prescription decoded");
+}
+
+export async function scanPrescriptionHandler(req: Request, res: Response) {
+  if (!req.file) throw new HttpError(400, "Prescription image file is required");
+
+  const data = await decodePrescriptionUpload({
+    jwt: req.auth!.token,
+    clerkUserId: req.auth!.clerkUserId,
+    file: req.file,
+    body: req.body
+  });
+
+  return res.status(200).json(mapPrescriptionToScanResponse(data));
 }
 
 export async function parsePrescriptionHandler(req: Request, res: Response) {

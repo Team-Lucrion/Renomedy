@@ -1,15 +1,153 @@
-Undo the recent temporary payment-disabling changes only.
+The Android UI currently looks inconsistent and less polished compared to iPhone. I want a focused Android UI stabilization and design-system cleanup pass across the app WITHOUT rewriting the architecture.
 
-Requirements:
+Goal:
+Make the app feel clean, calm, modern, and trustworthy on Android devices (especially mid-range Android phones common in India).
 
-1. Revert any PAYMENTS_ENABLED=false or payment-bypass logic added for temporary beta testing.
-2. Restore original Razorpay payment flow.
-3. Keep the new real webhook implementation intact:
+Main priorities:
+- consistency
+- spacing
+- typography
+- safe areas
+- card styling
+- readability
+- form behavior
+- keyboard handling
+- Android visual polish
 
-* /payments/webhook
-* payment.captured
-* payment.failed
+DO NOT redesign the entire app.
+DO NOT add flashy effects.
+DO NOT change business logic.
+DO NOT rewrite navigation/auth/backend flows.
 
-4. Do NOT remove Vercel backend deployment setup.
-5. Do NOT change Clerk, OCR, or other backend systems.
-6. Show me exactly which files were reverted.
+This is a UI consistency + Android optimization task only.
+
+Tasks:
+
+1. Audit the current UI system:
+   - identify inconsistent spacing
+   - random font sizes
+   - fixed heights
+   - broken Android layouts
+   - shadow/elevation inconsistencies
+   - overflowing text/buttons
+   - keyboard overlap issues
+   - unsafe status bar areas
+
+2. Create a reusable design system:
+   - central spacing scale
+   - central typography scale
+   - reusable card/container styles
+   - reusable button/input styles
+   - reusable section spacing
+
+3. Android-first fixes:
+   - properly use SafeAreaView where needed
+   - add KeyboardAvoidingView for forms/screens with inputs
+   - fix Android elevation/shadow appearance
+   - improve touch target sizes
+   - prevent text clipping/wrapping issues
+   - remove fragile fixed-height layouts
+   - improve scrolling behavior
+   - ensure bottom buttons stay accessible above keyboard
+
+4. Typography cleanup:
+   Use a limited consistent scale only.
+   Example:
+   - text-xs
+   - text-sm
+   - text-base
+   - text-lg
+   - text-xl
+
+   Ensure:
+   - readable medicine names
+   - readable caregiver UI
+   - proper lineHeight
+   - no cramped cards
+
+5. Spacing cleanup:
+   Use a strict spacing scale only:
+   - 4
+   - 8
+   - 12
+   - 16
+   - 20
+   - 24
+   - 32
+
+   Remove random inconsistent margins/padding.
+
+6. Cards/components:
+   Standardize:
+   - border radius
+   - padding
+   - shadows/elevation
+   - background colors
+   - border colors
+
+   Make medication cards feel calm and trustworthy.
+
+7. Priority screens to improve first:
+   - prescription upload screen
+   - prescription verification screen
+   - medication cards
+   - family dashboard
+   - add medication form
+   - onboarding/auth screens
+
+8. Android-specific styling:
+   Ensure cards use:
+   - elevation on Android
+   - shadow props on iOS
+
+   Avoid iOS-only visual behavior.
+
+9. Keyboard fixes:
+   Inputs/buttons should never be hidden behind keyboard on Android.
+
+10. Responsive layout fixes:
+   Test against:
+   - small Android phones
+   - tall Android phones
+   - tablets if supported
+
+11. UX style direction:
+   The app should feel:
+   - calm
+   - clinical but warm
+   - trustworthy
+   - easy for caregivers
+   - low cognitive load
+
+   Avoid:
+   - flashy fintech UI
+   - crypto aesthetics
+   - excessive gradients
+   - heavy animations
+
+12. Keep current branding/colors unless necessary.
+   Only improve consistency and readability.
+
+13. Add reusable UI utilities/components if needed:
+   Example:
+   - AppCard
+   - AppText
+   - ScreenContainer
+   - SectionHeader
+   - FormField
+   - PrimaryButton
+
+14. Ensure Android performance remains smooth:
+   - avoid unnecessary re-renders
+   - avoid heavy shadows
+   - avoid layout thrashing
+
+15. After implementation:
+   - run typecheck
+   - run lint
+   - fix all issues
+   - summarize changed files
+   - explain major Android fixes made
+
+Main objective:
+Make the app feel polished, stable, calm, and trustworthy on Android while preserving the existing architecture and flows.

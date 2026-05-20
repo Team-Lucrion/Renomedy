@@ -5,6 +5,7 @@ import { logger } from "../../config/logger";
 import { captureException } from "../../lib/sentry";
 import { supabaseAdmin } from "../../lib/supabase";
 import { writeAuditLog } from "../../services/audit.service";
+import { ensureFounderBetaBypass } from "../../services/founder-bypass.service";
 import { HttpError } from "../../utils/http-error";
 
 export async function upsertClerkUser(params: {
@@ -27,17 +28,18 @@ export async function upsertClerkUser(params: {
 
   const { data, error } = await supabaseAdmin.from("users").upsert(payload, { onConflict: "clerk_user_id" }).select("*").single();
   if (error) throw new HttpError(500, "Failed to sync user", error);
+  const syncedUser = await ensureFounderBetaBypass(data, "auth_sync");
   await writeAuditLog({
-    userId: data.id,
+    userId: syncedUser.id,
     action: "user.synced",
     entityType: "user",
-    entityId: data.id,
+    entityId: syncedUser.id,
     metadata: {
       clerk_user_id: params.clerkUserId,
       ...params.auditMetadata
     }
   });
-  return data;
+  return syncedUser;
 }
 
 async function logWebhookFailure(input: {

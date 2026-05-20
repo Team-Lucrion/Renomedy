@@ -2,6 +2,10 @@
 
 React Native health app built with Expo.
 
+## Languages
+
+V1 app language support includes English (`en`), Hindi (`hi`), and Kannada (`kn`) with device-language fallback and persisted user preference. If you add more languages later, extend the locale JSON files in `src/localization/locales/` and register the language in `src/localization/i18n.ts`.
+
 ## Clerk auth
 
 1. Create a Clerk application and enable the Native API in the Clerk dashboard.

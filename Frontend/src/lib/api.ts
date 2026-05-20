@@ -1,4 +1,5 @@
 import { getClerkInstance } from "@clerk/expo";
+import type { ScanPrescriptionResponse } from "../types/backend";
 
 const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
 const REQUEST_TIMEOUT_MS = 12000;
@@ -193,3 +194,54 @@ export const api = {
   },
   upload,
 };
+
+export async function scanPrescription(imageUri: string, familyMemberId: string): Promise<ScanPrescriptionResponse> {
+  const token = await getAuthToken();
+
+  if (!token) {
+    throw new ApiError("You must be signed in to use the app.", 401);
+  }
+
+  const url = buildUrl("api/scan-prescription");
+  const formData = new FormData();
+  formData.append("family_member_id", familyMemberId);
+  formData.append("file", {
+    uri: imageUri,
+    name: `prescription-${Date.now()}.jpg`,
+    type: "image/jpeg"
+  } as unknown as Blob);
+
+  return new Promise<ScanPrescriptionResponse>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+    xhr.timeout = UPLOAD_TIMEOUT_MS;
+    xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+    xhr.onerror = () => {
+      reject(new ApiError("Network request failed while uploading prescription. Check that the API server is reachable.", 0));
+    };
+
+    xhr.ontimeout = () => {
+      reject(new ApiError("Prescription reading timed out. Retry with a clearer image or check the backend logs.", 0));
+    };
+
+    xhr.onload = () => {
+      const payload = (() => {
+        try {
+          return JSON.parse(xhr.responseText || "null") as ScanPrescriptionResponse | { message?: string } | null;
+        } catch {
+          return null;
+        }
+      })();
+
+      if (xhr.status < 200 || xhr.status >= 300 || !payload) {
+        reject(new ApiError((payload && "message" in payload && payload.message) || "Upload failed.", xhr.status || 0, payload));
+        return;
+      }
+
+      resolve(payload as ScanPrescriptionResponse);
+    };
+
+    xhr.send(formData);
+  });
+}

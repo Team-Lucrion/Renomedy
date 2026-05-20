@@ -13,6 +13,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import ConfirmActionModal from '../components/ConfirmActionModal';
 import MemberAvatar from '../components/MemberAvatar';
 import { useAppData } from '../context/AppDataContext';
@@ -23,12 +24,13 @@ import { borderRadius, colors, shadows, spacing, typography } from '../theme/the
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
 
 function roleLabel(role?: string | null) {
-  if (role === 'caregiver') return 'Caregiver';
-  if (role === 'patient') return 'Patient';
-  return 'Sanctuary Member';
+  if (role === 'caregiver') return 'family.roles.caregiver';
+  if (role === 'patient') return 'family.roles.patient';
+  return 'family.roles.member';
 }
 
 export default function FamilyScreen() {
+  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp>();
   const { familyGroups, familyMembers, archiveFamilyMember, regenerateInvite } = useAppData();
   const family = familyGroups[0];
@@ -67,7 +69,10 @@ export default function FamilyScreen() {
     }
 
     await Share.share({
-      message: `Join ${family.family_name} on Renomedy with invite code ${family.invite_code}.`,
+      message: t('family.shareInvite', {
+        familyName: family.family_name,
+        inviteCode: family.invite_code,
+      }),
     });
   };
 
@@ -88,18 +93,22 @@ export default function FamilyScreen() {
         </TouchableOpacity>
 
         <View style={styles.headerBlock}>
-          <Text style={styles.title}>{family?.family_name ?? 'Sanctuary'}</Text>
-          <Text style={styles.eyebrow}>Your Family&apos;s Private Care Space</Text>
-          <Text style={styles.subtitle}>Manage care profiles, relationships, and medication access for everyone at home.</Text>
+          <Text style={styles.title}>{family?.family_name ?? t('family.titleFallback')}</Text>
+          <Text style={styles.eyebrow}>{t('family.eyebrow')}</Text>
+          <Text style={styles.subtitle}>{t('family.subtitle')}</Text>
         </View>
 
         {family?.invite_code ? (
           <View style={styles.inviteCard}>
             <Ionicons name="link-outline" size={22} color={colors.primary} />
             <View style={styles.inviteInfo}>
-              <Text style={styles.inviteLabel}>Sanctuary invite code</Text>
+              <Text style={styles.inviteLabel}>{t('family.inviteLabel')}</Text>
               <Text style={styles.inviteCode}>{family.invite_code}</Text>
-              {family.invite_expires_at ? <Text style={styles.inviteExpiry}>Valid until {new Date(family.invite_expires_at).toLocaleDateString()}</Text> : null}
+              {family.invite_expires_at ? (
+                <Text style={styles.inviteExpiry}>
+                  {t('family.inviteValidUntil', { date: new Date(family.invite_expires_at).toLocaleDateString() })}
+                </Text>
+              ) : null}
             </View>
             <View style={styles.inviteActions}>
               <TouchableOpacity style={styles.inviteActionButton} onPress={() => void handleShareInvite()}>
@@ -117,12 +126,12 @@ export default function FamilyScreen() {
         {canManage ? (
           <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddFamilyMember')}>
             <Ionicons name="person-add-outline" size={20} color={colors.surface} />
-            <Text style={styles.addButtonText}>Add Sanctuary Member</Text>
+            <Text style={styles.addButtonText}>{t('family.addMember')}</Text>
           </TouchableOpacity>
         ) : null}
 
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Sanctuary members</Text>
+          <Text style={styles.sectionTitle}>{t('family.members')}</Text>
           <Text style={styles.countText}>{familyMembers.length}</Text>
         </View>
 
@@ -141,14 +150,14 @@ export default function FamilyScreen() {
                     <Text style={styles.memberName}>{member.name ?? member.full_name}</Text>
                     {member.is_primary_dependent ? (
                       <View style={styles.primaryBadge}>
-                        <Text style={styles.primaryBadgeText}>Primary</Text>
+                        <Text style={styles.primaryBadgeText}>{t('family.primary')}</Text>
                       </View>
                     ) : null}
                   </View>
                   <Text style={styles.memberMeta}>
-                    {member.relationship} | {roleLabel(member.role)}
+                    {member.relationship} | {t(roleLabel(member.role))}
                   </Text>
-                  <Text style={styles.statusText}>{member.medication_status ?? 'Profile ready'}</Text>
+                  <Text style={styles.statusText}>{member.medication_status ?? t('family.profileReady')}</Text>
                 </View>
 
                 <View style={styles.quickActions}>
@@ -181,11 +190,11 @@ export default function FamilyScreen() {
             <View style={styles.emptyIconWrap}>
               <Ionicons name="people-outline" size={34} color={colors.primary} />
             </View>
-            <Text style={styles.emptyTitle}>Add your first sanctuary member</Text>
-            <Text style={styles.emptyText}>Create a calm, shared care space for prescriptions, reminders, and refill tracking.</Text>
+            <Text style={styles.emptyTitle}>{t('family.firstMemberTitle')}</Text>
+            <Text style={styles.emptyText}>{t('family.firstMemberBody')}</Text>
             {canManage ? (
               <TouchableOpacity style={styles.emptyCta} onPress={() => navigation.navigate('AddFamilyMember')}>
-                <Text style={styles.emptyCtaText}>Add Sanctuary Member</Text>
+                <Text style={styles.emptyCtaText}>{t('family.addMember')}</Text>
               </TouchableOpacity>
             ) : null}
           </View>
@@ -194,9 +203,9 @@ export default function FamilyScreen() {
 
       <ConfirmActionModal
         visible={Boolean(selectedMember)}
-        title="Remove sanctuary member?"
-        message="This will remove the member and related medication access."
-        confirmLabel="Remove family member"
+        title={t('family.removeTitle')}
+        message={t('family.removeMessage')}
+        confirmLabel={t('family.removeConfirm')}
         loading={isArchiving}
         destructive
         onConfirm={() => void handleArchive()}
@@ -409,4 +418,3 @@ const styles = StyleSheet.create({
     color: colors.surface,
   },
 });
-

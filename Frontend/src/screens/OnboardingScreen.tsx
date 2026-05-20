@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '@clerk/expo';
+import { useTranslation } from 'react-i18next';
 import { useAppData } from '../context/AppDataContext';
 import type { InvitePreview } from '../types/backend';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
@@ -19,35 +20,35 @@ import { borderRadius, colors, shadows, spacing, typography } from '../theme/the
 type OnboardingRole = 'caregiver' | 'family_member' | 'patient';
 type OnboardingMode = 'create' | 'join';
 
-const roles: Array<{
-  id: OnboardingRole;
-  title: string;
-  subtitle: string;
-  icon: keyof typeof Ionicons.glyphMap;
-}> = [
-  {
-    id: 'caregiver',
-    title: 'Care Manager',
-    subtitle: 'I manage medicines for my family',
-    icon: 'people-outline',
-  },
-  {
-    id: 'family_member',
-    title: 'Joining Family Care',
-    subtitle: "I am joining my family's care space",
-    icon: 'heart-outline',
-  },
-  {
-    id: 'patient',
-    title: 'My Medicines',
-    subtitle: 'I want help staying on track with my medicines',
-    icon: 'medical-outline',
-  },
-];
-
 export default function OnboardingScreen() {
+  const { t } = useTranslation();
   const { user } = useUser();
   const { completeOnboarding, joinSanctuary, validateInvite } = useAppData();
+  const roles: Array<{
+    id: OnboardingRole;
+    title: string;
+    subtitle: string;
+    icon: keyof typeof Ionicons.glyphMap;
+  }> = [
+    {
+      id: 'caregiver',
+      title: t('onboarding.roles.caregiverTitle'),
+      subtitle: t('onboarding.roles.caregiverSubtitle'),
+      icon: 'people-outline',
+    },
+    {
+      id: 'family_member',
+      title: t('onboarding.roles.familyTitle'),
+      subtitle: t('onboarding.roles.familySubtitle'),
+      icon: 'heart-outline',
+    },
+    {
+      id: 'patient',
+      title: t('onboarding.roles.patientTitle'),
+      subtitle: t('onboarding.roles.patientSubtitle'),
+      icon: 'medical-outline',
+    },
+  ];
   const defaultFamilyName = useMemo(() => {
     const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? '';
     return firstName ? `${firstName}'s Sanctuary` : 'My Sanctuary';
@@ -65,7 +66,7 @@ export default function OnboardingScreen() {
 
   const handleCreate = async () => {
     if (!familyName.trim()) {
-      setError('Enter a sanctuary name.');
+      setError(t('onboarding.enterSanctuaryName'));
       return;
     }
 
@@ -79,7 +80,7 @@ export default function OnboardingScreen() {
         inviteFamilyLater,
       });
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Unable to finish onboarding.');
+      setError(saveError instanceof Error ? saveError.message : t('onboarding.finishFailed'));
     } finally {
       setIsSaving(false);
     }
@@ -87,7 +88,7 @@ export default function OnboardingScreen() {
 
   const handleJoin = async () => {
     if (!inviteCode.trim()) {
-      setError('Enter an invite code.');
+      setError(t('onboarding.enterInviteCode'));
       return;
     }
 
@@ -97,7 +98,7 @@ export default function OnboardingScreen() {
     try {
       await joinSanctuary(inviteCode.trim().toUpperCase(), selectedRole);
     } catch (joinError) {
-      setError(joinError instanceof Error ? joinError.message : 'Unable to join sanctuary.');
+      setError(joinError instanceof Error ? joinError.message : t('onboarding.joinFailed'));
     } finally {
       setIsSaving(false);
     }
@@ -116,10 +117,10 @@ export default function OnboardingScreen() {
     try {
       const preview = await validateInvite(normalized);
       setInvitePreview(preview);
-      setError(preview.expired ? 'This invite code has expired. Ask the sanctuary admin for a new one.' : '');
+      setError(preview.expired ? t('onboarding.inviteExpired') : '');
     } catch (previewError) {
       setInvitePreview(null);
-      setError(previewError instanceof Error ? previewError.message : 'Invalid sanctuary invite code.');
+      setError(previewError instanceof Error ? previewError.message : t('onboarding.invalidInvite'));
     } finally {
       setIsCheckingInvite(false);
     }
@@ -139,43 +140,49 @@ export default function OnboardingScreen() {
           <View style={styles.iconCircle}>
             <Ionicons name="shield-checkmark-outline" size={30} color={colors.primary} />
           </View>
-          <Text style={styles.title}>Set up your sanctuary</Text>
-          <Text style={styles.subtitle}>
-            Renomedy helps your family never miss a medicine, never misread a prescription.
-          </Text>
+          <Text style={styles.title}>{t('onboarding.title')}</Text>
+          <Text style={styles.subtitle}>{t('onboarding.subtitle')}</Text>
         </View>
 
         <View style={styles.explainerCard}>
-          <Text style={styles.explainerEyebrow}>Your Family&apos;s Private Care Space</Text>
-          <Text style={styles.explainerTitle}>Build one calm place for prescriptions, medicines, and reminders.</Text>
-          <Text style={styles.explainerBody}>
-            Create a new sanctuary for your family or join one that has already been shared with you.
-          </Text>
+          <Text style={styles.explainerEyebrow}>{t('onboarding.explainerEyebrow')}</Text>
+          <Text style={styles.explainerTitle}>{t('onboarding.explainerTitle')}</Text>
+          <Text style={styles.explainerBody}>{t('onboarding.explainerBody')}</Text>
         </View>
 
         <View style={styles.modeToggle}>
           <TouchableOpacity
             activeOpacity={0.86}
-            onPress={() => { setMode('create'); setError(''); }}
+            onPress={() => {
+              setMode('create');
+              setError('');
+            }}
             style={[styles.modeButton, mode === 'create' ? styles.modeButtonActive : null]}
           >
             <Ionicons name="add-circle-outline" size={18} color={mode === 'create' ? colors.surface : colors.primary} />
-            <Text style={[styles.modeButtonText, mode === 'create' ? styles.modeButtonTextActive : null]}>Create New</Text>
+            <Text style={[styles.modeButtonText, mode === 'create' ? styles.modeButtonTextActive : null]}>
+              {t('onboarding.createNew')}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.86}
-            onPress={() => { setMode('join'); setError(''); }}
+            onPress={() => {
+              setMode('join');
+              setError('');
+            }}
             style={[styles.modeButton, mode === 'join' ? styles.modeButtonActive : null]}
           >
             <Ionicons name="enter-outline" size={18} color={mode === 'join' ? colors.surface : colors.primary} />
-            <Text style={[styles.modeButtonText, mode === 'join' ? styles.modeButtonTextActive : null]}>Join Existing</Text>
+            <Text style={[styles.modeButtonText, mode === 'join' ? styles.modeButtonTextActive : null]}>
+              {t('onboarding.joinExisting')}
+            </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.panel}>
           {mode === 'create' ? (
             <>
-              <Text style={styles.label}>Sanctuary name</Text>
+              <Text style={styles.label}>{t('onboarding.sanctuaryName')}</Text>
               <TextInput
                 autoCapitalize="words"
                 onChangeText={setFamilyName}
@@ -187,7 +194,7 @@ export default function OnboardingScreen() {
             </>
           ) : (
             <>
-              <Text style={styles.label}>Invite code</Text>
+              <Text style={styles.label}>{t('onboarding.inviteCode')}</Text>
               <TextInput
                 autoCapitalize="characters"
                 autoCorrect={false}
@@ -197,23 +204,21 @@ export default function OnboardingScreen() {
                 style={styles.input}
                 value={inviteCode}
               />
-              <Text style={styles.helperText}>Enter the code shared by your sanctuary admin.</Text>
-              {isCheckingInvite ? <Text style={styles.helperText}>Checking sanctuary invite...</Text> : null}
+              <Text style={styles.helperText}>{t('onboarding.inviteSharedByAdmin')}</Text>
+              {isCheckingInvite ? <Text style={styles.helperText}>{t('onboarding.checkingInvite')}</Text> : null}
               {invitePreview ? (
                 <View style={[styles.previewCard, invitePreview.valid ? null : styles.previewCardExpired]}>
-                  <Text style={styles.previewEyebrow}>You are joining</Text>
+                  <Text style={styles.previewEyebrow}>{t('onboarding.joiningPreview')}</Text>
                   <Text style={styles.previewTitle}>{invitePreview.sanctuary_name}</Text>
                   <Text style={styles.previewBody}>
-                    {invitePreview.valid
-                      ? 'You will get access to your family’s shared care space for prescriptions and reminders.'
-                      : 'This invite has expired. Ask the sanctuary admin to regenerate the code.'}
+                    {invitePreview.valid ? t('onboarding.inviteValidBody') : t('onboarding.inviteExpiredBody')}
                   </Text>
                 </View>
               ) : null}
             </>
           )}
 
-          <Text style={[styles.label, styles.roleLabel]}>How are you joining?</Text>
+          <Text style={[styles.label, styles.roleLabel]}>{t('onboarding.howJoining')}</Text>
           <View style={styles.roleGrid}>
             {roles.map((role) => {
               const isActive = selectedRole === role.id;
@@ -241,8 +246,8 @@ export default function OnboardingScreen() {
 
           <View style={styles.inviteRow}>
             <View style={styles.inviteText}>
-              <Text style={styles.inviteTitle}>Invite family later</Text>
-              <Text style={styles.inviteSubtitle}>You can add parents, spouse, or children after setup.</Text>
+              <Text style={styles.inviteTitle}>{t('onboarding.inviteFamilyLater')}</Text>
+              <Text style={styles.inviteSubtitle}>{t('onboarding.inviteFamilyLaterHelp')}</Text>
             </View>
             <Switch
               onValueChange={setInviteFamilyLater}
@@ -259,7 +264,9 @@ export default function OnboardingScreen() {
             onPress={() => void (mode === 'create' ? handleCreate() : handleJoin())}
             style={[styles.continueButton, isSaving ? styles.disabledButton : null]}
           >
-            <Text style={styles.continueText}>{isSaving ? 'Please wait...' : mode === 'create' ? 'Create Sanctuary' : 'Join Sanctuary'}</Text>
+            <Text style={styles.continueText}>
+              {isSaving ? t('common.pleaseWait') : mode === 'create' ? t('onboarding.createSanctuary') : t('onboarding.joinSanctuary')}
+            </Text>
             <Ionicons name="arrow-forward" size={19} color={colors.surface} />
           </TouchableOpacity>
         </View>

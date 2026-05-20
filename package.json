@@ -16,5 +16,10 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native-worklets": "0.5.1"
+  },
+  "dependencies": {
+    "@sentry/core": "^10.52.0",
+    "@sentry/node": "^10.52.0",
+    "svix": "^1.61.0"
   }
 }

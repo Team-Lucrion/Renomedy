@@ -19,7 +19,8 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import RenoItModal from '../components/RenoItModal';
 import { captureRef } from 'react-native-view-shot';
-import { ApiError, api } from '../lib/api';
+import { useTranslation } from 'react-i18next';
+import { ApiError, api, scanPrescription } from '../lib/api';
 import { trackRenoItEvent } from '../lib/analytics';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst, includesText } from '../lib/collections';
@@ -28,6 +29,7 @@ import type {
   ParsedPrescriptionMedication,
   PrescriptionDetails,
   PrescriptionHistoryItem,
+  ScanPrescriptionResponse,
 } from '../types/backend';
 import {
   RENO_IT_BADGE_CTA,
@@ -97,12 +99,12 @@ function normalizeAsset(asset: ImagePicker.ImagePickerAsset): SelectedImage {
   };
 }
 
-function stageLabel(stage: ProcessingStage) {
-  if (stage === 'uploading') return 'Uploading prescription image';
-  if (stage === 'ocr') return 'Reading prescription with Google Vision';
-  if (stage === 'ai') return 'Structuring medicines with Gemini';
-  if (stage === 'saving') return 'Saving structured data';
-  return 'Ready to process';
+function stageLabel(stage: ProcessingStage, t: (key: string) => string) {
+  if (stage === 'uploading') return t('prescriptions.processingUpload');
+  if (stage === 'ocr') return t('prescriptions.processingOcr');
+  if (stage === 'ai') return t('prescriptions.processingAi');
+  if (stage === 'saving') return t('prescriptions.processingSaving');
+  return t('prescriptions.processingReady');
 }
 
 function toMedicationDraft(medication?: ParsedPrescriptionMedication | null): MedicationDraft {
@@ -273,8 +275,10 @@ function getAnalysisMedicines(details?: PrescriptionDetails | null): ParsedPresc
 
 function getPrescriptionAnalysisMeta(details?: PrescriptionDetails | null) {
   const summary = details?.parsed_medicine_json?.prescription_summary;
-  const importantNotes = details?.parsed_medicine_json?.important_notes?.filter(Boolean) ?? [];
   const rawSummary = normalizeWhitespace(details?.parsed_medicine_json?.raw_detected_text_summary);
+  const importantNotes = (details?.parsed_medicine_json?.important_notes?.filter(Boolean) ?? [])
+    .map((note) => normalizeWhitespace(note))
+    .filter((note, index, array) => Boolean(note) && array.indexOf(note) === index && note !== rawSummary);
 
   return {
     totalMedicines: summary?.total_medicines ?? null,
@@ -402,6 +406,7 @@ async function prepareImageForUpload(asset: ImagePicker.ImagePickerAsset): Promi
 }
 
 export default function PrescriptionHubScreen() {
+  const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const { prescriptions, familyMembers, isLoading, error, refreshAll } = useAppData();
   const [uploadState, setUploadState] = useState<UploadState>('idle');
@@ -443,6 +448,11 @@ export default function PrescriptionHubScreen() {
     decodedPrescription?.parse_status ? `Status: ${formatStatus(decodedPrescription.parse_status)}` : null,
     prescriptionAnalysisMeta.ocrQuality ? `OCR: ${formatStatus(prescriptionAnalysisMeta.ocrQuality)}` : null,
   ].filter((value): value is string => Boolean(value));
+  const emptyAnalysisFallback =
+    prescriptionAnalysisMeta.rawSummary ||
+    prescriptionAnalysisMeta.importantNotes[0] ||
+    cleanedOcrText ||
+    t('prescriptions.retryHelp');
 
   const requestCameraPermission = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
@@ -547,14 +557,6 @@ export default function PrescriptionHubScreen() {
     let aiStageTimer: ReturnType<typeof setTimeout> | undefined;
 
     try {
-      const formData = new FormData();
-      formData.append('family_member_id', targetFamilyMember.id);
-      formData.append('file', {
-        uri: imageToUpload.uri,
-        name: imageToUpload.name,
-        type: imageToUpload.type || 'image/jpeg',
-      } as unknown as Blob);
-
       console.log('[prescription-upload] upload payload', {
         familyMemberId: targetFamilyMember.id,
         uri: imageToUpload.uri,
@@ -576,35 +578,30 @@ export default function PrescriptionHubScreen() {
         setUploadProgress((current) => Math.max(current, 0.82));
       }, 1600);
 
-      const details = await api.upload<PrescriptionDetails>('api/prescriptions/decode', formData, {
-        onProgress: (progress) => {
-          const nextProgress = Math.max(0.08, Math.min(0.52, progress * 0.52));
-          setUploadProgress(nextProgress);
-          setProcessingStage('uploading');
-        },
-      });
+      const scanResult: ScanPrescriptionResponse = await scanPrescription(imageToUpload.uri, targetFamilyMember.id);
 
       clearTimeout(decodeStageTimer);
       clearTimeout(aiStageTimer);
-      console.log('[prescription-upload] decode response', details);
+      console.log('[prescription-upload] scan response', scanResult);
 
       setProcessingStage('saving');
       setUploadProgress(0.92);
-      console.log('[prescription-upload] parsing output', details.prescription_medications);
+      console.log('[prescription-upload] parsing output', scanResult.prescription?.prescription_medications);
 
+      const details = scanResult.prescription ?? null;
       setDecodedPrescription(details);
-      setOcrPreviewText(details.cleaned_ocr_text ?? details.raw_ocr_text ?? '');
+      setOcrPreviewText(scanResult.rawText ?? details?.cleaned_ocr_text ?? details?.raw_ocr_text ?? '');
       setUploadProgress(1);
-      const decodedMedicineCount = getAnalysisMedicines(details).length;
-      const hasReadableOcr = Boolean(normalizeWhitespace(details.cleaned_ocr_text ?? details.raw_ocr_text));
-      if (!hasReadableOcr) {
+      const decodedMedicineCount = details ? getAnalysisMedicines(details).length : scanResult.medicines.length;
+      const hasReadableOcr = Boolean(normalizeWhitespace(scanResult.rawText ?? details?.cleaned_ocr_text ?? details?.raw_ocr_text));
+      if (!hasReadableOcr || !scanResult.success && scanResult.error === 'OCR_FAILED') {
         setUploadState('error');
-        setUploadError(getDecodeFailureMessage(details));
+        setUploadError(scanResult.message || (details ? getDecodeFailureMessage(details) : 'We could not clearly read this prescription. Please upload a clearer image.'));
       } else {
         setUploadState('success');
         setUploadError(
           decodedMedicineCount === 0
-            ? 'OCR text was read, but no medicines were confidently extracted. Review the OCR text or add medicines manually.'
+            ? scanResult.message || 'OCR text was read, but no medicines were confidently extracted. Review the OCR text or add medicines manually.'
             : '',
         );
       }
@@ -847,7 +844,7 @@ export default function PrescriptionHubScreen() {
     if (medicines.length === 0) {
       return (
         <View style={styles.rawTextBox}>
-          <Text style={styles.rawTextTitle}>Prescription analysis needs review</Text>
+          <Text style={styles.rawTextTitle}>{t('prescriptions.analysisNeedsReview')}</Text>
           {prescriptionAnalysisMeta.rawSummary ? (
             <Text style={styles.rawText}>{prescriptionAnalysisMeta.rawSummary}</Text>
           ) : null}
@@ -856,9 +853,9 @@ export default function PrescriptionHubScreen() {
               {prescriptionAnalysisMeta.importantNotes.join(' ')}
             </Text>
           ) : null}
-          <Text style={styles.rawText}>
-            {cleanedOcrText || 'Try a clearer image, crop the prescription, and retry processing.'}
-          </Text>
+          {!prescriptionAnalysisMeta.rawSummary && prescriptionAnalysisMeta.importantNotes.length === 0 ? (
+            <Text style={styles.rawText}>{emptyAnalysisFallback}</Text>
+          ) : null}
         </View>
       );
     }
@@ -872,7 +869,7 @@ export default function PrescriptionHubScreen() {
             </View>
             <View style={styles.decodedHeroCopy}>
               <Text style={styles.decodedHeroTitle}>Doctor&apos;s Instructions</Text>
-              <Text style={styles.decodedHeroSubtitle}>Here&apos;s a clear, easy-to-understand summary from the prescription image.</Text>
+              <Text style={styles.decodedHeroSubtitle}>Swasthi interprets — you decide.</Text>
             </View>
           </View>
           {decodedPrescription?.image_url ? (
@@ -915,7 +912,7 @@ export default function PrescriptionHubScreen() {
             <View style={styles.disclaimerCard}>
               <Ionicons name="shield-checkmark-outline" size={16} color={colors.primary} />
               <Text style={styles.disclaimerText}>
-                Renomedy helps you understand and track. Always follow your doctor&apos;s instructions.
+                Swasthi interprets — you decide. Review every medicine before activation and always follow your doctor&apos;s instructions.
               </Text>
             </View>
           </View>
@@ -1030,9 +1027,9 @@ export default function PrescriptionHubScreen() {
         </View>
 
         <View style={styles.heroBlock}>
-          <Text style={styles.title}>Prescription Intelligence</Text>
+          <Text style={styles.title}>{t('prescriptions.title')}</Text>
           <Text style={styles.subtitle}>
-            Camera or gallery upload, Google Vision text extraction, Gemini medicine structuring, then save your doctor&apos;s instructions to the family record.
+            {t('prescriptions.subtitle')}
           </Text>
         </View>
 
@@ -1047,7 +1044,7 @@ export default function PrescriptionHubScreen() {
 
           <Text style={styles.uploadTitle}>
             {uploadState === 'uploading' || uploadState === 'processing'
-              ? stageLabel(processingStage)
+              ? stageLabel(processingStage, t)
               : uploadState === 'success'
                 ? 'Structured medicines are ready'
                 : selectedImage
@@ -1064,7 +1061,7 @@ export default function PrescriptionHubScreen() {
             <View style={styles.progressCard}>
               <View style={styles.progressHeader}>
                 <ActivityIndicator color={colors.primary} />
-                <Text style={styles.progressTitle}>{stageLabel(processingStage)}</Text>
+                <Text style={styles.progressTitle}>{stageLabel(processingStage, t)}</Text>
               </View>
               <View style={styles.progressTrack}>
                 <View style={[styles.progressFill, { width: `${Math.max(uploadProgress * 100, 6)}%` }]} />
@@ -1144,15 +1141,15 @@ export default function PrescriptionHubScreen() {
         ) : null}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Pipeline status</Text>
+          <Text style={styles.sectionTitle}>{t('prescriptions.pipelineStatus')}</Text>
           <View style={styles.timeline}>
             {[
-              'Choose image',
-              'Upload image',
-              'Google Vision text extraction',
-              'Gemini medicine structuring',
-              'Save to Supabase',
-              'Show medicine cards',
+              t('prescriptions.chooseImage'),
+              t('prescriptions.uploadImage'),
+              t('prescriptions.googleVision'),
+              t('prescriptions.geminiStructuring'),
+              t('prescriptions.saveSupabase'),
+              t('prescriptions.showMedicineCards'),
             ].map((step, index) => {
               const isActive = index < completedStepCount;
               return (
@@ -1169,7 +1166,7 @@ export default function PrescriptionHubScreen() {
           <>
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Prescription summary</Text>
+                <Text style={styles.sectionTitle}>{t('prescriptions.summary')}</Text>
                 <Text style={styles.countText}>{decodedMedicines.length}</Text>
               </View>
               {renderMedicineCards(decodedMedicines)}
@@ -1279,9 +1276,9 @@ export default function PrescriptionHubScreen() {
 
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>OCR and AI details</Text>
+                <Text style={styles.sectionTitle}>{t('prescriptions.ocrDetails')}</Text>
                 <TouchableOpacity style={styles.manualActionChip} onPress={() => setShowOcrDetails((current) => !current)}>
-                  <Text style={styles.manualActionChipText}>{showOcrDetails ? 'Hide details' : 'Show details'}</Text>
+                  <Text style={styles.manualActionChipText}>{showOcrDetails ? t('prescriptions.hideDetails') : t('prescriptions.showDetails')}</Text>
                 </TouchableOpacity>
               </View>
               {showOcrDetails ? (
@@ -1294,8 +1291,8 @@ export default function PrescriptionHubScreen() {
                     ))}
                   </View>
                   <View style={styles.rawTextBox}>
-                    <Text style={styles.rawTextTitle}>Cleaned OCR text</Text>
-                    <Text style={styles.rawText}>{cleanedOcrText || 'No OCR text returned.'}</Text>
+                    <Text style={styles.rawTextTitle}>{t('prescriptions.cleanedOcrText')}</Text>
+                    <Text style={styles.rawText}>{cleanedOcrText || t('prescriptions.noOcrText')}</Text>
                   </View>
                 </>
               ) : (
@@ -1305,16 +1302,16 @@ export default function PrescriptionHubScreen() {
 
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Manual review</Text>
+                <Text style={styles.sectionTitle}>{t('prescriptions.manualReview')}</Text>
                 <TouchableOpacity style={styles.manualActionChip} onPress={() => openMedicationEditor()}>
                   <Text style={styles.manualActionChipText}>
-                    {decodedMedicines.length > 0 ? 'Add medicine' : 'Add first medicine'}
+                    {decodedMedicines.length > 0 ? t('prescriptions.addMedicine') : t('prescriptions.addFirstMedicine')}
                   </Text>
                 </TouchableOpacity>
               </View>
 
               <Text style={styles.manualHelpText}>
-                If OCR misses a medicine, add it here and it will be saved to the prescription record.
+                {t('prescriptions.manualReviewHelp')}
               </Text>
 
               {isManualFormVisible ? (
@@ -1408,7 +1405,7 @@ export default function PrescriptionHubScreen() {
         ) : null}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent prescriptions</Text>
+          <Text style={styles.sectionTitle}>{t('prescriptions.recentPrescriptions')}</Text>
           {recentPrescriptions.length > 0 ? (
             recentPrescriptions.map((item) => {
               const uploadMeta = getPrimaryUpload(item);

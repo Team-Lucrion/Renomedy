@@ -88,6 +88,19 @@ function sanitizeMedicineName(value: string | null | undefined) {
   if (isLikelyMedicineName(normalized)) {
     return normalized;
   }
+  // Preserve a readable fallback name when Gemini returns a plausible medicine
+  // string that our stricter candidate sanitizer over-normalizes away.
+  const salvageCandidate = normalized
+    .replace(/^\s*(?:rx|r\/x)\s*/i, "")
+    .replace(/^\s*\d+[\).\-\s]+/, "")
+    .replace(/[^A-Za-z0-9()[\]/+ .-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (isLikelyMedicineName(salvageCandidate)) {
+    const words = salvageCandidate.split(" ").filter(Boolean);
+    return words.length > 8 ? words.slice(0, 8).join(" ") : salvageCandidate;
+  }
   return "";
 }
 
