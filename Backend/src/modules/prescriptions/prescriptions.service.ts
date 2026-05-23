@@ -1,13 +1,17 @@
 import { env } from "../../config/env";
+import { Readable } from "stream";
 import { supabaseAdmin } from "../../lib/supabase";
 import { writeAuditLog } from "../../services/audit.service";
 import { ensureClosedBetaAccess } from "../../services/beta-access.service";
 import { assertFeatureAccess, incrementScanUsage } from "../subscriptions/subscriptions.service";
 import { createOcrProvider, currentOcrProviderName } from "../../services/ocr/ocr-provider.factory";
 import { HttpError } from "../../utils/http-error";
+import { detectExcludedMedicine } from "../../utils/medicineSafety";
+import { getMedicineTrustProfile } from "../../utils/medicineTrust";
 
 const ocrProvider = createOcrProvider();
 type ParsedOcrResult = Awaited<ReturnType<typeof ocrProvider.parsePrescription>>;
+const PRESCRIPTION_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "image/heif"];
 const OCR_PIPELINE_OPTIONAL_COLUMNS = [
   "cleaned_ocr_text",
   "parsed_medicine_json",
@@ -15,6 +19,145 @@ const OCR_PIPELINE_OPTIONAL_COLUMNS = [
   "ai_model",
   "ai_raw_response"
 ] as const;
+
+type ScanFailureCode =
+  | "OCR_FAILED"
+  | "PARSE_FAILED"
+  | "NO_IMAGE"
+  | "UNSUPPORTED_FILE_TYPE"
+  | "FILE_TOO_LARGE"
+  | "INTERNAL_ERROR"
+  | "PROVIDER_TIMEOUT";
+
+export function buildScanFailureResponse(
+  error: ScanFailureCode,
+  message: string,
+  extra: Record<string, unknown> = {}
+) {
+  return {
+    success: false,
+    error,
+    message,
+    provider: currentOcrProviderName(),
+    rawText: "",
+    cleanedText: "",
+    confidence: 0,
+    medicines: [],
+    warnings: [],
+    status: "failed" as const,
+    ...extra
+  };
+}
+
+function getMimeTypeFromDataUrl(value: string) {
+  const match = value.match(/^data:([^;]+);base64,/i);
+  return match?.[1]?.toLowerCase();
+}
+
+function extensionForMimeType(mimeType: string) {
+  if (mimeType === "image/png") return "png";
+  if (mimeType === "image/webp") return "webp";
+  if (mimeType === "image/heic") return "heic";
+  if (mimeType === "image/heif") return "heif";
+  return "jpg";
+}
+
+function assertSupportedImage(mimeType: string, byteLength: number) {
+  if (!PRESCRIPTION_IMAGE_MIME_TYPES.includes(mimeType)) {
+    throw new HttpError(415, "Only JPEG, PNG, WebP, and HEIC prescription images are supported", {
+      scanError: "UNSUPPORTED_FILE_TYPE"
+    });
+  }
+
+  const maxBytes = env.MAX_UPLOAD_MB * 1024 * 1024;
+  if (byteLength > maxBytes) {
+    throw new HttpError(413, `Image must be under ${env.MAX_UPLOAD_MB}MB`, {
+      scanError: "FILE_TOO_LARGE"
+    });
+  }
+}
+
+function buildMulterFileFromBuffer(input: {
+  fieldname: string;
+  originalname: string;
+  mimetype: string;
+  buffer: Buffer;
+}): Express.Multer.File {
+  return {
+    fieldname: input.fieldname,
+    originalname: input.originalname,
+    encoding: "7bit",
+    mimetype: input.mimetype,
+    size: input.buffer.length,
+    buffer: input.buffer,
+    stream: Readable.from(input.buffer),
+    destination: "",
+    filename: input.originalname,
+    path: ""
+  };
+}
+
+async function resolveImageUrl(value: string) {
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(value);
+  } catch {
+    throw new HttpError(400, "Invalid imageUrl", { scanError: "NO_IMAGE" });
+  }
+
+  if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
+    throw new HttpError(400, "imageUrl must use http or https", { scanError: "NO_IMAGE" });
+  }
+
+  const response = await fetch(parsedUrl);
+  if (!response.ok) {
+    throw new HttpError(400, "Could not fetch image from the provided URL", { scanError: "NO_IMAGE" });
+  }
+
+  const mimetype = (response.headers.get("content-type") ?? "image/jpeg").split(";")[0].toLowerCase();
+  const buffer = Buffer.from(await response.arrayBuffer());
+  assertSupportedImage(mimetype, buffer.length);
+
+  return buildMulterFileFromBuffer({
+    fieldname: "imageUrl",
+    originalname: `prescription-url.${extensionForMimeType(mimetype)}`,
+    mimetype,
+    buffer
+  });
+}
+
+export async function resolvePrescriptionScanFile(input: {
+  file?: Express.Multer.File;
+  body: Record<string, unknown>;
+}) {
+  if (input.file) {
+    return input.file;
+  }
+
+  if (typeof input.body.imageBase64 === "string" && input.body.imageBase64.trim()) {
+    const imageBase64 = input.body.imageBase64.trim();
+    const mimetype = (
+      getMimeTypeFromDataUrl(imageBase64) ??
+      (typeof input.body.mimeType === "string" ? input.body.mimeType : "image/jpeg")
+    ).toLowerCase();
+    const base64 = imageBase64.replace(/^data:[^;]+;base64,/i, "");
+    const buffer = Buffer.from(base64, "base64");
+    assertSupportedImage(mimetype, buffer.length);
+
+    return buildMulterFileFromBuffer({
+      fieldname: "imageBase64",
+      originalname: `prescription-base64.${extensionForMimeType(mimetype)}`,
+      mimetype,
+      buffer
+    });
+  }
+
+  if (typeof input.body.imageUrl === "string" && input.body.imageUrl.trim()) {
+    return resolveImageUrl(input.body.imageUrl.trim());
+  }
+
+  return null;
+}
 
 function getOcrFailureMessage(metadata?: Record<string, unknown>) {
   const error = metadata?.error;
@@ -341,28 +484,28 @@ function getPrescriptionMedicinesForScan(details: any) {
 
   if (stored.length > 0) {
     return stored.map((medicine: any) => ({
-      name: medicine.medicine_name ?? "",
-      strength: medicine.dosage ?? "",
-      dose: medicine.dosage ?? "",
-      frequency: medicine.frequency ?? "",
-      frequencyMeaning: mapFrequencyMeaning(medicine.frequency),
-      foodTiming: medicine.food_timing ?? deriveFoodTiming(medicine.timing),
+      name: String(medicine.medicine_name ?? ""),
+      strength: String(medicine.dosage ?? ""),
+      dose: String(medicine.dosage ?? ""),
+      frequency: String(medicine.frequency ?? ""),
+      frequencyMeaning: mapFrequencyMeaning(medicine.frequency) ?? "",
+      foodTiming: String(medicine.food_timing ?? deriveFoodTiming(medicine.timing) ?? ""),
       durationDays: mapDurationDays(medicine.duration),
-      instructions: medicine.instructions ?? "",
+      instructions: String(medicine.instructions ?? ""),
       confidence: typeof medicine.confidence_score === "number" ? medicine.confidence_score : 0,
       needsReview: medicine.requires_manual_verification !== false
     }));
   }
 
   return fallback.map((medicine: any) => ({
-    name: medicine.medicine_name ?? "",
-    strength: medicine.strength ?? medicine.dosage ?? "",
-    dose: medicine.dose ?? medicine.dosage ?? "",
-    frequency: medicine.frequency ?? "",
-    frequencyMeaning: mapFrequencyMeaning(medicine.frequency),
-    foodTiming: deriveFoodTiming(medicine.timing),
+    name: String(medicine.medicine_name ?? ""),
+    strength: String(medicine.strength ?? medicine.dosage ?? ""),
+    dose: String(medicine.dose ?? medicine.dosage ?? ""),
+    frequency: String(medicine.frequency ?? ""),
+    frequencyMeaning: mapFrequencyMeaning(medicine.frequency) ?? "",
+    foodTiming: deriveFoodTiming(medicine.timing) ?? "",
     durationDays: mapDurationDays(medicine.duration),
-    instructions: medicine.instructions ?? "",
+    instructions: String(medicine.instructions ?? ""),
     confidence:
       typeof medicine.confidence_score === "number"
         ? medicine.confidence_score
@@ -377,8 +520,10 @@ function getPrescriptionMedicinesForScan(details: any) {
 
 export function mapPrescriptionToScanResponse(details: any) {
   const rawText = String(details.cleaned_ocr_text ?? details.raw_ocr_text ?? "").trim();
+  const cleanedText = String(details.cleaned_ocr_text ?? rawText).trim();
   const medicines = getPrescriptionMedicinesForScan(details).filter((medicine: any) => medicine.name);
   const upload = Array.isArray(details.prescription_uploads) ? details.prescription_uploads[0] : details.prescription_uploads;
+  const provider = String(details.ocr_provider_metadata?.provider ?? details.ocr_provider ?? currentOcrProviderName());
   const warnings = Array.isArray(details.parsed_medicine_json?.important_notes)
     ? details.parsed_medicine_json.important_notes.filter((value: unknown) => typeof value === "string" && value.trim())
     : [];
@@ -387,18 +532,27 @@ export function mapPrescriptionToScanResponse(details: any) {
       ? details.parsed_medicine_json.prescription_summary.confidence_score
       : medicines.length > 0
         ? medicines.reduce((sum: number, medicine: any) => sum + (medicine.confidence ?? 0), 0) / medicines.length
-        : undefined;
+        : 0;
+  const reviewWarnings = medicines.some((medicine: any) => medicine.needsReview)
+    ? ["Some medicines have low confidence and require verification."]
+    : [];
+  const stableWarnings = [...new Set([...warnings, ...reviewWarnings])];
 
   if (!rawText) {
     return {
       success: false,
       error: "OCR_FAILED",
       message: "We could not read this prescription clearly. Please retake the photo or enter details manually.",
+      provider,
+      rawText: "",
+      cleanedText: "",
+      confidence: 0,
       medicines: [],
-      warnings,
+      warnings: stableWarnings,
       status: "failed" as const,
       prescriptionId: details.id,
-      prescription: details
+      prescription: details,
+      uploadError: upload?.last_error ?? null
     };
   }
 
@@ -406,12 +560,14 @@ export function mapPrescriptionToScanResponse(details: any) {
     return {
       success: false,
       error: "PARSE_FAILED",
+      provider,
       rawText,
+      cleanedText,
+      confidence,
       medicines: [],
-      warnings,
+      warnings: stableWarnings,
       message: "Text was extracted, but medicines could not be parsed safely.",
       status: "failed" as const,
-      confidence,
       prescriptionId: details.id,
       prescription: details,
       uploadError: upload?.last_error ?? null
@@ -420,10 +576,12 @@ export function mapPrescriptionToScanResponse(details: any) {
 
   return {
     success: true,
+    provider,
     rawText,
+    cleanedText,
     confidence,
     medicines,
-    warnings,
+    warnings: stableWarnings,
     status: "pending_verification" as const,
     prescriptionId: details.id,
     prescription: details
@@ -493,7 +651,7 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
         timing: med.timing ?? null,
         duration: med.duration ?? null,
         instructions: med.instructions ?? null,
-        food_timing: med.shorthandExplanation?.includes("food") ? med.shorthandExplanation : null,
+        food_timing: med.foodTiming ?? (med.shorthandExplanation?.includes("food") ? med.shorthandExplanation : null),
         shorthand_detected: med.shorthandDetected,
         shorthand_explanation: med.shorthandExplanation ?? null,
         confidence_score: med.confidenceScore,
@@ -633,23 +791,35 @@ export async function createManualMedication(jwt: string, prescriptionId: string
   const verificationStatus =
     typeof input.verification_status === "string" && input.verification_status
       ? input.verification_status
-      : "user_verified";
+      : "unverified";
 
   const insertPayload = {
     prescription_id: prescriptionId,
     medicine_name: String(input.medicine_name ?? "").trim(),
     brand_name: input.brand_name ?? null,
     generic_name: input.generic_name ?? null,
+    strength: input.strength ?? null,
+    dose: input.dose ?? null,
     dosage: input.dosage ?? null,
     frequency: input.frequency ?? null,
     timing: input.timing ?? null,
     duration: input.duration ?? null,
     food_timing: input.food_timing ?? null,
+    quantity_purchased: input.quantity_purchased ?? null,
+    start_date: input.start_date ?? null,
     instructions: input.instructions ?? null,
-    confidence_score: typeof input.confidence_score === "number" ? input.confidence_score : 1,
+    confidence_score: typeof input.confidence_score === "number" ? input.confidence_score : 0,
     requires_manual_verification:
-      typeof input.requires_manual_verification === "boolean" ? input.requires_manual_verification : false,
+      typeof input.requires_manual_verification === "boolean" ? input.requires_manual_verification : true,
     verification_notes: input.verification_notes ?? "Added manually by caregiver",
+    trust_metadata: getMedicineTrustProfile({
+      medicine_name: String(input.medicine_name ?? "").trim(),
+      brand_name: typeof input.brand_name === "string" ? input.brand_name : null,
+      generic_name: typeof input.generic_name === "string" ? input.generic_name : null,
+      strength: typeof input.strength === "string" ? input.strength : null,
+      dosage: typeof input.dosage === "string" ? input.dosage : null
+    }),
+    continuity_status: "draft",
     is_user_corrected: true,
     last_corrected_at: new Date().toISOString(),
     verified_at: verificationStatus !== "unverified" ? new Date().toISOString() : null,
@@ -658,6 +828,11 @@ export async function createManualMedication(jwt: string, prescriptionId: string
 
   if (!insertPayload.medicine_name) {
     throw new HttpError(400, "Medicine name is required");
+  }
+
+  const excludedSignal = detectExcludedMedicine(insertPayload);
+  if (excludedSignal && verificationStatus !== "unverified") {
+    throw new HttpError(422, `${excludedSignal.label} is not supported for activation during this beta`);
   }
 
   const { data: medication, error: medicationError } = await supabaseAdmin
@@ -674,7 +849,7 @@ export async function createManualMedication(jwt: string, prescriptionId: string
     .from("prescriptions")
     .update({
       verification_status: verificationStatus,
-      parse_status: "verified"
+      parse_status: verificationStatus === "unverified" ? "parsed" : "verified"
     })
     .eq("id", prescriptionId);
 
@@ -696,7 +871,12 @@ export async function createManualMedication(jwt: string, prescriptionId: string
     action: "prescription.medication_added_manually",
     entityType: "prescription",
     entityId: prescriptionId,
-    metadata: { medication_id: medication.id, medicine_name: medication.medicine_name }
+    metadata: {
+      medication_id: medication.id,
+      medicine_name: medication.medicine_name,
+      verification_status: verificationStatus,
+      excluded_category: excludedSignal?.category ?? null
+    }
   });
 
   return medication;
@@ -718,7 +898,7 @@ export async function updateParsedMedication(jwt: string, medicationId: string, 
 
   const { data: existingMedication, error: existingMedicationError } = await supabaseAdmin
     .from("prescription_medications")
-    .select("id, prescription_id, prescriptions!inner(family_member_id)")
+    .select("id, prescription_id, medicine_name, brand_name, generic_name, instructions, prescriptions!inner(family_member_id)")
     .eq("id", medicationId)
     .single();
 
@@ -735,6 +915,16 @@ export async function updateParsedMedication(jwt: string, medicationId: string, 
   if (!familyMemberId || !accessibleFamilyMemberIds.includes(familyMemberId)) {
     throw new HttpError(403, "Parsed medication is not accessible");
   }
+
+  const excludedSignal = detectExcludedMedicine({ ...(existingMedication as Record<string, unknown>), ...input });
+  if (excludedSignal && verificationStatus && verificationStatus !== "unverified") {
+    throw new HttpError(422, `${excludedSignal.label} is not supported for activation during this beta`);
+  }
+
+  (updatePayload as Record<string, unknown>).trust_metadata = getMedicineTrustProfile({
+    ...(existingMedication as Record<string, unknown>),
+    ...input
+  });
 
   const { data: medication, error: medicationError } = await supabaseAdmin
     .from("prescription_medications")
@@ -763,8 +953,202 @@ export async function updateParsedMedication(jwt: string, medicationId: string, 
     action: "prescription.medication_corrected",
     entityType: "prescription_medication",
     entityId: medicationId,
-    metadata: { verification_status: verificationStatus ?? null }
+    metadata: { verification_status: verificationStatus ?? null, excluded_category: excludedSignal?.category ?? null }
   });
 
   return medication;
+}
+
+type ReconciliationAction = {
+  type: "continue_unchanged" | "update_existing" | "replace_existing" | "discontinue" | "add_new" | "keep_active";
+  existing_medication_id?: string;
+  new_medication_id?: string;
+  stop_old?: boolean;
+  begin_date?: string;
+  note?: string;
+};
+
+export async function reconcilePrescription(jwt: string, prescriptionId: string, input: { actions?: ReconciliationAction[]; superseded_prescription_ids?: string[] }) {
+  const currentUser = await ensureClosedBetaAccess(jwt);
+  const { data: prescription, error: prescriptionError } = await supabaseAdmin
+    .from("prescriptions")
+    .select("id, family_member_id, created_at")
+    .eq("id", prescriptionId)
+    .single();
+
+  if (prescriptionError || !prescription) {
+    throw new HttpError(404, "Prescription not found", prescriptionError);
+  }
+
+  const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, prescription.family_member_id);
+  if (!accessibleFamilyMemberIds.includes(prescription.family_member_id)) {
+    throw new HttpError(403, "Prescription is not accessible");
+  }
+
+  const actions = input.actions ?? [];
+  const medicationIds = Array.from(
+    new Set(
+      actions
+        .flatMap((action) => [action.existing_medication_id, action.new_medication_id])
+        .filter((id): id is string => Boolean(id))
+    )
+  );
+
+  const medicationById = new Map<string, any>();
+  if (medicationIds.length > 0) {
+    const { data: medications, error: medicationsError } = await supabaseAdmin
+      .from("prescription_medications")
+      .select("id, prescription_id, medicine_name, brand_name, generic_name, strength, dosage, prescriptions!inner(family_member_id)")
+      .in("id", medicationIds);
+
+    if (medicationsError) {
+      throw new HttpError(500, "Failed to load reconciliation medicines", medicationsError);
+    }
+
+    for (const medication of medications ?? []) {
+      const relation = Array.isArray((medication as any).prescriptions)
+        ? (medication as any).prescriptions[0]
+        : (medication as any).prescriptions;
+      if (relation?.family_member_id !== prescription.family_member_id) {
+        throw new HttpError(403, "Reconciliation medicine is not accessible for this patient");
+      }
+      medicationById.set(medication.id, medication);
+    }
+  }
+
+  const now = new Date().toISOString();
+  const stoppedMedicationIds: string[] = [];
+  const preservedMedicationIds: string[] = [];
+  const newMedicationIds: string[] = [];
+  const supersededPrescriptionIds = new Set(input.superseded_prescription_ids ?? []);
+
+  for (const action of actions) {
+    const oldMedication = action.existing_medication_id ? medicationById.get(action.existing_medication_id) : null;
+    const newMedication = action.new_medication_id ? medicationById.get(action.new_medication_id) : null;
+
+    if (action.existing_medication_id && !oldMedication) {
+      throw new HttpError(404, "Existing medication in reconciliation was not found");
+    }
+
+    if (action.new_medication_id && !newMedication) {
+      throw new HttpError(404, "New medication in reconciliation was not found");
+    }
+
+    if (oldMedication?.prescription_id && oldMedication.prescription_id !== prescriptionId) {
+      supersededPrescriptionIds.add(oldMedication.prescription_id);
+    }
+
+    if (action.type === "add_new" && newMedication) {
+      newMedicationIds.push(newMedication.id);
+      await supabaseAdmin
+        .from("prescription_medications")
+        .update({
+          continuity_status: "draft",
+          requires_manual_verification: true,
+          verified_at: null,
+          verified_by_user_id: null,
+          continuity_note: action.note ?? "New medicine from reconciliation; verification required before activation",
+          trust_metadata: getMedicineTrustProfile(newMedication)
+        })
+        .eq("id", newMedication.id);
+      continue;
+    }
+
+    if ((action.type === "discontinue" || action.type === "replace_existing" || action.type === "update_existing") && oldMedication) {
+      const shouldStopOld = action.type === "discontinue" || action.type === "replace_existing" || action.stop_old === true;
+      if (shouldStopOld) {
+        stoppedMedicationIds.push(oldMedication.id);
+        await supabaseAdmin
+          .from("medication_schedules")
+          .update({
+            status: "completed",
+            end_date: action.begin_date ?? new Date().toISOString().slice(0, 10),
+            stopped_at: now,
+            stopped_reason: action.type === "discontinue" ? "discontinued_in_reconciliation" : "replaced_in_reconciliation",
+            continuity_note: action.note ?? "Stopped during prescription reconciliation"
+          })
+          .eq("prescription_medication_id", oldMedication.id)
+          .eq("status", "active");
+
+        await supabaseAdmin
+          .from("prescription_medications")
+          .update({
+            continuity_status: action.type === "discontinue" ? "discontinued" : "replaced",
+            replaced_by_medication_id: newMedication?.id ?? null,
+            discontinued_at: now,
+            continuity_note: action.note ?? "Changed during prescription reconciliation"
+          })
+          .eq("id", oldMedication.id);
+      }
+    }
+
+    if ((action.type === "continue_unchanged" || action.type === "keep_active") && oldMedication) {
+      preservedMedicationIds.push(oldMedication.id);
+      await supabaseAdmin
+        .from("prescription_medications")
+        .update({
+          continuity_status: "active",
+          continuity_note: action.note ?? "Caregiver chose to keep active during reconciliation",
+          trust_metadata: getMedicineTrustProfile(oldMedication)
+        })
+        .eq("id", oldMedication.id);
+    }
+
+    if ((action.type === "replace_existing" || action.type === "update_existing") && newMedication) {
+      newMedicationIds.push(newMedication.id);
+      await supabaseAdmin
+        .from("prescription_medications")
+        .update({
+          continuity_status: "draft",
+          requires_manual_verification: true,
+          verified_at: null,
+          verified_by_user_id: null,
+          continuity_note: action.note ?? "Replacement/update medicine from reconciliation; verification required before activation",
+          trust_metadata: getMedicineTrustProfile(newMedication)
+        })
+        .eq("id", newMedication.id);
+    }
+  }
+
+  const archiveIds = Array.from(supersededPrescriptionIds).filter((id) => id !== prescriptionId);
+  if (archiveIds.length > 0) {
+    const archiveLabel = `Superseded on ${new Date().toISOString().slice(0, 10)} - replaced by prescription added ${String(prescription.created_at).slice(0, 10)}`;
+    const { error: archiveError } = await supabaseAdmin
+      .from("prescriptions")
+      .update({
+        archive_status: "superseded",
+        superseded_at: now,
+        superseded_by_prescription_id: prescriptionId,
+        archive_label: archiveLabel
+      })
+      .in("id", archiveIds)
+      .eq("family_member_id", prescription.family_member_id);
+
+    if (archiveError) {
+      throw new HttpError(500, "Failed to archive superseded prescriptions", archiveError);
+    }
+  }
+
+  await writeAuditLog({
+    userId: currentUser.id,
+    action: "prescription.reconciliation_saved",
+    entityType: "prescription",
+    entityId: prescriptionId,
+    metadata: {
+      family_member_id: prescription.family_member_id,
+      action_count: actions.length,
+      stopped_medication_ids: stoppedMedicationIds,
+      preserved_medication_ids: preservedMedicationIds,
+      new_medication_ids: newMedicationIds,
+      superseded_prescription_ids: archiveIds
+    }
+  });
+
+  return {
+    stopped_medication_ids: stoppedMedicationIds,
+    preserved_medication_ids: preservedMedicationIds,
+    new_medication_ids: newMedicationIds,
+    superseded_prescription_ids: archiveIds,
+    requires_verification_before_activation: newMedicationIds
+  };
 }

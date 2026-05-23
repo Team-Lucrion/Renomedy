@@ -146,10 +146,10 @@ export default function LoginScreen() {
   };
 
   const isSignUp = mode === 'signUp';
-  const title = isSignUp ? 'Create your family sanctuary.' : 'Welcome back to the sanctuary.';
+  const title = isSignUp ? 'Create your care sanctuary.' : 'Welcome back to the sanctuary.';
   const subtitle = isSignUp
     ? 'Begin a journey of safe medication synchronization for your loved ones.'
-    : "Authorized access only. Log in to manage your family's health continuity.";
+    : "Authorized access only. Log in to manage care continuity.";
   const primaryButtonLabel = isLoading
     ? 'Please wait...'
     : isSignUp

@@ -3,10 +3,13 @@ import { ok } from "../../utils/api-response";
 import {
   createManualMedication,
   decodePrescriptionUpload,
+  buildScanFailureResponse,
   getPrescription,
   getPrescriptionHistory,
   mapPrescriptionToScanResponse,
   parsePrescription,
+  reconcilePrescription,
+  resolvePrescriptionScanFile,
   updateParsedMedication,
   uploadPrescription
 } from "./prescriptions.service";
@@ -77,12 +80,38 @@ export async function decodePrescriptionHandler(req: Request, res: Response) {
 }
 
 export async function scanPrescriptionHandler(req: Request, res: Response) {
-  if (!req.file) throw new HttpError(400, "Prescription image file is required");
+  let scanFile: Express.Multer.File | null;
+
+  try {
+    scanFile = await resolvePrescriptionScanFile({
+      file: req.file,
+      body: req.body
+    });
+  } catch (error) {
+    if (error instanceof HttpError && error.details && typeof error.details === "object" && "scanError" in error.details) {
+      return res
+        .status(error.statusCode)
+        .json(buildScanFailureResponse((error.details as { scanError: any }).scanError, error.message));
+    }
+
+    throw error;
+  }
+
+  if (!scanFile) {
+    return res
+      .status(400)
+      .json(
+        buildScanFailureResponse(
+          "NO_IMAGE",
+          'No image provided. Send multipart field "image" or "file", or provide imageBase64 or imageUrl.'
+        )
+      );
+  }
 
   const data = await decodePrescriptionUpload({
     jwt: req.auth!.token,
     clerkUserId: req.auth!.clerkUserId,
-    file: req.file,
+    file: scanFile,
     body: req.body
   });
 
@@ -112,4 +141,9 @@ export async function updateParsedMedicationHandler(req: Request, res: Response)
 export async function createManualMedicationHandler(req: Request, res: Response) {
   const data = await createManualMedication(req.auth!.token, req.params.id, req.body);
   return ok(res, data, "Prescription medication created");
+}
+
+export async function reconcilePrescriptionHandler(req: Request, res: Response) {
+  const data = await reconcilePrescription(req.auth!.token, req.params.id, req.body);
+  return ok(res, data, "Prescription reconciliation saved");
 }

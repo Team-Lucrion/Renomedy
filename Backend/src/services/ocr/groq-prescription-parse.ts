@@ -7,6 +7,7 @@ type GroqMedicinePayload = {
   dose?: string;
   frequency?: string;
   frequencyMeaning?: string;
+  timing?: string;
   foodTiming?: string;
   durationDays?: number | null;
   instructions?: string;
@@ -55,6 +56,10 @@ function buildPrompt(ocrText: string) {
     "Only extract medicines that are reasonably visible in the OCR text.",
     "If any field is uncertain, keep it empty and set needsReview true.",
     "Use confidence as a decimal from 0 to 1.",
+    "Extract timing and foodTiming as separate fields.",
+    "timing means when in the day: morning, afternoon, evening, night, bedtime, immediately, as needed.",
+    "foodTiming means relation to food: before food, after food, with food, no food instruction.",
+    "Do not put food instructions in timing. Do not put morning/night/bedtime in foodTiming.",
     "Return this exact schema:",
     "{",
     '  "medicines": [',
@@ -64,6 +69,7 @@ function buildPrompt(ocrText: string) {
     '      "dose": "",',
     '      "frequency": "",',
     '      "frequencyMeaning": "",',
+    '      "timing": "",',
     '      "foodTiming": "",',
     '      "durationDays": 0,',
     '      "instructions": "",',
@@ -78,13 +84,46 @@ function buildPrompt(ocrText: string) {
   ].join("\n");
 }
 
-function extractJsonPayload(rawText: string): GroqPrescriptionPayload {
+function isPrescriptionPayload(value: unknown): value is GroqPrescriptionPayload {
+  return Boolean(value && typeof value === "object" && !Array.isArray(value) && "medicines" in value);
+}
+
+function extractAssistantContent(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return "";
+  }
+
+  const choices = (value as { choices?: unknown }).choices;
+  if (!Array.isArray(choices) || choices.length === 0) {
+    return "";
+  }
+
+  const firstChoice = choices[0];
+  if (!firstChoice || typeof firstChoice !== "object" || Array.isArray(firstChoice)) {
+    return "";
+  }
+
+  const message = (firstChoice as { message?: unknown }).message;
+  if (!message || typeof message !== "object" || Array.isArray(message)) {
+    return "";
+  }
+
+  const content = (message as { content?: unknown }).content;
+  return typeof content === "string" ? content : "";
+}
+
+export function extractJsonPayload(rawText: string): GroqPrescriptionPayload {
   const cleaned = rawText.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
 
   try {
     const parsed = JSON.parse(cleaned) as unknown;
-    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-      return parsed as GroqPrescriptionPayload;
+    if (isPrescriptionPayload(parsed)) {
+      return parsed;
+    }
+
+    const assistantContent = extractAssistantContent(parsed);
+    if (assistantContent) {
+      return extractJsonPayload(assistantContent);
     }
   } catch {
     // fall through to best-effort extraction
@@ -95,7 +134,17 @@ function extractJsonPayload(rawText: string): GroqPrescriptionPayload {
     throw new Error("Groq returned malformed JSON for prescription parsing");
   }
 
-  return JSON.parse(match[0]) as GroqPrescriptionPayload;
+  const parsed = JSON.parse(match[0]) as unknown;
+  if (isPrescriptionPayload(parsed)) {
+    return parsed;
+  }
+
+  const assistantContent = extractAssistantContent(parsed);
+  if (assistantContent) {
+    return extractJsonPayload(assistantContent);
+  }
+
+  throw new Error("Groq returned JSON without prescription medicines");
 }
 
 export async function parseMedicinesWithGroq(ocrText: string) {
@@ -153,6 +202,7 @@ export function mapGroqMedicinesToParseResult(medicines: GroqMedicinePayload[]):
 
     const frequency = normalizeWhitespace(medicine.frequency);
     const frequencyMeaning = normalizeFrequencyMeaning(frequency, medicine.frequencyMeaning);
+    const timing = normalizeWhitespace(medicine.timing);
     const foodTiming = normalizeWhitespace(medicine.foodTiming);
     const instruction = normalizeWhitespace(medicine.instructions);
     const confidence =
@@ -164,7 +214,6 @@ export function mapGroqMedicinesToParseResult(medicines: GroqMedicinePayload[]):
       typeof medicine.durationDays === "number" && Number.isFinite(medicine.durationDays)
         ? Math.max(0, Math.round(medicine.durationDays))
         : null;
-    const timing = foodTiming || frequencyMeaning || "";
 
     parsedMedications.push({
       medicineName: name,
@@ -173,11 +222,12 @@ export function mapGroqMedicinesToParseResult(medicines: GroqMedicinePayload[]):
       dose: normalizeWhitespace(medicine.dose) || undefined,
       frequency: frequency || undefined,
       timing: timing || undefined,
+      foodTiming: foodTiming || undefined,
       duration: durationDays !== null && durationDays > 0 ? `${durationDays} days` : undefined,
       instructions: instruction || undefined,
       confidence: confidence >= 0.85 ? "high" : confidence >= 0.6 ? "medium" : "low",
       shorthandDetected: frequency ? [frequency] : [],
-      shorthandExplanation: [frequencyMeaning, foodTiming].filter(Boolean).join(", ") || undefined,
+      shorthandExplanation: [frequencyMeaning, timing, foodTiming].filter(Boolean).join(", ") || undefined,
       confidenceScore: confidence,
       requiresManualVerification: needsReview
     });

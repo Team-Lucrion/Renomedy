@@ -11,7 +11,13 @@ export const activateMedicationSchema = z.object({
   quantity_total: z.number().int().positive().optional(),
   quantity_remaining: z.number().int().min(0).optional(),
   daily_depletion: z.number().positive().optional(),
-  projected_runout_date: z.string().optional()
+  projected_runout_date: z.string().optional(),
+  relationship_confirmation: z.object({
+    acknowledged_duplicate_risk: z.boolean().optional(),
+    replacing_schedule_id: z.string().uuid().optional(),
+    stop_replaced_schedule: z.boolean().optional(),
+    begins_at: z.string().optional()
+  }).optional()
 });
 
 export const doseLogSchema = z.object({

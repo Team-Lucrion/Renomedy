@@ -1,0 +1,1108 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --ink: var(--color-text-primary);
+  --muted: var(--color-text-secondary);
+  --faint: var(--color-text-tertiary);
+  --bg: var(--color-background-primary);
+  --surface: var(--color-background-secondary);
+  --border: var(--color-border-tertiary);
+  --border-mid: var(--color-border-secondary);
+  --red: #C13B3B;
+  --red-bg: #FDF2F2;
+  --amber: #A35C0A;
+  --amber-bg: #FEF7EE;
+  --teal: #0F6E56;
+  --teal-bg: #E1F5EE;
+  --blue: #185FA5;
+  --blue-bg: #E6F1FB;
+  --purple: #534AB7;
+  --purple-bg: #EEEDFE;
+  --serif: 'DM Serif Display', serif;
+  --sans: 'Instrument Sans', var(--font-sans);
+  --mono: 'DM Mono', var(--font-mono);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { background: transparent; }
+
+.memo-wrap {
+  font-family: var(--sans);
+  color: var(--ink);
+  max-width: 680px;
+  padding: 0 0 3rem;
+}
+
+.memo-header {
+  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.memo-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.memo-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.memo-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 0.5px solid var(--border-mid);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 28px;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--ink);
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border: 0.5px solid var(--border-mid);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 90px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-family: var(--mono);
+  background: var(--surface);
+  border: none;
+  border-right: 0.5px solid var(--border);
+  cursor: pointer;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+  text-align: center;
+}
+
+.tab-btn:last-child { border-right: none; }
+.tab-btn.active { background: var(--ink); color: var(--bg); }
+.tab-btn:hover:not(.active) { background: var(--color-background-tertiary); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 1.25rem;
+}
+
+.user-btn {
+  padding: 9px 12px;
+  border: 0.5px solid var(--border-mid);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+
+.user-btn.active {
+  border-color: var(--blue);
+  background: var(--blue-bg);
+  color: var(--blue);
+}
+
+.user-btn:hover:not(.active) { background: var(--surface); }
+
+.emo-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.emo-card {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 1rem 1.125rem;
+  border-left: 3px solid var(--border-mid);
+}
+
+.emo-card.anxiety { border-left-color: var(--red); }
+.emo-card.trust { border-left-color: var(--teal); }
+.emo-card.doubt { border-left-color: var(--amber); }
+.emo-card.churn { border-left-color: var(--purple); }
+
+.emo-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.emo-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.highlight {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.churn-items {
+  display: grid;
+  gap: 12px;
+}
+
+.churn-card {
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.125rem;
+  background: var(--bg);
+}
+
+.churn-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.churn-mech {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.signal-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--amber-bg);
+  color: var(--amber);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.trust-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.trust-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.trust-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  padding-top: 2px;
+}
+
+.trust-content {}
+
+.trust-quote {
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.trust-explain {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.trust-aftermath {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--red);
+  margin-top: 4px;
+}
+
+.moment-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.moment-card {
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.moment-header {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.moment-rank {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.moment-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.moment-scores {
+  display: flex;
+  gap: 8px;
+}
+
+.score-pill {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--teal-bg);
+  color: var(--teal);
+}
+
+.moment-body {
+  padding: 10px 14px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.lies-truths {
+  display: grid;
+  gap: 0;
+}
+
+.lt-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--border);
+  align-items: start;
+}
+
+.lt-item:last-child { border-bottom: none; }
+
+.lt-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  padding-top: 2px;
+}
+
+.lt-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.lt-text strong {
+  font-weight: 500;
+  color: var(--red);
+}
+
+.lt-subtext {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+  line-height: 1.55;
+}
+
+.lie-item .lt-text strong { color: var(--red); }
+.truth-item .lt-text strong { color: var(--teal); }
+
+.habit-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.habit-card {
+  border-radius: 8px;
+  padding: 1rem;
+  border: 0.5px solid var(--border);
+}
+
+.habit-head {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.habit-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-green { background: var(--teal); }
+.dot-amber { background: var(--amber); }
+.dot-red { background: var(--red); }
+
+.habit-body {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.divider {
+  height: 0.5px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+
+.finale-block {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 1rem;
+}
+
+.finale-head {
+  font-family: var(--serif);
+  font-size: 17px;
+  margin-bottom: 0.75rem;
+  opacity: 0.9;
+}
+
+.finale-body {
+  font-size: 13px;
+  line-height: 1.75;
+  opacity: 0.75;
+}
+
+.filter-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border: 0.5px solid var(--border-mid);
+  border-radius: 99px;
+  background: var(--bg);
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.12s;
+}
+
+.filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.stage-nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1rem;
+}
+
+.stage-btn {
+  flex: 1;
+  padding: 6px 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-right: none;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.12s;
+  text-align: center;
+}
+
+.stage-btn:first-child { border-radius: 6px 0 0 6px; }
+.stage-btn:last-child { border-radius: 0 6px 6px 0; border-right: 0.5px solid var(--border); }
+.stage-btn.active { background: var(--ink); color: var(--bg); }
+</style>
+
+<div class="memo-wrap">
+  <div class="memo-header">
+    <div class="memo-label">Internal behavioral systems audit · Confidential</div>
+    <div class="memo-title">Swasthi Caregiver Retention<br>& Emotional State Lab</div>
+    <div class="memo-subtitle">Post-PMF simulation · Indian chronic-care · Adult-child caregiver cohort</div>
+  </div>
+
+  <!-- PART 1: Caregiver Emotional States -->
+  <div class="section" id="part1">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div class="section-title">Caregiver Emotional States by Stage</div>
+    </div>
+
+    <div class="user-grid" id="userGrid"></div>
+    <div class="stage-nav" id="stageNav"></div>
+    <div id="emoContent" class="emo-grid"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PART 2: Retention Collapse -->
+  <div class="section" id="part2">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div class="section-title">Retention Collapse Mechanisms</div>
+    </div>
+    <div class="filter-row" id="churnFilters"></div>
+    <div class="churn-items" id="churnContent"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PART 3: Trust Decay -->
+  <div class="section" id="part3">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div class="section-title">25 Silent Trust Failures</div>
+    </div>
+    <div class="trust-grid" id="trustContent"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PART 4: High-Retention Moments -->
+  <div class="section" id="part4">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div class="section-title">High-Retention Moments (Ranked)</div>
+    </div>
+    <div class="moment-grid" id="momentContent"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PART 5: Habit Formation -->
+  <div class="section" id="part5">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div class="section-title">Long-Term Habit Formation Analysis</div>
+    </div>
+    <div class="habit-grid" id="habitContent"></div>
+    <div class="finale-block" style="margin-top:1.25rem;">
+      <div class="finale-head">What does Swasthi at 5 years feel like?</div>
+      <div class="finale-body">It does not feel like an app. It feels like background infrastructure — invisible until needed, like a smoke detector. The caregiver rarely opens it, but it opens itself at the right moment: a refill warning three days before the medicine runs out, a compliance summary before the next doctor's visit, a gentle prompt when the prescription must be renewed. The elderly parent has stopped calling it "that phone reminder" — they call it "my medicine alarm." The NRI child in London checks it on Sunday mornings between chai and the newspaper, not anxiously but habitually, the way you check the front door is locked. The product is no longer experienced as a product. That is the only version of Swasthi that survives for 5 years.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PART 6: Lies & Truths -->
+  <div class="section" id="part6">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div class="section-title">10 Retention Lies & 10 Real Truths</div>
+    </div>
+
+    <div class="tabs" id="ltTabs">
+      <button class="tab-btn active" onclick="switchLT('lies', this)">The 10 Lies Founders Believe</button>
+      <button class="tab-btn" onclick="switchLT('truths', this)">The 10 Real Truths</button>
+    </div>
+
+    <div id="liesPanel" class="tab-panel active">
+      <div class="lies-truths" id="liesContent"></div>
+    </div>
+    <div id="truthsPanel" class="tab-panel">
+      <div class="lies-truths" id="truthsContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const users = [
+  { id: 'local', label: 'Local adult-child' },
+  { id: 'nri', label: 'NRI caregiver' },
+  { id: 'elderly', label: 'Elderly self-managed' },
+  { id: 'homemaker', label: 'Homemaker (spouse)' },
+  { id: 'urban', label: 'Urban working professional' }
+];
+
+const stages = ['Day 1', 'Day 7', 'Day 30', 'Month 3', 'Month 6'];
+
+const emoData = {
+  local: [
+    {
+      anxiety: "Doubt and setup friction. Am I entering this correctly? Will it confuse Dad?",
+      want: "Reassurance that the effort of setup will pay off immediately.",
+      trust: "First correct reminder fires at exact time. Dad gets up. Takes medicine. Calls to say so.",
+      doubt: "The scanning got one medicine name wrong. Now I don't know if I can trust the rest.",
+      stop: "Nothing — it's Day 1. Novelty sustains.",
+      recommend: "Nothing yet. Too early.",
+      driver: "Control. The need to feel in control of a parent's health they cannot be present for 24/7.",
+      erosion: "Invisible. Hasn't started.",
+      churn: "Hasn't started.",
+      moment: "First successful reminder is the product's first emotional payoff. It must be perfect."
+    },
+    {
+      anxiety: "Has Dad been actually taking or just dismissing the reminders? Are the timings right for the revised schedule?",
+      want: "Evidence. Not just that reminders fired — that medicine was taken.",
+      trust: "The weekly summary shows 6/7 days compliance. The one miss is Saturday when he visited the temple.",
+      doubt: "Dad said he took the evening dose but I don't see it marked. Who's wrong — him or the app?",
+      stop: "Not yet, but checking frequency is peaking. If there's no emotional payoff this week, the habit won't form.",
+      recommend: "If the Week 1 summary feels good, yes — to one sibling who also worries about Dad.",
+      driver: "Verification. The need to know, not just hope.",
+      erosion: "Begins if the first week's missed-dose flags feel ambiguous or accusatory toward the parent.",
+      churn: "Passive: starts installing other apps to 'compare.' Active: hasn't happened.",
+      moment: "The first weekly summary is the product's first retention test. It must make the caregiver feel relief, not anxiety."
+    },
+    {
+      anxiety: "Prescription renews next week. Will the schedule still be accurate afterward? What if the doctor changes doses?",
+      want: "Continuity confidence. That the system evolves with the patient, not against them.",
+      trust: "The prescription staleness warning appears two days before the renewal visit. Caregiver updates it same day.",
+      doubt: "The PPI timing note says 'empty stomach' but the app says 'before breakfast.' Are these the same thing?",
+      stop: "Opening frequency drops from daily to every other day. This is normal and healthy — anxiety is lower.",
+      recommend: "Yes. To a cousin whose father also has BP. First real referral moment.",
+      driver: "Habit formation. Checking Swasthi becomes what Sunday mornings look like.",
+      erosion: "Begins if the updated prescription import creates schedule conflicts that the caregiver must manually resolve.",
+      churn: "Passive churn risk: if the Week 4 summary doesn't feel meaningfully different from Week 1, the product feels like it has a ceiling.",
+      moment: "Refill alert + prescription update flow is the Month 1 crucible. If it works smoothly, retention is almost locked."
+    },
+    {
+      anxiety: "The doctor added a new medicine. Dad is confused about the order. I'm not there to help.",
+      want: "The app to absorb the confusion so the parent doesn't have to.",
+      trust: "Guided prescription update flow correctly extracts the new medicine, asks for timing, sends the updated schedule to Dad without the caregiver needing to call.",
+      doubt: "The new medicine isn't in the app's database. The schedule says 'Medicine 4' not the actual name. Dad doesn't recognize it.",
+      stop: "If the above doubt persists for even 3 days without resolution, the caregiver mentally 'pauses' reliance on the app.",
+      recommend: "Active recommender at this stage — has told 2–3 people. The product is part of their identity as a 'responsible child.'",
+      driver: "Identity reinforcement. Being the kind of person who has this under control.",
+      erosion: "Quiet loss of trust when the app cannot handle new medicines gracefully. Caregiver starts maintaining a parallel WhatsApp note.",
+      churn: "The parallel WhatsApp note IS churn. It just hasn't been named.",
+      moment: "New prescription integration is the Month 3 make-or-break. Handled well = evangelist. Handled badly = quiet dropout."
+    },
+    {
+      anxiety: "Dad's been consistent. I don't actually feel anxious anymore. Why am I still opening the app?",
+      want: "Either a reason to keep caring, or the confidence to step back.",
+      trust: "The 6-month compliance report. PDF they can share with the doctor.",
+      doubt: "The app feels the same as it did on Day 7. Nothing has grown. No new insight. No new value.",
+      stop: "This is where passive churn becomes real. The anxiety that drove the habit is gone. Without new value, the habit dissolves.",
+      recommend: "Will still recommend to someone new — but with slightly less passion than at Month 3.",
+      driver: "If the anxiety is gone, the core driver is gone. Retention now must come from a new driver: identity, community, or clinical value.",
+      erosion: "Slow. The app becomes the thing that 'still works, I think.' Checked monthly not weekly.",
+      churn: "Silent. No uninstall. Just irrelevance. The most dangerous kind.",
+      moment: "6-month anniversary check-in or report is the product's opportunity to reframe from anxiety-tool to continuity-infrastructure."
+    }
+  ],
+  nri: [
+    {
+      anxiety: "Extreme guilt and helplessness. I'm not there. I can't verify anything. Amma says she took it but she always says that.",
+      want: "Digital presence. The ability to feel like I'm standing in the room watching.",
+      trust: "First caregiver view that shows dose taken with a timestamp. The timestamp is the magic — it makes absence feel manageable.",
+      doubt: "Is she marking it as taken herself or is it actually being taken? Anyone can tap 'taken.'",
+      stop: "Nothing stops them on Day 1. The anxiety that drove download is too high.",
+      recommend: "Will tell every other NRI sibling immediately. This is their number one shared anxiety.",
+      driver: "Guilt management. The app is not about the parent's health. It is about the NRI's ability to sleep.",
+      erosion: "Hasn't started. But the seed of 'self-reporting' doubt is already planted.",
+      churn: "Hasn't started.",
+      moment: "First timestamp view. Non-negotiable. Must be immediate, clear, and emotionally satisfying."
+    },
+    {
+      anxiety: "The time zone issue. Reminders fire at Indian time but I'm checking at UK midnight. The data is always a day behind my emotional state.",
+      want: "Synchrony. To feel like I'm watching in real time, not reviewing logs.",
+      trust: "The 7-day compliance bar chart. Green bars feel viscerally good. One red bar creates immediate WhatsApp call.",
+      doubt: "Amma says the reminder 'came twice today.' I can't verify. Did the app glitch or did she dismiss and forget?",
+      stop: "Won't stop checking, but anxiety shifts from 'is she taking meds' to 'is the app reliable.'",
+      recommend: "Yes. To the WhatsApp NRI family group. This is where the viral loop lives.",
+      driver: "Reduction of phone-call dependence. Each compliance confirmation is one fewer guilty international call.",
+      erosion: "Begins with the 'came twice today' doubt. Small tech glitch = big trust problem for a population already suspicious of 'apps managing health.'",
+      churn: "Passive: downgrade from daily check to 'I'll check when I call on Sunday.'",
+      moment: "Any moment the app reduces an anxious international phone call. These are sacred retention events."
+    },
+    {
+      anxiety: "The refill. Amma can't manage the pharmacy alone and I can't be there. My sister is supposed to handle it but she forgets.",
+      want: "Refill coordination that doesn't require me to orchestrate from 8,000 km away.",
+      trust: "Refill alert fires 5 days in advance. App prompts sibling automatically. Sibling gets the medicines. No breakdown.",
+      doubt: "What if the pharmacy doesn't have it? What if the prescription has changed? The app doesn't know.",
+      stop: "Won't stop if refill works. This is the deepest retention mechanism for NRI caregivers.",
+      recommend: "Peak recommendation moment. Will write long WhatsApp message with screenshots.",
+      driver: "Logistical coordination that substitutes for physical presence.",
+      erosion: "Begins if refill alert fires but the coordination loop (sibling gets reminded) breaks. Alert without action = false reassurance = deeper trust erosion than no alert.",
+      churn: "If a medicine runs out despite a refill alert, the NRI caregiver will never fully trust the app again.",
+      moment: "Refill crisis averted is the product's highest-stakes moment. Miss this once, lose the user permanently."
+    },
+    {
+      anxiety: "Doctor visit is next month. I won't be there. Will I be able to follow what changed?",
+      want: "Post-visit update flow that feels like I was in the room.",
+      trust: "Prescription update flow that parent or local sibling can run, with NRI receiving confirmation of what changed.",
+      doubt: "The new prescription has a medicine I don't recognize. The app doesn't explain what it's for. I'm anxious about it.",
+      stop: "Won't stop. Anxiety stays high around medical events.",
+      recommend: "Still recommending, but with caveats about the prescription update flow.",
+      driver: "Inclusion. The NRI needs to feel like a real caregiver despite the distance.",
+      erosion: "Every unexplained medical change that the app cannot contextualize erodes confidence. Not trust in the app's data — trust in its completeness.",
+      churn: "NRI starts keeping parallel tracking in a spreadsheet. 'Just for the doctor visits.' This is cognitive churn.",
+      moment: "Post-visit prescription update received by NRI caregiver while still abroad = deeply powerful emotional moment. Build it."
+    },
+    {
+      anxiety: "Is this still worth the Rs 299 per month? The anxiety has gone down. Which means the app has less urgency.",
+      want: "A new reason to keep paying. Clinical continuity reporting. Something for the annual health check.",
+      trust: "6-month adherence report that the family can take to the cardiologist.",
+      doubt: "Has anyone actually looked at this report? Does the doctor care about app-generated data?",
+      stop: "Subscription fatigue. NRI pays for 20 apps. This one gets audited.",
+      recommend: "Will still recommend but the enthusiasm is proportional to recent value experienced.",
+      driver: "Has shifted from anxiety to clinical utility. App must grow with the user.",
+      erosion: "Slow. The product has become familiar enough to be taken for granted, which means any new friction causes disproportionate frustration.",
+      churn: "Active: cancels subscription during annual app audit. 'We'll restart if something changes with Dad's health.' Doesn't restart.",
+      moment: "Subscription renewal moment. Must be preceded by a high-value moment (report, milestone, compliance achievement). Never renew in a vacuum."
+    }
+  ],
+  elderly: [
+    {
+      anxiety: "What is this? Why is my son showing me this? I take my medicines at the same time every day. I don't need a machine.",
+      want: "To not feel surveilled or managed like a child.",
+      trust: "The first reminder sounds at the exact time they normally take medicine. Feels familiar, not intrusive.",
+      doubt: "The screen is too small. I can't see if I pressed it correctly.",
+      stop: "Resistance to onboarding. Many will not get past Day 1 without caregiver hand-holding.",
+      recommend: "Won't recommend. Will tolerate.",
+      driver: "Not intrinsic. External: family pressure, love for the child who set it up.",
+      erosion: "Immediate. Every moment of friction (small text, confusing UI, loud notification) is a trust failure.",
+      churn: "Passive: doesn't press the confirmation button. Actively: asks son to remove it.",
+      moment: "The first successful unaided dose confirmation. If it happens, it becomes ritual. If it fails, it becomes rejection."
+    },
+    {
+      anxiety: "My daughter calls every morning asking if I took it. Now I tell her to check the phone. She checks. She stops calling. I miss the call.",
+      want: "The call, not the replacement of the call.",
+      trust: "When the reminder fires and they follow it, they feel proud. Like following a doctor's instruction.",
+      doubt: "I forgot yesterday but I took double today. The app showed 'missed.' I feel ashamed.",
+      stop: "Shame. A 'missed' notification that feels like a report card.",
+      recommend: "To a friend with 'memory problems.' They identify as reliable, not as someone who needs reminders.",
+      driver: "Dignity. The app must never make them feel incompetent.",
+      erosion: "Every 'missed dose' that was actually taken but unconfirmed. Every morning their child brings it up based on app data.",
+      churn: "Deliberate: stops confirming doses. 'I take it, I just don't press the button.' This is not churn from the caregiver's view — but the data is now worthless.",
+      moment: "First week of full compliance. They feel — and tell family — that they are 'very regular' about their medicines."
+    },
+    {
+      anxiety: "The medicine ran out. I didn't realize. I took it anyway — I'm not sure if I took the right one from the old strip.",
+      want: "To never be in this situation. Stockout is humiliating.",
+      trust: "If a refill reminder fired and someone responded, they feel looked after. Safe.",
+      doubt: "The app told me to take medicine at 8pm but doctor said I should take after dinner and I have dinner at 9. Which is right?",
+      stop: "They never stop 'stopping' — they never fully started. Usage is passive, driven by reminders not active engagement.",
+      recommend: "To grandchildren as an example of 'modern life.' Proud to be using a phone app.",
+      driver: "Structure. The reminder externalizes the cognitive load they were managing alone and anxiously.",
+      erosion: "Timing conflicts between app and real life create daily micro-friction. Eventually they ignore specific reminders.",
+      churn: "They keep the app but stop using confirmation. Caregiver loses data fidelity without knowing.",
+      moment: "Running out of medicine and not panicking because the refill reminder already got the child to send more."
+    },
+    {
+      anxiety: "My medicines changed at the last visit. Son updated the app. But now the new reminder says a name I don't know.",
+      want: "Familiarity. The medicine should look and sound like what it physically looks like.",
+      trust: "When the updated schedule matches their physical routine exactly — same times, same order as they arrange the strips.",
+      doubt: "This new one, Telmisartan, it says 'before food.' My other one also says that. But I only eat once in the morning. Is that okay?",
+      stop: "Confusion fatigue. They start self-managing again and using the app only for what they understand.",
+      recommend: "To anyone whose parent is 'forgetting.' Their identity is now 'I don't forget because of the phone.'",
+      driver: "Routine preservation. The app is a scaffold for a routine that already existed.",
+      erosion: "Medicine name confusion that persists is a quiet catastrophe. They start self-editing the reminder away.",
+      churn: "Begins to only take reminders at one time of day — the one they fully understand. Ignores others.",
+      moment: "Prescription change absorbed smoothly, new routine established within a week."
+    },
+    {
+      anxiety: "My son hasn't called about the medicines in a long time. The app handles it, I think. I hope he's okay.",
+      want: "To not be worried about. To be competent.",
+      trust: "Sustained routine. The reminder has become part of the day like morning tea.",
+      doubt: "Sometimes I press it, sometimes I forget. Nobody notices. Maybe it doesn't matter.",
+      stop: "If nobody responds to the data, the data loses meaning. Confirmation behavior atrophies.",
+      recommend: "Yes. To the doctor — who is skeptical but curious.",
+      driver: "Routine identity. 'I am someone who takes my medicines on time.'",
+      erosion: "Zero caregiver engagement with the data signals to the elderly user that the app isn't important.",
+      churn: "Graceful fade. Still installed. App still fires reminders. But confirmation rate drops to 30%. Caregiver doesn't notice.",
+      moment: "Doctor asks about BP history. Elderly parent confidently says 'it's all in the app, my son can show you.' This is the highest-dignity moment in the product."
+    }
+  ],
+  homemaker: [
+    {
+      anxiety: "Husband doesn't think he needs this. Says he knows his medicines. He doesn't — but I can't say that to him.",
+      want: "A system that helps without making the husband feel managed.",
+      trust: "When husband starts checking the app himself before asking her about medicines.",
+      doubt: "Did I enter the morning and evening doses correctly? The prescription has both on the same line.",
+      stop: "Nothing stops them. They're managing this household; this is just another thing to manage.",
+      recommend: "Nothing yet. Internalized.",
+      driver: "Control without conflict. Managing the husband's health in a way that preserves marital dignity.",
+      erosion: "If the app becomes a source of argument ('the app says you missed it'), it becomes a liability, not an asset.",
+      churn: "If husband rejects the app, homemaker continues managing alone. App is abandoned, not uninstalled.",
+      moment: "First time husband independently checks his own reminder."
+    },
+    {
+      anxiety: "He has a work trip next week. Who will remind him? Will he take the medicines with him? Will he take the right ones?",
+      want: "Portability. The reassurance that the system works even when she's not physically present.",
+      trust: "Husband opens app himself before packing the medicines. Shows her the schedule.",
+      doubt: "Husband dismissed two reminders this week. App shows 'missed.' He says he took them. Same conversation we always have.",
+      stop: "Won't stop. She's more anxious this week, not less.",
+      recommend: "To her sister-in-law who has the same situation with her husband.",
+      driver: "Autonomy insurance. The ability to step back without feeling irresponsible.",
+      erosion: "Missed-dose discrepancies become domestic friction. 'The app says you missed' is a phrase she starts dreading.",
+      churn: "If the app causes more conflict than it resolves, she deletes it and returns to her own mental tracking.",
+      moment: "Husband calls from the work trip to say he's been taking them, she can check."
+    },
+    {
+      anxiety: "Doctor said to reduce the BP medicine by half tablet. How do I enter half tablet in the app?",
+      want: "Granular enough to handle real prescriptions. Indian prescriptions are often non-standard.",
+      trust: "When the app handles the half-tablet instruction gracefully and confirms the schedule is updated.",
+      doubt: "The refill tracker doesn't account for half tablets. It says 30 days remaining when actually it's 60 now.",
+      stop: "Starts maintaining parallel tracking for the medication the app handles poorly.",
+      recommend: "Yes — but with specific caveats about half-tablet medicines.",
+      driver: "Accuracy obsession. She is the family's health anchor. The app must be as precise as her.",
+      erosion: "Any data inaccuracy she catches destroys trust comprehensively. She is meticulous. The app must be too.",
+      churn: "Partial churn: uses app for reminders only, manages refills and doses manually.",
+      moment: "Prescription complexity handled perfectly. This is the homemaker's retention test."
+    },
+    {
+      anxiety: "His sugar has been slightly high this month. Is it because he missed doses? I can't tell from the app.",
+      want: "Correlation. Some way to connect adherence to outcomes. Not clinical — just visible.",
+      trust: "High compliance visible during a period of stable vitals. Causality implied if not proven.",
+      doubt: "The app only tracks if he presses a button. What if he presses it and hasn't taken it? What if he takes it and forgets to press?",
+      stop: "The existential doubt about self-reporting reliability is peaking. If she can't trust the data, the app is just decoration.",
+      recommend: "Still recommends — but frames it as a 'reminder tool' not a 'tracking tool.' Has lowered her own expectations.",
+      driver: "Evidence collection. Something to show the doctor.",
+      erosion: "The gap between what the app shows and what she observes at home is the core trust erosion mechanism.",
+      churn: "Considers the app 'good for reminders, not reliable for compliance.' This is functional churn.",
+      moment: "Doctor uses compliance data from Swasthi to inform treatment decision. This is the product's clinical validation moment."
+    },
+    {
+      anxiety: "He's been very regular now. The app is more or less just reminders now. I know his schedule by heart.",
+      want: "Either deeper value or graceful background operation.",
+      trust: "The fact that nothing has gone wrong in 6 months. Stability is trust.",
+      doubt: "Is there anything the app does that I couldn't do with a phone alarm?",
+      stop: "The question above. If she can articulate it, she will act on it.",
+      recommend: "Maintenance recommendation. Not enthusiastic. 'It works, you can try it.'",
+      driver: "Inertia. The setup cost of leaving exceeds the cost of staying. This is not true retention.",
+      erosion: "The app feels the same as it did in Month 1. No growth, no surprise, no new insight.",
+      churn: "Subscription renewal is the moment of reckoning. She evaluates ROI and often finds it marginal.",
+      moment: "Anything that creates new value at Month 6 — a new feature, a clinical report, a pattern insight — restarts retention momentum."
+    }
+  ],
+  urban: [
+    {
+      anxiety: "Extreme. I live 300km from Dad. He lives alone. He always says he's fine. He's not always fine.",
+      want: "Peace of mind with no extra cognitive load. Something that runs itself.",
+      trust: "The scanning actually worked. It read Dad's messy prescription. That alone is astonishing.",
+      doubt: "I set it up remotely. Did Dad actually understand how to use it? I need to call and walk him through it.",
+      stop: "Nothing. Emotional urgency is at peak.",
+      recommend: "Will tell colleagues in the same situation. This is high-frequency word of mouth.",
+      driver: "Distance anxiety management. The app is not a health product. It is a substitute for presence.",
+      erosion: "Setup requires more phone time with Dad than expected. Ironic friction.",
+      churn: "Won't happen yet. Too emotionally invested.",
+      moment: "First time Dad independently confirms dose without the child calling to remind him."
+    },
+    {
+      anxiety: "I haven't called in 3 days. The app says he's been taking everything. Is the app lying to me or telling the truth?",
+      want: "Trust in the data. Not just hope.",
+      trust: "The weekly summary arrives Sunday morning before the weekly call. Call becomes an update, not a check.",
+      doubt: "Dad dismissed a reminder. App says missed. Dad says he took it later and forgot to log. Who's right?",
+      stop: "Won't stop checking but anxiety starts redirecting from 'is he taking medicine' to 'is the app reliable.'",
+      recommend: "To every urban colleague with aging parents. This segment recommends loudly and early.",
+      driver: "Guilt displacement. The app absorbs some of the guilt of not being there.",
+      erosion: "Any ambiguous missed-dose that triggers an anxious phone call negates the product's core value proposition.",
+      churn: "Passive: starts calling as much as before 'just to hear his voice.' App becomes redundant.",
+      moment: "First week where the app replaced, not supplemented, the daily check-in call."
+    },
+    {
+      anxiety: "He has a cold. Should I go? His BP prescription hasn't been reviewed in 6 months. Is it still right?",
+      want: "Clinical context. Not just 'he took it' but 'is this prescription still appropriate.'",
+      trust: "Prescription staleness alert fires before the quarterly doctor visit. Caregiver knows to prompt the prescription review.",
+      doubt: "The BP medicine timing says 'evening.' Doctor said 'night.' Is 9pm evening or night?",
+      stop: "Won't stop but the cognitive load is higher than expected. The app helps with logistics not clinical judgment.",
+      recommend: "Yes. But always with 'it's not a medical app, it just organizes.'",
+      driver: "Logistics management. The app handles the operational complexity of remote care.",
+      erosion: "Clinical ambiguity that the app cannot resolve becomes a source of anxiety, not resolution.",
+      churn: "Parallel use of Google searches for clinical questions the app can't answer. Split attention.",
+      moment: "Prescription staleness alert → successful doctor visit → updated prescription imported smoothly. This is the Month 1 retention arc."
+    },
+    {
+      anxiety: "Dad's medicines changed again. Three medicines now. I'm not sure I entered the new ones correctly from the photo I took.",
+      want: "Confidence that remote setup is as reliable as in-person setup.",
+      trust: "The guided update flow that walks Dad through confirming the new schedule on his phone.",
+      doubt: "Dad confirmed the schedule but I'm not sure he understood what he was confirming. He just presses okay.",
+      stop: "High anxiety period. Will check app more than ever. But doubts compound.",
+      recommend: "Mixed. Has seen enough friction to caveat recommendations heavily.",
+      driver: "Continuity management at a time of medical complexity. App is most valuable and most strained simultaneously.",
+      erosion: "Remote prescription update uncertainty is the Month 3 crucible. If it goes badly, retention collapses fast.",
+      churn: "Serious risk. Urban professional has high standards and low patience for ambiguity.",
+      moment: "Remote prescription update that Dad confirms correctly, schedule synced, NRI can verify. This is the product's most difficult and most important moment."
+    },
+    {
+      anxiety: "Very low. Which is the problem. I checked the app this morning and nothing was wrong. I felt nothing.",
+      want: "Either new value or clean exit. They will not tolerate irrelevance.",
+      trust: "The 6-month compliance report is the product's answer. Something tangible to show for it.",
+      doubt: "Is this actually better than just calling more? Am I relying on an app for something that needs human presence?",
+      stop: "The doubt above. Urban professionals have high opportunity cost for apps that don't compound in value.",
+      recommend: "Quietly. 'I use something called Swasthi, it's fine.' The enthusiasm of Month 3 is gone.",
+      driver: "Has shifted from anxiety to inertia. Inertia is weak retention.",
+      erosion: "The realization that the app's core value (reducing anxiety) has worked so well that the anxiety is gone — and with it, the driver.",
+      churn: "Subscription-triggered active churn. 'Is this still worth it?' — evaluated rationally, not emotionally. Loses.",
+      moment: "Anything that creates a new emotional urgency (new diagnosis, new medicine, upcoming surgery) reactivates the user more powerfully than any feature."
+    }
+  ]
+};
+
+const churnMechanisms = [
+  { cat: 'Reminder', title: 'Reminder blindness', behavioral: 'After 2–3 weeks of consistent reminders, the brain categorizes them as ambient noise — exactly like calendar alerts for meetings already memorized.', emotional: 'The reminder stops creating a sense of urgency. It becomes background. The caregiver stops feeling the signal.', how: 'Gradually. One dismissal → two dismissals → routine dismissal without conscious decision. Swasthi notification becomes "I\'ll check the app later." Later never comes.', signal: 'Notification open rate drops from 80% to below 30% in weeks 2–3.' },
+  { cat: 'Habit', title: 'Habit collapse after anxiety resolution', behavioral: 'The anxiety that drove daily checking resolves as confidence in the patient\'s adherence builds. The cue (anxiety) disappears; the habit follows.', emotional: 'Relief is the enemy of retention. Once the caregiver stops feeling worried, they stop seeking reassurance.', how: 'Checking moves from daily to every-other-day to "I should check sometime this week" to monthly.', signal: 'Session frequency drops after first sustained green-compliance week.' },
+  { cat: 'Engagement', title: 'Emotional disengagement after familiarity', behavioral: 'The emotional novelty of seeing compliance data wears off. The same green bars feel progressively less satisfying. Dopamine habituates.', emotional: 'The first compliance summary was exciting. The twelfth is routine. Routine feels worthless.', how: 'Quiet. They don\'t decide to stop caring. The caring just attenuates without replacement stimulus.', signal: 'Summary open rate declines even as compliance remains high.' },
+  { cat: 'Engagement', title: 'Caregiver fatigue', behavioral: 'Sustained caregiving — even digitally mediated — is cognitively exhausting. Swasthi adds micro-decisions: do I follow up on the missed dose? Do I call? What does this mean?', emotional: 'The app that was supposed to reduce worry sometimes adds decision paralysis. Every alert requires a response.', how: 'User begins treating Swasthi as "one more thing to check" rather than "the thing that handles it."', signal: 'Alert-to-action rate drops. Missed dose flags stop generating phone calls.' },
+  { cat: 'Reminder', title: 'Notification invisibility', behavioral: 'Notification ecosystems are saturated. Indian smartphone users receive 60–80 notifications daily. Swasthi competes with WhatsApp, YouTube, banking, and 20 other apps for attention.', emotional: 'Swasthi\'s notifications feel important on Day 1. By Day 30 they are functionally invisible unless they are dramatically different.', how: 'Notification fatigue doesn\'t target Swasthi specifically. The whole ecosystem collapses, and Swasthi collapses with it.', signal: 'Notification delivery rate stays high but open rate craters.' },
+  { cat: 'Trust', title: 'Stale schedule drift', behavioral: 'The patient\'s real medicine regimen drifts from the app schedule — slight timing changes, occasional substitutions — but the app schedule stays frozen because updating it is friction.', emotional: 'Caregiver knows the app is slightly wrong. Doesn\'t fix it because fixing is effort. Lives with the wrongness. Trusts the app a little less every day.', how: 'Silent. No single breaking moment. Just a slow widening gap between digital and physical reality.', signal: 'Prescription update events stop happening after initial setup. Schedule last updated >45 days ago while patient had a doctor visit.' },
+  { cat: 'Trust', title: 'False reassurance accumulation', behavioral: 'Patient taps "taken" habitually even on days medicines are missed, or taps the wrong day\'s confirmation. The app shows perfect compliance. Caregiver believes it.', emotional: 'Trust is being built on inaccurate data. The caregiver feels secure but is not secure. This is the most dangerous churn vector — not because of the user experience but because of the real-world health outcome risk.', how: 'Silent. Detection requires a health outcome divergence or a caught lie. The caregiver may never know.', signal: '100% compliance rate is a red flag, not a success metric. Real medicine-taking has natural variation.' },
+  { cat: 'Trust', title: 'Trust ambiguity around self-reporting', behavioral: 'Caregivers with analytical minds (urban professionals, NRIs) quickly realize the app\'s compliance data is only as accurate as the patient\'s self-reporting. This is a fundamental data integrity question that the app cannot fully resolve.', emotional: 'The more they think about it, the less certain they feel. "The app says 90% compliance but that just means Dad pressed the button 90% of the time."', how: 'Once the doubt crystallizes, it cannot be undone. The user shifts from trusting the data to treating it as directional.', signal: 'Users start saying "it says 90% but..." — the "but" is the churn signal.' },
+  { cat: 'UX', title: 'Invisible UX friction accumulation', behavioral: 'Small frictions — an extra tap to confirm, a slightly confusing label, a modal that obscures the action — accumulate into a behaviorally meaningful delay in each session.', emotional: 'Each friction is too small to trigger a complaint. Together, they create a vague sense that "the app is a bit annoying." This is never verbalized. The app is just opened less.', how: 'Sessions shorten. Deep engagement (scheduling, prescription update) declines. Surface engagement (checking timestamps) continues but shallows.', signal: 'Average session duration declining while DAU stays flat.' },
+  { cat: 'Habit', title: '"I\'ll check later" accumulation', behavioral: 'Each individual "I\'ll check later" decision is rational. The user is busy. But the accumulation of unchecked-laters creates an emotional debt that makes opening the app feel like work.', emotional: 'There is now 3 days of unchecked data. Opening the app feels like catching up on emails. Avoided.', how: 'The app goes from "something I check" to "something I should check." Should is the churn prelude.', signal: 'Gap between notification receipt and first open growing beyond 24 hours.' }
+];
+
+const churnCats = ['All', 'Reminder', 'Trust', 'Engagement', 'Habit', 'UX'];
+
+const trustFailures = [
+  { q: '"I think the timing might be wrong"', e: 'The prescription says "morning" but the reminder fires at 7am. The patient takes breakfast at 9am. "Morning" was always 9am in this household. The app doesn\'t know that.', behavior: 'Caregiver manually adjusts but loses confidence in the system\'s interpretation of medical instructions.', tells: 'No — too small to report. Will not mention unless specifically asked.', retention: 'Moderate erosion. Caregiver moves from "the app handles this" to "I need to verify the app."' },
+  { q: '"Dad says he took it but the app says missed"', e: 'The patient forgot to press confirm. Or pressed it on the wrong day. Or the notification was dismissed without action. The caregiver doesn\'t know which.', behavior: 'Phone call. Investigation. Minor domestic conflict. App data is now in question.', tells: 'No. This becomes a repeated private complaint about app reliability.', retention: 'High erosion. Every recurrence deepens the self-reporting doubt loop.' },
+  { q: '"This reminder wording feels confusing"', e: '"Take Amlodipine 5mg — Evening dose" when the prescription says "1-0-1." The patient understands "1-0-1." The app speaks a different language.', behavior: 'Patient ignores or acts on the reminder incorrectly. Caregiver doesn\'t know.', tells: 'Sometimes — if the caregiver is tech-comfortable. Otherwise, silent.', retention: 'Low direct erosion. High indirect erosion through patient non-compliance.' },
+  { q: '"I don\'t know if the prescription is still updated"', e: 'Doctor visit happened 8 weeks ago. App shows the old prescription. Caregiver hasn\'t updated because the update flow felt daunting. A slow drift of inaccuracy has set in.', behavior: 'Caregiver mentally flags the app as "possibly out of date." Starts treating data as approximate.', tells: 'No.', retention: 'Very high erosion. Data trust is fundamental. If the data is possibly stale, every reading is uncertain.' },
+  { q: '"I stopped fully trusting the schedule"', e: 'A combination of small errors — one wrong timing, one missed-dose dispute, one medicine name misread — has accumulated past a threshold.', behavior: 'Parallel tracking begins. WhatsApp note, voice memo, physical calendar. App is used only for reminders.', tells: 'No.', retention: 'Severe erosion. Parallel tracking is behavioral churn even when the app is still open.' },
+  { q: '"The app told me a medicine name I don\'t recognize"', e: 'OCR extracted "Telma-H 40mg" but the prescription was written "Telmisartan + Hydrochlorothiazide." The patient knows one, not the other.', behavior: 'Confusion. Caregiver double-checks the physical strip. Momentary panic.', tells: 'Maybe — if the caregiver is engaged. Otherwise, silently noted.', retention: 'Moderate erosion. Competence doubts about the OCR layer.' },
+  { q: '"The refill alert came too late"', e: 'Alert fires with 3 days remaining, but the pharmacy is closed on Sunday and Monday is a holiday. Patient runs out.', behavior: 'Caregiver is angry. The app "promised" to handle this. It didn\'t fully deliver.', tells: 'Possibly — this is emotional enough to report. More likely told to family as a warning.', retention: 'Catastrophic. Refill failure after refill promise is a terminal trust event for NRI caregivers.' },
+  { q: '"The weekly summary doesn\'t tell me anything I didn\'t already know"', e: 'Summary shows 7/7 days, no new information. The caregiver already knew this from checking daily. The summary feels like a receipt for effort already spent.', behavior: 'Summary emails/notifications start getting marked as read without opening.', tells: 'No.', retention: 'Low-grade erosion. Summary channel loses signal value. Eventually ignored.' },
+  { q: '"The notification sound is jarring"', e: 'The patient\'s reminder fires during a work meeting, a prayer, or a family gathering. The alert\'s tone or timing creates social friction.', behavior: 'Patient mutes the app. Caregiver loses visibility.', tells: 'Occasionally — "Appa muted your app."', retention: 'High indirect erosion. Muted app = no compliance data = caregiver blindness.' },
+  { q: '"I had to set up the same thing twice"', e: 'Caregiver reinstalled the app after a phone change. Lost the schedule. Rebuild took 20 minutes. Reminded them the system isn\'t truly portable.', behavior: 'Deep frustration. "This is why I don\'t trust apps." May not rebuild completely.', tells: 'Sometimes, through App Store review.', retention: 'High erosion. Restoration failure is an existential trust event.' },
+  { q: '"The app doesn\'t know about the new vitamin the ayurvedic doctor gave"', e: 'Non-allopathic medicines are excluded. But the family doesn\'t experience their medicine regimen as neatly separated.', behavior: 'Frustration at the gap. Maintains the ayurvedic tracker separately. Swasthi feels incomplete.', tells: 'No.', retention: 'Moderate erosion. Incompleteness diminishes "single source of truth" positioning.' },
+  { q: '"It showed a medicine interaction warning"', e: 'Wait — Swasthi explicitly avoids clinical advice. If even a vague interaction flag appeared, it violated the product\'s own principles and caused fear.', behavior: 'Anxiety. Call to doctor. Anger at the app.', tells: 'Yes. Loudly.', retention: 'Catastrophic if it happens. Safety trust is foundational.' },
+  { q: '"I can\'t tell if Dad actually looked at the reminder or just dismissed it"', e: 'The timestamp shows notification delivered. But was it acted on? The caregiver\'s fundamental question remains unanswered.', behavior: 'Still calls Dad. App becomes supplementary, not primary.', tells: 'No.', retention: 'High erosion. This is the self-reporting problem crystallized.' },
+  { q: '"The app keeps asking me to verify medicines I\'ve already verified"', e: 'Re-verification prompts after prescription updates feel redundant to power users who trust the OCR.', behavior: 'Verification skipped. Or done perfunctorily. Actually increases error risk.', tells: 'Sometimes.', retention: 'Low-moderate erosion. Power user friction.' },
+  { q: '"Two siblings can see the same data but interpret it differently"', e: 'Sibling A sees 90% compliance as excellent. Sibling B sees the 10% missed as concerning. They argue. The app has created a shared data source for family conflict.', behavior: 'One sibling stops engaging with the app to avoid the argument.', tells: 'No.', retention: 'Moderate erosion. Family conflict is the most dangerous app-adjacent territory.' },
+  { q: '"I think the app made Dad feel monitored"', e: 'Patient noticed that every missed dose prompted a phone call from the child. Connected the dots. Started resenting the app as a surveillance device.', behavior: 'Patient begins pressing confirm whether medicine is taken or not. False data forever.', tells: 'Eventually the patient says something. Caregiver feels guilty.', retention: 'Severe. Patient resistance makes the entire system unreliable.' },
+  { q: '"It told me to take medicine before food, but Dad has no fixed meal times"', e: 'Real Indian households don\'t have the meal regularity that "before food" assumes.', behavior: 'Patient ignores the instruction. Takes at random times. Caregiver\'s schedule becomes meaningless.', tells: 'No.', retention: 'Moderate erosion. Real-life incompatibility accumulates.' },
+  { q: '"I exported the data and couldn\'t read it"', e: 'Data export in a format the cardiologist cannot import. The clinical validation moment fails at the interface between app and real healthcare system.', behavior: 'Caregiver types out the adherence data by hand for the doctor. "What\'s the app even for?"', tells: 'Yes. To doctor, to family, possibly to founders.', retention: 'High erosion. The clinical utility promise is the product\'s highest-stakes claim.' },
+  { q: '"The app asked for too many permissions"', e: 'Camera (for prescription scanning), notifications, storage. Privacy-conscious NRIs or urban professionals hesitate.', behavior: 'Grants permissions reluctantly. Permanently suspicious of the app\'s data handling.', tells: 'Possibly in review.', retention: 'Low-moderate erosion. Subcultural in India but growing.' },
+  { q: '"My mother doesn\'t have a smartphone"', e: 'The caregiver-first architecture means elderly patients without smartphones need full manual input from the caregiver. Defeats the independence goal.', behavior: 'Caregiver becomes the sole data point. No independence. High caregiver burden.', tells: 'Often. This is the most common beta feedback.', retention: 'Moderate. Within beta constraints, expected. Post-beta, existential.' },
+  { q: '"The medicine strip runs out faster than the tracker says"', e: 'Half tablets, medicine sharing, dropped pills — real-world variance that the tracker cannot model.', behavior: 'Refill happens before the tracker suggests. Trust in refill timeline destroyed.', tells: 'No.', retention: 'Moderate erosion. Specifically for homemakers who are meticulous.' },
+  { q: '"I got a reminder for a medicine Dad stopped taking"', e: 'Doctor discontinued a medicine but the prescription update wasn\'t done in the app. Stale schedule continuing to generate reminders.', behavior: 'Patient confused. Takes discontinued medicine. Or ignores all reminders because "it\'s out of date."', tells: 'Yes. Emergency.', retention: 'Catastrophic. Stale reminders can cause harm. Terminal trust failure if it reaches this point.' },
+  { q: '"I wish I could write a note about why a dose was missed"', e: 'The missed dose was because of an emergency, not negligence. The data shows a failure but the context shows a human life. The app can\'t hold context.', behavior: 'Caregiver wishes for annotation. Lives without it. Data feels dehumanizing.', tells: 'Sometimes. As a feature request.', retention: 'Low erosion. High feature signal.' },
+  { q: '"The app is slower on Dad\'s old phone"', e: 'Budget Android phones (the majority of India) make every interaction slower. The confirmation tap that takes 1 second on an iPhone takes 4 on a 2019 Redmi.', behavior: 'Patient stops confirming because it\'s slow. Compliance data disappears.', tells: 'No.', retention: 'High indirect erosion. Infrastructure problem with no in-app solution.' },
+  { q: '"I trusted it completely until one day I just didn\'t"', e: 'No single event. An accumulation of small doubts reached a threshold and crystalized. The caregiver cannot name the moment. They just know they stopped fully relying on it.', behavior: 'Subtle behavior change. Still uses app. Just doesn\'t fully believe it.', tells: 'No. Cannot articulate.', retention: 'Severe. This is the final stage of trust decay. Functionally irreversible without a dramatic trust-restoring event.' }
+];
+
+const moments = [
+  { rank: 1, name: 'Refill crisis averted', retention: 10, intensity: 9, referral: 10, trust: 9, body: 'Three days of medicines left. Alert fires. Sibling is prompted. Medicine arrives the evening before stockout. The caregiver who set this up feels like they built infrastructure that actually worked. This is the product\'s closest thing to a heroic moment — something prevented that would have gone wrong without it. Identity reinforced: "I\'m the kind of person who has this handled." Referral likelihood: immediate and emotional, not rational.' },
+  { rank: 2, name: 'First full compliance week summary', retention: 9, intensity: 10, referral: 8, trust: 9, body: 'Seven days. Seven green bars. The caregiver sees it on Sunday morning. Exhales. Calls the parent not to check but just to talk. This is the product\'s first true anxiety-to-relief transformation. The relief is the retention event. Not the feature — the feeling. Every subsequent summary must compete with this first one emotionally.' },
+  { rank: 3, name: 'Parent independently using the system', retention: 9, intensity: 9, referral: 9, trust: 10, body: 'The moment an elderly parent opens the app themselves, confirms their own dose, and tells the child "I already pressed it, check your phone" — this is the product\'s identity moment. It has moved from a caregiver tool to a patient tool. The elderly person\'s dignity is restored. The caregiver feels their parent\'s autonomy rather than their dependency. Referral becomes a story: "My father, 72, uses it himself."' },
+  { rank: 4, name: 'Prescription update absorbed without drama', retention: 8, intensity: 7, referral: 7, trust: 10, body: 'Doctor changes a dose. Caregiver uploads new prescription. App extracts correctly. New schedule runs from tomorrow. No confusion, no conflict, no parallel tracking required. This moment is almost invisible when it works — which makes it powerful. The absence of a problem is the product. For the homemaker and the urban professional, this is the moment that separates Swasthi from "just a reminder app."' },
+  { rank: 5, name: 'NRI-caregiver first timestamp view', retention: 8, intensity: 10, referral: 9, trust: 8, body: '11pm in London. Dad\'s evening dose. The timestamp appears: "Taken — 8:34pm." The NRI had been lying awake. Now they sleep. This is the most emotionally intense single moment in the product for the NRI segment — more than any feature, any report, any interface. The product\'s entire emotional architecture exists to produce this moment. It must be fast, clear, and certain.' },
+  { rank: 6, name: '6-month adherence report', retention: 7, intensity: 7, referral: 8, trust: 9, body: 'Doctor visit upcoming. Caregiver exports 6 months of adherence data. Doctor glances at it, nods. One data point the doctor acknowledges is a retention event for the next 6 months. The product has penetrated clinical reality, not just household reality. This is where Swasthi becomes infrastructure, not an app. Referral happens from the doctor\'s office, not from a WhatsApp chat.' },
+  { rank: 7, name: 'Reduced daily phone calls', retention: 7, intensity: 6, referral: 7, trust: 7, body: 'The caregiver realizes they haven\'t called to ask about medicines in 5 days. Not because they don\'t care — because they already know. The guilt that normally accompanies not calling is absent. The app has changed the emotional relationship with the daily check-in. This is quiet, personal, and powerful. Rarely shared directly but is the background reason for almost every genuine recommendation.' },
+  { rank: 8, name: 'Caregiver coordination without WhatsApp chaos', retention: 6, intensity: 6, referral: 8, trust: 7, body: 'Three siblings in a family. All can see the same compliance view. The refill responsibility is clear. The prescription update doesn\'t require a group call. The "who told Dad about the new medicine" argument doesn\'t happen. The product has replaced a coordination failure pattern that every Indian family recognizes. Referral from this moment: "Finally, all three of us are on the same page about Baba\'s medicines."' }
+];
+
+const lies = [
+  { text: 'Reminders are the product.', sub: 'Reminders are the delivery mechanism. The product is reassurance. Every decision around reminders should be evaluated by whether it increases or decreases the caregiver\'s sense of security — not whether it fires on time.' },
+  { text: 'More compliance data = more retention.', sub: 'More data that the caregiver cannot act on creates anxiety, not reassurance. Data value is not volume. It is resolution of a specific fear at a specific moment.' },
+  { text: 'If they\'re not churning, they\'re retained.', sub: 'Passive churn — the app installed, never opened, subscription renewed out of inertia — is the dominant failure mode in this category. Absence of uninstall is not retention. Active emotional engagement is.' },
+  { text: 'NRI caregivers are the best segment.', sub: 'NRI caregivers are emotionally the most motivated but operationally the most fragile. Their distance amplifies every trust failure. One missed refill after a refill alert, one wrong timestamp, one failed prescription update — and the trust is gone, never to return. They are the highest-value and highest-risk cohort simultaneously.' },
+  { text: 'Prescription scanning is a strong retention driver.', sub: 'Scanning is an acquisition driver. The first successful scan creates a moment of delight that drives download and Day 1 retention. But if the extracted schedule is slightly wrong and the caregiver catches it on Week 2, the same scanning feature becomes a trust liability. Delight features become trust features the moment they fail.' },
+  { text: 'Elderly patients are the core user.', sub: 'Elderly patients are the subject. The caregiver is the user. The product must serve the caregiver\'s emotional needs first, even when that means the elderly patient experiences the product as slightly imperfect. This distinction matters in every product decision.' },
+  { text: 'Reducing anxiety is the retention mechanism.', sub: 'Reducing anxiety removes the primary driver of usage. When anxiety falls, checking falls. Swasthi must replace anxiety-driven engagement with identity-driven engagement — "I am the kind of person who has this managed" — before the anxiety resolves, not after.' },
+  { text: 'High compliance rates mean the app is working.', sub: 'High compliance rates from self-reporting mean the confirmation button is being pressed. The medicine may or may not be taken. A product strategy built on self-reported compliance data is a product strategy built on unverifiable inputs.' },
+  { text: 'Trust is built through the product working correctly.', sub: 'Trust is built through the product failing gracefully. Every product fails. What determines long-term trust is whether the failure is acknowledged, explained, and recovered from. Silent failures — stale schedules, wrong timings, missed refill windows — destroy trust permanently because the user discovers the failure without being warned.' },
+  { text: 'Referrals come from features.', sub: 'Referrals come from emotionally meaningful stories. "The app sent a refill warning and my father didn\'t run out" is a referral story. "The app has caregiver views and weekly summaries" is a feature list. Nobody tells their sibling about features. They tell them about the night they didn\'t panic.' }
+];
+
+const truths = [
+  { text: 'The caregiver\'s emotional state is the product\'s primary output.', sub: 'Every design decision, every notification, every piece of data shown, should be evaluated by one question: does this make the caregiver feel more or less anxious? Less anxious = successful product moment. More anxious = failed product moment, regardless of how technically accurate the information is.' },
+  { text: 'Refill continuity is the strongest retention mechanism in the product.', sub: 'Not because of the feature complexity, but because a prevented stockout creates a story. Stories create identity. Identity creates retention. "I am the person who ensured my father never ran out of his BP medicine in two years" is a retention event that no competitor can undo.' },
+  { text: 'Trust is destroyed faster than it is built, and it never fully recovers.', sub: 'A user who caught a wrong schedule, experienced a late refill alert, or discovered the app data was inconsistent with reality will never fully trust Swasthi again. They will use it. They will recommend it. But with a caveat. That caveat is a permanent trust ceiling.' },
+  { text: 'The homemaker is the most underestimated user in the beta.', sub: 'She has the highest accuracy expectations, the deepest behavioral engagement, and the most word-of-mouth influence within the household network. She will also be the harshest critic of any data inaccuracy. Get her right and you have the product\'s most powerful advocate. Get her wrong and you have its most credible critic.' },
+  { text: 'Passive churn is undetectable until it\'s complete.', sub: 'Users don\'t announce passive churn. They just drift. The earliest detectable signal is engagement depth declining before engagement frequency does — shorter sessions, less deep engagement, summary emails unopened. By the time frequency drops, the drift is almost irreversible.' },
+  { text: 'Self-reporting is a structural problem that product design cannot fully solve.', sub: 'The only way to increase the reliability of compliance data is to reduce friction so low that confirmation becomes reflexive, and to design the system so that inconsistencies surface naturally (missed confirmation patterns that diverge from historical) without requiring investigation.' },
+  { text: 'The prescription update flow is the product\'s highest-stakes moment.', sub: 'Every chronic patient gets a prescription update. Every update is a potential schedule failure. The product that handles the "doctor changed the medicine" moment gracefully — especially remotely — has solved the hardest retention problem in the category. The product that doesn\'t will see its Month 3 retention collapse.' },
+  { text: 'Indian family systems create unique coordination problems that no Western care app has modeled.', sub: 'Sibling coordination dynamics, joint household ambiguity, elderly patient dignity concerns, homemaker invisible labor, NRI guilt economics — these are not edge cases. They are the core behavioral substrate. The app must be designed around them, not despite them.' },
+  { text: 'The 6-month emotional arc is the retention product.', sub: 'Month 1: novelty and anxiety resolution. Month 3: identity reinforcement. Month 6: either infrastructure permanence or rational exit evaluation. Swasthi must design for Month 6 from Day 1 — building clinical value, reporting utility, and identity reinforcement that makes rational churn expensive.' },
+  { text: 'The app that survives 5 years is invisible.', sub: 'The highest form of this product is infrastructure. The caregiver does not think about it. It runs. It alerts when needed. It produces a report for the doctor. It prevents the stockout. It is the smoke detector of chronic care. Not a feature people talk about. A system people cannot imagine being without.' }
+];
+
+let currentUser = 'local';
+let currentStage = 0;
+let churnFilter = 'All';
+
+function renderUsers() {
+  const g = document.getElementById('userGrid');
+  g.innerHTML = users.map(u => `<button class="user-btn${u.id===currentUser?' active':''}" onclick="setUser('${u.id}')">${u.label}</button>`).join('');
+}
+
+function renderStages() {
+  const g = document.getElementById('stageNav');
+  g.innerHTML = stages.map((s,i) => `<button class="stage-btn${i===currentStage?' active':''}" onclick="setStage(${i})">${s}</button>`).join('');
+}
+
+function renderEmo() {
+  const data = emoData[currentUser][currentStage];
+  const g = document.getElementById('emoContent');
+  g.innerHTML = `
+    <div class="emo-card anxiety"><div class="emo-label">Anxiety</div><div class="emo-text">${data.anxiety}</div></div>
+    <div class="emo-card trust"><div class="emo-label">What builds trust</div><div class="emo-text">${data.trust}</div></div>
+    <div class="emo-card doubt"><div class="emo-label">What creates doubt</div><div class="emo-text">${data.doubt}</div></div>
+    <div class="emo-card"><div class="emo-label">Emotional driver</div><div class="emo-text">${data.driver}</div></div>
+    <div class="emo-card churn"><div class="emo-label">Passive churn signal</div><div class="emo-text">${data.churn}</div></div>
+    <div class="emo-card"><div class="emo-label">Key moment</div><div class="emo-text">${data.moment}</div></div>
+  `;
+}
+
+function setUser(id) { currentUser = id; renderUsers(); renderEmo(); }
+function setStage(i) { currentStage = i; renderStages(); renderEmo(); }
+
+function renderChurn() {
+  const filters = document.getElementById('churnFilters');
+  filters.innerHTML = churnCats.map(c => `<button class="filter-btn${c===churnFilter?' active':''}" onclick="setChurnFilter('${c}')">${c}</button>`).join('');
+  const items = churnFilter === 'All' ? churnMechanisms : churnMechanisms.filter(m => m.cat === churnFilter);
+  document.getElementById('churnContent').innerHTML = items.map(m => `
+    <div class="churn-card">
+      <div class="churn-title">${m.title}</div>
+      <div class="churn-mech"><strong style="color:var(--ink);font-weight:500">Behavioral:</strong> ${m.behavioral}</div>
+      <div class="churn-mech"><strong style="color:var(--ink);font-weight:500">Emotional:</strong> ${m.emotional}</div>
+      <div class="churn-mech"><strong style="color:var(--ink);font-weight:500">How it happens:</strong> ${m.how}</div>
+      <span class="signal-tag">Signal: ${m.signal}</span>
+    </div>
+  `).join('');
+}
+
+function setChurnFilter(f) { churnFilter = f; renderChurn(); }
+
+function renderTrust() {
+  document.getElementById('trustContent').innerHTML = trustFailures.map((t,i) => `
+    <div class="trust-item">
+      <div class="trust-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="trust-content">
+        <div class="trust-quote">${t.q}</div>
+        <div class="trust-explain">${t.e}</div>
+        <div class="trust-explain" style="margin-top:4px"><strong style="font-weight:500">Behavior after:</strong> ${t.behavior}</div>
+        <div class="trust-explain" style="margin-top:4px"><strong style="font-weight:500">Tells founders?</strong> ${t.tells}</div>
+        <div class="trust-aftermath">${t.retention}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMoments() {
+  const pills = (m) => [
+    `Retention ${m.retention}/10`,
+    `Intensity ${m.intensity}/10`,
+    `Referral ${m.referral}/10`,
+    `Trust ${m.trust}/10`
+  ].map(p => `<span class="score-pill">${p}</span>`).join('');
+
+  document.getElementById('momentContent').innerHTML = moments.map(m => `
+    <div class="moment-card">
+      <div class="moment-header">
+        <div>
+          <div class="moment-rank">Rank ${m.rank}</div>
+          <div class="moment-name">${m.name}</div>
+        </div>
+        <div class="moment-scores">${pills(m)}</div>
+      </div>
+      <div class="moment-body">${m.body}</div>
+    </div>
+  `).join('');
+}
+
+function renderHabits() {
+  const habits = [
+    { dot: 'dot-green', title: 'Refill cycle as natural cue-routine-reward', body: 'Monthly refill need creates a predictable cue that is not anxiety-dependent. The caregiver checks medicine supply → checks app → places order → relief. This loop is independent of patient behavior and has built-in monthly renewal. The strongest habit formation candidate in the product.' },
+    { dot: 'dot-green', title: 'Sunday summary anticipation', body: 'Weekly summaries timed to a low-cognitive-load moment (Sunday morning) can become habitual in the same way Sunday newspaper reading is. The key: the summary must feel like news, not a report. Something slightly different every week — a compliance milestone, a streak, a refill approaching — creates variable reward.' },
+    { dot: 'dot-green', title: 'Elderly reminder adaptation', body: 'For elderly users, the reminder becomes integrated into existing ritual: morning tea, prayer time, meal preparation. This is the strongest habit formation because it piggybacks on pre-existing routines rather than creating new ones. Product design should allow time customization to enable this piggybacking.' },
+    { dot: 'dot-amber', title: 'Streak psychology: handle with care', body: 'Streaks work for motivated users (NRIs, urban professionals). They backfire catastrophically for elderly patients and homemakers when a missed dose creates shame. A missed streak that causes a caregiver to feel guilty about their parent\'s health failure is a churn event, not a retention event. Streaks must be opt-in and framed as celebration, not report card.' },
+    { dot: 'dot-amber', title: 'Identity reinforcement as retention', body: '"I am the kind of person who has my parent\'s medicines organized" is an identity claim the product can reinforce. This identity is resilient to product imperfections because the identity need exists independently. But it requires regular reinforcement moments — social sharing capability, visible milestones, shareable reports.' },
+    { dot: 'dot-amber', title: 'Caregiver checking behavior plateau', body: 'Checking behavior peaks in Week 1-2, stabilizes in Month 1-2, and then either converts to habitual background checking or drops to occasional checking. The conversion window is narrow — 3 to 6 weeks. Product must deliver high-value moments in this window to convert anxiety-checking to habit-checking.' },
+    { dot: 'dot-red', title: 'Dependency risk', body: 'Caregivers who rely completely on Swasthi for schedule knowledge create a fragile dependency. App downtime, data loss, or phone change becomes a health emergency. The product must design for portability and export — not to encourage independence from the app, but to prevent the catastrophic trust failure of a dependency breakdown.' },
+    { dot: 'dot-red', title: 'Shame risks in compliance tracking', body: 'Any product feature that makes an elderly patient feel like their failures are being monitored and reported will trigger resistance behaviors: false confirmation, muted notifications, or complete rejection. Shame is the enemy of the product\'s core mission. Every data display must be designed from the patient\'s dignity first.' },
+    { dot: 'dot-red', title: 'Habit decay after acute anxiety resolution', body: 'The habit formed during high-anxiety periods (new diagnosis, recent hospital discharge, medication change) decays naturally as anxiety resolves. This decay is predictable and must be anticipated. The product needs a "habit renewal" mechanism — a new emotional reason to check — before the old one dissolves.' }
+  ];
+
+  document.getElementById('habitContent').innerHTML = habits.map(h => `
+    <div class="habit-card">
+      <div class="habit-head"><span class="habit-dot ${h.dot}"></span>${h.title}</div>
+      <div class="habit-body">${h.body}</div>
+    </div>
+  `).join('');
+}
+
+function renderLies() {
+  document.getElementById('liesContent').innerHTML = lies.map((l,i) => `
+    <div class="lt-item lie-item">
+      <div class="lt-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="lt-text"><strong>Lie: ${l.text}</strong><div class="lt-subtext">${l.sub}</div></div>
+    </div>
+  `).join('');
+  document.getElementById('truthsContent').innerHTML = truths.map((t,i) => `
+    <div class="lt-item truth-item">
+      <div class="lt-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="lt-text"><strong style="color:var(--teal)">${t.text}</strong><div class="lt-subtext">${t.sub}</div></div>
+    </div>
+  `).join('');
+}
+
+function switchLT(panel, btn) {
+  document.getElementById('liesPanel').classList.toggle('active', panel==='lies');
+  document.getElementById('truthsPanel').classList.toggle('active', panel==='truths');
+  document.querySelectorAll('#ltTabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+renderUsers();
+renderStages();
+renderEmo();
+renderChurn();
+renderTrust();
+renderMoments();
+renderHabits();
+renderLies();
+</script>

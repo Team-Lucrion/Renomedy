@@ -12,7 +12,21 @@ export type AppAnalyticsEvent =
   | 'beta_code_valid'
   | 'beta_code_invalid'
   | 'beta_code_redeemed'
-  | 'beta_gate_blocked';
+  | 'beta_gate_blocked'
+  | 'manual_medicine_draft_saved'
+  | 'manual_medicine_draft_restored'
+  | 'manual_medicine_draft_discarded'
+  | 'manual_medicine_search_selected'
+  | 'manual_medicine_free_text_used'
+  | 'excluded_medicine_attempted'
+  | 'decimal_dosage_confirmation_required'
+  | 'decimal_dosage_confirmed'
+  | 'prescription_reconciliation_interstitial_seen'
+  | 'prescription_reconciliation_choice_made'
+  | 'prescription_reconciliation_saved'
+  | 'medicine_relationship_confirmation_required'
+  | 'medicine_relationship_confirmed'
+  | 'medicine_verification_completed';
 
 export function trackEvent(
   event: AppAnalyticsEvent,

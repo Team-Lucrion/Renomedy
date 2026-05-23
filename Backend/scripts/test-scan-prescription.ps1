@@ -21,4 +21,4 @@ curl.exe `
   -X POST $uri `
   -H "Authorization: Bearer $BearerToken" `
   -F "family_member_id=$FamilyMemberId" `
-  -F "file=@$FilePath"
+  -F "image=@$FilePath"

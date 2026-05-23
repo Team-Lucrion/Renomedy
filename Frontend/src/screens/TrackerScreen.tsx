@@ -41,7 +41,7 @@ export default function TrackerScreen() {
 
   const scheduleCards = useMemo(
     () =>
-      schedules.map((schedule) => {
+      schedules.filter((schedule) => (schedule.status ?? 'active') === 'active').map((schedule) => {
         const member = findFirst(familyMembers, (item) => item.id === schedule.family_member_id);
         const refillState = findFirst(refillStates, (item) => item.medication_schedule_id === schedule.id);
 
@@ -167,7 +167,10 @@ export default function TrackerScreen() {
 
     return (
       <View style={styles.tabContent}>
-        {refillStates.map((refill) => {
+        {refillStates.filter((refill) => {
+          const schedule = findFirst(schedules, (item) => item.id === refill.medication_schedule_id);
+          return (schedule?.status ?? 'active') === 'active';
+        }).map((refill) => {
           const schedule = findFirst(schedules, (item) => item.id === refill.medication_schedule_id);
           const member = findFirst(familyMembers, (item) => item.id === schedule?.family_member_id);
           const riskColor = statusTone(refill.continuity_status);

@@ -33,10 +33,10 @@
   },
   "onboarding": {
     "title": "Set up your sanctuary",
-    "subtitle": "Renomedy helps your family never miss a medicine, never misread a prescription.",
-    "explainerEyebrow": "Your Family's Private Care Space",
+    "subtitle": "Renomedy helps the person you're caring for never miss a medicine and never misread a prescription.",
+    "explainerEyebrow": "Your Care Circle's Private Care Space",
     "explainerTitle": "Build one calm place for prescriptions, medicines, and reminders.",
-    "explainerBody": "Create a new sanctuary for your family or join one that has already been shared with you.",
+    "explainerBody": "Create a new sanctuary for the person you're caring for or join one that has already been shared with you.",
     "createNew": "Create New",
     "joinExisting": "Join Existing",
     "sanctuaryName": "Sanctuary name",
@@ -53,15 +53,15 @@
     "inviteSharedByAdmin": "Enter the code shared by your sanctuary admin.",
     "checkingInvite": "Checking sanctuary invite...",
     "joiningPreview": "You are joining",
-    "inviteValidBody": "You will get access to your family's shared care space for prescriptions and reminders.",
+    "inviteValidBody": "You will get access to this shared care space for prescriptions and reminders.",
     "inviteExpiredBody": "This invite has expired. Ask the sanctuary admin to regenerate the code.",
     "inviteExpired": "This invite code has expired. Ask the sanctuary admin for a new one.",
     "invalidInvite": "Invalid sanctuary invite code.",
     "roles": {
       "caregiverTitle": "Care Manager",
-      "caregiverSubtitle": "I manage medicines for my family",
+      "caregiverSubtitle": "I manage medicines for someone I care for",
       "familyTitle": "Joining Family Care",
-      "familySubtitle": "I am joining my family's care space",
+      "familySubtitle": "I am joining a shared care space",
       "patientTitle": "My Medicines",
       "patientSubtitle": "I want help staying on track with my medicines"
     }

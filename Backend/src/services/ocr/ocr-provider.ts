@@ -7,6 +7,7 @@ export type OcrParsedMedication = {
   dosage?: string;
   frequency?: string;
   timing?: string;
+  foodTiming?: string;
   duration?: string;
   instructions?: string;
   uses?: string[];

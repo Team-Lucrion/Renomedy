@@ -43,7 +43,7 @@ export default function SplashScreen({ navigation }: Props) {
           <Image source={require('../../assets/splash-icon.png')} style={styles.logo} resizeMode="contain" />
         </Animated.View>
         <Text style={styles.title}>Renomedy</Text>
-        <Text style={styles.subtitle}>Your Family&apos;s Private Care Space</Text>
+        <Text style={styles.subtitle}>Your Care Circle&apos;s Private Care Space</Text>
         <View style={styles.loadingTrack}>
           <Animated.View style={[styles.loadingFill, { opacity: fadeAnim }]} />
         </View>

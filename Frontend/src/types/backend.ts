@@ -143,21 +143,28 @@ export type RefillState = {
 export type MedicationSchedule = {
   id: string;
   family_member_id: string;
+  prescription_medication_id?: string | null;
   status?: string | null;
   start_date?: string | null;
   end_date?: string | null;
   reminder_times?: string[] | null;
   food_relation?: string | null;
   prescription_medications?: {
+    id?: string | null;
+    prescription_id?: string | null;
     medicine_name?: string | null;
     brand_name?: string | null;
     generic_name?: string | null;
+    strength?: string | null;
     dosage?: string | null;
     frequency?: string | null;
     timing?: string | null;
     duration?: string | null;
     food_timing?: string | null;
     verified_at?: string | null;
+    updated_at?: string | null;
+    continuity_status?: string | null;
+    trust_metadata?: Record<string, unknown> | null;
   } | null;
   refill_states?: RefillState[] | RefillState | null;
 };
@@ -170,6 +177,7 @@ export type PrescriptionHistoryItem = {
   doctor_name?: string | null;
   hospital_name?: string | null;
   prescription_date?: string | null;
+  family_member_id?: string | null;
   verification_status?: string | null;
   parse_status?: string | null;
   ai_provider?: string | null;
@@ -186,12 +194,13 @@ export type PrescriptionHistoryItem = {
       medicine_name?: string | null;
       generic_name?: string | null;
       strength?: string | null;
-      form?: string | null;
       dose?: string | null;
+      form?: string | null;
       dosage?: string | null;
       frequency?: string | null;
       timing?: string | null;
       duration?: string | null;
+      food_timing?: string | null;
       instructions?: string | null;
       uses?: string[] | null;
       warnings?: string[] | null;
@@ -219,16 +228,24 @@ export type ParsedPrescriptionMedication = {
   medicine_name: string;
   brand_name?: string | null;
   generic_name?: string | null;
+  strength?: string | null;
+  dose?: string | null;
   dosage?: string | null;
   frequency?: string | null;
   timing?: string | null;
   duration?: string | null;
   food_timing?: string | null;
+  quantity_purchased?: number | null;
+  start_date?: string | null;
   instructions?: string | null;
   shorthand_detected?: string[] | null;
   shorthand_explanation?: string | null;
   confidence_score?: number | null;
   requires_manual_verification?: boolean | null;
+  verified_at?: string | null;
+  updated_at?: string | null;
+  continuity_status?: string | null;
+  trust_metadata?: Record<string, unknown> | null;
 };
 
 export type PrescriptionDetails = PrescriptionHistoryItem & {

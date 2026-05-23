@@ -35,14 +35,16 @@ export default function HomeScreen() {
     user?.fullName?.split(' ')[0] ??
     'Caregiver';
 
+  const activeScheduleRecords = schedules.filter((schedule) => (schedule.status ?? 'active') === 'active');
   const refillAlerts = refillStates.filter((state) => {
+    const schedule = findFirst(schedules, (item) => item.id === state.medication_schedule_id);
     const status = state.continuity_status ?? '';
-    return status === 'risk_soon' || status === 'will_run_out' || status === 'out_of_stock';
+    return (schedule?.status ?? 'active') === 'active' && (status === 'risk_soon' || status === 'will_run_out' || status === 'out_of_stock');
   });
   const currentMembership = familyGroups[0]?.family_group_memberships?.[0];
   const canManageFamily = currentMembership?.role === 'owner' || currentMembership?.role === 'caregiver';
 
-  const activeSchedules = schedules.slice(0, 4);
+  const activeSchedules = activeScheduleRecords.slice(0, 4);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -72,7 +74,7 @@ export default function HomeScreen() {
             <Text style={styles.statLabel}>{t('home.sanctuaryMembers')}</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statValue}>{overview?.active_schedules_count ?? schedules.length}</Text>
+            <Text style={styles.statValue}>{overview?.active_schedules_count ?? activeScheduleRecords.length}</Text>
             <Text style={styles.statLabel}>{t('home.activeSchedules')}</Text>
           </View>
           <View style={styles.statCard}>

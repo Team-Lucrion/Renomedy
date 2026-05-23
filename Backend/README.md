@@ -3,7 +3,8 @@
 Renomedy now supports two prescription OCR pipelines in Express:
 
 - `src/services/ocr/vision-gemini-ocr.provider.ts` for Google Vision plus Gemini
-- `src/services/ocr/tesseract-groq-ocr.provider.ts` for Tesseract.js plus Groq
+- `src/services/ocr/tesseract-groq-ocr.provider.ts` for the PrescriptoAI-style Tesseract.js plus Groq flow
+- `src/services/ocr/direct-gemini-ocr.provider.ts` as a Gemini Vision fallback when `GEMINI_API_KEY` is available
 - `src/services/ocr/groq-prescription-parse.ts` for strict Groq JSON parsing and normalization
 
 ## Prescription pipeline
@@ -20,15 +21,19 @@ Copy [Backend/.env.example](/C:/Users/Manjunath/Desktop/Rajath/Development/Renom
 
 For the PrescriptoAI-style backend API, set:
 
-- `OCR_PROVIDER=tesseract_groq`
+- `OCR_PROVIDER=prescripto_ai` or `OCR_PROVIDER=tesseract_groq`
 - `GROQ_API_KEY`
 - `GROQ_MODEL=llama-3.3-70b-versatile`
+- `MAX_UPLOAD_MB=10`
 
-For the older Google pipeline, set:
+To keep Gemini as fallback, also set:
 
-- `OCR_PROVIDER=vision_gemini` or `OCR_PROVIDER=mock`
 - `GEMINI_API_KEY`
 - `GEMINI_MODEL=gemini-2.0-flash`
+
+For the older Google Vision pipeline, set:
+
+- `OCR_PROVIDER=vision_gemini` or `OCR_PROVIDER=mock`
 - one of `GOOGLE_APPLICATION_CREDENTIALS` or `GOOGLE_VISION_SERVICE_ACCOUNT_JSON`
 
 Also required for the rest of the API: `SUPABASE_*`, `CLERK_*`, and the other variables in `.env.example`.
@@ -45,14 +50,18 @@ Use `POST /api/scan-prescription` with:
 - `Authorization: Bearer <clerk-jwt>`
 - `multipart/form-data`
 - `family_member_id=<uuid>`
-- `file=<image>`
+- `file=<image>` or `image=<image>`
+
+The same route also accepts JSON with `family_member_id` plus `imageBase64` or `imageUrl`. API keys stay server-side in `Backend/.env`.
 
 Response shape:
 
 ```json
 {
   "success": true,
+  "provider": "prescripto_ai",
   "rawText": "original OCR text here",
+  "cleanedText": "cleaned OCR text here",
   "confidence": 0.82,
   "medicines": [
     {

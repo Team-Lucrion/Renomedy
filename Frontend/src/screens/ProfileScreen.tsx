@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useClerk, useUser } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ConfirmActionModal from '../components/ConfirmActionModal';
@@ -9,6 +10,10 @@ import { useAppData } from '../context/AppDataContext';
 import { useLanguage } from '../context/LanguageContext';
 import { unregisterStoredNotifications } from '../lib/notifications';
 import type { AppLanguage } from '../localization/i18n';
+import {
+  GUIDED_VERIFICATION_ENABLED_KEY,
+  GUIDED_VERIFICATION_FIRST_COMPLETED_KEY,
+} from '../utils/verificationPreferences';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
 function formatBetaStatus(status?: string | null) {
@@ -34,6 +39,7 @@ export default function ProfileScreen() {
   const [isLeaving, setIsLeaving] = useState(false);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const [actionMessage, setActionMessage] = useState('');
+  const [guidedVerificationEnabled, setGuidedVerificationEnabled] = useState(true);
 
   const displayName =
     currentUser?.full_name ??
@@ -45,6 +51,34 @@ export default function ProfileScreen() {
     t('profile.noEmail');
 
   const currentSanctuary = familyGroups[0] ?? null;
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadGuidedVerificationPreference = async () => {
+      const [explicitPreference, firstCompleted] = await Promise.all([
+        AsyncStorage.getItem(GUIDED_VERIFICATION_ENABLED_KEY),
+        AsyncStorage.getItem(GUIDED_VERIFICATION_FIRST_COMPLETED_KEY),
+      ]);
+
+      if (!isMounted) return;
+
+      setGuidedVerificationEnabled(
+        explicitPreference === null ? firstCompleted !== 'true' : explicitPreference === 'true',
+      );
+    };
+
+    void loadGuidedVerificationPreference();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleGuidedVerificationToggle = async (enabled: boolean) => {
+    setGuidedVerificationEnabled(enabled);
+    await AsyncStorage.setItem(GUIDED_VERIFICATION_ENABLED_KEY, String(enabled));
+  };
 
   const handleSignOut = async () => {
     await unregisterStoredNotifications(unregisterNotificationToken);
@@ -130,6 +164,24 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
               );
             })}
+          </View>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Verification</Text>
+          <View style={styles.preferenceRow}>
+            <View style={styles.preferenceCopy}>
+              <Text style={styles.preferenceTitle}>Guided medicine verification</Text>
+              <Text style={styles.preferenceDescription}>
+                Review one medicine field at a time before saving it to the active plan.
+              </Text>
+            </View>
+            <Switch
+              value={guidedVerificationEnabled}
+              onValueChange={(value) => void handleGuidedVerificationToggle(value)}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.surface}
+            />
           </View>
         </View>
 
@@ -280,6 +332,25 @@ const styles = StyleSheet.create({
   },
   languageChipTextActive: {
     color: colors.primary,
+  },
+  preferenceRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.md,
+    justifyContent: 'space-between',
+  },
+  preferenceCopy: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  preferenceTitle: {
+    ...typography.label,
+    color: colors.text,
+  },
+  preferenceDescription: {
+    ...typography.bodySmall,
+    color: colors.textMuted,
+    lineHeight: 20,
   },
   secondaryButton: {
     flexDirection: 'row',

@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
+import path from "path";
 import { z } from "zod/v3";
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
@@ -13,6 +14,7 @@ const envSchema = z.object({
   CLERK_SECRET_KEY: z.string().min(1),
   CLERK_WEBHOOK_SECRET: z.string().min(1),
   CORS_ALLOWED_ORIGINS: z.string().default(""),
+  MAX_UPLOAD_MB: z.coerce.number().int().positive().default(10),
   SENTRY_DSN: z.string().url().optional(),
   SENTRY_ENVIRONMENT: z.string().optional(),
   SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0),
@@ -25,7 +27,7 @@ const envSchema = z.object({
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
-  OCR_PROVIDER: z.enum(["mock", "vision_gemini", "tesseract_groq"]).default("vision_gemini"),
+  OCR_PROVIDER: z.enum(["mock", "vision_gemini", "tesseract_groq", "prescripto_ai"]).default("vision_gemini"),
   OCR_TIMEOUT_MS: z.coerce.number().int().positive().default(30000),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().default("gemini-2.0-flash"),

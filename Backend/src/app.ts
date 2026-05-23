@@ -20,7 +20,7 @@ import { subscriptionsRouter } from "./modules/subscriptions/subscriptions.route
 import { paymentsRouter } from "./modules/payments/payments.routes";
 import { notificationsRouter } from "./modules/notifications/notifications.routes";
 import { betaRouter } from "./modules/beta/beta.routes";
-import { corsAllowedOrigins } from "./config/env";
+import { corsAllowedOrigins, env } from "./config/env";
 import { asyncHandler } from "./utils/async-handler";
 
 export const app = express();
@@ -44,7 +44,7 @@ app.use(
   })
 );
 app.post("/auth/clerk-webhook", express.raw({ limit: "2mb", type: "application/json" }), asyncHandler(clerkWebhookHandler));
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: `${Math.max(2, env.MAX_UPLOAD_MB * 2)}mb` }));
 app.use(requestIdMiddleware);
 app.use(
   pinoHttp({
