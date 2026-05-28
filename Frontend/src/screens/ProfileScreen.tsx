@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useClerk, useUser } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { DrawerActions, type NavigationProp, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ConfirmActionModal from '../components/ConfirmActionModal';
+import {
+  DATA_STORAGE_CONFIRMED,
+  DATA_STORAGE_SENTENCE,
+  FEEDBACK_EMAIL,
+} from '../config/appInfo';
 import { useAppData } from '../context/AppDataContext';
 import { useLanguage } from '../context/LanguageContext';
 import { unregisterStoredNotifications } from '../lib/notifications';
 import type { AppLanguage } from '../localization/i18n';
+import type { RootStackParamList } from '../navigation/AppNavigator';
 import {
   GUIDED_VERIFICATION_ENABLED_KEY,
   GUIDED_VERIFICATION_FIRST_COMPLETED_KEY,
@@ -30,7 +36,7 @@ function formatBetaStatus(status?: string | null) {
 const languageOptions: AppLanguage[] = ['en', 'hi', 'kn'];
 
 export default function ProfileScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { t } = useTranslation();
   const { signOut } = useClerk();
   const { user } = useUser();
@@ -83,6 +89,22 @@ export default function ProfileScreen() {
   const handleSignOut = async () => {
     await unregisterStoredNotifications(unregisterNotificationToken);
     await signOut();
+  };
+
+  const openAboutSwasthi = () => {
+    const parentNavigation = navigation.getParent<NavigationProp<RootStackParamList>>();
+    if (parentNavigation) {
+      parentNavigation.navigate('AboutSwasthi');
+      return;
+    }
+
+    navigation.navigate('AboutSwasthi');
+  };
+
+  const openDeleteRequestEmail = () => {
+    const subject = encodeURIComponent('Delete my Swasthi beta account and data');
+    const body = encodeURIComponent('Please permanently delete my Swasthi beta account and all associated data.');
+    void Linking.openURL(`mailto:${FEEDBACK_EMAIL}?subject=${subject}&body=${body}`);
   };
 
   const handleLeaveSanctuary = async () => {
@@ -185,6 +207,36 @@ export default function ProfileScreen() {
           </View>
         </View>
 
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Your Data</Text>
+          <View style={styles.dataQuestionBlock}>
+            <Text style={styles.dataQuestion}>Where is my data stored?</Text>
+            <Text style={[styles.dataAnswer, DATA_STORAGE_CONFIRMED ? null : styles.dataStorageTodo]}>
+              {DATA_STORAGE_SENTENCE}
+            </Text>
+          </View>
+          <View style={styles.dataQuestionBlock}>
+            <Text style={styles.dataQuestion}>Who can see my data?</Text>
+            <Text style={styles.dataAnswer}>Only you and people you have invited to your care circle.</Text>
+          </View>
+          <View style={styles.dataQuestionBlock}>
+            <Text style={styles.dataQuestion}>How do I delete my data?</Text>
+            <Text style={styles.dataAnswer}>Tap below to permanently delete your account and all data.</Text>
+            <Text style={styles.dataWarning}>This cannot be undone.</Text>
+          </View>
+          <TouchableOpacity style={styles.deleteDataButton} onPress={openDeleteRequestEmail}>
+            <Text style={styles.deleteDataText}>Delete my account and all data</Text>
+          </TouchableOpacity>
+          <Text style={styles.deleteInactiveText}>
+            Not yet active - contact {FEEDBACK_EMAIL}.
+          </Text>
+        </View>
+
+        <TouchableOpacity style={styles.secondaryButton} onPress={openAboutSwasthi}>
+          <Ionicons name="information-circle-outline" size={18} color={colors.primary} />
+          <Text style={styles.secondaryButtonText}>About Swasthi</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.secondaryButton} onPress={() => void refreshAll()}>
           <Ionicons name="refresh-outline" size={18} color={colors.primary} />
           <Text style={styles.secondaryButtonText}>{t('profile.refreshBackend')}</Text>
@@ -239,9 +291,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.background,
     borderRadius: borderRadius.pill,
-    height: 44,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
   },
   headerTitle: {
     ...typography.h2,
@@ -351,6 +403,49 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colors.textMuted,
     lineHeight: 20,
+  },
+  dataQuestionBlock: {
+    gap: spacing.xs,
+  },
+  dataQuestion: {
+    ...typography.label,
+    color: colors.text,
+    fontSize: 16,
+  },
+  dataAnswer: {
+    ...typography.body,
+    color: colors.text,
+    lineHeight: 23,
+  },
+  dataStorageTodo: {
+    color: colors.danger,
+    fontWeight: '700',
+  },
+  dataWarning: {
+    ...typography.body,
+    color: colors.danger,
+    fontWeight: '700',
+    lineHeight: 23,
+  },
+  deleteDataButton: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.danger,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    justifyContent: 'center',
+    minHeight: 48,
+    paddingHorizontal: spacing.md,
+  },
+  deleteDataText: {
+    ...typography.label,
+    color: colors.danger,
+    fontSize: 16,
+  },
+  deleteInactiveText: {
+    ...typography.body,
+    color: colors.danger,
+    lineHeight: 22,
   },
   secondaryButton: {
     flexDirection: 'row',

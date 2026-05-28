@@ -1,0 +1,1 @@
+module.exports = [{"id":"9aa262ab0ace","b":"OA M Syrup","g":"Ofloxacin + Metronidazole","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agroflox M Syrup","Alfox M Syrup","Dioflox M Syrup"],"t":["ofloxacin + metronidazole","oamsyrup","oa m syrup","oa m syrup 50mg/5ml"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"5fcd564b134c","b":"Sts Lwin 5mg Tablet DT","g":"Levocetirizine","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcet 5mg Tablet","Allercet-L Tablet","Aleva 5mg Tablet"],"t":["sts lwin 5mg tablet dt","levocetirizine","stslwin5mgtabletdt","sts lwin 5mg tablet dt 5mg"],"o":[]}];

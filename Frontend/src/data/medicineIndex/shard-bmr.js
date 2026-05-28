@@ -1,0 +1,1 @@
+module.exports = [{"id":"39a048c26213","b":"Dalhist-BMR Syrup","g":"Bromhexine + Guaifenesin","s":"4mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amdex Syrup","Aroxyl Syrup","Alernyl B 4mg/100mg/1mg/2mg Syrup"],"t":["dalhist-bmr syrup","dalhistbmrsyrup","bromhexine + guaifenesin","dalhist-bmr syrup 4mg"],"o":[]}];

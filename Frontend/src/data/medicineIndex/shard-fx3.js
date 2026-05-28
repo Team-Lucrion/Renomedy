@@ -1,0 +1,1 @@
+module.exports = [{"id":"fe7dfbd13661","b":"Ebmont FX3 Tablet","g":"Montelukast + Fexofenadine","s":"10mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra-M Tablet","Air-M Tablet","Acegrow 3D Tablet"],"t":["montelukast + fexofenadine","ebmont fx3 tablet 10mg","ebmontfx3tablet","ebmont fx3 tablet"],"o":[]}];

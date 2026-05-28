@@ -1,0 +1,1 @@
+module.exports = [{"id":"9abb241dd98d","b":"PR 500mg Tablet","g":"Paracetamol","s":"500mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Agmamol 500mg Tablet","Arden 500mg Tablet","Acimol 500mg Tablet"],"t":["pr500mgtablet","paracetamol","pr 500mg tablet","pr 500mg tablet 500mg"],"o":[]}];

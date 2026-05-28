@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     color: stylesConstants.label,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     letterSpacing: 3.1,
   },
@@ -388,13 +388,13 @@ const styles = StyleSheet.create({
   },
   helperText: {
     color: stylesConstants.label,
-    fontSize: 10,
+    fontSize: 14,
     letterSpacing: 2.4,
     marginTop: 2,
   },
   errorText: {
     color: colors.danger,
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 18,
   },
   actionsSection: {
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
   },
   googleButtonText: {
     color: colors.primary,
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '600',
     letterSpacing: 0.2,
   },
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
   },
   switchModeText: {
     color: colors.primary,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     letterSpacing: 3.6,
   },
@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
   },
   securityText: {
     color: stylesConstants.securityText,
-    fontSize: 11,
+    fontSize: 14,
     letterSpacing: 3.2,
     marginLeft: 10,
   },

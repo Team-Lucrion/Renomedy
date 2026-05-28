@@ -1,0 +1,1 @@
+module.exports = [{"id":"9f04db1561ac","b":"Gifaxin  100 mg Syrup","g":"Rifaximin","s":"100mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["gifaxin100mgsyrup","gifaxin  100 mg syrup","gifaxin  100 mg syrup 100mg/5ml","rifaximin"],"o":[]}];

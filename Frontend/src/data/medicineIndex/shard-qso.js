@@ -1,0 +1,1 @@
+module.exports = [{"id":"becd9b034f49","b":"Q-Sone Cream","g":"Fluticasone Propionate","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Cazon D Cream","Cutifute Cream","Derlutic 0.05% Cream"],"t":["qsonecream","q-sone cream 0.05% w/w","fluticasone propionate","q-sone cream"],"o":[]}];

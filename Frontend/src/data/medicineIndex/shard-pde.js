@@ -1,0 +1,1 @@
+module.exports = [{"id":"b448cfdb048a","b":"P Dex Syrup","g":"Bromhexine + Dextromethorphan Hydrobromide","s":"4mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aldrex Syrup","Ascodex DX Syrup","Abhikof D Syrup"],"t":["pdexsyrup","bromhexine + dextromethorphan hydrobromide","p dex syrup","p dex syrup 4mg"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"7d9ee60a1cd3","b":"Ikamed Eye Drop","g":"Phenylephrine + Tropicamide","s":"0.8% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["ikamed eye drop 0.8% w/v","ikamed eye drop","phenylephrine + tropicamide","ikamedeyedrop"],"o":[]}];

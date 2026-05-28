@@ -1,0 +1,1 @@
+module.exports = [{"id":"b3d8ae7f9001","b":"Tobrex 2X Eye Drop","g":"Tobramycin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Appatoba Eye Drop","Aitoba 0.3% Eye Drop","Clatob 0.3% Eye Drop"],"t":["tobrex2xeyedrop","tobrex 2x eye drop 0.3% w/v","tobrex 2x eye drop","tobramycin"],"o":[]}];

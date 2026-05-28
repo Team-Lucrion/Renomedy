@@ -1,0 +1,1 @@
+module.exports = [{"id":"e02a15d61a7e","b":"Ndase Tablet","g":"Nimesulide + Paracetamol","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AP 100mg/325mg Tablet","Alleviate Tablet","Aceto Plus  100 mg/500 mg Tablet"],"t":["nimesulide + paracetamol","ndasetablet","ndase tablet","ndase tablet 100mg"],"o":[]}];

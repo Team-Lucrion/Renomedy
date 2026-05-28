@@ -1,0 +1,1 @@
+module.exports = [{"id":"35b1714d3fb3","b":"GP 650 Tablet","g":"Paracetamol","s":"650mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Admol 650mg Tablet","Algina 650 Tablet","Arden 650mg Tablet"],"t":["gp 650 tablet","gp 650 tablet 650mg","paracetamol","gp650tablet"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"b1d826543281","b":"Oplone Eye Drop","g":"Ofloxacin + Prednisolone","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aquapred O Eye Drop","Exopred Eye Drop","Ocepred Eye Drop"],"t":["oplone eye drop 0.3% w/v","oploneeyedrop","ofloxacin + prednisolone","oplone eye drop"],"o":[]}];

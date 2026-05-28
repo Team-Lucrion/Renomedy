@@ -1,0 +1,1 @@
+module.exports = [{"id":"ce2a7e648a90","b":"Idmas Cream","g":"Mometasone","s":"0.1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avemome 0.1% Cream","Astibet Cream","Apifil M 0.1% Cream"],"t":["mometasone","idmas cream 0.1% w/w","idmascream","idmas cream"],"o":[]}];

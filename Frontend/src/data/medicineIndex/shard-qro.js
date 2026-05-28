@@ -1,0 +1,1 @@
+module.exports = [{"id":"698923b122e1","b":"Qrokderm  NM Cream","g":"Clobetasol + Miconazole","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agmaderm Cream","Avoderm Cream","Asclob NM Cream"],"t":["clobetasol + miconazole","qrokdermnmcream","qrokderm  nm cream","qrokderm  nm cream 0.05% w/w"],"o":[]}];

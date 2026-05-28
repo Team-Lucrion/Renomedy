@@ -1,0 +1,1 @@
+module.exports = [{"id":"eb6111fefaf5","b":"Sromox CA Syrup","g":"Amoxycillin + Clavulanic Acid","s":"200mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advent 228.5mg Dry Syrup","Almox CV Syrup","Aniclav Syrup"],"t":["sromoxcasyrup","sromox ca syrup","amoxycillin + clavulanic acid","sromox ca syrup 200mg/5ml"],"o":[]}];

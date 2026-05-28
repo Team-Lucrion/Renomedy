@@ -1,0 +1,1 @@
+module.exports = [{"id":"b0beb6f2dd91","b":"Urdef Syrup","g":"Chlorpheniramine Maleate + Paracetamol","s":"1mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acolate Kid Syrup Mango","Akuminic P Syrup","Aryl Syrup"],"t":["urdefsyrup","urdef syrup","urdef syrup 1mg/5ml","chlorpheniramine maleate + paracetamol"],"o":[]}];

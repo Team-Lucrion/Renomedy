@@ -1,0 +1,1 @@
+module.exports = [{"id":"a37708797ff9","b":"Salivate MF Ointment","g":"Betamethasone + Lacto Bacillus Rhamnosus","s":"0.05% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["betamethasone + lacto bacillus rhamnosus","salivate mf ointment","salivatemfointment","salivate mf ointment 0.05% w/w"],"o":[]}];

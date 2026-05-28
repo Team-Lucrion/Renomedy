@@ -1,0 +1,1 @@
+module.exports = [{"id":"c7c46e356196","b":"Upgrow Forte Syrup","g":"Tricholine Citrate + Sorbitol","s":"275mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bitoline Syrup","Hepoline Syrup","Melcholine Syrup"],"t":["upgrow forte syrup","upgrow forte syrup 275mg","tricholine citrate + sorbitol","upgrowfortesyrup"],"o":[]}];

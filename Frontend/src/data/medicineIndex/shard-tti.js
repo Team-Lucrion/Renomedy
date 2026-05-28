@@ -1,0 +1,1 @@
+module.exports = [{"id":"20a06255b9b2","b":"Ttino 0.025% Cream","g":"Isotretinoin","s":"0.025%","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["isotretinoin","ttino 0.025% cream 0.025%","ttino0.025%cream","ttino 0.025% cream"],"o":[]}];

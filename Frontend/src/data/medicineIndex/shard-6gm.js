@@ -1,0 +1,1 @@
+module.exports = [{"id":"20a263d32bc1","b":"Lactuwin 6gm Syrup","g":"Lactulose","s":"6gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["lactuwin 6gm syrup","lactuwin6gmsyrup","lactulose","lactuwin 6gm syrup 6gm"],"o":[]}];

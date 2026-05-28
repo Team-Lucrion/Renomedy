@@ -1,0 +1,1 @@
+module.exports = [{"id":"af7742255f79","b":"Lc-Vin Cream","g":"Luliconazole","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Azole 1% Cream","AF Luli Cream","Avolicia Cream"],"t":["lc-vin cream 1% w/w","lc-vin cream","lcvincream","luliconazole"],"o":[]}];

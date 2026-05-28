@@ -1,0 +1,1 @@
+module.exports = [{"id":"362d39fec2fe","b":"CZ L 5 mg/120 mg Capsule","g":"Levocetirizine + Pseudoephedrine","s":"5mg","f":"Capsule","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["cz l 5 mg/120 mg capsule 5mg","levocetirizine + pseudoephedrine","czl5mg/120mgcapsule","cz l 5 mg/120 mg capsule"],"o":[]}];

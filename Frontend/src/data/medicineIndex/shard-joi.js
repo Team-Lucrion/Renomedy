@@ -1,0 +1,1 @@
+module.exports = [{"id":"7b8d4a530ed8","b":"Joidine Ointment","g":"Povidone Iodine","s":"5% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agradine 5% Ointment","Aanid Ointment","Betadine 5% Ointment"],"t":["joidine ointment 5% w/w","povidone iodine","joidineointment","joidine ointment"],"o":[]}];

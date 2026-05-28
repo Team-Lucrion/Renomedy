@@ -1,0 +1,1 @@
+module.exports = [{"id":"8c4da2b158c6","b":"M-Laz Cream","g":"Tranexamic Acid + Kojic Acid","s":"10% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anthocyn-TX Cream","Clairmel Cream","Depiluk Cream"],"t":["m-laz cream","m-laz cream 10% w/w","tranexamic acid + kojic acid","mlazcream"],"o":[]}];

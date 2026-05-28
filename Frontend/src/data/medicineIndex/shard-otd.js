@@ -1,0 +1,1 @@
+module.exports = [{"id":"08f408bdfdec","b":"OT-Dol Ear Drop","g":"Lidocaine + Clotrimazole","s":"2% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Audotic Ear Drop","Afqure Ear Drop","Aurotic Ear Drop"],"t":["otdoleardrop","ot-dol ear drop","ot-dol ear drop 2% w/v","lidocaine + clotrimazole"],"o":[]}];

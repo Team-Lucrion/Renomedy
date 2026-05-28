@@ -1,0 +1,1 @@
+module.exports = [{"id":"db78c3148a12","b":"Zyxime Tablet","g":"Cefixime + Lactobacillus","s":"200mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Afix 200mg Tablet","Ablif LB 200mg Tablet","Alcef LB 200 Tablet"],"t":["zyxime tablet 200mg","zyxime tablet","cefixime + lactobacillus","zyximetablet"],"o":[]}];

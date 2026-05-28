@@ -1,0 +1,1 @@
+module.exports = [{"id":"e476695d3a2c","b":"Hmox P Eye Drop","g":"Moxifloxacin + Prednisolone","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apdrops PD Eye Drop","Aegamox P Eye Drop","Chhezmox Eye Drop"],"t":["moxifloxacin + prednisolone","hmox p eye drop","hmox p eye drop 0.5% w/v","hmoxpeyedrop"],"o":[]}];

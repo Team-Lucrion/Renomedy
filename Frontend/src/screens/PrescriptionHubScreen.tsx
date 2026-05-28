@@ -41,13 +41,23 @@ import {
   RENO_IT_TRUST_DISCLAIMER,
 } from '../config/renoIt';
 import { translateMedicalText } from '../utils/medicalAbbreviations';
-import { searchIndianMedicines, type IndianMedicineCatalogItem } from '../data/indianMedicines';
+import {
+  findIndianMedicine,
+  getSupportModeSafety,
+  searchIndianMedicines,
+  type IndianMedicineCatalogItem,
+} from '../data/indianMedicines';
 import { detectExcludedMedicine, hasDecimalDosage, parsePositiveInteger } from '../utils/medicineSafety';
 import { evaluateMedicineRelationships, getMedicineTrustProfile, type MedicineRelationshipNotice } from '../utils/medicineTrust';
 import {
   GUIDED_VERIFICATION_ENABLED_KEY,
   GUIDED_VERIFICATION_FIRST_COMPLETED_KEY,
 } from '../utils/verificationPreferences';
+import {
+  completeFirstMedicineOnboarding,
+  consumePendingFirstMedicineFlow,
+  isFirstMedicineOnboardingActive,
+} from '../utils/onboardingFlow';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
 type UploadState = 'idle' | 'preview' | 'uploading' | 'processing' | 'success' | 'error';
@@ -492,6 +502,44 @@ function getManualMedicationDosage(draft: MedicationDraft) {
   return dose || strength || dosage;
 }
 
+function getCatalogQueryForMedication(input: {
+  medicineName?: string | null;
+  medicine_name?: string | null;
+  brandName?: string | null;
+  brand_name?: string | null;
+  genericName?: string | null;
+  generic_name?: string | null;
+}) {
+  return (
+    normalizeWhitespace(input.brandName || input.brand_name) ||
+    normalizeWhitespace(input.medicineName || input.medicine_name) ||
+    normalizeWhitespace(input.genericName || input.generic_name)
+  );
+}
+
+function isInsulinOrInjectableDiabetesMedicine(input: {
+  medicineName?: string | null;
+  brandName?: string | null;
+  genericName?: string | null;
+  form?: string | null;
+  category?: string | null;
+  medicineType?: string | null;
+}) {
+  const text = normalizeWhitespace(
+    [
+      input.medicineName,
+      input.brandName,
+      input.genericName,
+      input.form,
+      input.category,
+      input.medicineType,
+    ]
+      .filter(Boolean)
+      .join(' '),
+  ).toLowerCase();
+  return /insulin|injectable diabetes|injection/.test(text) && /insulin|diabetes/.test(text);
+}
+
 function estimateDailyDepletion(frequency: string) {
   const normalized = normalizeWhitespace(frequency).toLowerCase();
   if (!normalized) return null;
@@ -668,6 +716,7 @@ export default function PrescriptionHubScreen() {
   const [decimalDoseConfirmations, setDecimalDoseConfirmations] = useState<Set<string>>(() => new Set());
   const [activationError, setActivationError] = useState('');
   const [pendingAddFlow, setPendingAddFlow] = useState<PendingAddFlow | null>(null);
+  const [isFirstMedicineFlowActive, setIsFirstMedicineFlowActive] = useState(false);
   const [reconciliationMode, setReconciliationMode] = useState<'updates_current' | 'adds_alongside' | null>(null);
   const [reconciliationActions, setReconciliationActions] = useState<Record<string, 'keep_active' | 'discontinue'>>({});
   const [isSavingReconciliation, setIsSavingReconciliation] = useState(false);
@@ -728,8 +777,29 @@ export default function PrescriptionHubScreen() {
     () => searchIndianMedicines(manualMedication.medicine_name, 8),
     [manualMedication.medicine_name],
   );
+  const manualCatalogMedicine = useMemo(
+    () => findIndianMedicine(getCatalogQueryForMedication({
+      medicineName: manualMedication.medicine_name,
+      brandName: manualMedication.brand_name,
+      genericName: manualMedication.generic_name,
+    })),
+    [manualMedication.brand_name, manualMedication.generic_name, manualMedication.medicine_name],
+  );
+  const manualSupportSafety = getSupportModeSafety(manualCatalogMedicine || 'recognition_only');
+  const manualNeedsHighRiskMessage =
+    manualSupportSafety.supportMode === 'manual_only_high_risk' ||
+    isInsulinOrInjectableDiabetesMedicine({
+      medicineName: manualMedication.medicine_name,
+      brandName: manualMedication.brand_name,
+      genericName: manualMedication.generic_name,
+      form: manualCatalogMedicine?.form,
+      category: manualCatalogMedicine?.category,
+      medicineType: manualCatalogMedicine?.medicineType,
+    });
   const manualExcludedSignal = detectExcludedMedicine({
     medicineName: manualMedication.medicine_name,
+    brandName: manualMedication.brand_name,
+    genericName: manualMedication.generic_name,
     instructions: manualMedication.instructions,
   });
   const manualTrustProfile = useMemo(
@@ -950,6 +1020,25 @@ export default function PrescriptionHubScreen() {
     }
   };
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const openPendingFlow = async () => {
+      if (!targetFamilyMember) return;
+      const flow = await consumePendingFirstMedicineFlow();
+      const firstMedicineFlowActive = await isFirstMedicineOnboardingActive();
+      if (!isMounted || !flow) return;
+      setIsFirstMedicineFlowActive(firstMedicineFlowActive);
+      beginAddFlow(flow === 'upload' ? { type: 'upload', source: 'gallery' } : { type: 'manual' });
+    };
+
+    void openPendingFlow();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [targetFamilyMember?.id]);
+
   const selectImage = async (source: 'camera' | 'gallery') => {
     setUploadError('');
     setDecodedPrescription(null);
@@ -1096,6 +1185,14 @@ export default function PrescriptionHubScreen() {
       if (decodeStageTimer) clearTimeout(decodeStageTimer);
       if (aiStageTimer) clearTimeout(aiStageTimer);
       console.log('[prescription-upload] backend/network error', uploadFailure);
+      if (uploadFailure instanceof ApiError && uploadFailure.statusCode === 0) {
+        setUploadState('error');
+        setProcessingStage('idle');
+        setUploadProgress(0);
+        setUploadError('This needs an internet connection.');
+        return;
+      }
+
       if (uploadFailure instanceof ApiError && uploadFailure.statusCode === 402) {
         setUpgradeMessage(uploadFailure.message);
         setUploadState('idle');
@@ -1182,8 +1279,28 @@ export default function PrescriptionHubScreen() {
       return;
     }
 
-    setUploadState('error');
-    setUploadError('Open or upload a prescription before adding medicines manually.');
+    if (!targetFamilyMember?.id) {
+      setUploadState('error');
+      setUploadError('Add a patient before adding medicines manually.');
+      return;
+    }
+
+    try {
+      const manualDraft = await api.post<PrescriptionDetails>('prescriptions/manual-draft', {
+        family_member_id: targetFamilyMember.id,
+      });
+      setDecodedPrescription(manualDraft);
+      setOcrPreviewText('');
+      setSelectedImage(null);
+      setUploadState('success');
+      setShowOcrDetails(false);
+      setProcessingStage('idle');
+      setUploadProgress(1);
+      setTimeout(() => openMedicationEditor(), 0);
+    } catch (manualDraftError) {
+      setUploadState('error');
+      setUploadError(manualDraftError instanceof Error ? manualDraftError.message : 'Unable to start manual entry.');
+    }
   };
 
   const openPrescriptionDetails = async (prescriptionId: string) => {
@@ -1266,9 +1383,11 @@ export default function PrescriptionHubScreen() {
     });
     setSelectedMedicineStrengths(medicine.strengths.length > 1 ? medicine.strengths : []);
     trackEvent('manual_medicine_search_selected', {
+      catalog_id: medicine.id,
       brand_name: medicine.brandName,
       generic_name: medicine.genericName,
       category: medicine.category,
+      support_mode: medicine.supportMode,
       has_multiple_strengths: medicine.strengths.length > 1,
     });
   };
@@ -1291,8 +1410,6 @@ export default function PrescriptionHubScreen() {
         matched_term: manualExcludedSignal.matchedTerm,
         prescription_id: decodedPrescription.id,
       });
-      setManualMedicationError(`${manualExcludedSignal.label} is not supported in this beta. Please manage it outside Swasthi with your doctor or pharmacist.`);
-      return;
     }
 
     const toOptional = (value: string) => {
@@ -1611,6 +1728,23 @@ export default function PrescriptionHubScreen() {
       genericName: medicine.generic_name,
       instructions: medicine.instructions,
     });
+    const catalogMedicine = findIndianMedicine(getCatalogQueryForMedication({
+      medicineName: draft.medicineName,
+      brandName: medicine.brand_name,
+      genericName: medicine.generic_name,
+    }));
+    const supportSafety = getSupportModeSafety(catalogMedicine || 'recognition_only');
+    const needsHighRiskMessage =
+      excludedSignal?.category === 'insulin' ||
+      supportSafety.supportMode === 'manual_only_high_risk' ||
+      isInsulinOrInjectableDiabetesMedicine({
+        medicineName: draft.medicineName,
+        brandName: medicine.brand_name,
+        genericName: medicine.generic_name,
+        form: catalogMedicine?.form,
+        category: catalogMedicine?.category,
+        medicineType: catalogMedicine?.medicineType,
+      });
     const needsDecimalConfirmation = hasDecimalDosage(draft.dose, draft.strength);
     const relationshipNotices = getRelationshipNoticesForDraft(medicine, draft);
     const relationshipConfirmationKey = getRelationshipConfirmationKey(relationshipNotices);
@@ -1629,7 +1763,23 @@ export default function PrescriptionHubScreen() {
         prescription_id: decodedPrescription?.id ?? null,
         prescription_medication_id: medicine.id,
       });
-      setActivationError(`${excludedSignal.label} is not supported for activation during this beta.`);
+      setActivationError(needsHighRiskMessage
+        ? 'This medicine requires careful manual management. Please verify timing and dosage directly with your doctor or pharmacist.'
+        : `${excludedSignal.label} can be saved for recognition, but cannot be activated for automated scheduling in this beta.`);
+      return;
+    }
+
+    if (!supportSafety.normalAutomationAllowed) {
+      trackEvent(supportSafety.supportMode === 'blocked' ? 'blocked_medicine_detected' : 'medicine_activation_blocked_support_mode', {
+        source: 'activation',
+        catalog_id: catalogMedicine?.id ?? null,
+        support_mode: supportSafety.supportMode,
+        prescription_id: decodedPrescription?.id ?? null,
+        prescription_medication_id: medicine.id,
+      });
+      setActivationError(needsHighRiskMessage
+        ? 'This medicine requires careful manual management. Please verify timing and dosage directly with your doctor or pharmacist.'
+        : supportSafety.message);
       return;
     }
 
@@ -1703,6 +1853,11 @@ export default function PrescriptionHubScreen() {
         }
       }
       await refreshAll();
+      if (isFirstMedicineFlowActive) {
+        setIsFirstMedicineFlowActive(false);
+        await completeFirstMedicineOnboarding();
+        navigation.dispatch(DrawerActions.jumpTo('Medications'));
+      }
     } catch (activateFailure) {
       setActivationError(activateFailure instanceof Error ? activateFailure.message : 'Unable to save this medicine.');
     } finally {
@@ -1737,6 +1892,23 @@ export default function PrescriptionHubScreen() {
       genericName: medicine.generic_name,
       instructions: medicine.instructions,
     });
+    const catalogMedicine = findIndianMedicine(getCatalogQueryForMedication({
+      medicineName: draft.medicineName,
+      brandName: medicine.brand_name,
+      genericName: medicine.generic_name,
+    }));
+    const supportSafety = getSupportModeSafety(catalogMedicine || 'recognition_only');
+    const needsHighRiskMessage =
+      excludedSignal?.category === 'insulin' ||
+      supportSafety.supportMode === 'manual_only_high_risk' ||
+      isInsulinOrInjectableDiabetesMedicine({
+        medicineName: draft.medicineName,
+        brandName: medicine.brand_name,
+        genericName: medicine.generic_name,
+        form: catalogMedicine?.form,
+        category: catalogMedicine?.category,
+        medicineType: catalogMedicine?.medicineType,
+      });
     const requiresDecimalConfirmation = hasDecimalDosage(draft.dose, draft.strength);
     const hasConfirmedDecimalDose = decimalDoseConfirmations.has(medicine.id);
     const trustProfile = getMedicineTrustProfile({
@@ -1751,6 +1923,7 @@ export default function PrescriptionHubScreen() {
     const hasConfirmedRelationship = relationshipConfirmations[medicine.id] === relationshipConfirmationKey;
     const isActivationBlocked =
       Boolean(excludedSignal) ||
+      !supportSafety.normalAutomationAllowed ||
       (requiresDecimalConfirmation && !hasConfirmedDecimalDose) ||
       (relationshipNotices.length > 0 && !hasConfirmedRelationship);
 
@@ -1768,6 +1941,9 @@ export default function PrescriptionHubScreen() {
             Safety molecule: {trustProfile.genericName || 'not identified'} | Risk: {trustProfile.riskTier} | Refill: {trustProfile.refillCriticality}
           </Text>
           <Text style={styles.trustMetadataText}>
+            Catalog support: {supportSafety.supportMode.replace(/_/g, ' ')}; automated scheduling {supportSafety.normalAutomationAllowed ? 'allowed' : 'not allowed'}.
+          </Text>
+          <Text style={styles.trustMetadataText}>
             Last verified: {medicine.verified_at ? formatPrescriptionDate(medicine.verified_at) : 'not verified yet'}
           </Text>
         </View>
@@ -1775,7 +1951,23 @@ export default function PrescriptionHubScreen() {
           <View style={styles.safetyNotice}>
             <Ionicons name="shield-checkmark-outline" size={18} color="#92400E" />
             <Text style={styles.safetyNoticeText}>
-              {excludedSignal.label} is outside this beta. This medicine cannot be activated here.
+              {needsHighRiskMessage
+                ? 'This medicine requires careful manual management. Please verify timing and dosage directly with your doctor or pharmacist.'
+                : `${excludedSignal.label} can be saved for recognition, but cannot be activated for automated scheduling in this beta.`}
+            </Text>
+          </View>
+        ) : null}
+        {!excludedSignal && !supportSafety.normalAutomationAllowed ? (
+          <View style={needsHighRiskMessage || supportSafety.supportMode === 'blocked' ? styles.safetyNotice : styles.catalogNotice}>
+            <Ionicons
+              name={needsHighRiskMessage || supportSafety.supportMode === 'blocked' ? 'shield-checkmark-outline' : 'information-circle-outline'}
+              size={18}
+              color={needsHighRiskMessage || supportSafety.supportMode === 'blocked' ? '#92400E' : colors.primary}
+            />
+            <Text style={needsHighRiskMessage || supportSafety.supportMode === 'blocked' ? styles.safetyNoticeText : styles.catalogNoticeText}>
+              {needsHighRiskMessage
+                ? 'This medicine requires careful manual management. Please verify timing and dosage directly with your doctor or pharmacist.'
+                : supportSafety.message}
             </Text>
           </View>
         ) : null}
@@ -2335,6 +2527,9 @@ export default function PrescriptionHubScreen() {
               <Text style={styles.secondaryUploadButtonText}>Gallery</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.prescriptionPrivacyText}>
+            Your prescription is stored privately and is only visible to people you invite.
+          </Text>
 
           {selectedImage && uploadState !== 'success' ? (
             <TouchableOpacity
@@ -2612,7 +2807,7 @@ export default function PrescriptionHubScreen() {
                       <View style={styles.searchResultList}>
                         {medicineSearchResults.map((medicine) => (
                           <TouchableOpacity
-                            key={`${medicine.brandName}-${medicine.genericName}`}
+                            key={medicine.id}
                             style={styles.searchResultRow}
                             onPress={() => selectMedicineSuggestion(medicine)}
                           >
@@ -2621,6 +2816,9 @@ export default function PrescriptionHubScreen() {
                               <Text style={styles.searchResultMeta}>
                                 {medicine.selectedStrength ? `${medicine.selectedStrength} matched | ` : ''}
                                 Safety molecule: {medicine.genericName} | {medicine.strengths.join(', ')}
+                              </Text>
+                              <Text style={styles.searchResultMeta}>
+                                {medicine.supportMode.replace(/_/g, ' ')} | priority {medicine.indiaPriorityScore}
                               </Text>
                             </View>
                             <Ionicons name="add-circle-outline" size={20} color={colors.primary} />
@@ -2654,6 +2852,9 @@ export default function PrescriptionHubScreen() {
                         </Text>
                         <Text style={styles.trustMetadataText}>
                           Refill criticality {manualTrustProfile.refillCriticality}; verification required before activation.
+                        </Text>
+                        <Text style={styles.trustMetadataText}>
+                          Catalog support: {manualSupportSafety.supportMode.replace(/_/g, ' ')}; automated scheduling {manualSupportSafety.normalAutomationAllowed ? 'allowed after verification' : 'not allowed'}.
                         </Text>
                       </View>
                     ) : null}
@@ -2808,7 +3009,24 @@ export default function PrescriptionHubScreen() {
                     <View style={styles.safetyNotice}>
                       <Ionicons name="shield-checkmark-outline" size={18} color="#92400E" />
                       <Text style={styles.safetyNoticeText}>
-                        {manualExcludedSignal.label} is outside this closed beta and cannot be activated.
+                        {manualExcludedSignal.category === 'insulin'
+                          ? 'This medicine requires careful manual management. Please verify timing and dosage directly with your doctor or pharmacist.'
+                          : `${manualExcludedSignal.label} can be saved for recognition, but cannot be activated for automated scheduling in this beta.`}
+                      </Text>
+                    </View>
+                  ) : null}
+
+                  {manualCatalogMedicine && !manualSupportSafety.normalAutomationAllowed ? (
+                    <View style={manualNeedsHighRiskMessage || manualSupportSafety.supportMode === 'blocked' ? styles.safetyNotice : styles.catalogNotice}>
+                      <Ionicons
+                        name={manualNeedsHighRiskMessage || manualSupportSafety.supportMode === 'blocked' ? 'shield-checkmark-outline' : 'information-circle-outline'}
+                        size={18}
+                        color={manualNeedsHighRiskMessage || manualSupportSafety.supportMode === 'blocked' ? '#92400E' : colors.primary}
+                      />
+                      <Text style={manualNeedsHighRiskMessage || manualSupportSafety.supportMode === 'blocked' ? styles.safetyNoticeText : styles.catalogNoticeText}>
+                        {manualNeedsHighRiskMessage
+                          ? 'This medicine requires careful manual management. Please verify timing and dosage directly with your doctor or pharmacist.'
+                          : manualSupportSafety.message}
                       </Text>
                     </View>
                   ) : null}
@@ -2820,9 +3038,9 @@ export default function PrescriptionHubScreen() {
                       <Text style={styles.clearButtonText}>Cancel</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={[styles.processButton, manualExcludedSignal ? styles.disabledButton : null]}
+                      style={styles.processButton}
                       onPress={() => void saveMedicationDraft()}
-                      disabled={isSavingMedication || Boolean(manualExcludedSignal)}
+                      disabled={isSavingMedication}
                     >
                       <Text style={styles.processButtonText}>
                         {isSavingMedication ? 'Saving...' : editingMedicationId ? 'Update draft' : 'Save as unverified draft'}
@@ -3063,18 +3281,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.pill,
-    height: 44,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
     ...shadows.sm,
   },
   refreshButton: {
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.pill,
-    height: 42,
+    height: 48,
     justifyContent: 'center',
-    width: 42,
+    width: 48,
     ...shadows.sm,
   },
   heroBlock: {
@@ -3223,6 +3441,13 @@ const styles = StyleSheet.create({
     ...typography.label,
     color: colors.primary,
   },
+  prescriptionPrivacyText: {
+    ...typography.body,
+    color: colors.text,
+    lineHeight: 22,
+    marginTop: spacing.md,
+    textAlign: 'center',
+  },
   processButton: {
     alignItems: 'center',
     backgroundColor: colors.primary,
@@ -3330,6 +3555,23 @@ const styles = StyleSheet.create({
   safetyNoticeText: {
     ...typography.bodySmall,
     color: '#78350F',
+    flex: 1,
+    lineHeight: 20,
+  },
+  catalogNotice: {
+    alignItems: 'flex-start',
+    backgroundColor: '#F5FBFA',
+    borderColor: '#CFE8E2',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.md,
+    padding: spacing.md,
+  },
+  catalogNoticeText: {
+    ...typography.bodySmall,
+    color: colors.primary,
     flex: 1,
     lineHeight: 20,
   },
@@ -3491,11 +3733,11 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.pill,
     flexDirection: 'row',
     gap: spacing.xs,
-    minHeight: 36,
+    minHeight: 48,
     paddingHorizontal: 12,
   },
   viewPrescriptionChipText: {
-    ...typography.bodySmall,
+    ...typography.body,
     color: colors.primary,
     fontWeight: '700',
   },
@@ -3588,7 +3830,7 @@ const styles = StyleSheet.create({
   summarySectionLabel: {
     ...typography.label,
     color: colors.primary,
-    fontSize: 12,
+    fontSize: 14,
     letterSpacing: 0.8,
     marginBottom: spacing.sm,
     textTransform: 'uppercase',
@@ -3742,7 +3984,7 @@ const styles = StyleSheet.create({
   fieldReviewLabel: {
     ...typography.label,
     color: colors.text,
-    fontSize: 14,
+    fontSize: 16,
   },
   fieldReviewValue: {
     ...typography.body,
@@ -3765,7 +4007,7 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: '#2F3340',
     flex: 1,
-    minHeight: 46,
+    minHeight: 48,
     paddingVertical: 10,
   },
   fieldReviewSublabel: {
@@ -3789,7 +4031,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FEF3C7',
     borderRadius: borderRadius.pill,
-    minHeight: 32,
+    minHeight: 48,
+    minWidth: 48,
     paddingHorizontal: 10,
     justifyContent: 'center',
   },
@@ -3810,7 +4053,6 @@ const styles = StyleSheet.create({
   fieldWarningText: {
     ...typography.bodySmall,
     color: '#92400E',
-    fontSize: 12,
     fontWeight: '700',
   },
   useChip: {
@@ -4005,7 +4247,7 @@ const styles = StyleSheet.create({
   renoItTopEyebrow: {
     ...typography.bodySmall,
     color: '#DDF8EE',
-    fontSize: 11,
+    fontSize: 14,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
@@ -4031,7 +4273,6 @@ const styles = StyleSheet.create({
   renoItDateBadgeText: {
     ...typography.bodySmall,
     color: colors.surface,
-    fontSize: 12,
     fontWeight: '700',
   },
   renoItBody: {
@@ -4077,7 +4318,6 @@ const styles = StyleSheet.create({
   renoItListPillText: {
     ...typography.bodySmall,
     color: '#1B6F58',
-    fontSize: 12,
     fontWeight: '700',
   },
   renoItNotesCard: {
@@ -4199,7 +4439,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
     borderRadius: borderRadius.md,
-    minHeight: 40,
+    minHeight: 48,
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
   },
@@ -4213,7 +4453,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: borderRadius.md,
     borderWidth: 1,
-    minHeight: 40,
+    minHeight: 48,
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
   },
@@ -4266,7 +4506,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: borderRadius.md,
     borderWidth: 1,
-    minHeight: 38,
+    minHeight: 48,
     justifyContent: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -4276,7 +4516,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   optionChipText: {
-    ...typography.bodySmall,
+    ...typography.body,
     color: colors.text,
     fontWeight: '700',
   },
@@ -4337,10 +4577,10 @@ const styles = StyleSheet.create({
   historyIcon: {
     alignItems: 'center',
     backgroundColor: `${colors.secondary}25`,
-    borderRadius: 22,
-    height: 44,
+    borderRadius: 24,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
   },
   historyInfo: {
     flex: 1,
@@ -4466,7 +4706,7 @@ const styles = StyleSheet.create({
   floatingPrescriptionText: {
     ...typography.label,
     color: colors.surface,
-    fontSize: 15,
+    fontSize: 16,
   },
   prescriptionModal: {
     backgroundColor: '#101820',
@@ -4488,9 +4728,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.12)',
     borderRadius: borderRadius.pill,
-    height: 44,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
   },
   prescriptionModalImage: {
     flex: 1,

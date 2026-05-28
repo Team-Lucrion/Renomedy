@@ -1,0 +1,1 @@
+module.exports = [{"id":"647360937fb6","b":"Vgtif-M3 Tablet","g":"Metformin + Voglibose","s":"500mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Advog M 0.3 Plus Tablet","Advog M 0.2 Tablet SR","Agivog M 0.3 Tablet SR"],"t":["vgtif-m3 tablet","metformin + voglibose","vgtif-m3 tablet 500mg","vgtifm3tablet"],"o":[]}];

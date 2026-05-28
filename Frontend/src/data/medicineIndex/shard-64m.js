@@ -1,0 +1,1 @@
+module.exports = [{"id":"382571167caa","b":"Derinide-AQ Nasal Spray","g":"Budesonide","s":"64mcg","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["derinide-aq nasal spray 64mcg","budesonide","derinideaqnasalspray","derinide-aq nasal spray"],"o":[]}];

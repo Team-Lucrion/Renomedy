@@ -1,0 +1,1 @@
+module.exports = [{"id":"9f2cdbe601d8","b":"Smroxtif Oral Drops","g":"Ambroxol + Guaifenesin","s":"7.5mg","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Asthakind-P Drops","Astharil-LS Oral Drops","Afrodyl Oral Drops"],"t":["smroxtif oral drops","smroxtif oral drops 7.5mg","ambroxol + guaifenesin","smroxtiforaldrops"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"90b65dda64db","b":"K2-Tone Cream","g":"Clobetasol + Gentamicin","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bactiderm G Cream","Cosvate-Gm Cream","Clop-G Cream"],"t":["k2tonecream","k2-tone cream 0.05% w/w","k2-tone cream","clobetasol + gentamicin"],"o":[]}];

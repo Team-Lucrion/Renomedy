@@ -1,0 +1,1 @@
+module.exports = [{"id":"48c61b1ad504","b":"FP Xime 200mg Tablet","g":"Cefixime","s":"200mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Abixim 200mg Tablet","Altax-O 200 Tablet DT","Axim 200mg Tablet"],"t":["fp xime 200mg tablet","cefixime","fp xime 200mg tablet 200mg","fpxime200mgtablet"],"o":[]}];

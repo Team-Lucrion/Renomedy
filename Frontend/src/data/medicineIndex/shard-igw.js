@@ -1,0 +1,1 @@
+module.exports = [{"id":"b371245720de","b":"IG-Wax Ear Drop","g":"Benzocaine + Chlorbutol","s":"2.7% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Arniwax Ear Drop","Aceclean Ear Wax Drop","Bingo Wax Ear Drop"],"t":["ig-wax ear drop 2.7% w/v","igwaxeardrop","benzocaine + chlorbutol","ig-wax ear drop"],"o":[]}];

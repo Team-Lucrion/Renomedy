@@ -1,0 +1,1 @@
+module.exports = [{"id":"654effb42f7b","b":"Wcs-LS Syrup","g":"Levosalbutamol + Ambroxol","s":"1mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alpus LS Syrup","Ambrolid LS Syrup","Ambrosal LS Syrup"],"t":["wcs-ls syrup 1mg/5ml","levosalbutamol + ambroxol","wcslssyrup","wcs-ls syrup"],"o":[]}];

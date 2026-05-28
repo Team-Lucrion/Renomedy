@@ -1,0 +1,1 @@
+module.exports = [{"id":"213fc40e8602","b":"Qfac 125mg Syrup","g":"Cefaclor","s":"125mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Articlor 125mg Dry Syrup","Articlar 125mg Dry Syrup","Bioclor Syrup"],"t":["qfac 125mg syrup 125mg","cefaclor","qfac125mgsyrup","qfac 125mg syrup"],"o":[]}];

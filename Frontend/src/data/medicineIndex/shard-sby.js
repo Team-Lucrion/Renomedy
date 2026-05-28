@@ -1,0 +1,1 @@
+module.exports = [{"id":"641f78ba222a","b":"Vatican's Bycold + Syrup","g":"Chlorpheniramine Maleate + Paracetamol","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alerfri Syrup","Alerfri P Syrup","Ace Plus Syrup"],"t":["[\\","s bycold + syrup 2mg\", \\\\\\",", \"vatican\\\\\\","s bycold + syrup\"]\\"],"o":[]}];

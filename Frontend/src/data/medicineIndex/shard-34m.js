@@ -1,0 +1,1 @@
+module.exports = [{"id":"04a6dc20b7cc","b":"Clincarb Ear Drop","g":"Sodium Bicarbonate + Glycerin","s":"34mg/ml","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["clincarbeardrop","clincarb ear drop","clincarb ear drop 34mg/ml","sodium bicarbonate + glycerin"],"o":[]}];

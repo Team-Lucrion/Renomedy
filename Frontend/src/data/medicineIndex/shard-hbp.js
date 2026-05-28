@@ -1,0 +1,1 @@
+module.exports = [{"id":"f8c8c755a062","b":"HB Pod DS 50mg Syrup","g":"Cefpodoxime Proxetil","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acef Syrup","Alpod 50mg Syrup","Alarpod 50mg Dry Syrup"],"t":["hbpodds50mgsyrup","cefpodoxime proxetil","hb pod ds 50mg syrup 50mg","hb pod ds 50mg syrup"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"de3d07dd4e81","b":"Lsmini Syrup","g":"Levosalbutamol + Ambroxol","s":"1mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alpus LS Syrup","Ambrolid LS Syrup","Ambrosal LS Syrup"],"t":["lsminisyrup","lsmini syrup","levosalbutamol + ambroxol","lsmini syrup 1mg/5ml"],"o":[]}];

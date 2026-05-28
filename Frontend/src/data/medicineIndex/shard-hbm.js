@@ -1,0 +1,1 @@
+module.exports = [{"id":"452519283ed9","b":"Hbmol 10mg/ml Infusion","g":"Paracetamol","s":"1000mg","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Anetol 1000mg Infusion","Anemol 1000mg Infusion","Azpar IV Infusion"],"t":["hbmol 10mg/ml infusion 1000mg","hbmol10mg/mlinfusion","hbmol 10mg/ml infusion","paracetamol"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"1981027e8de5","b":"Carecof Syrup","g":"Phenylephrine + Chlorpheniramine Maleate","s":"5mcg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["phenylephrine + chlorpheniramine maleate","carecof syrup","carecofsyrup","carecof syrup 5mcg"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"9966a4762d89","b":"Hga 500mg Tablet","g":"Azithromycin","s":"500mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azithral 500 Tablet","Azee 500 Tablet","Azicip 500 Tablet"],"t":["azithromycin","hga500mgtablet","hga 500mg tablet 500mg","hga 500mg tablet"],"o":[]}];

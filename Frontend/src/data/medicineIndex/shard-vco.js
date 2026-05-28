@@ -1,0 +1,1 @@
+module.exports = [{"id":"315fb15d06fe","b":"Vcool Plus Syrup","g":"Sucralfate + Oxetacaine","s":"1000mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alcocid 1000mg/20mg Syrup","Aulcer OS Syrup","Acifate O Syrup"],"t":["vcool plus syrup","vcool plus syrup 1000mg","sucralfate + oxetacaine","vcoolplussyrup"],"o":[]}];

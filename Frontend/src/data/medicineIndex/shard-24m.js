@@ -1,0 +1,1 @@
+module.exports = [{"id":"a46f7fab6432","b":"Pantocom Capsule","g":"Domperidone + Pantoprazole","s":"24mg","f":"Capsule","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":60,"a":[],"t":["pantocomcapsule","pantocom capsule","domperidone + pantoprazole","pantocom capsule 24mg"],"o":["pan40","pan-40","p an 40"]}];

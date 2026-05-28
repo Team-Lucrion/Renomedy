@@ -1,0 +1,1 @@
+module.exports = [{"id":"a28a18fc8e1f","b":"Scf Syrup","g":"Sucralfate","s":"1000mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acefate Syrup","Blefate 1000mg Syrup","Conicain S 1000mg Syrup"],"t":["scf syrup 1000mg","scfsyrup","sucralfate","scf syrup"],"o":[]}];

@@ -19,6 +19,8 @@ export type AppAnalyticsEvent =
   | 'manual_medicine_search_selected'
   | 'manual_medicine_free_text_used'
   | 'excluded_medicine_attempted'
+  | 'blocked_medicine_detected'
+  | 'medicine_activation_blocked_support_mode'
   | 'decimal_dosage_confirmation_required'
   | 'decimal_dosage_confirmed'
   | 'prescription_reconciliation_interstitial_seen'
@@ -26,6 +28,8 @@ export type AppAnalyticsEvent =
   | 'prescription_reconciliation_saved'
   | 'medicine_relationship_confirmation_required'
   | 'medicine_relationship_confirmed'
+  | 'offline_dose_log_queued'
+  | 'offline_dose_log_sync_failed'
   | 'medicine_verification_completed';
 
 export function trackEvent(

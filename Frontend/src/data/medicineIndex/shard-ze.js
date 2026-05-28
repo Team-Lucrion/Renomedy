@@ -1,0 +1,1 @@
+module.exports = [{"id":"0e57844b6feb","b":"Clolite ZE Cream","g":"Clobetasol","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Abetanate Cream","Acloveta 0.05% Cream","Aniclov 0.05% Cream"],"t":["clobetasol","clolite ze cream","clolitezecream","clolite ze cream 0.05% w/w"],"o":[]}];

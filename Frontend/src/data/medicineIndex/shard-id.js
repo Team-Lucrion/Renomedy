@@ -1,0 +1,1 @@
+module.exports = [{"id":"2b4ef7908237","b":"Etaze-ID Cream","g":"Mometasone + Fusidic Acid","s":"0.1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Armom F Cream","Actsone F Cream","Bactirest M Cream"],"t":["mometasone + fusidic acid","etazeidcream","etaze-id cream 0.1% w/w","etaze-id cream"],"o":[]}];

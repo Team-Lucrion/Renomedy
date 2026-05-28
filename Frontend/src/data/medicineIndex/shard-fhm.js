@@ -1,0 +1,1 @@
+module.exports = [{"id":"8f5526090b8f","b":"Fhm Luezol Cream","g":"Luliconazole","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Azole 1% Cream","AF Luli Cream","Avolicia Cream"],"t":["fhmluezolcream","luliconazole","fhm luezol cream 1% w/w","fhm luezol cream"],"o":[]}];

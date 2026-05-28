@@ -1,0 +1,1 @@
+module.exports = [{"id":"b698ac7b6120","b":"Duolin LD Respules","g":"Levosalbutamol + Ipratropium","s":"0.63mg","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["duolin ld respules 0.63mg","levosalbutamol + ipratropium","duolinldrespules","duolin ld respules"],"o":[]}];

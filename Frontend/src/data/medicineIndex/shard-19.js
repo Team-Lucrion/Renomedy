@@ -1,0 +1,1 @@
+module.exports = [{"id":"d0e7e65a175d","b":"Zincoren Eye/Ear Drops","g":"Boric Acid + Sodium Chloride","s":"1.9% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["boric acid + sodium chloride","zincoren eye/ear drops 1.9% w/v","zincoren eye/ear drops","zincoreneye/eardrops"],"o":[]}];

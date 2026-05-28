@@ -1,0 +1,1 @@
+module.exports = [{"id":"d142bd4c620b","b":"Well PI Cream","g":"Lidocaine + Calcium Dobesilate","s":"3% w/w","f":"Cream","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anasure Cream","Caldob Cream","Hemolit Cream"],"t":["well pi cream 3% w/w","wellpicream","well pi cream","lidocaine + calcium dobesilate"],"o":[]}];

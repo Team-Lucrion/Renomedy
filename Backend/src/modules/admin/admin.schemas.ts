@@ -6,8 +6,7 @@ export const createBetaInviteSchema = z.object({
   email: z.string().email().optional(),
   phone: z.string().min(8).optional(),
   notes: z.string().optional(),
-  expires_at: z.string().optional(),
-  max_uses: z.coerce.number().int().positive().optional()
+  expires_at: z.string().optional()
 });
 
 export const assignSubscriptionSchema = z.object({

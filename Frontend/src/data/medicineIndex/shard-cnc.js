@@ -1,0 +1,1 @@
+module.exports = [{"id":"7622bb3baff6","b":"CN Cyclo 1% Cream","g":"Ciclopirox","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Batrafen 1% Cream","C Win Cream","Candidox 1% Cream"],"t":["ciclopirox","cn cyclo 1% cream 1% w/w","cn cyclo 1% cream","cncyclo1%cream"],"o":[]}];

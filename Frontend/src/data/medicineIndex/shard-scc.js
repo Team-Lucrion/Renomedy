@@ -1,0 +1,1 @@
+module.exports = [{"id":"10f28320fefa","b":"Scc Cough Syrup","g":"Ambroxol + Guaifenesin","s":"30mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ambrolite S-SF Syrup Sugar Free","Ambromix Syrup","Agikuff XL Syrup"],"t":["scccoughsyrup","ambroxol + guaifenesin","scc cough syrup","scc cough syrup 30mg/5ml"],"o":[]}];

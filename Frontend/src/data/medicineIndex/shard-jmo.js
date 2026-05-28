@@ -1,0 +1,1 @@
+module.exports = [{"id":"f743e4cac693","b":"J Mox KT Eye Drop","g":"Ketorolac + Moxifloxacin","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anamox KT Eye Drop","Aegamox-KT Eye Drop","Admox Plus Eye Drop"],"t":["j mox kt eye drop","jmoxkteyedrop","j mox kt eye drop 0.5% w/v","ketorolac + moxifloxacin"],"o":[]}];

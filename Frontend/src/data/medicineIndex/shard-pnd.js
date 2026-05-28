@@ -1,0 +1,1 @@
+module.exports = [{"id":"955d10e626fa","b":"Pnd DSR Capsule","g":"Domperidone + Pantoprazole","s":"30mg","f":"Capsule","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Anleo-DSR Capsule","Aciban DSR Capsule","Aspan-DSR Capsule"],"t":["pnd dsr capsule","domperidone + pantoprazole","pnddsrcapsule","pnd dsr capsule 30mg"],"o":[]}];

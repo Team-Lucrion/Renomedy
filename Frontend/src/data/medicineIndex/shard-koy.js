@@ -1,0 +1,1 @@
+module.exports = [{"id":"dfc7452b71be","b":"Koycal Syrup","g":"Diphenhydramine + Dextromethorphan Hydrobromide","s":"8mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["koycal syrup","koycal syrup 8mg","diphenhydramine + dextromethorphan hydrobromide","koycalsyrup"],"o":[]}];

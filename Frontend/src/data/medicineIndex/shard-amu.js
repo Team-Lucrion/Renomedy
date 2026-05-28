@@ -1,0 +1,1 @@
+module.exports = [{"id":"96e738c4f531","b":"Amurol NX 125mg Syrup","g":"Amoxycillin","s":"125mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amoxycillin 125mg Syrup","AD Mox Syrup","Alkamox 125mg Syrup"],"t":["amoxycillin","amurol nx 125mg syrup 125mg","amurol nx 125mg syrup","amurolnx125mgsyrup"],"o":[]}];

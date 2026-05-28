@@ -1,0 +1,1 @@
+module.exports = [{"id":"19971a842920","b":"T Pod 50mg Syrup","g":"Cefpodoxime Proxetil","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avicef O 50mg Dry Syrup","Arodox 50mg Dry Syrup","Avopod 50mg Dry Syrup"],"t":["cefpodoxime proxetil","t pod 50mg syrup 50mg/5ml","t pod 50mg syrup","tpod50mgsyrup"],"o":[]}];

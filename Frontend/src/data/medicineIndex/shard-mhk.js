@@ -1,0 +1,1 @@
+module.exports = [{"id":"18e0f4ac51ad","b":"MH Kid Syrup","g":"Mefenamic Acid + Paracetamol","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acemol MF Syrup","Asomef P Syrup","Azimef P Syrup"],"t":["mh kid syrup","mhkidsyrup","mefenamic acid + paracetamol","mh kid syrup 50mg"],"o":[]}];

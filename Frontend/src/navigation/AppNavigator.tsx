@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useAuth, useUser } from '@clerk/expo';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, type NavigationProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
@@ -26,6 +26,7 @@ import PricingScreen from '../screens/PricingScreen';
 import FamilyMemberDetailsScreen from '../screens/FamilyMemberDetailsScreen';
 import BetaInviteScreen from '../screens/BetaInviteScreen';
 import LanguageSetupScreen from '../screens/LanguageSetupScreen';
+import AboutSwasthiScreen from '../screens/AboutSwasthiScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -37,6 +38,7 @@ export type RootStackParamList = {
   AddFamilyMember: { memberId?: string } | undefined;
   FamilyMemberDetails: { memberId: string };
   MedicationActivation: { medicationId: string } | undefined;
+  AboutSwasthi: undefined;
 };
 
 export type MainTabParamList = {
@@ -78,6 +80,9 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   const displayName = currentUser?.full_name ?? user?.fullName ?? t('common.appName');
   const familyName = familyGroups[0]?.family_name ?? t('family.titleFallback');
   const planName = subscriptionSummary?.plan?.display_name ?? 'Free';
+  const openAboutSwasthi = () => {
+    props.navigation.getParent<NavigationProp<RootStackParamList>>()?.navigate('AboutSwasthi');
+  };
 
   return (
     <View style={drawerStyles.container}>
@@ -116,6 +121,14 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             </TouchableOpacity>
           );
         })}
+        <TouchableOpacity
+          activeOpacity={0.82}
+          onPress={openAboutSwasthi}
+          style={drawerStyles.menuItem}
+        >
+          <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
+          <Text style={drawerStyles.menuText}>About Swasthi</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -150,9 +163,9 @@ const MainTabs = () => {
 };
 
 export default function AppNavigator() {
-  const { isReady, hasExplicitLanguagePreference } = useLanguage();
+  const { isReady } = useLanguage();
   const { isLoaded, isSignedIn } = useAuth();
-  const { currentUser, familyGroups, isLoading } = useAppData();
+  const { currentUser, isLoading, isOffline, pendingDoseLogCount } = useAppData();
   const betaApproved = Boolean(currentUser?.beta_access_approved || currentUser?.beta_access_status === 'active');
 
   if (!isReady || !isLoaded || (isSignedIn && isLoading)) {
@@ -162,26 +175,60 @@ export default function AppNavigator() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <View style={appNavigatorStyles.shell}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isSignedIn ? (
           <Stack.Screen name="Login" component={LoginScreen} />
         ) : !betaApproved ? (
           <Stack.Screen name="BetaInvite" component={BetaInviteScreen} />
-        ) : (!currentUser?.onboarding_complete || familyGroups.length === 0) ? (
+        ) : !currentUser?.onboarding_complete ? (
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-        ) : !hasExplicitLanguagePreference ? (
-          <Stack.Screen name="LanguageSetup" component={LanguageSetupScreen} />
         ) : (
           <Stack.Screen name="MainTabs" component={MainTabs} />
         )}
+        <Stack.Screen name="LanguageSetup" component={LanguageSetupScreen} />
         <Stack.Screen name="AddFamilyMember" component={AddFamilyMemberScreen} options={{ headerShown: true, title: '', headerTintColor: colors.primary, headerShadowVisible: false }} />
         <Stack.Screen name="FamilyMemberDetails" component={FamilyMemberDetailsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="MedicationActivation" component={MedicationActivationScreen} options={{ headerShown: true, title: '', headerTintColor: colors.primary, headerShadowVisible: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+        <Stack.Screen name="AboutSwasthi" component={AboutSwasthiScreen} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      {isOffline ? (
+        <View pointerEvents="none" style={appNavigatorStyles.offlineBanner}>
+          <Text style={appNavigatorStyles.offlineText}>
+            You're offline — changes will sync when you reconnect.
+            {pendingDoseLogCount > 0 ? ` ${pendingDoseLogCount} dose change${pendingDoseLogCount === 1 ? '' : 's'} waiting.` : ''}
+          </Text>
+        </View>
+      ) : null}
+    </View>
   );
 }
+
+const appNavigatorStyles = StyleSheet.create({
+  shell: {
+    flex: 1,
+  },
+  offlineBanner: {
+    backgroundColor: '#F5FBFA',
+    borderColor: '#CFE8E2',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    bottom: spacing.md,
+    left: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 12,
+    position: 'absolute',
+    right: spacing.md,
+  },
+  offlineText: {
+    ...typography.body,
+    color: colors.text,
+    lineHeight: 22,
+    textAlign: 'center',
+  },
+});
 
 const drawerStyles = StyleSheet.create({
   container: {

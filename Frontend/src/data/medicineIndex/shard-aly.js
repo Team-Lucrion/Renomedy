@@ -1,0 +1,1 @@
+module.exports = [{"id":"f5612558041e","b":"Alykon Syrup","g":"Disodium Hydrogen Citrate","s":"1.38gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alka C Syrup","Alkasyp Syrup","Alkacitrate 1.38gm Syrup"],"t":["alykonsyrup","alykon syrup 1.38gm","alykon syrup","disodium hydrogen citrate"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"0568c3e0852a","b":"Jamila Cream","g":"Hydroquinone + Mometasone","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aritop Hc Cream","All Fair Cream","Acnitin-MH Cream"],"t":["jamila cream","jamilacream","hydroquinone + mometasone","jamila cream 2% w/w"],"o":[]}];

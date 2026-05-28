@@ -1,0 +1,1 @@
+module.exports = [{"id":"dffce39a1045","b":"TCN Eye Drop","g":"Tobramycin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Appatoba Eye Drop","Aitoba 0.3% Eye Drop","Clatob 0.3% Eye Drop"],"t":["tcn eye drop","tcneyedrop","tobramycin","tcn eye drop 0.3% w/v"],"o":[]}];

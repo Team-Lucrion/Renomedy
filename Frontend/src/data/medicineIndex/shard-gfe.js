@@ -1,0 +1,1 @@
+module.exports = [{"id":"25a51f97f26d","b":"G FEX 180mg Tablet","g":"Fexofenadine","s":"180mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra 180mg Tablet","Air 180 Tablet","Algrot 180mg Tablet"],"t":["gfex180mgtablet","fexofenadine","g fex 180mg tablet 180mg","g fex 180mg tablet"],"o":[]}];

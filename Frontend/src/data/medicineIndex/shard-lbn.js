@@ -1,0 +1,1 @@
+module.exports = [{"id":"9a5571539927","b":"LB Nir Syrup","g":"Cefdinir + Lactobacillus","s":"125mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["lb nir syrup","lb nir syrup 125mg","cefdinir + lactobacillus","lbnirsyrup"],"o":[]}];

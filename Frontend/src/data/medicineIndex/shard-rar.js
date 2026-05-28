@@ -1,0 +1,1 @@
+module.exports = [{"id":"8f16782982b3","b":"Rarritol 2mg/5ml Syrup","g":"Cyproheptadine","s":"2mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apetamin Syrup","Add App 2mg/5ml Syrup","Apetiz Syrup"],"t":["cyproheptadine","rarritol 2mg/5ml syrup 2mg/5ml","rarritol 2mg/5ml syrup","rarritol2mg/5mlsyrup"],"o":[]}];

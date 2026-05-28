@@ -1,0 +1,1 @@
+module.exports = [{"id":"b64a9707f2d2","b":"Efcold Syrup","g":"Chlorpheniramine Maleate + Paracetamol","s":"1mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alersafe Cold Syrup","Alcon Plus Syrup","Azcold Syrup"],"t":["efcold syrup 1mg","chlorpheniramine maleate + paracetamol","efcoldsyrup","efcold syrup"],"o":[]}];

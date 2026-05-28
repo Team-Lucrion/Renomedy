@@ -1,0 +1,1 @@
+module.exports = [{"id":"c3032659875a","b":"V-Press Eye Drop","g":"Timolol","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Glucomol 0.5% Eye Drop","Glunil Eye Drop","Gludrop Eye Drop"],"t":["vpresseyedrop","v-press eye drop","v-press eye drop 0.5% w/v","timolol"],"o":[]}];

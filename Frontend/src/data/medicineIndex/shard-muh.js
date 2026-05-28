@@ -1,0 +1,1 @@
+module.exports = [{"id":"d41f231db246","b":"Muheal 2% Cream","g":"Mupirocin","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ceasebact 2% Cream","Dol Bact 2% Cream","Kozibact 2% Cream"],"t":["muheal2%cream","muheal 2% cream","mupirocin","muheal 2% cream 2% w/w"],"o":[]}];

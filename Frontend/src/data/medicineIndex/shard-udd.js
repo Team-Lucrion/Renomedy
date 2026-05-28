@@ -1,0 +1,1 @@
+module.exports = [{"id":"f5a01666aee4","b":"Uddil Syrup","g":"Ambroxol + Guaifenesin","s":"","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Blukof Junior Syrup","Blockuf Blue Syrup","Cough Clear-A Syrup"],"t":["uddilsyrup","uddil syrup","ambroxol + guaifenesin","uddil syrup na"],"o":[]}];

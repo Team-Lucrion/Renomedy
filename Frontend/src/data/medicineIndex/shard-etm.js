@@ -1,0 +1,1 @@
+module.exports = [{"id":"cab4c353eb88","b":"Etmin 500mg Tablet","g":"Metformin","s":"500mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Almetfor 500mg Tablet","Ali M 500mg Tablet","Ameto 500 Tablet ER"],"t":["etmin 500mg tablet 500mg","etmin500mgtablet","metformin","etmin 500mg tablet"],"o":[]}];

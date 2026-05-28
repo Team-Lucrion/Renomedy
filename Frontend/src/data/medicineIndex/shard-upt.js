@@ -1,0 +1,1 @@
+module.exports = [{"id":"505adda59a2d","b":"Uptonin Nasal Spray","g":"Calcitonin","s":"Salmon","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["BMD RISE 200IU Nasal Spray","Bonspark Nasal Spray","Calcinase Nasal Spray"],"t":["uptonin nasal spray","uptoninnasalspray","calcitonin","uptonin nasal spray salmon"],"o":[]}];

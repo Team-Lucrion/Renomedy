@@ -1,0 +1,1 @@
+module.exports = [{"id":"83bf6fa84f22","b":"Oxloben-TF Cream","g":"Terbinafine + Clobetasol","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aboderm Plus Cream","Avoderm Plus Cream","Akio-TC Cream"],"t":["oxlobentfcream","oxloben-tf cream 1% w/w","oxloben-tf cream","terbinafine + clobetasol"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"a1e0f8392571","b":"Silvasia 20gm Cream","g":"Silver Sulfadiazine","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Burnosaf Plus Cream","Burn Aid Cream","Safoderm Plus 1% Cream"],"t":["silvasia 20gm cream 1% w/w","silvasia 20gm cream","silver sulfadiazine","silvasia20gmcream"],"o":[]}];

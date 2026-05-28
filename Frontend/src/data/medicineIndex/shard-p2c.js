@@ -1,0 +1,1 @@
+module.exports = [{"id":"c7798741002a","b":"P 2 Capsule","g":"Pantoprazole + Itopride","s":"","f":"Capsule","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["p2capsule","p 2 capsule na","pantoprazole + itopride","p 2 capsule"],"o":[]}];

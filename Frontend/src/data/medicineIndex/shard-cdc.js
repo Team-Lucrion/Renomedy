@@ -1,0 +1,1 @@
+module.exports = [{"id":"d6333b976438","b":"CDCV 250mg/62.5mg Dry Syrup","g":"Cefadroxil + Clavulanic Acid","s":"250mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["cdcv250mg/62.5mgdrysyrup","cdcv 250mg/62.5mg dry syrup 250mg","cdcv 250mg/62.5mg dry syrup","cefadroxil + clavulanic acid"],"o":[]}];

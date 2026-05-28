@@ -1,0 +1,1 @@
+module.exports = [{"id":"670afe47d97a","b":"PH Guard Syrup","g":"Magaldrate + Simethicone","s":"480mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acidcure Syrup","Acidip S Syrup","Acicol Syrup"],"t":["ph guard syrup","ph guard syrup 480mg","phguardsyrup","magaldrate + simethicone"],"o":[]}];

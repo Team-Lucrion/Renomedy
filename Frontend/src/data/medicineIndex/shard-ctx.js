@@ -1,0 +1,1 @@
+module.exports = [{"id":"987b6d332e11","b":"CTX L 5mg Tablet","g":"Levocetirizine","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcet 5mg Tablet","Allercet-L Tablet","Aleva 5mg Tablet"],"t":["levocetirizine","ctx l 5mg tablet 5mg","ctxl5mgtablet","ctx l 5mg tablet"],"o":[]}];

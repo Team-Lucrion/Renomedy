@@ -1,0 +1,1 @@
+module.exports = [{"id":"8cc1c5ee421c","b":"MH Cold Tablet","g":"Caffeine + Cetirizine","s":"25mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Albicold N Tablet","Alflam Kold Tablet","Avokold N Tablet"],"t":["mh cold tablet 25mg","mh cold tablet","caffeine + cetirizine","mhcoldtablet"],"o":[]}];

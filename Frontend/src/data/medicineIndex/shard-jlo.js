@@ -1,0 +1,1 @@
+module.exports = [{"id":"c01f7d82907e","b":"J Looz 10gm Syrup","g":"Lactulose","s":"10gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Axilose 10gm Syrup","Caldob L 10gm Syrup","Conloss 10gm Syrup"],"t":["lactulose","j looz 10gm syrup","j looz 10gm syrup 10gm","jlooz10gmsyrup"],"o":[]}];

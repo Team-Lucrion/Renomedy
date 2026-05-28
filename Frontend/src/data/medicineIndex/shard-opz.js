@@ -1,0 +1,1 @@
+module.exports = [{"id":"a242cdaf6f74","b":"Opzar MPS Syrup","g":"Magaldrate + Simethicone","s":"400mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aarcid Syrup","Aarsil Syrup","Antik Syrup"],"t":["opzarmpssyrup","opzar mps syrup 400mg","opzar mps syrup","magaldrate + simethicone"],"o":[]}];

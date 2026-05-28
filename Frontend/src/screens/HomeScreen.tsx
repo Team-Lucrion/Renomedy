@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst } from '../lib/collections';
 import type { RootStackParamList } from '../navigation/AppNavigator';
+import { getPendingFirstMedicineFlow } from '../utils/onboardingFlow';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
@@ -45,6 +46,23 @@ export default function HomeScreen() {
   const canManageFamily = currentMembership?.role === 'owner' || currentMembership?.role === 'caregiver';
 
   const activeSchedules = activeScheduleRecords.slice(0, 4);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const openPendingFirstMedicineFlow = async () => {
+      const flow = await getPendingFirstMedicineFlow();
+      if (!isMounted || !flow) return;
+      navigation.dispatch(DrawerActions.jumpTo('Prescriptions'));
+    };
+
+    void openPendingFirstMedicineFlow();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -173,7 +191,7 @@ export default function HomeScreen() {
             })
           ) : (
             <View style={styles.emptyCard}>
-              <Text style={styles.emptyStateText}>{t('home.noSchedules')}</Text>
+              <Text style={styles.emptyStateText}>Add a medicine to get started.</Text>
             </View>
           )}
         </View>
@@ -201,9 +219,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.background,
     borderRadius: borderRadius.pill,
-    height: 44,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
   },
   headerCopy: {
     flex: 1,
@@ -217,7 +235,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   profileButton: {
-    padding: spacing.xs,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
+    minWidth: 48,
   },
   scrollContainer: {
     padding: spacing.lg,
@@ -352,14 +373,18 @@ const styles = StyleSheet.create({
   },
   medName: {
     ...typography.label,
-    fontSize: 16,
+    fontSize: 18,
   },
   medTime: {
-    ...typography.bodySmall,
+    ...typography.body,
+    fontSize: 18,
     marginTop: 2,
   },
   medButton: {
-    padding: spacing.xs,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
+    minWidth: 48,
   },
   emptyCard: {
     backgroundColor: colors.surface,

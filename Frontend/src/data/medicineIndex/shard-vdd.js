@@ -1,0 +1,1 @@
+module.exports = [{"id":"43744f45af72","b":"Vd Def 6mg Syrup","g":"Deflazacort","s":"6mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Dezo Syrup","Deflax 6mg Syrup","Defsu 6mg Syrup"],"t":["vd def 6mg syrup","deflazacort","vd def 6mg syrup 6mg/5ml","vddef6mgsyrup"],"o":[]}];

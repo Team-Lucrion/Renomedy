@@ -1,0 +1,1 @@
+module.exports = [{"id":"95a7517f5df6","b":"Covate-OI Cream","g":"Ofloxacin + Ornidazole","s":"0.75% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Altovate Cream","Atlox OZ Cream","Anizerm Cream"],"t":["covate-oi cream 0.75% w/w","covate-oi cream","ofloxacin + ornidazole","covateoicream"],"o":[]}];

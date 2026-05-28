@@ -1,0 +1,1 @@
+module.exports = [{"id":"41d7931baeea","b":"T-Zest 500 Tablet","g":"Azithromycin","s":"500mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azithral 500 Tablet","Azee 500 Tablet","Azicip 500 Tablet"],"t":["azithromycin","t-zest 500 tablet","tzest500tablet","t-zest 500 tablet 500mg"],"o":[]}];

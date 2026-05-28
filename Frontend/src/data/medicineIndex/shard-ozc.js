@@ -1,0 +1,1 @@
+module.exports = [{"id":"ca973eee7e1c","b":"Ozcold Syrup","g":"Chlorpheniramine Maleate + Paracetamol","s":"2mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anti Cold Syrup","Activent Kid Syrup","Anicold Syrup"],"t":["ozcold syrup 2mg/5ml","chlorpheniramine maleate + paracetamol","ozcold syrup","ozcoldsyrup"],"o":[]}];

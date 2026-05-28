@@ -1,0 +1,1 @@
+module.exports = [{"id":"d3e05cb2be7f","b":"Psure Cream","g":"Permethrin","s":"5% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avthrin Cream","Curemite Cream","Ceasemite Cream"],"t":["psure cream","psure cream 5% w/w","permethrin","psurecream"],"o":[]}];

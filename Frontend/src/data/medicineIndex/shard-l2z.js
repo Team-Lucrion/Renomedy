@@ -1,0 +1,1 @@
+module.exports = [{"id":"0d97fbefd0ca","b":"L2 Zone 1% Ointment","g":"Luliconazole","s":"1% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Clixia 1% Ointment","Candease L 1% Ointment","Fungirap 1% Ointment"],"t":["luliconazole","l2 zone 1% ointment 1% w/w","l2zone1%ointment","l2 zone 1% ointment"],"o":[]}];

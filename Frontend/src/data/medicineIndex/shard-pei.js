@@ -1,0 +1,1 @@
+module.exports = [{"id":"52b53ae4a4d2","b":"Niyamba-Pei 40 Tablet","g":"Pantoprazole","s":"40mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aciban 40 Tablet","Apnicid 40mg Tablet","Arropan 40mg Tablet"],"t":["niyambapei40tablet","niyamba-pei 40 tablet 40mg","niyamba-pei 40 tablet","pantoprazole"],"o":[]}];

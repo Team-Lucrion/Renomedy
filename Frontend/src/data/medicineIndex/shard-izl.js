@@ -1,0 +1,1 @@
+module.exports = [{"id":"c6eae19ec2af","b":"IZ Luli 1% Cream","g":"Luliconazole","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Azole 1% Cream","AF Luli Cream","Avolicia Cream"],"t":["iz luli 1% cream","izluli1%cream","iz luli 1% cream 1% w/w","luliconazole"],"o":[]}];

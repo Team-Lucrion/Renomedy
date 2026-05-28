@@ -1,0 +1,1 @@
+module.exports = [{"id":"1a30529479f2","b":"R Tuss Syrup","g":"Chlorpheniramine Maleate + Codeine","s":"4mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascoril C  Syrup","ASCODEX C 4MG/10MG SYRUP","Codine  4 mg/10 mg Syrup"],"t":["r tuss syrup","chlorpheniramine maleate + codeine","rtusssyrup","r tuss syrup 4mg"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"863a3d5d0e19","b":"P-Vidine Ointment","g":"Povidone Iodine","s":"10% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aldine 10% Ointment","Betadine 10% Ointment","Balvidine Ointment"],"t":["pvidineointment","p-vidine ointment","povidone iodine","p-vidine ointment 10% w/w"],"o":[]}];

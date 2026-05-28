@@ -1,0 +1,1 @@
+module.exports = [{"id":"d61c566390d1","b":"Tft Kit","g":"Fluconazole + Azithromycin","s":"150mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["A-3 Kit","Azobat 3 Kit","Azithro 150 mg/1000 mg/1000 mg Tablet"],"t":["tft kit","fluconazole + azithromycin","tftkit","tft kit 150mg"],"o":[]}];

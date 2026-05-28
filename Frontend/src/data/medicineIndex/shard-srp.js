@@ -1,0 +1,1 @@
+module.exports = [{"id":"8b01f084581f","b":"Srpara Tablet SR","g":"Paracetamol + Paracetamol","s":"300mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Acton-OR Tablet SR","Admol 1g Tablet SR","Crocimax 1000SR Tablet"],"t":["srpara tablet sr","srparatabletsr","paracetamol + paracetamol","srpara tablet sr 300mg"],"o":[]}];

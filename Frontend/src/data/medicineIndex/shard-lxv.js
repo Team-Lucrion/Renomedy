@@ -1,0 +1,1 @@
+module.exports = [{"id":"5c5b5ab56b3c","b":"Lxvor 5 Tablet","g":"Levocetirizine","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcet 5mg Tablet","Allercet-L Tablet","Aleva 5mg Tablet"],"t":["lxvor5tablet","levocetirizine","lxvor 5 tablet 5mg","lxvor 5 tablet"],"o":[]}];

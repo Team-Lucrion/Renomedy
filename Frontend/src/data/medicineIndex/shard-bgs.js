@@ -1,0 +1,1 @@
+module.exports = [{"id":"a32014cb799e","b":"Airway BGS Syrup","g":"Bromhexine + Guaifenesin","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anihist Syrup","Axetuss Syrup","Akucof M Syrup"],"t":["airway bgs syrup 2mg","bromhexine + guaifenesin","airway bgs syrup","airwaybgssyrup"],"o":[]}];

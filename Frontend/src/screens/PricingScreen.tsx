@@ -277,9 +277,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.pill,
-    height: 44,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
     ...shadows.sm,
   },
   headerBlock: {
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     borderWidth: 1,
     justifyContent: 'center',
-    minHeight: 42,
+    minHeight: 48,
     paddingHorizontal: spacing.md,
   },
   statusButtonText: {

@@ -1,0 +1,1 @@
+module.exports = [{"id":"fe53a32a4e2f","b":"Kitomark 5P Cream","g":"Ketoconazole + Clioquinol","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Covate-Mixi Cream","Corci KT Cream","Dermikem KT 5 Cream"],"t":["ketoconazole + clioquinol","kitomark5pcream","kitomark 5p cream 2% w/w","kitomark 5p cream"],"o":[]}];

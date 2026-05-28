@@ -1,0 +1,1 @@
+module.exports = [{"id":"8af85b5c4c3a","b":"Rizet EX Syrup Raspberry","g":"Ambroxol + Levosalbutamol","s":"39mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["rizet ex syrup raspberry","ambroxol + levosalbutamol","rizetexsyrupraspberry","rizet ex syrup raspberry 39mg/5ml"],"o":[]}];

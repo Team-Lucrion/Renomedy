@@ -1,0 +1,1 @@
+module.exports = [{"id":"6b6fbf582b7b","b":"Ennhale Nasal Spray","g":"Fluticasone Furoate","s":"0.055% w/v","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["ennhale nasal spray 0.055% w/v","ennhale nasal spray","ennhalenasalspray","fluticasone furoate"],"o":[]}];

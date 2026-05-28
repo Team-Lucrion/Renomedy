@@ -1,0 +1,1 @@
+module.exports = [{"id":"1c254821aa42","b":"P-Dic-S Tablet","g":"Diclofenac + Paracetamol","s":"50mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AT SP Tablet","Adine-Plus Tablet","Arumin 50 mg/500 mg Tablet"],"t":["pdicstablet","p-dic-s tablet","p-dic-s tablet 50mg","diclofenac + paracetamol"],"o":[]}];

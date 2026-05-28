@@ -1,0 +1,1 @@
+module.exports = [{"id":"616f60bf1e73","b":"Fuket Cream","g":"Ketoconazole","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Allyzole Cream","Alzirol 2% Cream","Azolbest-KT Cream"],"t":["ketoconazole","fuketcream","fuket cream 2% w/w","fuket cream"],"o":[]}];

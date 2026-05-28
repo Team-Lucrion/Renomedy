@@ -1,0 +1,1 @@
+module.exports = [{"id":"e4edbcffe00b","b":"AM 5mg Tablet","g":"Amlodipine","s":"5mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amlokind 5 Tablet","Amlong Tablet","Amlip 5 Tablet"],"t":["am5mgtablet","am 5mg tablet 5mg","amlodipine","am 5mg tablet"],"o":[]}];

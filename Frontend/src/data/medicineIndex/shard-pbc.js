@@ -1,0 +1,1 @@
+module.exports = [{"id":"3cbf04098e61","b":"PB Chlor Ear Drop","g":"Lidocaine + Beclometasone","s":"2% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aqua Ear Drop","Alwax Ear Drop","Auribact Ear Drop"],"t":["pbchloreardrop","pb chlor ear drop","pb chlor ear drop 2% w/v","lidocaine + beclometasone"],"o":[]}];

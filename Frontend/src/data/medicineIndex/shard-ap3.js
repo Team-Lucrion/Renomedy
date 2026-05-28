@@ -1,0 +1,1 @@
+module.exports = [{"id":"c1c25123d73d","b":"AP 3 Tablet","g":"Aceclofenac + Paracetamol","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aldigesic P 100mg/325mg Tablet","Aldigesic-SP Tablet","Acemiz Plus Tablet"],"t":["ap 3 tablet 100mg","aceclofenac + paracetamol","ap 3 tablet","ap3tablet"],"o":[]}];

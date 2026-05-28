@@ -1,0 +1,1 @@
+module.exports = [{"id":"6dc14683c456","b":"Ryox Syrup","g":"Phenylephrine + Chlorpheniramine Maleate","s":"5mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascoril D Plus Syrup Sugar Free","Asthalin DX Syrup","Aricof-D Syrup"],"t":["ryox syrup","ryoxsyrup","phenylephrine + chlorpheniramine maleate","ryox syrup 5mg"],"o":[]}];

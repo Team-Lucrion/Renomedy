@@ -1,0 +1,1 @@
+module.exports = [{"id":"3275de98cb44","b":"Diacriptin M 0.8 mg/500 mg Tablet","g":"Bromocriptine + Metformin","s":"0.8mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["diacriptin m 0.8 mg/500 mg tablet 0.8mg","diacriptin m 0.8 mg/500 mg tablet","diacriptinm0.8mg/500mgtablet","bromocriptine + metformin"],"o":[]}];

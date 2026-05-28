@@ -1,0 +1,1 @@
+module.exports = [{"id":"f3893b4a4ce8","b":"Mnc Ointment","g":"Clobetasol + Miconazole","s":"0.05% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avsol-GM Ointment","Brebate-GM Ointment","Clotrimed GM Ointment"],"t":["clobetasol + miconazole","mnc ointment 0.05% w/w","mnc ointment","mncointment"],"o":[]}];

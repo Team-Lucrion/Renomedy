@@ -1,0 +1,1 @@
+module.exports = [{"id":"6c23748a5aad","b":"Odds UP Syrup","g":"Ondansetron","s":"","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Danset Syrup","Detron Syrup","Donsi Syrup"],"t":["odds up syrup na","oddsupsyrup","ondansetron","odds up syrup"],"o":[]}];

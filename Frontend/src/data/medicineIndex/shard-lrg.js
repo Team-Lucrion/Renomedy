@@ -1,0 +1,1 @@
+module.exports = [{"id":"dc1416be8570","b":"L R G 10mg Tablet","g":"Cetirizine","s":"10mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alerid Tablet","Agmacet 10mg Tablet","Alergin 10mg Tablet"],"t":["lrg10mgtablet","l r g 10mg tablet","l r g 10mg tablet 10mg","cetirizine"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"fd5997de9f1a","b":"G Tuss Syrup","g":"Ambroxol + Guaifenesin","s":"15mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advanced LCF Kid Expectorant","Amrox Junior Syrup","Ambrox T Syrup"],"t":["ambroxol + guaifenesin","g tuss syrup 15mg/5ml","gtusssyrup","g tuss syrup"],"o":[]}];

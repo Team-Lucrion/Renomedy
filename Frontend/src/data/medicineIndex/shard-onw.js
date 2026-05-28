@@ -1,0 +1,1 @@
+module.exports = [{"id":"67f92e95c15e","b":"Onweb 2mg Oral Drops","g":"Ondansetron","s":"2mg","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aldon 2mg Oral Drops","Auditone 2mg Oral Drops","Arovom 2mg Oral Drops"],"t":["onweb 2mg oral drops 2mg","onweb 2mg oral drops","onweb2mgoraldrops","ondansetron"],"o":[]}];

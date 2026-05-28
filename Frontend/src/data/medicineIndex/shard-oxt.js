@@ -1,0 +1,1 @@
+module.exports = [{"id":"ba2dbc3641ca","b":"Yocofate Oxt Syrup","g":"Sucralfate + Oxetacaine","s":"1000mg/10ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ocgel-O Syrup","Oxeta O Syrup","Rogut Syrup"],"t":["yocofateoxtsyrup","yocofate oxt syrup 1000mg/10ml","yocofate oxt syrup","sucralfate + oxetacaine"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"cddd14cacd77","b":"Ejec Worm Syrup","g":"Albendazole","s":"200mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Albid 200mg Syrup","Aben Syrup","Albenda 200mg Syrup"],"t":["ejec worm syrup 200mg","albendazole","ejecwormsyrup","ejec worm syrup"],"o":[]}];

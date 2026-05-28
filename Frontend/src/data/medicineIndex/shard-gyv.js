@@ -1,0 +1,1 @@
+module.exports = [{"id":"3a7595a3a020","b":"Gyve AP Tablet","g":"Aceclofenac + Paracetamol","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aldigesic P 100mg/325mg Tablet","Aldigesic-SP Tablet","Acemiz Plus Tablet"],"t":["gyve ap tablet 100mg","gyveaptablet","gyve ap tablet","aceclofenac + paracetamol"],"o":[]}];

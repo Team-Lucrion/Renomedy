@@ -1,0 +1,1 @@
+module.exports = [{"id":"1dfce3f9b3b4","b":"Kpsid O Syrup","g":"Magaldrate + Simethicone","s":"540mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acicol O Syrup","Edisil O Syrup","Gasicid O Syrup"],"t":["kpsidosyrup","kpsid o syrup","kpsid o syrup 540mg","magaldrate + simethicone"],"o":[]}];

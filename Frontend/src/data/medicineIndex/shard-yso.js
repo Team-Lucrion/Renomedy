@@ -1,0 +1,1 @@
+module.exports = [{"id":"0111f9719c4d","b":"Ysoflox M Dry Syrup","g":"Ofloxacin + Metronidazole","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Averflox MS Syrup","Amflox MS Syrup","Cnof MS Syrup"],"t":["ysoflox m dry syrup","ofloxacin + metronidazole","ysofloxmdrysyrup","ysoflox m dry syrup 50mg"],"o":[]}];

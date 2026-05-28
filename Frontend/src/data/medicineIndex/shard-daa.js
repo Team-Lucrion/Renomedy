@@ -1,0 +1,1 @@
+module.exports = [{"id":"5edd0644bca6","b":"Daad-Raaath Cream","g":"Clotrimazole","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Canesten Vaginal Cream","Candizole 2% Vaginal Cream","Clotrim V Cream"],"t":["daadraaathcream","clotrimazole","daad-raaath cream 2% w/w","daad-raaath cream"],"o":[]}];

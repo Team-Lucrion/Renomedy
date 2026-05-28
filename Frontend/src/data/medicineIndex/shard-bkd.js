@@ -1,0 +1,1 @@
+module.exports = [{"id":"be9a44fa0049","b":"Bkdol Tablet","g":"Tramadol + Paracetamol","s":"37.5mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Advin Tablet","Anadol P 37.5mg/325mg Tablet","Analog P 37.5mg/325mg Tablet"],"t":["bkdol tablet","bkdol tablet 37.5mg","tramadol + paracetamol","bkdoltablet"],"o":[]}];

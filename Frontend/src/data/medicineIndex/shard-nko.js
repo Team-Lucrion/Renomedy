@@ -1,0 +1,1 @@
+module.exports = [{"id":"d23ddbc3b8d8","b":"Nkounter 50mg Dry Syrup","g":"Cefpodoxime Proxetil","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acef Syrup","Alpod 50mg Syrup","Alarpod 50mg Dry Syrup"],"t":["cefpodoxime proxetil","nkounter50mgdrysyrup","nkounter 50mg dry syrup","nkounter 50mg dry syrup 50mg"],"o":[]}];

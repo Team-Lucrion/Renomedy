@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { ok } from "../../utils/api-response";
 import {
   createManualMedication,
+  createManualPrescriptionDraft,
   decodePrescriptionUpload,
   buildScanFailureResponse,
   getPrescription,
@@ -141,6 +142,11 @@ export async function updateParsedMedicationHandler(req: Request, res: Response)
 export async function createManualMedicationHandler(req: Request, res: Response) {
   const data = await createManualMedication(req.auth!.token, req.params.id, req.body);
   return ok(res, data, "Prescription medication created");
+}
+
+export async function createManualPrescriptionDraftHandler(req: Request, res: Response) {
+  const data = await createManualPrescriptionDraft(req.auth!.token, req.body);
+  return ok(res, data, "Manual prescription draft created");
 }
 
 export async function reconcilePrescriptionHandler(req: Request, res: Response) {

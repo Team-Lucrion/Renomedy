@@ -1,0 +1,1 @@
+module.exports = [{"id":"82c637948c01","b":"Ervocit Syrup","g":"Disodium Hydrogen Citrate","s":"1.4gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alkatis Syrup","Altos Syrup","Alkarik Syrup"],"t":["ervocit syrup 1.4gm","ervocitsyrup","disodium hydrogen citrate","ervocit syrup"],"o":[]}];

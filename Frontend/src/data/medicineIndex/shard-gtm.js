@@ -1,0 +1,1 @@
+module.exports = [{"id":"c9a86699b0bd","b":"Ex-Gtm Syrup","g":"Ambroxol + Guaifenesin","s":"15mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advanced LCF Kid Expectorant","Amrox Junior Syrup","Ambrox T Syrup"],"t":["exgtmsyrup","ex-gtm syrup 15mg/5ml","ambroxol + guaifenesin","ex-gtm syrup"],"o":[]}];

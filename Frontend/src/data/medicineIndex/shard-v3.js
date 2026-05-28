@@ -1,0 +1,1 @@
+module.exports = [{"id":"1d5ab6e4bb55","b":"Candid-V3 Tablet VT","g":"Clotrimazole","s":"200mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["candid-v3 tablet vt 200mg","candid-v3 tablet vt","clotrimazole","candidv3tabletvt"],"o":[]}];

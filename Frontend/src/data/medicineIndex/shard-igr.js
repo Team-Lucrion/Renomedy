@@ -1,0 +1,1 @@
+module.exports = [{"id":"816fbc328199","b":"Igrose Star Cream","g":"Ciprofloxacin + Metronidazole","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Clobest-CM Cream","Ciproked NF Cream","Clearoz OZ Cream"],"t":["igrose star cream 1% w/w","igrosestarcream","igrose star cream","ciprofloxacin + metronidazole"],"o":[]}];

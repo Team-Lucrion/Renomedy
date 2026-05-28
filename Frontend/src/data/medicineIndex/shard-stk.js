@@ -1,0 +1,1 @@
+module.exports = [{"id":"8d999a5ff01c","b":"Stkast L Syrup","g":"Levocetirizine + Montelukast","s":"2.5mg","f":"Syrup","c":"Antihistamines","mt":"Antihistamines","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alzero M Syrup","Atiza M Syrup","Airsurge Syrup"],"t":["levocetirizine + montelukast","stkast l syrup","stkast l syrup 2.5mg","stkastlsyrup"],"o":[]}];

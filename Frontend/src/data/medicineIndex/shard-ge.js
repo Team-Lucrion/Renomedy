@@ -1,0 +1,1 @@
+module.exports = [{"id":"9c2d2b24c710","b":"Clobesol-GE Cream","g":"Clobetasol + Gentamicin","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bactiderm G Cream","Cosvate-Gm Cream","Clop-G Cream"],"t":["clobesol-ge cream 0.05% w/w","clobesolgecream","clobesol-ge cream","clobetasol + gentamicin"],"o":[]}];

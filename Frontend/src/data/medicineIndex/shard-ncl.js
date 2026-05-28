@@ -1,0 +1,1 @@
+module.exports = [{"id":"68f0f1df96cd","b":"Nclob Plus Cream","g":"Clobetasol + Miconazole","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agmaderm Cream","Avoderm Cream","Asclob NM Cream"],"t":["clobetasol + miconazole","nclob plus cream","nclobpluscream","nclob plus cream 0.05% w/w"],"o":[]}];

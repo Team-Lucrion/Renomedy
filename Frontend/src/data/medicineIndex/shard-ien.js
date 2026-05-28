@@ -1,0 +1,1 @@
+module.exports = [{"id":"e530b25a0947","b":"Ienptam Syrup","g":"Piracetam","s":"500mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Antam 500mg Syrup","Anitam Syrup","ATR Syrup"],"t":["piracetam","ienptam syrup 500mg","ienptamsyrup","ienptam syrup"],"o":[]}];

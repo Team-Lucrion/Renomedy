@@ -1,0 +1,1 @@
+module.exports = [{"id":"65bdb6198f9f","b":"Fmclav 350 mg/75 mg Dry Syrup","g":"Amoxycillin + Clavulanic Acid","s":"350mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["fmclav 350 mg/75 mg dry syrup 350mg","fmclav350mg/75mgdrysyrup","fmclav 350 mg/75 mg dry syrup","amoxycillin + clavulanic acid"],"o":[]}];

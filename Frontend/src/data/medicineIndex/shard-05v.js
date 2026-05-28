@@ -1,0 +1,1 @@
+module.exports = [{"id":"7f003978b4b5","b":"Optive Fusion Eye Drop","g":"Carboxymethylcellulose","s":"0.5% v/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["optivefusioneyedrop","optive fusion eye drop 0.5% v/v","optive fusion eye drop","carboxymethylcellulose"],"o":[]}];

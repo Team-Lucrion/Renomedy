@@ -1,0 +1,1 @@
+module.exports = [{"id":"af515af6fa27","b":"Hezot Syrup","g":"Cefpodoxime Proxetil","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acef Syrup","Alpod 50mg Syrup","Alarpod 50mg Dry Syrup"],"t":["cefpodoxime proxetil","hezotsyrup","hezot syrup","hezot syrup 50mg"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"bde9a6ec6656","b":"Usp 650mg Tablet","g":"Paracetamol","s":"650mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Admol 650mg Tablet","Algina 650 Tablet","Arden 650mg Tablet"],"t":["usp 650mg tablet","usp650mgtablet","usp 650mg tablet 650mg","paracetamol"],"o":[]}];

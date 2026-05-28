@@ -1,0 +1,1 @@
+module.exports = [{"id":"5412ca183f66","b":"JA Rifa 100mg Syrup","g":"Rifaximin","s":"100mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["ja rifa 100mg syrup","ja rifa 100mg syrup 100mg","rifaximin","jarifa100mgsyrup"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"913ed403d9b4","b":"M-Heal LC Tablet","g":"Levocetirizine + Montelukast","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allercet-M Tablet","Akair LC Tablet","Alzero M Tablet"],"t":["m-heal lc tablet","levocetirizine + montelukast","mheallctablet","m-heal lc tablet 5mg"],"o":[]}];

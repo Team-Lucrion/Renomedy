@@ -1,0 +1,1 @@
+module.exports = [{"id":"971b66182618","b":"Xabipro 0.03% Eye Drop","g":"Bimatoprost","s":"0.03% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bpros 0.03% Eye Drop","Bimaton 0.03% Eye Drop","Bitoma Eye Drop"],"t":["xabipro 0.03% eye drop 0.03% w/v","xabipro0.03%eyedrop","xabipro 0.03% eye drop","bimatoprost"],"o":[]}];

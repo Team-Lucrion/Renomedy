@@ -1,0 +1,1 @@
+module.exports = [{"id":"2e6a67ff90b3","b":"H Drill Syrup","g":"Ammonium Chloride + Sodium Citrate","s":"138mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agmacof Syrup","Byedryl Syrup","Belcof Syrup"],"t":["h drill syrup 138mg","ammonium chloride + sodium citrate","h drill syrup","hdrillsyrup"],"o":[]}];

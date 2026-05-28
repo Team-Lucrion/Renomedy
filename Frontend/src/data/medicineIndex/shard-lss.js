@@ -1,0 +1,1 @@
+module.exports = [{"id":"95205f62fb7c","b":"Btric+LS Syrup","g":"Levosalbutamol + Ambroxol","s":"1mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alpus LS Syrup","Ambrolid LS Syrup","Ambrosal LS Syrup"],"t":["btric+ls syrup","btric+lssyrup","levosalbutamol + ambroxol","btric+ls syrup 1mg/5ml"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"9118a641f98f","b":"Gra 82mg Tablet","g":"Aspirin","s":"82mg","f":"Tablet","c":"Aspirin","mt":"Aspirin","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["gra82mgtablet","gra 82mg tablet 82mg","gra 82mg tablet","aspirin"],"o":[]}];

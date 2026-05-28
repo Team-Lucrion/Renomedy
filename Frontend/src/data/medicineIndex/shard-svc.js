@@ -1,0 +1,1 @@
+module.exports = [{"id":"a00eb510b387","b":"Svcal Tablet","g":"Calcium + Vitamin D3","s":"500mg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Anical D Tablet","Adzocal Tablet","Boncare Tablet"],"t":["svcal tablet","svcal tablet 500mg","svcaltablet","calcium + vitamin d3"],"o":[]}];

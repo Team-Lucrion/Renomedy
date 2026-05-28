@@ -1,0 +1,1 @@
+module.exports = [{"id":"c4c68db35478","b":"Rbflox OZ Syrup","g":"Ofloxacin + Ornidazole","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anflox OZ Syrup","Avicin OZ Syrup","Axcef O Dry Syrup"],"t":["rbfloxozsyrup","rbflox oz syrup","rbflox oz syrup 50mg","ofloxacin + ornidazole"],"o":[]}];

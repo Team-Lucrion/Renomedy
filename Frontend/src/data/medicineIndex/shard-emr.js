@@ -1,0 +1,1 @@
+module.exports = [{"id":"77081e230780","b":"Emrolfin Cream","g":"Amorolfine + Phenoxyethanol","s":"0.25% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amortas Cream","Amrobrut Cream","Amoron Cream"],"t":["amorolfine + phenoxyethanol","emrolfin cream","emrolfin cream 0.25% w/w","emrolfincream"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"6faa597e1911","b":"S Fate O Syrup","g":"Sucralfate + Oxetacaine","s":"1000mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alcocid 1000mg/20mg Syrup","Aulcer OS Syrup","Acifate O Syrup"],"t":["s fate o syrup","s fate o syrup 1000mg","sfateosyrup","sucralfate + oxetacaine"],"o":[]}];

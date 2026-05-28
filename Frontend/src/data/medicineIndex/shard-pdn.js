@@ -1,0 +1,1 @@
+module.exports = [{"id":"c815cb8b01c8","b":"P D N  Drop","g":"Prednisolone","s":"1%","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["p d n  drop","p d n  drop 1%","prednisolone","pdndrop"],"o":[]}];

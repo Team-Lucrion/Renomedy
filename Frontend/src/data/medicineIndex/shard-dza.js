@@ -1,0 +1,1 @@
+module.exports = [{"id":"fb586f5035b5","b":"Dzakey 6mg Syrup","g":"Deflazacort","s":"6mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alcoza 6mg Syrup","Adecort 6mg Syrup","Ancort 6mg Syrup"],"t":["dzakey6mgsyrup","dzakey 6mg syrup","dzakey 6mg syrup 6mg","deflazacort"],"o":[]}];

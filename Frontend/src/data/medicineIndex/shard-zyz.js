@@ -1,0 +1,1 @@
+module.exports = [{"id":"4cc478a952d7","b":"Zyzer Syrup","g":"Cyproheptadine + Tricholine Citrate","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apitone Plus Syrup","Apticyp Syrup","Apitop Syrup"],"t":["cyproheptadine + tricholine citrate","zyzer syrup","zyzersyrup","zyzer syrup 2mg"],"o":[]}];

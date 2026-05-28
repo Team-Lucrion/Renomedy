@@ -7,6 +7,7 @@ import { validateBody } from "../../middleware/validate";
 import { asyncHandler } from "../../utils/async-handler";
 import {
   createManualMedicationHandler,
+  createManualPrescriptionDraftHandler,
   decodePrescriptionHandler,
   getPrescriptionHandler,
   getPrescriptionHistoryHandler,
@@ -18,6 +19,7 @@ import {
 } from "./prescriptions.controller";
 import {
   createManualMedicationSchema,
+  createManualPrescriptionDraftSchema,
   decodePrescriptionBodySchema,
   parsePrescriptionSchema,
   reconcilePrescriptionSchema,
@@ -61,6 +63,7 @@ export const prescriptionScanRouter = Router();
 
 prescriptionsRouter.post("/upload", requireAuth, prescriptionUpload.single("file"), validateBody(uploadPrescriptionBodySchema), asyncHandler(uploadPrescriptionHandler));
 prescriptionsRouter.post("/decode", requireAuth, prescriptionUpload.single("file"), validateBody(decodePrescriptionBodySchema), asyncHandler(decodePrescriptionHandler));
+prescriptionsRouter.post("/manual-draft", requireAuth, validateBody(createManualPrescriptionDraftSchema), asyncHandler(createManualPrescriptionDraftHandler));
 prescriptionsRouter.get("/history", requireAuth, asyncHandler(getPrescriptionHistoryHandler));
 prescriptionsRouter.get("/:id", requireAuth, asyncHandler(getPrescriptionHandler));
 prescriptionsRouter.post("/:id/parse", requireAuth, validateBody(parsePrescriptionSchema), asyncHandler(parsePrescriptionHandler));

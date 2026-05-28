@@ -1,0 +1,1 @@
+module.exports = [{"id":"80088281be90","b":"T 1 Eye Drop","g":"Travoprost","s":"0.004% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Awarene PF Eye Drop","Alvost 0.004% Eye Drop","Doprost T 0.004% Eye Drop"],"t":["t1eyedrop","t 1 eye drop 0.004% w/v","t 1 eye drop","travoprost"],"o":[]}];

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth, useUser } from "@clerk/expo";
 import { api, ApiError } from "../lib/api";
 import { trackEvent } from "../lib/analytics";
@@ -30,13 +31,16 @@ type AppDataContextValue = {
   isLoading: boolean;
   error: string;
   betaBlocked: boolean;
+  isOffline: boolean;
+  pendingDoseLogCount: number;
   refreshAll: () => Promise<void>;
   refreshSubscription: () => Promise<void>;
   activateBetaAccess: (enteredCode: string) => Promise<void>;
   completeOnboarding: (input: {
-    familyName: string;
-    role: "caregiver" | "family_member" | "patient";
-    inviteFamilyLater: boolean;
+    accountName: string;
+    patientName?: string;
+    relationship?: string;
+    skippedFirstPatient?: boolean;
   }) => Promise<void>;
   joinSanctuary: (inviteCode: string, role?: string) => Promise<void>;
   leaveSanctuary: () => Promise<void>;
@@ -82,6 +86,28 @@ type AppDataContextValue = {
 };
 
 const AppDataContext = createContext<AppDataContextValue | null>(null);
+const APP_DATA_CACHE_KEY = "swasthi.offlineAppData.v1";
+const DOSE_LOG_QUEUE_KEY = "swasthi.offlineDoseLogQueue.v1";
+
+type QueuedDoseLog = {
+  client_id: string;
+  medication_schedule_id: string;
+  scheduled_time: string;
+  taken_time?: string;
+  status: "taken" | "missed" | "skipped" | "snoozed";
+  queued_at: string;
+};
+
+type CachedAppData = {
+  currentUser: BackendUser | null;
+  familyGroups: BackendFamilyGroup[];
+  overview: DashboardOverview | null;
+  schedules: MedicationSchedule[];
+  refillStates: RefillState[];
+  prescriptions: PrescriptionHistoryItem[];
+  subscriptionSummary: SubscriptionSummary | null;
+  cachedAt: string;
+};
 
 function getErrorMessage(error: unknown) {
   if (error instanceof ApiError) {
@@ -99,8 +125,43 @@ function isForbiddenApiError(error: unknown) {
   return error instanceof ApiError && error.statusCode === 403;
 }
 
+function isNetworkApiError(error: unknown) {
+  return error instanceof ApiError && error.statusCode === 0;
+}
+
 function hasBetaAccess(user: BackendUser | null) {
   return Boolean(user?.beta_access_approved || user?.beta_access_status === "active");
+}
+
+async function readCachedAppData() {
+  const raw = await AsyncStorage.getItem(APP_DATA_CACHE_KEY);
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw) as CachedAppData;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCachedAppData(data: Omit<CachedAppData, "cachedAt">) {
+  await AsyncStorage.setItem(APP_DATA_CACHE_KEY, JSON.stringify({ ...data, cachedAt: new Date().toISOString() }));
+}
+
+async function readDoseLogQueue() {
+  const raw = await AsyncStorage.getItem(DOSE_LOG_QUEUE_KEY);
+  if (!raw) return [];
+
+  try {
+    const parsed = JSON.parse(raw) as QueuedDoseLog[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+async function writeDoseLogQueue(queue: QueuedDoseLog[]) {
+  await AsyncStorage.setItem(DOSE_LOG_QUEUE_KEY, JSON.stringify(queue));
 }
 
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
@@ -116,6 +177,9 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [betaBlocked, setBetaBlocked] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
+  const [pendingDoseLogCount, setPendingDoseLogCount] = useState(0);
+  const isSyncingDoseQueueRef = useRef(false);
 
   const familyMembers = useMemo(
     () => familyGroups.flatMap((group) => group.family_members ?? []),
@@ -133,6 +197,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       setSubscriptionSummary(null);
       setError("");
       setBetaBlocked(false);
+      setIsOffline(false);
       setIsLoading(false);
       return;
     }
@@ -217,12 +282,48 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       }
 
       setBetaBlocked(false);
+      if (!featureErrors.some(isNetworkApiError)) {
+        setIsOffline(false);
+        await writeCachedAppData({
+          currentUser: me,
+          familyGroups: familiesResult.status === "fulfilled" ? familiesResult.value : familyGroups,
+          overview: dashboardResult.status === "fulfilled" ? dashboardResult.value : overview,
+          schedules: schedulesResult.status === "fulfilled" ? schedulesResult.value : schedules,
+          refillStates: refillResult.status === "fulfilled" ? refillResult.value : refillStates,
+          prescriptions: historyResult.status === "fulfilled" ? historyResult.value : prescriptions,
+          subscriptionSummary: subscriptionResult.status === "fulfilled" ? subscriptionResult.value : subscriptionSummary,
+        });
+        await syncQueuedDoseLogs();
+      }
 
       const firstNonForbiddenFeatureError = findFirst(featureErrors, (featureError) => !isForbiddenApiError(featureError));
       if (firstNonForbiddenFeatureError) {
+        if (isNetworkApiError(firstNonForbiddenFeatureError)) {
+          setIsOffline(true);
+          setError("");
+          return;
+        }
         setError(getErrorMessage(firstNonForbiddenFeatureError));
       }
     } catch (loadError) {
+      if (isNetworkApiError(loadError)) {
+        const cached = await readCachedAppData();
+        if (cached) {
+          setCurrentUser(cached.currentUser);
+          setFamilyGroups(cached.familyGroups);
+          setOverview(cached.overview);
+          setSchedules(cached.schedules);
+          setRefillStates(cached.refillStates);
+          setPrescriptions(cached.prescriptions);
+          setSubscriptionSummary(cached.subscriptionSummary);
+          setBetaBlocked(false);
+          setError("");
+        } else {
+          setError("This needs an internet connection.");
+        }
+        setIsOffline(true);
+        return;
+      }
       setError(getErrorMessage(loadError));
     } finally {
       setIsLoading(false);
@@ -232,6 +333,70 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     void refreshAll();
   }, [isLoaded, isSignedIn, user?.fullName, user?.primaryEmailAddress?.emailAddress]);
+
+  useEffect(() => {
+    const loadPendingDoseCount = async () => {
+      setPendingDoseLogCount((await readDoseLogQueue()).length);
+    };
+
+    void loadPendingDoseCount();
+  }, []);
+
+  const syncQueuedDoseLogs = async () => {
+    if (isSyncingDoseQueueRef.current) return;
+
+    const queue = await readDoseLogQueue();
+    setPendingDoseLogCount(queue.length);
+    if (queue.length === 0) return;
+
+    isSyncingDoseQueueRef.current = true;
+    try {
+      const latestBySchedule = new Map<string, QueuedDoseLog>();
+      queue.forEach((item) => {
+        const existing = latestBySchedule.get(item.medication_schedule_id);
+        if (!existing || Date.parse(item.queued_at) >= Date.parse(existing.queued_at)) {
+          latestBySchedule.set(item.medication_schedule_id, item);
+        }
+      });
+
+      const failed: QueuedDoseLog[] = [];
+      for (const item of latestBySchedule.values()) {
+        try {
+          await api.post("medications/log-dose", {
+            medication_schedule_id: item.medication_schedule_id,
+            scheduled_time: item.scheduled_time,
+            taken_time: item.taken_time,
+            status: item.status,
+          });
+        } catch (syncError) {
+          if (isNetworkApiError(syncError)) {
+            failed.push(item);
+          } else {
+            trackEvent("offline_dose_log_sync_failed", {
+              medication_schedule_id: item.medication_schedule_id,
+              status: item.status,
+            });
+          }
+        }
+      }
+
+      await writeDoseLogQueue(failed);
+      setPendingDoseLogCount(failed.length);
+      setIsOffline(failed.length > 0);
+    } finally {
+      isSyncingDoseQueueRef.current = false;
+    }
+  };
+
+  useEffect(() => {
+    if (pendingDoseLogCount === 0 || !isSignedIn) return undefined;
+
+    const syncInterval = setInterval(() => {
+      void syncQueuedDoseLogs();
+    }, 30000);
+
+    return () => clearInterval(syncInterval);
+  }, [isSignedIn, pendingDoseLogCount]);
 
   const activateBetaAccess = async (enteredCode: string) => {
     const normalizedCode = enteredCode.trim().toUpperCase();
@@ -252,22 +417,26 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   };
 
   const completeOnboarding = async (input: {
-    familyName: string;
-    role: "caregiver" | "family_member" | "patient";
-    inviteFamilyLater: boolean;
+    accountName: string;
+    patientName?: string;
+    relationship?: string;
+    skippedFirstPatient?: boolean;
   }) => {
-    const backendRole = input.role === "caregiver" ? "caregiver" : "self";
-
     await api.patch<BackendUser>("users/onboarding", {
-      role: backendRole,
+      full_name: input.accountName.trim(),
+      role: "caregiver",
       onboarding_complete: true,
     });
 
-    await api.post<BackendFamilyGroup>("family/create", {
-      family_name: input.familyName.trim(),
-      member_role: input.role,
-      invite_family_later: input.inviteFamilyLater,
-    });
+    if (!input.skippedFirstPatient && input.patientName?.trim()) {
+      await api.post<BackendFamilyGroup>("family/create", {
+        family_name: `${input.patientName.trim()}'s medicines`,
+        member_role: "patient",
+        primary_member_name: input.patientName.trim(),
+        primary_member_relationship: input.relationship?.trim() || "Other",
+        invite_family_later: true,
+      });
+    }
 
     await refreshAll();
   };
@@ -286,13 +455,29 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   };
 
   const validateInvite = async (inviteCode: string) => {
-    return api.get<InvitePreview>(`family/validate-invite/${inviteCode.trim().toUpperCase()}`);
+    try {
+      return await api.get<InvitePreview>(`family/validate-invite/${inviteCode.trim().toUpperCase()}`);
+    } catch (inviteError) {
+      if (isNetworkApiError(inviteError)) {
+        setIsOffline(true);
+        throw new Error("This needs an internet connection.");
+      }
+      throw inviteError;
+    }
   };
 
   const regenerateInvite = async () => {
-    const result = await api.post<{ invite_code: string; invite_expires_at?: string | null }>("family/regenerate-invite");
-    await refreshAll();
-    return result;
+    try {
+      const result = await api.post<{ invite_code: string; invite_expires_at?: string | null }>("family/regenerate-invite");
+      await refreshAll();
+      return result;
+    } catch (inviteError) {
+      if (isNetworkApiError(inviteError)) {
+        setIsOffline(true);
+        throw new Error("This needs an internet connection.");
+      }
+      throw inviteError;
+    }
   };
 
   const createPaymentOrder = async (input: { plan_slug: "care" | "family_plus"; billing_cycle: "monthly" | "yearly" }) => {
@@ -393,13 +578,38 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
     status: "taken" | "missed" | "skipped" | "snoozed";
   }) => {
     const now = new Date().toISOString();
-
-    await api.post("medications/log-dose", {
+    const payload = {
       medication_schedule_id: input.medication_schedule_id,
       scheduled_time: now,
       taken_time: input.status === "taken" ? now : undefined,
       status: input.status,
-    });
+    };
+
+    try {
+      await api.post("medications/log-dose", payload);
+      await syncQueuedDoseLogs();
+    } catch (doseError) {
+      if (!isNetworkApiError(doseError)) {
+        throw doseError;
+      }
+
+      const queue = await readDoseLogQueue();
+      const queuedLog: QueuedDoseLog = {
+        ...payload,
+        client_id: `${input.medication_schedule_id}:${now}`,
+        queued_at: now,
+      };
+      const withoutOlderSameSchedule = queue.filter((item) => item.medication_schedule_id !== input.medication_schedule_id);
+      const nextQueue = [...withoutOlderSameSchedule, queuedLog];
+      await writeDoseLogQueue(nextQueue);
+      setPendingDoseLogCount(nextQueue.length);
+      setIsOffline(true);
+      trackEvent("offline_dose_log_queued", {
+        medication_schedule_id: input.medication_schedule_id,
+        status: input.status,
+      });
+      return;
+    }
 
     await refreshAll();
   };
@@ -417,6 +627,8 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       isLoading,
       error,
       betaBlocked,
+      isOffline,
+      pendingDoseLogCount,
       refreshAll,
       refreshSubscription,
       activateBetaAccess,
@@ -436,7 +648,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       archiveFamilyMember,
       logDose,
     }),
-    [currentUser, familyGroups, familyMembers, overview, schedules, refillStates, prescriptions, subscriptionSummary, isLoading, error, betaBlocked],
+    [currentUser, familyGroups, familyMembers, overview, schedules, refillStates, prescriptions, subscriptionSummary, isLoading, error, betaBlocked, isOffline, pendingDoseLogCount],
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

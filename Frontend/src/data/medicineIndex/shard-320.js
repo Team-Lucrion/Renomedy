@@ -1,0 +1,1 @@
+module.exports = [{"id":"f336b0dedaba","b":"Symbicort 320mcg/9mcg Turbuhaler","g":"Formoterol + Budesonide","s":"9mcg","f":"Inhaler","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["symbicort320mcg/9mcgturbuhaler","symbicort 320mcg/9mcg turbuhaler","symbicort 320mcg/9mcg turbuhaler 9mcg","formoterol + budesonide"],"o":[]}];

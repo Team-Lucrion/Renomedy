@@ -1,0 +1,1 @@
+module.exports = [{"id":"93c52582b6e4","b":"Ebnol 1% Cream","g":"Eberconazole","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Crurix Cream","Ebernet Cream","Eberfine Cream"],"t":["ebnol 1% cream 1% w/w","ebnol 1% cream","eberconazole","ebnol1%cream"],"o":[]}];

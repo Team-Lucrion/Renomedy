@@ -1,0 +1,1 @@
+module.exports = [{"id":"892e49d6e22f","b":"Uvefrost Eye Drop","g":"Difluprednate","s":"0.05% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Baklot Eye Drop","Duronet Eye Drop","Dfrot Eye Drop"],"t":["uvefrost eye drop 0.05% w/v","uvefrost eye drop","uvefrosteyedrop","difluprednate"],"o":[]}];

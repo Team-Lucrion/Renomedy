@@ -1,0 +1,1 @@
+module.exports = [{"id":"9592e6470ba9","b":"Ucam 1.37gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.37gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alkaset Syrup","Alkatop Syrup","Alkazen 1.37gm Syrup"],"t":["ucam 1.37gm syrup 1.37gm","ucam 1.37gm syrup","ucam1.37gmsyrup","disodium hydrogen citrate"],"o":[]}];

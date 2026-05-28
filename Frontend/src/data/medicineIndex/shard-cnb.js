@@ -1,0 +1,1 @@
+module.exports = [{"id":"9c22b7788553","b":"CNB Cream","g":"Beclometasone + Neomycin","s":"0.025% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ariderm Cream","Ash-Derm Cream","Astobet Cream"],"t":["cnb cream","cnb cream 0.025% w/w","beclometasone + neomycin","cnbcream"],"o":[]}];

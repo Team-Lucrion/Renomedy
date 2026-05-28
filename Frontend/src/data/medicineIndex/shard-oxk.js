@@ -1,0 +1,1 @@
+module.exports = [{"id":"fff8a5988289","b":"Oxket-MF Eye Drop","g":"Ketorolac + Moxifloxacin","s":"0.4% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Animox K Eye Drop","BM 4KT Eye Drop","Imoxtreat KT Eye Drop"],"t":["oxketmfeyedrop","oxket-mf eye drop 0.4% w/v","ketorolac + moxifloxacin","oxket-mf eye drop"],"o":[]}];

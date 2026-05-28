@@ -1,0 +1,1 @@
+module.exports = [{"id":"235912daf4bb","b":"Irbepex-AM Tablet","g":"Irbesartan + Amlodipine","s":"150mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["irbepex-am tablet","irbesartan + amlodipine","irbepexamtablet","irbepex-am tablet 150mg"],"o":[]}];

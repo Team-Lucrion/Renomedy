@@ -1,0 +1,1 @@
+module.exports = [{"id":"1b3ad8717bc5","b":"HG Zole Syrup","g":"Albendazole","s":"400mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Albenum 400mg Syrup","Antiworm 400mg Syrup","Abide 400mg Syrup"],"t":["hg zole syrup","hgzolesyrup","albendazole","hg zole syrup 400mg"],"o":[]}];

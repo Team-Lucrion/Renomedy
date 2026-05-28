@@ -1,0 +1,1 @@
+module.exports = [{"id":"7b5b37e838ec","b":"Faz 500 Tablet","g":"Azithromycin","s":"500mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azithral 500 Tablet","Azee 500 Tablet","Azicip 500 Tablet"],"t":["azithromycin","faz 500 tablet 500mg","faz500tablet","faz 500 tablet"],"o":[]}];

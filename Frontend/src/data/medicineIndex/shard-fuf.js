@@ -1,0 +1,1 @@
+module.exports = [{"id":"4b74efd9b223","b":"Fufiom 0.25% Cream","g":"Amorolfine","s":"0.25% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amrolstar Cream","Amrosys Cream","Amtris Cream"],"t":["fufiom0.25%cream","fufiom 0.25% cream","amorolfine","fufiom 0.25% cream 0.25% w/w"],"o":[]}];

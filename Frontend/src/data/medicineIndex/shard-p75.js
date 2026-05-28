@@ -1,0 +1,1 @@
+module.exports = [{"id":"41b261832ef7","b":"P 750 Tablet","g":"Paracetamol","s":"750mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["p 750 tablet 750mg","paracetamol","p 750 tablet","p750tablet"],"o":[]}];

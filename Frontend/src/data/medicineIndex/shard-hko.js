@@ -1,0 +1,1 @@
+module.exports = [{"id":"275ee4973a3e","b":"H Kodex Syrup","g":"Ambroxol + Guaifenesin","s":"15mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Astagon Syrup","Axol Plus Syrup","Aroget Syrup"],"t":["ambroxol + guaifenesin","h kodex syrup 15mg","hkodexsyrup","h kodex syrup"],"o":[]}];

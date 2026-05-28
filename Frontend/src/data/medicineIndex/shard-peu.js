@@ -1,0 +1,1 @@
+module.exports = [{"id":"c943150b3ec4","b":"Peufix Dry Syrup","g":"Cefixime","s":"50mg/5ml","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AB-Cef Dry Syrup","Auxime DS Suspension","Aloxim Dry Syrup"],"t":["peufixdrysyrup","cefixime","peufix dry syrup","peufix dry syrup 50mg/5ml"],"o":[]}];

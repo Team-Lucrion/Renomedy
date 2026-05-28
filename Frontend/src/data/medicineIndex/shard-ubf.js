@@ -1,0 +1,1 @@
+module.exports = [{"id":"b21df9e414d6","b":"U-B Fair Cream","g":"Hydroquinone + Tretinoin","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["A Ret HC Cream","Advan-THF Cream","Abiquin Cream"],"t":["u-b fair cream","u-b fair cream 2% w/w","hydroquinone + tretinoin","ubfaircream"],"o":[]}];

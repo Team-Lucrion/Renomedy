@@ -1,0 +1,1 @@
+module.exports = [{"id":"7715f484a9d4","b":"FT-Mac Cream","g":"Fusidic Acid","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aloederm F Cream","Bactafuz Cream","Belbact Cream"],"t":["ft-mac cream 2% w/w","ftmaccream","ft-mac cream","fusidic acid"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"a754db62b29b","b":"E-Wax Ear Drop","g":"Benzocaine + Chlorbutol","s":"2.7% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Arniwax Ear Drop","Aceclean Ear Wax Drop","Bingo Wax Ear Drop"],"t":["e-wax ear drop 2.7% w/v","benzocaine + chlorbutol","ewaxeardrop","e-wax ear drop"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"8f0de35a795b","b":"Dpz Tablet","g":"Domperidone + Pantoprazole","s":"10mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Arcopan D 10mg/40mg Tablet","Anleo-D Tablet","Aidpan-D Tablet"],"t":["dpz tablet 10mg","domperidone + pantoprazole","dpz tablet","dpztablet"],"o":[]}];

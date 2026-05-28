@@ -1,0 +1,1 @@
+module.exports = [{"id":"1aa2130db16b","b":"Q Zolid 100mg Dry Syrup","g":"Linezolid","s":"100mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anlinez 100mg Dry Syrup","Bezolid 100mg Dry Syrup","Conizolid 100mg Dry Syrup"],"t":["qzolid100mgdrysyrup","q zolid 100mg dry syrup","linezolid","q zolid 100mg dry syrup 100mg"],"o":[]}];

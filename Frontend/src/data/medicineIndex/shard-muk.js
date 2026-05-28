@@ -1,0 +1,1 @@
+module.exports = [{"id":"1c7dfc864e93","b":"Muken-P Tablet","g":"Nimesulide + Paracetamol","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AP 100mg/325mg Tablet","Alleviate Tablet","Aceto Plus  100 mg/500 mg Tablet"],"t":["nimesulide + paracetamol","mukenptablet","muken-p tablet 100mg","muken-p tablet"],"o":[]}];

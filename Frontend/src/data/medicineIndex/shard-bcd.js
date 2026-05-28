@@ -1,0 +1,1 @@
+module.exports = [{"id":"158f0c8f7005","b":"Bcd Tablet","g":"Bromhexine + Cetirizine","s":"1005mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["bcdtablet","bcd tablet","bcd tablet 1005mg","bromhexine + cetirizine"],"o":[]}];

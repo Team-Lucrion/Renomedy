@@ -1,0 +1,1 @@
+module.exports = [{"id":"03c403aa0886","b":"Wiom 50mg Dry Syrup","g":"Cefpodoxime Proxetil","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acef Syrup","Alpod 50mg Syrup","Alarpod 50mg Dry Syrup"],"t":["wiom 50mg dry syrup 50mg","wiom 50mg dry syrup","wiom50mgdrysyrup","cefpodoxime proxetil"],"o":[]}];

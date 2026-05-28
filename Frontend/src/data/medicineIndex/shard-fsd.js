@@ -1,0 +1,1 @@
+module.exports = [{"id":"143ad243220b","b":"Fs-D Tablet","g":"Domperidone + Paracetamol","s":"10mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Anadom 10mg/500mg Tablet","Actidol-DP Tablet","Anmol D 10mg/325mg Tablet"],"t":["fs-d tablet","domperidone + paracetamol","fs-d tablet 10mg","fsdtablet"],"o":[]}];

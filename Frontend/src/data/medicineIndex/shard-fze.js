@@ -1,0 +1,1 @@
+module.exports = [{"id":"32ab97c90a03","b":"FZ Eye/Ear Drops","g":"Fluconazole","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alicon Eye Drop","Bell-Fluconazole Eye/Ear Drops","Conflu Eye Drop"],"t":["fz eye/ear drops 0.3% w/v","fzeye/eardrops","fz eye/ear drops","fluconazole"],"o":[]}];

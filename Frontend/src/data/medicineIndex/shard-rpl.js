@@ -1,0 +1,1 @@
+module.exports = [{"id":"bc2c3e916846","b":"Rpl CF 50mg Dry Syrup","g":"Cefpodoxime Proxetil","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acef Syrup","Alpod 50mg Syrup","Alarpod 50mg Dry Syrup"],"t":["cefpodoxime proxetil","rplcf50mgdrysyrup","rpl cf 50mg dry syrup 50mg","rpl cf 50mg dry syrup"],"o":[]}];

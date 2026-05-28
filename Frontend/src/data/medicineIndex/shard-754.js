@@ -1,0 +1,1 @@
+module.exports = [{"id":"7c92e0b4ec1e","b":"Ecosprin AV 75/40 Capsule","g":"Atorvastatin + Aspirin","s":"40mg","f":"Capsule","c":"Cholesterol","mt":"Cholesterol","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":60,"a":[],"t":["atorvastatin + aspirin","ecosprin av 75/40 capsule","ecosprin av 75/40 capsule 40mg","ecosprinav75/40capsule"],"o":[]}];

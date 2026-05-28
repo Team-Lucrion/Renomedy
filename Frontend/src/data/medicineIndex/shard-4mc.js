@@ -1,0 +1,1 @@
+module.exports = [{"id":"8bc2a7a011ac","b":"Tacalsis 4mcg Ointment","g":"Tacalcitol","s":"4mcg/gm","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["tacalsis4mcgointment","tacalsis 4mcg ointment 4mcg/gm","tacalsis 4mcg ointment","tacalcitol"],"o":[]}];

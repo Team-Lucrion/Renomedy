@@ -1,0 +1,1 @@
+module.exports = [{"id":"319071394fe5","b":"Vekacin Injection","g":"Azithromycin","s":"500mg","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azithral 500mg Injection","Azimax 500mg Injection","Azocin 500mg Injection"],"t":["azithromycin","vekacin injection 500mg","vekacin injection","vekacininjection"],"o":[]}];

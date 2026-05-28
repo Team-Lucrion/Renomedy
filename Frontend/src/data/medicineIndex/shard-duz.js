@@ -1,0 +1,1 @@
+module.exports = [{"id":"e10171155de5","b":"Duzide-M Tablet","g":"Gliclazide + Metformin","s":"80mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azukon-M  Tablet","Aviglic MF 80 mg/500 mg Tablet","Azide-M Tablet"],"t":["duzide-m tablet 80mg","duzidemtablet","duzide-m tablet","gliclazide + metformin"],"o":[]}];

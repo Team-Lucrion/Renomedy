@@ -9,7 +9,7 @@ function normalizedInviteCode() {
   return `RENO-BETA-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
 
-export async function createBetaInvite(jwt: string, input: { code?: string; name?: string; email?: string; phone?: string; notes?: string; expires_at?: string; max_uses?: number }) {
+export async function createBetaInvite(jwt: string, input: { code?: string; name?: string; email?: string; phone?: string; notes?: string; expires_at?: string }) {
   const founder = await getCurrentUserRecord(jwt);
   const code = (input.code?.trim().toUpperCase() || normalizedInviteCode());
   const { data, error } = await supabaseAdmin
@@ -22,11 +22,12 @@ export async function createBetaInvite(jwt: string, input: { code?: string; name
       phone: input.phone ?? null,
       notes: input.notes ?? null,
       expires_at: input.expires_at ?? null,
-      max_uses: input.max_uses ?? 1,
+      max_uses: 1,
       used_count: 0,
       used_at: null,
+      used_by_user_id: null,
       approved_by_user_id: founder.id,
-      status: "unused"
+      status: "active"
     })
     .select("*")
     .single();

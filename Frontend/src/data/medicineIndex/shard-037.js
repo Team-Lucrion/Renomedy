@@ -1,0 +1,1 @@
+module.exports = [{"id":"0d64e3ef90ec","b":"Esta 0.375mg Vaginal Spray","g":"Estradiol","s":"0.375mg","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["estradiol","esta0.375mgvaginalspray","esta 0.375mg vaginal spray 0.375mg","esta 0.375mg vaginal spray"],"o":[]}];

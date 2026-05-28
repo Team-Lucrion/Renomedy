@@ -1,0 +1,1 @@
+module.exports = [{"id":"4c8eb6be4a6f","b":"Ntel 80mg Tablet","g":"Telmisartan","s":"80mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Arbitel 80 Tablet","Abtelmi 80 Tablet","Angitel 80mg Tablet"],"t":["ntel 80mg tablet 80mg","ntel 80mg tablet","telmisartan","ntel80mgtablet"],"o":[]}];

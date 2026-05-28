@@ -1,0 +1,1 @@
+module.exports = [{"id":"88da47eb82a1","b":"Spnﬁx-AZ Tablet","g":"Cefixime + Azithromycin","s":"200mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azicef-LB Tablet","Azisal-CL Tablet","Aziser Plus 200mg/250mg Tablet"],"t":["spnﬁx-az tablet 200mg","spnﬁxaztablet","spnﬁx-az tablet","cefixime + azithromycin"],"o":[]}];

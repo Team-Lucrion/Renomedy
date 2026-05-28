@@ -1,0 +1,1 @@
+module.exports = [{"id":"6fdea8ee7958","b":"R P Syrup","g":"Domperidone + Magaldrate","s":"10mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ambifast Syrup","Domar 10mg/480mg/20mg Syrup","Duogel Syrup"],"t":["domperidone + magaldrate","rpsyrup","r p syrup 10mg","r p syrup"],"o":[]}];

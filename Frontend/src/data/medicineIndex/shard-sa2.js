@@ -1,0 +1,1 @@
+module.exports = [{"id":"e894a4917c85","b":"SA 20 Ointment","g":"Salicylic Acid","s":"20%","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["salicylic acid","sa20ointment","sa 20 ointment 20%","sa 20 ointment"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"d9eaa534d8a4","b":"Eddycold Tablet","g":"Ambroxol + Cetirizine","s":"30mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Cofsy DMR Tablet","Coldiva-DMR Tablet","DMR-CC Tablet"],"t":["eddycoldtablet","eddycold tablet","eddycold tablet 30mg","ambroxol + cetirizine"],"o":[]}];

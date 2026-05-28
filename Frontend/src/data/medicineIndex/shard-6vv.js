@@ -1,0 +1,1 @@
+module.exports = [{"id":"d032dd608a2a","b":"Methazil Ear Drop","g":"Menthol + Salicylic Acid","s":"6% v/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["methazileardrop","methazil ear drop 6% v/v","menthol + salicylic acid","methazil ear drop"],"o":[]}];

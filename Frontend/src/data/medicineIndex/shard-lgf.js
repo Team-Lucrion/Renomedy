@@ -1,0 +1,1 @@
+module.exports = [{"id":"004e7e73db24","b":"LG Flox Syrup","g":"Ofloxacin","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Anflox Syrup","Aqocin Syrup","Accuon Syrup"],"t":["lg flox syrup 50mg","lg flox syrup","lgfloxsyrup","ofloxacin"],"o":[]}];

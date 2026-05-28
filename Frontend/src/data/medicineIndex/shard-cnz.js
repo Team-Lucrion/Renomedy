@@ -1,0 +1,1 @@
+module.exports = [{"id":"36af78ff3439","b":"CNZ L 5mg Tablet","g":"Levocetirizine","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcet 5mg Tablet","Allercet-L Tablet","Aleva 5mg Tablet"],"t":["cnzl5mgtablet","cnz l 5mg tablet","levocetirizine","cnz l 5mg tablet 5mg"],"o":[]}];

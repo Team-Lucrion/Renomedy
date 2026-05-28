@@ -1,0 +1,1 @@
+module.exports = [{"id":"39ddae2d70d1","b":"Flat 0.05% w/w Cream","g":"Fluticasone Propionate","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Cazon D Cream","Cutifute Cream","Derlutic 0.05% Cream"],"t":["fluticasone propionate","flat0.05%w/wcream","flat 0.05% w/w cream","flat 0.05% w/w cream 0.05% w/w"],"o":[]}];

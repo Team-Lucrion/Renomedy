@@ -1,0 +1,1 @@
+module.exports = [{"id":"66add969fd8d","b":"Midrops Eye Drop","g":"Phenylephrine + Tropicamide","s":"5.0% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["midrops eye drop","phenylephrine + tropicamide","midropseyedrop","midrops eye drop 5.0% w/v"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"5ccb2f535f2d","b":"Evrox 150mg Tablet","g":"Azithromycin","s":"150mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["evrox 150mg tablet","azithromycin","evrox150mgtablet","evrox 150mg tablet 150mg"],"o":[]}];

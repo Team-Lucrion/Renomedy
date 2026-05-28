@@ -1,0 +1,1 @@
+module.exports = [{"id":"6cb329b68ae1","b":"HD Zine 10mg Syrup","g":"Hydroxyzine","s":"10mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Atazis Syrup","Atahist 10mg Syrup","Arotex 10mg Syrup"],"t":["hydroxyzine","hd zine 10mg syrup","hdzine10mgsyrup","hd zine 10mg syrup 10mg"],"o":[]}];

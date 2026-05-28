@@ -1,0 +1,1 @@
+module.exports = [{"id":"17059c189db3","b":"Clprodica Eye/Ear Drops","g":"Ciprofloxacin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ahlox Eye Drop","Arflox 0.3% Eye Drop","Baclox 0.3% Eye Drop"],"t":["clprodicaeye/eardrops","clprodica eye/ear drops","clprodica eye/ear drops 0.3% w/v","ciprofloxacin"],"o":[]}];

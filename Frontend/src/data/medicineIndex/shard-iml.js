@@ -1,0 +1,1 @@
+module.exports = [{"id":"961e344d6f1a","b":"Laprost Plus Eye Drop","g":"Timolol + Latanoprost","s":"5mg I/ml","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["laprostpluseyedrop","timolol + latanoprost","laprost plus eye drop 5mg i/ml","laprost plus eye drop"],"o":[]}];

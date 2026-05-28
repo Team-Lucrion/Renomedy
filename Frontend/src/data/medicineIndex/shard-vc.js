@@ -1,0 +1,1 @@
+module.exports = [{"id":"ae36c81cb711","b":"VC-Mox Dry Syrup","g":"Amoxycillin","s":"125mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Axn Dry Syrup","Amoxinga 125mg Dry Syrup","Adimox 125mg Dry Syrup"],"t":["amoxycillin","vcmoxdrysyrup","vc-mox dry syrup 125mg/5ml","vc-mox dry syrup"],"o":[]}];

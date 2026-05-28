@@ -1,0 +1,1 @@
+module.exports = [{"id":"5f6bb758fbf8","b":"Hykil Syrup","g":"Amoxycillin","s":"125mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Axn Dry Syrup","Amoxinga 125mg Dry Syrup","Adimox 125mg Dry Syrup"],"t":["amoxycillin","hykilsyrup","hykil syrup 125mg/5ml","hykil syrup"],"o":[]}];

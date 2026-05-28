@@ -1,0 +1,1 @@
+module.exports = [{"id":"833751fc8116","b":"Roquin 50mg Syrup","g":"Ofloxacin","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Cozan Syrup","Floxibact 50mg/5ml Syrup","Foxis Syrup"],"t":["roquin 50mg syrup 50mg/5ml","roquin50mgsyrup","roquin 50mg syrup","ofloxacin"],"o":[]}];

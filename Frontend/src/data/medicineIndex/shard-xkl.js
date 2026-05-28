@@ -1,0 +1,1 @@
+module.exports = [{"id":"39e032046159","b":"Xklot AS Tablet","g":"Aspirin + Clopidogrel","s":"75mg","f":"Tablet","c":"Aspirin","mt":"Aspirin","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aspidol Tablet","Anziolet A 75mg/75mg Tablet","Antiplar Plus 75 mg/75 mg Tablet"],"t":["xklot as tablet","aspirin + clopidogrel","xklotastablet","xklot as tablet 75mg"],"o":[]}];

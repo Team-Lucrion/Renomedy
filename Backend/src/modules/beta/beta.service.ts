@@ -9,7 +9,7 @@ type BetaInviteRecord = {
   name?: string | null;
   phone?: string | null;
   email?: string | null;
-  status: "unused" | "used" | "revoked" | string;
+  status: "active" | "used" | "revoked" | string;
   max_uses?: number | null;
   used_count?: number | null;
   expires_at?: string | null;
@@ -24,14 +24,12 @@ function normalizeInviteCode(inviteCode: string) {
 
 function resolveInviteError(invite: BetaInviteRecord | null) {
   if (!invite) return { statusCode: 404, message: "Invalid code" } as const;
-  if (invite.status === "revoked") return { statusCode: 403, message: "Revoked code" } as const;
+  if (invite.status === "used" || invite.used_at || invite.used_by_user_id || (invite.used_count ?? 0) > 0) {
+    return { statusCode: 409, message: "Already used" } as const;
+  }
+  if (invite.status !== "active") return { statusCode: 403, message: "Inactive code" } as const;
   if (invite.expires_at && new Date(invite.expires_at).getTime() < Date.now()) {
     return { statusCode: 403, message: "Expired code" } as const;
-  }
-  const maxUses = invite.max_uses ?? 1;
-  const usedCount = invite.used_count ?? 0;
-  if (usedCount >= maxUses || invite.status === "used") {
-    return { statusCode: 403, message: "Already used" } as const;
   }
   return null;
 }
@@ -105,9 +103,6 @@ export async function redeemBetaInvite(jwt: string, inviteCode: string) {
   }
 
   const approvedAt = new Date().toISOString();
-  const nextUsedCount = (invite!.used_count ?? 0) + 1;
-  const maxUses = invite!.max_uses ?? 1;
-  const nextStatus = nextUsedCount >= maxUses ? "used" : "unused";
 
   const { data: updatedUser, error: userError } = await supabaseAdmin
     .from("users")
@@ -132,15 +127,18 @@ export async function redeemBetaInvite(jwt: string, inviteCode: string) {
   const { data: updatedInvite, error: inviteUpdateError } = await supabaseAdmin
     .from("beta_invites")
     .update({
-      used_count: nextUsedCount,
+      used_count: 1,
       used_by_user_id: currentUser.id,
       used_at: approvedAt,
-      status: nextStatus
+      status: "used"
     })
     .eq("id", invite!.id)
-    .eq("used_count", invite!.used_count ?? 0)
+    .eq("status", "active")
+    .is("used_by_user_id", null)
+    .is("used_at", null)
+    .eq("used_count", 0)
     .select("id")
-    .single();
+    .maybeSingle();
 
   if (inviteUpdateError || !updatedInvite) {
     await supabaseAdmin
@@ -155,7 +153,7 @@ export async function redeemBetaInvite(jwt: string, inviteCode: string) {
       })
       .eq("id", currentUser.id);
 
-    throw new HttpError(500, "Failed to redeem beta invite", inviteUpdateError);
+    throw new HttpError(409, "Already used", inviteUpdateError);
   }
 
   await writeAuditLog({
@@ -163,7 +161,7 @@ export async function redeemBetaInvite(jwt: string, inviteCode: string) {
     action: "beta.code_redeemed",
     entityType: "beta_invite",
     entityId: invite!.id,
-    metadata: { code: normalizedCode, used_count: nextUsedCount }
+    metadata: { code: normalizedCode, used_count: 1 }
   });
 
   return {

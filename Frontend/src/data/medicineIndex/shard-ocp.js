@@ -1,0 +1,1 @@
+module.exports = [{"id":"95feb5c645c3","b":"Ocpat 0.1% Eye Drop","g":"Olopatadine","s":"0.1% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Allerdine 0.1% Eye Drop","Alernorm Eye Drop","Aculo 0.1% Eye Drop"],"t":["ocpat 0.1% eye drop 0.1% w/v","ocpat 0.1% eye drop","ocpat0.1%eyedrop","olopatadine"],"o":[]}];

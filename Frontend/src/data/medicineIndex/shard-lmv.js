@@ -1,0 +1,1 @@
+module.exports = [{"id":"88c8c0105ba7","b":"LMV Syrup","g":"Levocetirizine","s":"5mg","f":"Syrup","c":"Antihistamines","mt":"Antihistamines","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alertus 5mg Syrup","Covil 5mg Syrup","Cetus L 5mg Syrup"],"t":["lmvsyrup","lmv syrup","lmv syrup 5mg","levocetirizine"],"o":[]}];

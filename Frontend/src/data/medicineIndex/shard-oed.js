@@ -1,0 +1,1 @@
+module.exports = [{"id":"a555a79b4c49","b":"Oedol Syrup","g":"Ivermectin + Albendazole","s":"1.5mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Albuwell Plus Syrup","Alniver Syrup","Albenya Plus Syrup"],"t":["oedolsyrup","oedol syrup 1.5mg","oedol syrup","ivermectin + albendazole"],"o":[]}];

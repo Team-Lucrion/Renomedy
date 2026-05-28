@@ -1,0 +1,1 @@
+module.exports = [{"id":"c45d1642e13c","b":"KC Met 500mg Tablet SR","g":"Metformin","s":"500mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Almetfor 500mg Tablet","Ali M 500mg Tablet","Ameto 500 Tablet ER"],"t":["kc met 500mg tablet sr 500mg","metformin","kc met 500mg tablet sr","kcmet500mgtabletsr"],"o":[]}];

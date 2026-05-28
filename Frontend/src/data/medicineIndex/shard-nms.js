@@ -1,0 +1,1 @@
+module.exports = [{"id":"baddc33ed6d1","b":"Nms D Tablet","g":"Doxylamine + Vitamin B6","s":"10mg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Act Nvp Tablet","Avosic 10mg/10mg/2.5mg Tablet","AVN Plus Tablet"],"t":["doxylamine + vitamin b6","nms d tablet 10mg","nmsdtablet","nms d tablet"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"02bd779dd637","b":"QP Flox Eye Drop","g":"Moxifloxacin","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apdrops Eye Drop","Azemox 0.5% Eye Drop","Aegamox 0.5% Eye Drop"],"t":["qp flox eye drop 0.5% w/v","qpfloxeyedrop","qp flox eye drop","moxifloxacin"],"o":[]}];

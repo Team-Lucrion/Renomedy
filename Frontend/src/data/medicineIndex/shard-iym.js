@@ -1,0 +1,1 @@
+module.exports = [{"id":"20cd41070ff3","b":"Iymoxi Eye Drop","g":"Moxifloxacin","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apdrops Eye Drop","Azemox 0.5% Eye Drop","Aegamox 0.5% Eye Drop"],"t":["iymoxi eye drop 0.5% w/v","iymoxi eye drop","iymoxieyedrop","moxifloxacin"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"7dc67e029564","b":"Alizer 1.49gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.49gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["alizer 1.49gm syrup 1.49gm","disodium hydrogen citrate","alizer1.49gmsyrup","alizer 1.49gm syrup"],"o":[]}];

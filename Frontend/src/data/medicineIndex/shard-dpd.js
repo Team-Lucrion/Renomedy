@@ -1,0 +1,1 @@
+module.exports = [{"id":"cae73e2b8c73","b":"DP Dase Tablet","g":"Diclofenac + Paracetamol","s":"50mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AT SP Tablet","Adine-Plus Tablet","Arumin 50 mg/500 mg Tablet"],"t":["dpdasetablet","dp dase tablet 50mg","dp dase tablet","diclofenac + paracetamol"],"o":[]}];

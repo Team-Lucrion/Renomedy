@@ -1,0 +1,1 @@
+module.exports = [{"id":"7d3c2ae713f6","b":"Ajosh 250mg Tablet","g":"Azithromycin","s":"250mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azee 250 Tablet","Azithro 250mg Tablet","Azax 250 Tablet"],"t":["azithromycin","ajosh 250mg tablet","ajosh250mgtablet","ajosh 250mg tablet 250mg"],"o":[]}];

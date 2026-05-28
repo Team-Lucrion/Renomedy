@@ -1,0 +1,1 @@
+module.exports = [{"id":"ea8236328e48","b":"Y Care 180 Tablet","g":"Fexofenadine","s":"180mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra 180mg Tablet","Air 180 Tablet","Algrot 180mg Tablet"],"t":["fexofenadine","ycare180tablet","y care 180 tablet 180mg","y care 180 tablet"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"09fe89c94fa0","b":"Xf 200mg Tablet","g":"Cefixime","s":"200mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Abixim 200mg Tablet","Altax-O 200 Tablet DT","Axim 200mg Tablet"],"t":["xf 200mg tablet","xf200mgtablet","cefixime","xf 200mg tablet 200mg"],"o":[]}];

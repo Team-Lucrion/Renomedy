@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors, typography, spacing, borderRadius, shadows } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
+import DoctorRespectNote from '../components/DoctorRespectNote';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'MedicationActivation'>;
@@ -28,6 +29,8 @@ export default function MedicationActivationScreen({ navigation }: Props) {
             <Text style={styles.medStrength}>500mg • Tablet</Text>
           </View>
         </View>
+
+        <DoctorRespectNote style={styles.doctorNote} />
 
         <Text style={styles.sectionTitle}>Inventory Setup</Text>
         
@@ -122,6 +125,10 @@ const styles = StyleSheet.create({
   medStrength: {
     ...typography.body,
     color: colors.textMuted,
+    fontSize: 18,
+  },
+  doctorNote: {
+    marginBottom: spacing.xl,
   },
   sectionTitle: {
     ...typography.h3,
@@ -198,10 +205,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   activateButton: {
-    backgroundColor: colors.primary,
-    padding: spacing.md,
-    borderRadius: borderRadius.pill,
     alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.pill,
+    justifyContent: 'center',
+    minHeight: 54,
+    paddingHorizontal: spacing.md,
   },
   activateButtonText: {
     ...typography.label,

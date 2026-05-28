@@ -1,0 +1,1 @@
+module.exports = [{"id":"0e42acd209bf","b":"MF 850 Tablet","g":"Metformin","s":"850mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Arkamet Ipr 850mg Tablet SR","Auctimet 850mg Tablet PR","Bigomet 850 Tablet"],"t":["mf850tablet","mf 850 tablet","metformin","mf 850 tablet 850mg"],"o":[]}];

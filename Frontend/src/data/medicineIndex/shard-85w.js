@@ -1,0 +1,1 @@
+module.exports = [{"id":"cdc1bfcc170a","b":"Rashcare Cream","g":"Zinc Oxide","s":"8.5% w/w","f":"Cream","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["rashcare cream 8.5% w/w","rashcarecream","zinc oxide","rashcare cream"],"o":[]}];

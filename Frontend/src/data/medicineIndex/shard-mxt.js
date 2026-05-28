@@ -1,0 +1,1 @@
+module.exports = [{"id":"e28b1381dda1","b":"Mxte 5mg Tablet","g":"Methotrexate","s":"5mg","f":"Tablet","c":"General","mt":"General","sm":"blocked","hr":1,"rmv":0,"beta":0,"ps":10,"a":["Beltrax 5mg Tablet","DavaIndia Methotrexate 5mg Tablet","Folitrax 5 Tablet"],"t":["mxte5mgtablet","methotrexate","mxte 5mg tablet","mxte 5mg tablet 5mg"],"o":[]}];

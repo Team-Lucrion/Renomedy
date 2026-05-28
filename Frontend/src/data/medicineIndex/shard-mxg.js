@@ -1,0 +1,1 @@
+module.exports = [{"id":"84f86f123015","b":"Lupin's Mxg Eye Drop","g":"Moxifloxacin","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apdrops Eye Drop","Azemox 0.5% Eye Drop","Aegamox 0.5% Eye Drop"],"t":["[\\","s mxg eye drop 0.5% w/v\", \"lupin\\\\\\","smxgeyedrop\", \\\\\\","]\\"],"o":[]}];

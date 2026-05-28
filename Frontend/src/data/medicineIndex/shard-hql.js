@@ -1,0 +1,1 @@
+module.exports = [{"id":"4a6341a6c9ef","b":"HQ Lite Cream","g":"Hydroquinone + Tretinoin","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["A Ret HC Cream","Advan-THF Cream","Abiquin Cream"],"t":["hqlitecream","hq lite cream 2% w/w","hydroquinone + tretinoin","hq lite cream"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"680476462c88","b":"A2  Tablet","g":"Atenolol + Atorvastatin","s":"","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["atenolol + atorvastatin","a2  tablet","a2tablet","a2  tablet na"],"o":[]}];

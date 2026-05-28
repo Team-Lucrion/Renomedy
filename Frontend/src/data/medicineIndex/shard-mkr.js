@@ -1,0 +1,1 @@
+module.exports = [{"id":"e043a1384172","b":"Mkroma 0.1% Cream","g":"Mometasone","s":"0.1%","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Azokid 0.1% Cream","Cratisone 0.1% Cream","Carebet-M Cream"],"t":["mkroma 0.1% cream 0.1%","mometasone","mkroma 0.1% cream","mkroma0.1%cream"],"o":[]}];

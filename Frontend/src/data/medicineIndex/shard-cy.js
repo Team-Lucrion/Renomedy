@@ -1,0 +1,1 @@
+module.exports = [{"id":"9a16a123cbda","b":"CY Plus Syrup","g":"Cyproheptadine + Tricholine Citrate","s":"2mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aptimust Syrup","Apilysin Syrup","App.UP Plus Syrup"],"t":["cy plus syrup 2mg/5ml","cyproheptadine + tricholine citrate","cy plus syrup","cyplussyrup"],"o":[]}];

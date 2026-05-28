@@ -1,0 +1,1 @@
+module.exports = [{"id":"1f3159ee8f4d","b":"Fopina Syrup","g":"Ammonium Chloride + Sodium Citrate","s":"138mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascotus Syrup","Anadryl Syrup","Agedryl Syrup"],"t":["fopina syrup 138mg/5ml","fopinasyrup","fopina syrup","ammonium chloride + sodium citrate"],"o":[]}];

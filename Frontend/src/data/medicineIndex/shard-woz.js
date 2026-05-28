@@ -1,0 +1,1 @@
+module.exports = [{"id":"0a1c62f0f02a","b":"Wozole 200mg Syrup","g":"Albendazole","s":"200mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Albid 200mg Syrup","Aben Syrup","Albenda 200mg Syrup"],"t":["wozole 200mg syrup 200mg","wozole200mgsyrup","wozole 200mg syrup","albendazole"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"63db27f0ecd3","b":"Foifix 50mg Syrup","g":"Cefixime","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aricef DS Syrup","Amcef 50mg Dry Syrup","Avicef Syrup"],"t":["cefixime","foifix 50mg syrup 50mg","foifix50mgsyrup","foifix 50mg syrup"],"o":[]}];

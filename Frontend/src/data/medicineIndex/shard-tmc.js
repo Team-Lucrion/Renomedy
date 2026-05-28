@@ -1,0 +1,1 @@
+module.exports = [{"id":"c8b86ded211c","b":"Tmc 0.3% Eye Drop","g":"Tobramycin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Appatoba Eye Drop","Aitoba 0.3% Eye Drop","Clatob 0.3% Eye Drop"],"t":["tobramycin","tmc0.3%eyedrop","tmc 0.3% eye drop 0.3% w/v","tmc 0.3% eye drop"],"o":[]}];
