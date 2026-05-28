@@ -1,0 +1,1 @@
+module.exports = [{"id":"005f8ebbe188","b":"Bugderm Cream","g":"Beclometasone + Neomycin","s":"0.025% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ariderm Cream","Ash-Derm Cream","Astobet Cream"],"t":["bugderm cream","beclometasone + neomycin","bugdermcream","bugderm cream 0.025% w/w"],"o":[]}];

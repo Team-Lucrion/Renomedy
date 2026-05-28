@@ -1,0 +1,1 @@
+module.exports = [{"id":"169267c6b273","b":"Hista 3G Tablet","g":"Montelukast + Fexofenadine","s":"10mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra-M Tablet","Air-M Tablet","Acegrow 3D Tablet"],"t":["montelukast + fexofenadine","hista 3g tablet","hista3gtablet","hista 3g tablet 10mg"],"o":[]}];

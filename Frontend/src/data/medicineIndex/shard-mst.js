@@ -1,0 +1,1 @@
+module.exports = [{"id":"a1502199d7c2","b":"M-Star-AT Tablet","g":"Amlodipine + Atenolol","s":"5mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amlokind-AT Tablet","Amlopres-AT Tablet","Amlip AT Tablet"],"t":["mstarattablet","m-star-at tablet","amlodipine + atenolol","m-star-at tablet 5mg"],"o":[]}];

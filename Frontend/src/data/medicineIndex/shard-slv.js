@@ -1,0 +1,1 @@
+module.exports = [{"id":"79be61841518","b":"Slvrgen Cream","g":"Recombinant Human Epidermal Growth Factor + Chlorhexidine Gluconate","s":"10mcg","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["slvrgencream","slvrgen cream 10mcg","recombinant human epidermal growth factor + chlorhexidine gluconate","slvrgen cream"],"o":[]}];

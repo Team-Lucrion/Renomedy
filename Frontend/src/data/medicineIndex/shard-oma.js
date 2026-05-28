@@ -1,0 +1,1 @@
+module.exports = [{"id":"7b0e44d4be06","b":"Omax OZ Syrup","g":"Ofloxacin + Ornidazole","s":"200mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Asocin OZ Syrup","Flow-OZ Syrup","Gyrofix O 200 mg/500 mg Syrup"],"t":["omax oz syrup","omax oz syrup 200mg","omaxozsyrup","ofloxacin + ornidazole"],"o":[]}];

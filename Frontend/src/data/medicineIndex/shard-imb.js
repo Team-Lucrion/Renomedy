@@ -1,0 +1,1 @@
+module.exports = [{"id":"dcbd39ba5967","b":"Imbrox Syrup","g":"Ambroxol + Guaifenesin","s":"15mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Astagon Syrup","Axol Plus Syrup","Aroget Syrup"],"t":["ambroxol + guaifenesin","imbroxsyrup","imbrox syrup","imbrox syrup 15mg"],"o":[]}];

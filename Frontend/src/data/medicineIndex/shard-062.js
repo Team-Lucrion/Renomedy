@@ -1,0 +1,1 @@
+module.exports = [{"id":"28162500a740","b":"Premarin Vaginal Cream","g":"Conjugated Estrogens","s":"0.625mg","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["premarin vaginal cream","premarinvaginalcream","conjugated estrogens","premarin vaginal cream 0.625mg"],"o":[]}];

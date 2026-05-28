@@ -15,6 +15,10 @@ export const scanPrescriptionBodySchema = uploadPrescriptionBodySchema.extend({
   mimeType: z.string().optional()
 });
 
+export const createManualPrescriptionDraftSchema = z.object({
+  family_member_id: z.string().uuid()
+});
+
 export const parsePrescriptionSchema = z.object({
   force_reparse: z.boolean().default(false)
 });

@@ -1,0 +1,1 @@
+module.exports = [{"id":"e34d43ff9145","b":"Kealworm 200mg Syrup","g":"Albendazole","s":"200mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Albid 200mg Syrup","Aben Syrup","Albenda 200mg Syrup"],"t":["kealworm200mgsyrup","kealworm 200mg syrup 200mg","albendazole","kealworm 200mg syrup"],"o":[]}];

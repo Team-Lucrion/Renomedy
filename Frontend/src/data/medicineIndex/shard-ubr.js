@@ -1,0 +1,1 @@
+module.exports = [{"id":"d33fd924f11b","b":"Ubrox LS Syrup","g":"Ambroxol + Levosalbutamol","s":"30mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascoril LS Syrup","Ambrodil-LX Syrup","Asthalin AX Syrup"],"t":["ubroxlssyrup","ambroxol + levosalbutamol","ubrox ls syrup","ubrox ls syrup 30mg/5ml"],"o":[]}];

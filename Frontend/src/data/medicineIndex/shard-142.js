@@ -1,0 +1,1 @@
+module.exports = [{"id":"bc2aa031cef9","b":"Alkacee 1.42gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.42gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["alkacee 1.42gm syrup","disodium hydrogen citrate","alkacee 1.42gm syrup 1.42gm","alkacee1.42gmsyrup"],"o":[]}];

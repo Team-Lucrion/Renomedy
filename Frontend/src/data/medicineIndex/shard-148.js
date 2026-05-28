@@ -1,0 +1,1 @@
+module.exports = [{"id":"1e3d9f25726f","b":"Tordryl Syrup","g":"Diphenhydramine + Ammonium Chloride","s":"14.8mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["diphenhydramine + ammonium chloride","tordrylsyrup","tordryl syrup 14.8mg/5ml","tordryl syrup"],"o":[]}];

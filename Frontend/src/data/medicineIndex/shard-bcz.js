@@ -1,0 +1,1 @@
+module.exports = [{"id":"ea889438dfbb","b":"BC-Zole Ointment","g":"Beclometasone + Neomycin","s":"0.025% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aloderm-N Ointment","Aliderm-G Ointment","Bioderm Ointment"],"t":["bc-zole ointment 0.025% w/w","beclometasone + neomycin","bczoleointment","bc-zole ointment"],"o":[]}];

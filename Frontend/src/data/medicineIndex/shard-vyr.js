@@ -1,0 +1,1 @@
+module.exports = [{"id":"d96949568bfb","b":"Vyrumol 650mg Tablet","g":"Paracetamol","s":"650mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Admol 650mg Tablet","Algina 650 Tablet","Arden 650mg Tablet"],"t":["vyrumol650mgtablet","vyrumol 650mg tablet","paracetamol","vyrumol 650mg tablet 650mg"],"o":[]}];

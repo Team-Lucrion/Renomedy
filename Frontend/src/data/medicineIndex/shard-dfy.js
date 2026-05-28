@@ -1,0 +1,1 @@
+module.exports = [{"id":"eee31f85aee9","b":"D-Fyal Syrup","g":"Doxofylline","s":"100mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["d-fyal syrup","doxofylline","d-fyal syrup 100mg/5ml","dfyalsyrup"],"o":[]}];

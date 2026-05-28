@@ -1,0 +1,1 @@
+module.exports = [{"id":"4f2841fedb49","b":"Datalka 1.14gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.14gm/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["datalka 1.14gm syrup 1.14gm/5ml","datalka1.14gmsyrup","disodium hydrogen citrate","datalka 1.14gm syrup"],"o":[]}];

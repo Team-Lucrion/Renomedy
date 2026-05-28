@@ -1,0 +1,1 @@
+module.exports = [{"id":"e20b34ca6efd","b":"Wefex 120mg Tablet","g":"Fexofenadine","s":"120mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra 120mg Tablet","Alrgee 120mg Tablet","Air 120 Tablet"],"t":["wefex120mgtablet","fexofenadine","wefex 120mg tablet","wefex 120mg tablet 120mg"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"943b32323ebf","b":"C Pent Eye Drop","g":"Cyclopentolate","s":"1% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Biodyle C 1% Eye Drop","Bell Pentolate Eye Drop","Cyclomid Eye Drop"],"t":["cpenteyedrop","c pent eye drop 1% w/v","c pent eye drop","cyclopentolate"],"o":[]}];

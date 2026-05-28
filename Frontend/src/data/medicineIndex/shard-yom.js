@@ -1,0 +1,1 @@
+module.exports = [{"id":"b8297a931809","b":"Yomfate Syrup","g":"Sucralfate","s":"500mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Lebral 500mg Syrup","Pepsigard Junior 500mg/5ml Syrup","Sucragift 500mg Syrup"],"t":["yomfate syrup 500mg/5ml","yomfate syrup","yomfatesyrup","sucralfate"],"o":[]}];

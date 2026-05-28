@@ -1,0 +1,1 @@
+module.exports = [{"id":"f36429700fbd","b":"Z Loc 40mg Tablet","g":"Pantoprazole","s":"40mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aciban 40 Tablet","Apnicid 40mg Tablet","Arropan 40mg Tablet"],"t":["zloc40mgtablet","pantoprazole","z loc 40mg tablet 40mg","z loc 40mg tablet"],"o":[]}];

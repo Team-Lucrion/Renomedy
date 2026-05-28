@@ -1,0 +1,1 @@
+module.exports = [{"id":"9a5dfe29e9ba","b":"CV Sprin 75mg Tablet","g":"Aspirin","s":"75mg","f":"Tablet","c":"Aspirin","mt":"Aspirin","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aspo 75 Tablet","Aspidot 75mg Tablet","Actisprin 75mg Tablet"],"t":["cv sprin 75mg tablet 75mg","aspirin","cvsprin75mgtablet","cv sprin 75mg tablet"],"o":[]}];

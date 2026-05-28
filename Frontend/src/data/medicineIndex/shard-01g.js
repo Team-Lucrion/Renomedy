@@ -1,0 +1,1 @@
+module.exports = [{"id":"c4ceaee2f9f8","b":"Placentrex Cream","g":"Placenta Extracts","s":"0.1gm","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["placenta extracts","placentrex cream 0.1gm","placentrexcream","placentrex cream"],"o":[]}];

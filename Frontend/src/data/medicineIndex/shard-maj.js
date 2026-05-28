@@ -1,0 +1,1 @@
+module.exports = [{"id":"d74c1df57550","b":"Majimom Cream","g":"Mometasone","s":"0.1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avemome 0.1% Cream","Astibet Cream","Apifil M 0.1% Cream"],"t":["majimom cream","mometasone","majimom cream 0.1% w/w","majimomcream"],"o":[]}];

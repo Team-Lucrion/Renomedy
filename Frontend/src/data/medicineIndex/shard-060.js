@@ -1,0 +1,1 @@
+module.exports = [{"id":"e8449c658177","b":"Nasowel - SC Nasal Drops","g":"Sodium Chloride","s":"0.60% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["nasowelscnasaldrops","nasowel - sc nasal drops","sodium chloride","nasowel - sc nasal drops 0.60% w/v"],"o":[]}];

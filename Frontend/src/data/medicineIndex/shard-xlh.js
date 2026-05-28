@@ -1,0 +1,1 @@
+module.exports = [{"id":"dc214609b3f0","b":"Xlha Eye Drop","g":"Sodium Hyaluronate","s":"0.1% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Azusoft 0.1% Eye Drop","Cohevisc Eye Drop","Eubri Eye Drop"],"t":["xlha eye drop","xlhaeyedrop","sodium hyaluronate","xlha eye drop 0.1% w/v"],"o":[]}];

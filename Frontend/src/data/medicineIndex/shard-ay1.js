@@ -1,0 +1,1 @@
+module.exports = [{"id":"329ddfe0933a","b":"AY 100mg Tablet DT","g":"Azithromycin","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azithral KidTab","Azimax 100mg Tablet DT","Azithral Stat  100mg Tablet"],"t":["azithromycin","ay100mgtabletdt","ay 100mg tablet dt","ay 100mg tablet dt 100mg"],"o":[]}];

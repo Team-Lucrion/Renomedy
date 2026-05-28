@@ -1,0 +1,1 @@
+module.exports = [{"id":"f48b394c9e7a","b":"Kypen 1.37gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.37gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alkaset Syrup","Alkatop Syrup","Alkazen 1.37gm Syrup"],"t":["kypen 1.37gm syrup 1.37gm","kypen1.37gmsyrup","disodium hydrogen citrate","kypen 1.37gm syrup"],"o":[]}];

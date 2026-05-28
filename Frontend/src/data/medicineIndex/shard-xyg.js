@@ -1,0 +1,1 @@
+module.exports = [{"id":"8b7cd44227d8","b":"Xygrel-AS Combikit","g":"Ticagrelor + Aspirin","s":"90mg","f":"Other","c":"Aspirin","mt":"Aspirin","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Axcer A 90mg/75mg Kit","Torplat A Copack","Tiare Kit"],"t":["xygrel-as combikit 90mg","xygrel-as combikit","xygrelascombikit","ticagrelor + aspirin"],"o":[]}];

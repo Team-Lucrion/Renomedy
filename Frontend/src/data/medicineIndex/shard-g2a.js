@@ -1,0 +1,1 @@
+module.exports = [{"id":"b9a74e2a9af4","b":"G2Act Tablet","g":"Glimepiride + Metformin","s":"2mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amaryl M  2mg Tablet PR","Azulix 2 MF Tablet PR","Amaryl MV 2mg Tablet SR"],"t":["glimepiride + metformin","g2act tablet 2mg","g2act tablet","g2acttablet"],"o":[]}];

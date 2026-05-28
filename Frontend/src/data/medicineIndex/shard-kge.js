@@ -1,0 +1,1 @@
+module.exports = [{"id":"ddd634cbd92c","b":"K-Gem Tablet","g":"Gliclazide + Metformin","s":"80mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azukon-M  Tablet","Aviglic MF 80 mg/500 mg Tablet","Azide-M Tablet"],"t":["gliclazide + metformin","k-gem tablet","k-gem tablet 80mg","kgemtablet"],"o":[]}];

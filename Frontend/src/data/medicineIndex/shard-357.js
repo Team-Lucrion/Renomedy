@@ -1,0 +1,1 @@
+module.exports = [{"id":"e78c83890b33","b":"Azenate Nasal Spray","g":"Fluticasone Propionate + Azelastine","s":"357mcg","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["azenate nasal spray 357mcg","azenate nasal spray","fluticasone propionate + azelastine","azenatenasalspray"],"o":[]}];

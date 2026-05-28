@@ -1,0 +1,1 @@
+module.exports = [{"id":"f40ea665af9a","b":"Rgnil Syrup","g":"Invert Sugar","s":"","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["rgnil syrup na","rgnilsyrup","rgnil syrup","invert sugar"],"o":[]}];

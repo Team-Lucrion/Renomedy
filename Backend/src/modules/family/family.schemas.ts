@@ -3,6 +3,8 @@ import { z } from "zod/v3";
 export const createFamilySchema = z.object({
   family_name: z.string().min(2),
   member_role: z.enum(["caregiver", "patient", "family_member"]).default("caregiver"),
+  primary_member_name: z.string().min(1).optional(),
+  primary_member_relationship: z.string().min(1).optional(),
   invite_family_later: z.boolean().optional(),
 });
 

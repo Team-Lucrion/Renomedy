@@ -1,0 +1,1 @@
+module.exports = [{"id":"a46871fbb12a","b":"V 2 Plus Tablet","g":"Diclofenac + Paracetamol","s":"50mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AT SP Tablet","Adine-Plus Tablet","Arumin 50 mg/500 mg Tablet"],"t":["diclofenac + paracetamol","v2plustablet","v 2 plus tablet 50mg","v 2 plus tablet"],"o":[]}];

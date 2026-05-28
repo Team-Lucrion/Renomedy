@@ -1,0 +1,1 @@
+module.exports = [{"id":"0211e7ab9fb5","b":"Xfactor Syrup","g":"Phenylephrine + Guaifenesin","s":"5mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Cuflift Syrup","J-Coff Syrup","Kofarest Plus Syrup"],"t":["phenylephrine + guaifenesin","xfactorsyrup","xfactor syrup 5mg","xfactor syrup"],"o":[]}];

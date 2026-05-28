@@ -1,0 +1,1 @@
+module.exports = [{"id":"2662e634d0c3","b":"Yufexim 200mg Tablet DT","g":"Cefixime","s":"200mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Abixim 200mg Tablet","Altax-O 200 Tablet DT","Axim 200mg Tablet"],"t":["yufexim200mgtabletdt","yufexim 200mg tablet dt","cefixime","yufexim 200mg tablet dt 200mg"],"o":[]}];

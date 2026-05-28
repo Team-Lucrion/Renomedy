@@ -1,0 +1,1 @@
+module.exports = [{"id":"31eb93b9894b","b":"Alka KCL Syrup","g":"Potassium Chloride","s":"500mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["potassium chloride","alkakclsyrup","alka kcl syrup","alka kcl syrup 500mg"],"o":[]}];

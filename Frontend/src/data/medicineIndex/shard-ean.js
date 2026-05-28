@@ -1,0 +1,1 @@
+module.exports = [{"id":"2d1fe280dbe8","b":"Eantacid OS Syrup","g":"Sucralfate + Oxetacaine","s":"1000mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alcocid 1000mg/20mg Syrup","Aulcer OS Syrup","Acifate O Syrup"],"t":["eantacid os syrup 1000mg","eantacidossyrup","eantacid os syrup","sucralfate + oxetacaine"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"c41b7fc818cb","b":"R Cuf LS Syrup","g":"Ambroxol + Levosalbutamol","s":"15mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascoril LS Junior Syrup","Asthalin Plus Expectorant","Altime LS Syrup"],"t":["r cuf ls syrup 15mg/5ml","ambroxol + levosalbutamol","r cuf ls syrup","rcuflssyrup"],"o":[]}];

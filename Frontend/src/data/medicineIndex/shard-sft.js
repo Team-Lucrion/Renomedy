@@ -1,0 +1,1 @@
+module.exports = [{"id":"3d8b8f6f012f","b":"Sft D Syrup","g":"Domperidone + Sucralfate","s":"7.5mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["sft d syrup 7.5mg","domperidone + sucralfate","sftdsyrup","sft d syrup"],"o":[]}];

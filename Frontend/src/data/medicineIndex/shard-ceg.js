@@ -1,0 +1,1 @@
+module.exports = [{"id":"0a2c3ad6420e","b":"Cegra 120 Tablet","g":"Fexofenadine","s":"120mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra 120mg Tablet","Alrgee 120mg Tablet","Air 120 Tablet"],"t":["fexofenadine","cegra 120 tablet 120mg","cegra120tablet","cegra 120 tablet"],"o":[]}];

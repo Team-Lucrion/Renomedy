@@ -1,0 +1,1 @@
+module.exports = [{"id":"18343fd15244","b":"FMN Eye Drop","g":"Fluorometholone","s":"1mg","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["fluorometholone","fmn eye drop","fmn eye drop 1mg","fmneyedrop"],"o":[]}];

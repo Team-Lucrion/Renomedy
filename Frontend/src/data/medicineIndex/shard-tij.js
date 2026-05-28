@@ -1,0 +1,1 @@
+module.exports = [{"id":"6ffec880b3fc","b":"Tija 40mg Tablet","g":"Telmisartan","s":"40mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aztel 40mg Tablet","Abtelmi 40mg Tablet","Antel 40mg Tablet"],"t":["tija 40mg tablet","telmisartan","tija 40mg tablet 40mg","tija40mgtablet"],"o":[]}];

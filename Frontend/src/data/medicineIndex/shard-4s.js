@@ -1,0 +1,1 @@
+module.exports = [{"id":"4084d97850aa","b":"Keto 4S Cream","g":"Ofloxacin + Ornidazole","s":"0.75% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Altovate Cream","Atlox OZ Cream","Anizerm Cream"],"t":["keto4scream","keto 4s cream 0.75% w/w","keto 4s cream","ofloxacin + ornidazole"],"o":[]}];

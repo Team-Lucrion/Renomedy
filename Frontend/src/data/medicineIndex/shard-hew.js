@@ -1,0 +1,1 @@
+module.exports = [{"id":"80982419066c","b":"Hewon Tablet","g":"Caffeine + Cetirizine","s":"25mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Albicold N Tablet","Alflam Kold Tablet","Avokold N Tablet"],"t":["hewontablet","hewon tablet","hewon tablet 25mg","caffeine + cetirizine"],"o":[]}];

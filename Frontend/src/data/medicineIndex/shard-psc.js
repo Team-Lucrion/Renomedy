@@ -1,0 +1,1 @@
+module.exports = [{"id":"2060c28dfbac","b":"P-Scab Cream","g":"Permethrin","s":"","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Dermup Cream","Elice Cream","Mscab Cream"],"t":["p-scab cream","pscabcream","permethrin","p-scab cream na"],"o":[]}];

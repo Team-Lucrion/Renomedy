@@ -1,0 +1,1 @@
+module.exports = [{"id":"72f9246e26fb","b":"Kfusi 2% Ointment","g":"Fusidic Acid","s":"2% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Fusiwal Ointment","Fusiderm Ointment","Fusee Ointment"],"t":["kfusi 2% ointment","kfusi 2% ointment 2% w/w","kfusi2%ointment","fusidic acid"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"bd9c9114dd54","b":"Lectez  8cm","g":"Levosalbutamol + Ambroxol","s":"1mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ambroxen-LS Syrup","Agelite-LS Syrup","Ambrodex L Syrup"],"t":["lectez  8cm","levosalbutamol + ambroxol","lectez8cm","lectez  8cm 1mg"],"o":[]}];

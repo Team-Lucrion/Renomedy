@@ -1,0 +1,1 @@
+module.exports = [{"id":"9561e9dd0f96","b":"Woederm Cream","g":"Terbinafine + Clobetasol","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aboderm Plus Cream","Avoderm Plus Cream","Akio-TC Cream"],"t":["terbinafine + clobetasol","woedermcream","woederm cream","woederm cream 1% w/w"],"o":[]}];

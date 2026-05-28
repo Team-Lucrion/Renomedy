@@ -1,0 +1,1 @@
+module.exports = [{"id":"c0b573cb89e4","b":"Gaxxac Syrup","g":"Simethicone","s":"","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["gaxxac syrup","gaxxac syrup na","gaxxacsyrup","simethicone"],"o":[]}];

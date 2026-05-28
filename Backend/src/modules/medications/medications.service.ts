@@ -4,6 +4,13 @@ import { ensureClosedBetaAccess } from "../../services/beta-access.service";
 import { HttpError } from "../../utils/http-error";
 import { detectExcludedMedicine } from "../../utils/medicineSafety";
 import { evaluateMedicineRelationships, getMedicineTrustProfile } from "../../utils/medicineTrust";
+import {
+  BLOCKED_MEDICINE_MESSAGE,
+  findMedicineCatalogMatch,
+  getMedicineSupportSafety,
+  isInsulinOrInjectableDiabetesMedicine,
+  MANUAL_HIGH_RISK_MESSAGE
+} from "../../utils/medicineIntelligence";
 import { deriveContinuityStatus, deriveProjectedRunoutDate } from "./refill.utils";
 
 async function getAccessibleFamilyMemberIds(userId: string, familyMemberId?: string) {
@@ -81,7 +88,41 @@ export async function activateMedication(jwt: string, input: Record<string, unkn
         matched_term: excludedSignal.matchedTerm
       }
     });
-    throw new HttpError(422, `${excludedSignal.label} is not supported for activation during this beta`);
+    throw new HttpError(
+      422,
+      excludedSignal.category === "insulin"
+        ? MANUAL_HIGH_RISK_MESSAGE
+        : `${excludedSignal.label} can be saved for recognition, but cannot be activated for automated scheduling in this beta.`
+    );
+  }
+
+  const catalogMatch = findMedicineCatalogMatch(medication as Record<string, unknown>);
+  const supportSafety = getMedicineSupportSafety(catalogMatch);
+
+  if (!supportSafety.normalAutomationAllowed) {
+    const highRiskMessage =
+      supportSafety.supportMode === "manual_only_high_risk" ||
+      isInsulinOrInjectableDiabetesMedicine(catalogMatch, medication as Record<string, unknown>);
+    const message = highRiskMessage
+      ? MANUAL_HIGH_RISK_MESSAGE
+      : supportSafety.supportMode === "blocked"
+        ? BLOCKED_MEDICINE_MESSAGE
+        : supportSafety.message;
+
+    await writeAuditLog({
+      userId: currentUser.id,
+      action: supportSafety.supportMode === "blocked" ? "medicine.blocked_detected" : "medication.activation_blocked_support_mode",
+      entityType: "prescription_medication",
+      entityId: medication.id,
+      metadata: {
+        family_member_id: input.family_member_id,
+        catalog_id: catalogMatch?.id ?? null,
+        support_mode: supportSafety.supportMode,
+        medicine_name: medication.medicine_name
+      }
+    });
+
+    throw new HttpError(supportSafety.supportMode === "blocked" ? 422 : 409, message);
   }
 
   const refillThresholdDays = Number(input.refill_threshold_days ?? 3);

@@ -1,0 +1,1 @@
+module.exports = [{"id":"0e892962b311","b":"Cgryl 1mg Tablet","g":"Glimepiride","s":"1mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amaryl 1mg Tablet","Azulix 1 Tablet","Abepride 1mg Tablet"],"t":["cgryl1mgtablet","cgryl 1mg tablet","cgryl 1mg tablet 1mg","glimepiride"],"o":[]}];

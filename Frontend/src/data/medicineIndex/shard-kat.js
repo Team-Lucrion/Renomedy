@@ -1,0 +1,1 @@
+module.exports = [{"id":"1c91055fe825","b":"Katron 2mg Drop","g":"Ondansetron","s":"2mg","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aldon 2mg Oral Drops","Auditone 2mg Oral Drops","Arovom 2mg Oral Drops"],"t":["katron2mgdrop","katron 2mg drop 2mg","ondansetron","katron 2mg drop"],"o":[]}];

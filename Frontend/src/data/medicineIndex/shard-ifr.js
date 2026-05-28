@@ -1,0 +1,1 @@
+module.exports = [{"id":"c423ec655771","b":"I Fresh Eye Drop","g":"Carboxymethylcellulose","s":"1% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aquasurge  Max Eye Drop","Aquaray Gel","Addwet Gel Eye Drop"],"t":["ifresheyedrop","i fresh eye drop","i fresh eye drop 1% w/v","carboxymethylcellulose"],"o":[]}];

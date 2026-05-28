@@ -1,0 +1,1 @@
+module.exports = [{"id":"8a0b3c1119fe","b":"Neph-Chor Eye Drop","g":"Naphazoline + Chlorpheniramine Maleate","s":"0.56% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["nephchoreyedrop","naphazoline + chlorpheniramine maleate","neph-chor eye drop","neph-chor eye drop 0.56% w/v"],"o":[]}];

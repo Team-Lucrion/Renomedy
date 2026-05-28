@@ -1,0 +1,1 @@
+module.exports = [{"id":"fe8e9eefb196","b":"Onjet 2mg Syrup","g":"Ondansetron","s":"2mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Axiset 2mg Syrup","Amedil 2mg/5ml Syrup","Abivom 2mg Syrup"],"t":["onjet 2mg syrup","ondansetron","onjet 2mg syrup 2mg/5ml","onjet2mgsyrup"],"o":[]}];

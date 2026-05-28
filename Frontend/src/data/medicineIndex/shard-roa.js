@@ -1,0 +1,1 @@
+module.exports = [{"id":"b33b3ed28c45","b":"Roar 100mg Syrup","g":"Doxofylline","s":"100mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bestofyline 100mg Syrup","Codofyline 100mg Syrup","Duphill 100mg Syrup"],"t":["roar100mgsyrup","roar 100mg syrup 100mg","doxofylline","roar 100mg syrup"],"o":[]}];

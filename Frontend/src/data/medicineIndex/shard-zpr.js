@@ -1,0 +1,1 @@
+module.exports = [{"id":"5b890e2467f2","b":"Z Pred Eye Drop","g":"Gatifloxacin + Prednisolone","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Akrogat P Eye Drop","DrMpred-GT Eye Drop","Easygat P Eye Drop"],"t":["z pred eye drop 0.3% w/v","zpredeyedrop","gatifloxacin + prednisolone","z pred eye drop"],"o":[]}];

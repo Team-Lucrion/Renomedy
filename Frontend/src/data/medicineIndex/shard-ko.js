@@ -1,0 +1,1 @@
+module.exports = [{"id":"520f5583ae1a","b":"KO-Xylo Nasal Drops","g":"Xylometazoline","s":"0.1% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Atrovin Nasal Drops","Aelmet 0.1% Nasal Drops","Broflex Nasal Drops"],"t":["koxylonasaldrops","ko-xylo nasal drops 0.1% w/v","ko-xylo nasal drops","xylometazoline"],"o":[]}];

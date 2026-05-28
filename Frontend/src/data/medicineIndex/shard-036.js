@@ -1,0 +1,1 @@
+module.exports = [{"id":"ab91d588a544","b":"Healex Plus Spray","g":"Benzocaine + Cetrimide","s":"0.36% w/w","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["healexplusspray","healex plus spray 0.36% w/w","healex plus spray","benzocaine + cetrimide"],"o":[]}];

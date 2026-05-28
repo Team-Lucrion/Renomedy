@@ -1,0 +1,1 @@
+module.exports = [{"id":"f1680fe8252c","b":"B-Supp Tablet","g":"Calcium Citrate + Calcitriol","s":"1000mg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["b-supp tablet","b-supp tablet 1000mg","calcium citrate + calcitriol","bsupptablet"],"o":[]}];

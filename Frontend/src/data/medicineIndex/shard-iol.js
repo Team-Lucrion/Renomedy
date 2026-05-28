@@ -1,0 +1,1 @@
+module.exports = [{"id":"e60fb13c00ae","b":"IO-Limus Eye Ointment","g":"Tacrolimus","s":"0.03% w/w","f":"Ointment","c":"General","mt":"General","sm":"blocked","hr":1,"rmv":1,"beta":1,"ps":10,"a":["Acroli Ointment","Astacro Ointment","Crolim Ointment"],"t":["io-limus eye ointment","tacrolimus","io-limus eye ointment 0.03% w/w","iolimuseyeointment"],"o":[]}];

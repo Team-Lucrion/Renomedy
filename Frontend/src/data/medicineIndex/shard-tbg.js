@@ -1,0 +1,1 @@
+module.exports = [{"id":"e6824c340afa","b":"Zycof TBG Syrup","g":"Bromhexine + Guaifenesin","s":"2mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Asmaril Syrup","Ascolix Syrup","Alokoff T Syrup"],"t":["zycoftbgsyrup","zycof tbg syrup","bromhexine + guaifenesin","zycof tbg syrup 2mg/5ml"],"o":[]}];

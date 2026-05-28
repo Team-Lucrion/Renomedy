@@ -1,0 +1,1 @@
+module.exports = [{"id":"e38595a5acea","b":"Fheal Cream","g":"Triticum Vulgare Extract","s":"15gm","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["fheal cream","fheal cream 15gm","fhealcream","triticum vulgare extract"],"o":[]}];

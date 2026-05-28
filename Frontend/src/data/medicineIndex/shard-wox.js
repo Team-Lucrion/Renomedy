@@ -1,0 +1,1 @@
+module.exports = [{"id":"1ee7fe5e38eb","b":"Woxxib-P Tablet","g":"Etoricoxib + Paracetamol","s":"60mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcoxia-P Tablet","Auxib P 60mg/325mg Tablet","Asvoxia-P Tablet"],"t":["woxxib-p tablet","woxxibptablet","etoricoxib + paracetamol","woxxib-p tablet 60mg"],"o":[]}];

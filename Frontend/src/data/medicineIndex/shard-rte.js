@@ -1,0 +1,1 @@
+module.exports = [{"id":"9f61141182c2","b":"R Tears Eye Drop","g":"Carboxymethylcellulose + Oxychloro Complex","s":"0.05% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["r tears eye drop","r tears eye drop 0.05% w/v","carboxymethylcellulose + oxychloro complex","rtearseyedrop"],"o":[]}];

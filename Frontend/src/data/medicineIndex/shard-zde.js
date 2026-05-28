@@ -1,0 +1,1 @@
+module.exports = [{"id":"8d8f2a567766","b":"Z Derm Plus Cream","g":"Terbinafine + Clobetasol","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aboderm Plus Cream","Avoderm Plus Cream","Akio-TC Cream"],"t":["terbinafine + clobetasol","z derm plus cream 1% w/w","z derm plus cream","zdermpluscream"],"o":[]}];

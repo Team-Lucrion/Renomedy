@@ -1,0 +1,1 @@
+module.exports = [{"id":"777952337347","b":"Pgm 2 Tablet SR","g":"Glimepiride + Metformin","s":"2mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amaryl M  2mg Tablet PR","Azulix 2 MF Tablet PR","Amaryl MV 2mg Tablet SR"],"t":["glimepiride + metformin","pgm 2 tablet sr 2mg","pgm2tabletsr","pgm 2 tablet sr"],"o":[]}];

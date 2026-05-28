@@ -1,0 +1,1 @@
+module.exports = [{"id":"8ecd8706548e","b":"OQN DPS Eye/Ear Drops","g":"Ofloxacin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Auroflox 0.3% Eye Drop","Amoflox Eye Drop","Bioff 0.3% Eye/Ear Drops"],"t":["oqndpseye/eardrops","oqn dps eye/ear drops","ofloxacin","oqn dps eye/ear drops 0.3% w/v"],"o":[]}];

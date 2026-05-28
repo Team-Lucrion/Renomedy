@@ -1,0 +1,1 @@
+module.exports = [{"id":"be826d6ca42a","b":"LTK-AM Tablet","g":"Losartan + Amlodipine","s":"50mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amlozaar Tablet","Amlozaar-H Tablet","Asomex-LT Tablet"],"t":["ltkamtablet","losartan + amlodipine","ltk-am tablet 50mg","ltk-am tablet"],"o":[]}];

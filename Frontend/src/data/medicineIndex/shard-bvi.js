@@ -1,0 +1,1 @@
+module.exports = [{"id":"3fe5278912cc","b":"Bvigor Sublingual tablet Cherry","g":"Vitamin B12","s":"1500mcg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["bvigor sublingual tablet cherry 1500mcg","vitamin b12","bvigorsublingualtabletcherry","bvigor sublingual tablet cherry"],"o":[]}];

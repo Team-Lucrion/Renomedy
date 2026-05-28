@@ -1,0 +1,1 @@
+module.exports = [{"id":"d9c0cc32ba76","b":"Sgter 1% Cream","g":"Terbinafine","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acbro 1% Cream","Af-ter Cream","Abturbi Cream"],"t":["sgter 1% cream","sgter 1% cream 1% w/w","sgter1%cream","terbinafine"],"o":[]}];

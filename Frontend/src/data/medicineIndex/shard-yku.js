@@ -1,0 +1,1 @@
+module.exports = [{"id":"31762fa2f150","b":"Ykuf M Syrup","g":"Bromhexine + Guaifenesin","s":"4mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amdex Syrup","Aroxyl Syrup","Alernyl B 4mg/100mg/1mg/2mg Syrup"],"t":["ykuf m syrup","bromhexine + guaifenesin","ykuf m syrup 4mg","ykufmsyrup"],"o":[]}];

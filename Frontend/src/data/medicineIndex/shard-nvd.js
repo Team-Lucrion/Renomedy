@@ -1,0 +1,1 @@
+module.exports = [{"id":"1396bfc35a0b","b":"Nvderm-K5 Cream","g":"Ketoconazole + Clioquinol","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Covate-Mixi Cream","Corci KT Cream","Dermikem KT 5 Cream"],"t":["ketoconazole + clioquinol","nvdermk5cream","nvderm-k5 cream 2% w/w","nvderm-k5 cream"],"o":[]}];

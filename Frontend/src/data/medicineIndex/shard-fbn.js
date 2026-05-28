@@ -1,0 +1,1 @@
+module.exports = [{"id":"ccc19e5592a8","b":"Fbn Eye Drop","g":"Flurbiprofen","s":"0.03% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aflur Eye Drop","Bellflur Eye Drop","Cadiflur Eye Drop"],"t":["fbn eye drop 0.03% w/v","flurbiprofen","fbn eye drop","fbneyedrop"],"o":[]}];

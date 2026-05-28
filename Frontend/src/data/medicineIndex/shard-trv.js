@@ -1,0 +1,1 @@
+module.exports = [{"id":"301afca1d446","b":"Trvcip Syrup","g":"Cyproheptadine + Tricholine Citrate","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apitone Plus Syrup","Apticyp Syrup","Apitop Syrup"],"t":["trvcip syrup 2mg","cyproheptadine + tricholine citrate","trvcip syrup","trvcipsyrup"],"o":[]}];

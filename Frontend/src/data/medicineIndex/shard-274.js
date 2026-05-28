@@ -1,0 +1,1 @@
+module.exports = [{"id":"75b617c63881","b":"Isowax Ear Drop","g":"Benzocaine + Chlorbutol","s":"2.74% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["isowaxeardrop","benzocaine + chlorbutol","isowax ear drop","isowax ear drop 2.74% w/v"],"o":[]}];

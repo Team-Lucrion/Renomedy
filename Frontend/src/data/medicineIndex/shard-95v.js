@@ -1,0 +1,1 @@
+module.exports = [{"id":"b92cb5d151e6","b":"Eardri Ear Drop","g":"Isopropyl Alcohol","s":"95% v/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["eardri ear drop 95% v/v","eardrieardrop","isopropyl alcohol","eardri ear drop"],"o":[]}];

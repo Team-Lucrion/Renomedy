@@ -1,0 +1,1 @@
+module.exports = [{"id":"846d5ce046fd","b":"Czone O 50mg Syrup","g":"Cefpodoxime Proxetil","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acef Syrup","Alpod 50mg Syrup","Alarpod 50mg Dry Syrup"],"t":["cefpodoxime proxetil","czone o 50mg syrup 50mg","czone o 50mg syrup","czoneo50mgsyrup"],"o":[]}];

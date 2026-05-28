@@ -1,0 +1,1 @@
+module.exports = [{"id":"d0ed1fcd5071","b":"Fozole 40mg Tablet","g":"Pantoprazole","s":"40mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aciban 40 Tablet","Apnicid 40mg Tablet","Arropan 40mg Tablet"],"t":["fozole 40mg tablet","fozole40mgtablet","fozole 40mg tablet 40mg","pantoprazole"],"o":[]}];

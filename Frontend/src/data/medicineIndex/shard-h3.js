@@ -1,0 +1,1 @@
+module.exports = [{"id":"809c2547f216","b":"Topibrite H3 3% Cream","g":"Hydroquinone","s":"3% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Cutihyde Cream","Hyde Cream","HQ 3 Cream"],"t":["topibrite h3 3% cream","topibriteh33%cream","hydroquinone","topibrite h3 3% cream 3% w/w"],"o":[]}];

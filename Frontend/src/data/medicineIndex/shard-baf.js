@@ -1,0 +1,1 @@
+module.exports = [{"id":"4e7d00ad8054","b":"Bafix 100mg Tablet","g":"Cefixime","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Abixim 100mg Tablet","Amicef 100mg Tablet","Aricef 100mg Tablet DT"],"t":["bafix100mgtablet","bafix 100mg tablet","cefixime","bafix 100mg tablet 100mg"],"o":[]}];

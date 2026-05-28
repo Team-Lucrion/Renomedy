@@ -75,11 +75,11 @@ const styles = StyleSheet.create({
   },
   iconWrap: {
     alignItems: 'center',
-    borderRadius: 22,
-    height: 44,
+    borderRadius: 24,
+    height: 48,
     justifyContent: 'center',
     marginBottom: spacing.md,
-    width: 44,
+    width: 48,
   },
   title: {
     ...typography.h3,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.md,
-    minHeight: 44,
+    minHeight: 48,
   },
   cancelText: {
     ...typography.label,

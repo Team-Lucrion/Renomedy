@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import DoctorRespectNote from '../components/DoctorRespectNote';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst } from '../lib/collections';
 import { hasNotificationPromptBeenSeen, openNotificationSettings, setupMedicationNotifications } from '../lib/notifications';
@@ -35,7 +36,7 @@ export default function TrackerScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState<'schedule' | 'refills'>('schedule');
-  const { familyMembers, schedules, refillStates, logDose, isLoading, registerNotificationToken } = useAppData();
+  const { familyMembers, schedules, refillStates, logDose, isLoading, registerNotificationToken, pendingDoseLogCount } = useAppData();
   const [notificationState, setNotificationState] = useState<'idle' | 'registered' | 'denied' | 'unsupported' | 'error'>('idle');
   const [notificationMessage, setNotificationMessage] = useState('');
 
@@ -136,12 +137,21 @@ export default function TrackerScreen() {
               <View style={styles.actions}>
                 <TouchableOpacity
                   style={styles.actionButton}
+                  accessibilityLabel={`Mark ${med.medicationName} missed`}
                   onPress={() => void logDose({ medication_schedule_id: med.id, status: 'missed' })}
                 >
                   <Ionicons name="close-outline" size={24} color={colors.warning} />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={styles.actionButton}
+                  accessibilityLabel={`Mark ${med.medicationName} skipped`}
+                  onPress={() => void logDose({ medication_schedule_id: med.id, status: 'skipped' })}
+                >
+                  <Ionicons name="play-skip-forward-outline" size={22} color={colors.textMuted} />
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={[styles.actionButton, styles.primaryAction]}
+                  accessibilityLabel={`Mark ${med.medicationName} taken`}
                   onPress={() => void logDose({ medication_schedule_id: med.id, status: 'taken' })}
                 >
                   <Ionicons name="checkmark" size={24} color={colors.surface} />
@@ -236,6 +246,15 @@ export default function TrackerScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <DoctorRespectNote style={styles.doctorNote} />
+        {pendingDoseLogCount > 0 ? (
+          <View style={styles.syncQueueCard}>
+            <Ionicons name="sync-outline" size={18} color={colors.primary} />
+            <Text style={styles.syncQueueText}>
+              {pendingDoseLogCount} dose change{pendingDoseLogCount === 1 ? '' : 's'} will sync when you reconnect.
+            </Text>
+          </View>
+        ) : null}
         {schedules.length > 0 && notificationMessage ? (
           <View style={[styles.notificationCard, notificationState === 'registered' ? styles.notificationCardSuccess : styles.notificationCardWarning]}>
             <Ionicons
@@ -278,9 +297,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.background,
     borderRadius: borderRadius.pill,
-    height: 44,
+    height: 48,
     justifyContent: 'center',
-    width: 44,
+    width: 48,
   },
   headerTitle: {
     ...typography.h2,
@@ -311,6 +330,9 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     paddingBottom: 100,
   },
+  doctorNote: {
+    marginBottom: spacing.lg,
+  },
   tabContent: {
     gap: spacing.lg,
   },
@@ -334,9 +356,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   notificationLink: {
-    ...typography.bodySmall,
+    ...typography.body,
     color: colors.primary,
     fontWeight: '700',
+  },
+  syncQueueCard: {
+    alignItems: 'center',
+    backgroundColor: '#F5FBFA',
+    borderColor: '#CFE8E2',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+    padding: spacing.md,
+  },
+  syncQueueText: {
+    ...typography.body,
+    color: colors.text,
+    flex: 1,
+    lineHeight: 22,
   },
   emptyCard: {
     backgroundColor: colors.surface,
@@ -367,6 +406,7 @@ const styles = StyleSheet.create({
     ...typography.label,
     color: colors.primary,
     flex: 1,
+    fontSize: 18,
     paddingRight: spacing.md,
   },
   memberBadge: {
@@ -377,7 +417,6 @@ const styles = StyleSheet.create({
   },
   memberBadgeText: {
     ...typography.bodySmall,
-    fontSize: 12,
   },
   medBody: {
     flexDirection: 'row',
@@ -401,9 +440,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actionButton: {
-    padding: spacing.sm,
+    alignItems: 'center',
     borderRadius: borderRadius.pill,
     backgroundColor: colors.inputBackground,
+    justifyContent: 'center',
+    minHeight: 48,
+    minWidth: 48,
   },
   primaryAction: {
     backgroundColor: colors.primary,
@@ -424,7 +466,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   dosesText: {
-    ...typography.bodySmall,
+    ...typography.body,
     fontWeight: '600',
   },
   riskBadge: {
@@ -435,7 +477,6 @@ const styles = StyleSheet.create({
   },
   riskText: {
     ...typography.bodySmall,
-    fontSize: 12,
     fontWeight: '600',
   },
 });

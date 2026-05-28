@@ -1,0 +1,1 @@
+module.exports = [{"id":"a42c85a31ac2","b":"Coscopin Paed  Syrup","g":"Ammonium Chloride + Noscapine","s":"7mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["coscopin paed  syrup 7mg/5ml","coscopinpaedsyrup","ammonium chloride + noscapine","coscopin paed  syrup"],"o":[]}];

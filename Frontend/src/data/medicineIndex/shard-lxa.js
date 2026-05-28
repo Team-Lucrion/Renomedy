@@ -1,0 +1,1 @@
+module.exports = [{"id":"c9cf9da0e341","b":"Lxalka 1.4gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.4gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alkatis Syrup","Altos Syrup","Alkarik Syrup"],"t":["lxalka1.4gmsyrup","lxalka 1.4gm syrup 1.4gm","disodium hydrogen citrate","lxalka 1.4gm syrup"],"o":[]}];

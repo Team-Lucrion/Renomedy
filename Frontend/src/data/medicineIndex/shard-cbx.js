@@ -1,0 +1,1 @@
+module.exports = [{"id":"d342ab891139","b":"Cbx Dry Syrup","g":"Amoxycillin + Clavulanic Acid","s":"200mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advent 228.5mg Dry Syrup","Amoxy Bill CV Dry Syrup","Allwel CV Dry Syrup"],"t":["cbx dry syrup 200mg","cbx dry syrup","amoxycillin + clavulanic acid","cbxdrysyrup"],"o":[]}];

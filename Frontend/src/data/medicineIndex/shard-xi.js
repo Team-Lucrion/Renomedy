@@ -1,0 +1,1 @@
+module.exports = [{"id":"ef61c6c5b79d","b":"Nazeflo-XI Nasal Spray","g":"Xylometazoline + Ipratropium","s":"0.05% w/v","f":"Spray","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["nazeflo-xi nasal spray","nazefloxinasalspray","xylometazoline + ipratropium","nazeflo-xi nasal spray 0.05% w/v"],"o":[]}];

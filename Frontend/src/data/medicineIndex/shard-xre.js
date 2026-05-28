@@ -1,0 +1,1 @@
+module.exports = [{"id":"86b645bee4b1","b":"XREL Tablet","g":"Aceclofenac + Paracetamol","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aldigesic P 100mg/325mg Tablet","Aldigesic-SP Tablet","Acemiz Plus Tablet"],"t":["xreltablet","xrel tablet","xrel tablet 100mg","aceclofenac + paracetamol"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"327d3615bffb","b":"Waifel Cream","g":"Silver Sulfadiazine","s":"0.1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["waifelcream","waifel cream","waifel cream 0.1% w/w","silver sulfadiazine"],"o":[]}];

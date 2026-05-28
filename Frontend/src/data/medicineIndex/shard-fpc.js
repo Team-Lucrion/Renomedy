@@ -1,0 +1,1 @@
+module.exports = [{"id":"52b6afa867a3","b":"FP Cough Syrup","g":"Ambroxol + Guaifenesin","s":"15mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advanced LCF Kid Expectorant","Amrox Junior Syrup","Ambrox T Syrup"],"t":["ambroxol + guaifenesin","fp cough syrup","fpcoughsyrup","fp cough syrup 15mg/5ml"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"110304b40894","b":"Dermafour RX Cream","g":"Ofloxacin + Ornidazole","s":".75% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["dermafour rx cream .75% w/w","dermafourrxcream","ofloxacin + ornidazole","dermafour rx cream"],"o":[]}];

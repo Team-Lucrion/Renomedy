@@ -1,0 +1,1 @@
+module.exports = [{"id":"5a6dcba2cb76","b":"Np Win Syrup","g":"Nimesulide + Paracetamol","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aram Syrup","Arthorid P 50 mg/125 mg Syrup","Alide Syrup"],"t":["nimesulide + paracetamol","np win syrup","np win syrup 50mg","npwinsyrup"],"o":[]}];

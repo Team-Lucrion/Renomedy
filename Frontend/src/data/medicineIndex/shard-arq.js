@@ -1,0 +1,1 @@
+module.exports = [{"id":"342aef469d46","b":"Arquin 250mg Syrup","g":"Chloroquine","s":"250mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["arquin250mgsyrup","arquin 250mg syrup 250mg","arquin 250mg syrup","chloroquine"],"o":[]}];

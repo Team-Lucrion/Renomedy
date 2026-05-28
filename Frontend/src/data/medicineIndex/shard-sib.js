@@ -1,0 +1,1 @@
+module.exports = [{"id":"be4921b482a6","b":"Sibanda 40 Tablet","g":"Pantoprazole","s":"40mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aciban 40 Tablet","Apnicid 40mg Tablet","Arropan 40mg Tablet"],"t":["sibanda 40 tablet 40mg","sibanda40tablet","sibanda 40 tablet","pantoprazole"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"9d441a9120b4","b":"Xe 125mg Dry Syrup","g":"Cefuroxime","s":"125mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acctum 125mg Syrup","Axacef 125mg Dry Syrup","Allsef 125mg Syrup"],"t":["xe125mgdrysyrup","cefuroxime","xe 125mg dry syrup 125mg","xe 125mg dry syrup"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"9d2a7e564b87","b":"Jythro 500mg Tablet","g":"Azithromycin","s":"500mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azithral 500 Tablet","Azee 500 Tablet","Azicip 500 Tablet"],"t":["azithromycin","jythro 500mg tablet","jythro 500mg tablet 500mg","jythro500mgtablet"],"o":[]}];

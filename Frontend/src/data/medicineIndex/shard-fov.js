@@ -1,0 +1,1 @@
+module.exports = [{"id":"796cb264e92e","b":"Mep-Fovea Eye Drop","g":"Flurbiprofen","s":"0.03% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aflur Eye Drop","Bellflur Eye Drop","Cadiflur Eye Drop"],"t":["mepfoveaeyedrop","flurbiprofen","mep-fovea eye drop","mep-fovea eye drop 0.03% w/v"],"o":[]}];

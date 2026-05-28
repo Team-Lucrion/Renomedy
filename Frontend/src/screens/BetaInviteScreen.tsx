@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
-import { Linking, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppData } from '../context/AppDataContext';
 import { trackEvent } from '../lib/analytics';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
-const BETA_WEBSITE_URL = 'https://getrenomedy.netlify.app';
+function getBetaInviteErrorMessage(error: unknown) {
+  const rawMessage = error instanceof Error ? error.message.toLowerCase() : '';
+
+  if (rawMessage.includes('already used')) {
+    return 'That beta code has already been used.';
+  }
+
+  if (rawMessage.includes('expired')) {
+    return 'That beta code has expired. Please ask for a new code.';
+  }
+
+  if (rawMessage.includes('inactive') || rawMessage.includes('not active') || rawMessage.includes('revoked')) {
+    return 'That beta code is not active. Please ask for a new code.';
+  }
+
+  if (rawMessage.includes('already approved')) {
+    return 'This account already has beta access.';
+  }
+
+  if (rawMessage.includes('invalid') || rawMessage.includes('not found')) {
+    return 'That beta code does not look valid. Please check it and try again.';
+  }
+
+  return 'We could not check that beta code. Please try again.';
+}
 
 export default function BetaInviteScreen() {
   const { activateBetaAccess } = useAppData();
@@ -30,7 +54,7 @@ export default function BetaInviteScreen() {
         invite_code: normalizedCode,
         reason: unlockError instanceof Error ? unlockError.message : 'unknown_error',
       });
-      setError(unlockError instanceof Error ? unlockError.message : 'Unable to unlock beta access.');
+      setError(getBetaInviteErrorMessage(unlockError));
     } finally {
       setIsSubmitting(false);
     }
@@ -45,7 +69,7 @@ export default function BetaInviteScreen() {
           </View>
           <Text style={styles.title}>Enter Beta Invite Code</Text>
           <Text style={styles.subtitle}>
-            Renomedy is currently invite-only while we test with early families.
+            Renomedy is invite-only while we test with early families. Enter the beta code shared with you.
           </Text>
         </View>
 
@@ -70,13 +94,8 @@ export default function BetaInviteScreen() {
             style={[styles.primaryButton, isSubmitting ? styles.disabledButton : null]}
           >
             <Text style={styles.primaryButtonText}>
-              {isSubmitting ? 'Checking code...' : 'Unlock Beta Access'}
+              {isSubmitting ? 'Checking code...' : 'Continue'}
             </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => void Linking.openURL(BETA_WEBSITE_URL)} style={styles.linkRow}>
-            <Text style={styles.linkText}>Need an invite? Join the beta from our website.</Text>
-            <Ionicons name="open-outline" size={16} color={colors.primary} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -159,17 +178,5 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     opacity: 0.72,
-  },
-  linkRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: spacing.sm,
-    justifyContent: 'center',
-    marginTop: spacing.md,
-  },
-  linkText: {
-    ...typography.bodySmall,
-    color: colors.primary,
-    textAlign: 'center',
   },
 });

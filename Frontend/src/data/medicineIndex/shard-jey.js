@@ -1,0 +1,1 @@
+module.exports = [{"id":"47334bcb483f","b":"Jeyderm-Plus Cream","g":"Clobetasol + Neomycin","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Afderm Plus Cream","A To Z Cream","Agiclob N Cream"],"t":["jeyderm-plus cream","clobetasol + neomycin","jeydermpluscream","jeyderm-plus cream 0.05% w/w"],"o":[]}];

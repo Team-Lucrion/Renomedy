@@ -1,0 +1,1 @@
+module.exports = [{"id":"75efdf8558fd","b":"Vcitra-L Tablet","g":"Levocetirizine + Montelukast","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allercet-M Tablet","Akair LC Tablet","Alzero M Tablet"],"t":["levocetirizine + montelukast","vcitra-l tablet","vcitraltablet","vcitra-l tablet 5mg"],"o":[]}];

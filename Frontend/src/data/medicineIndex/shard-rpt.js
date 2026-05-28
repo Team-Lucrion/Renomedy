@@ -1,0 +1,1 @@
+module.exports = [{"id":"d61d70c93b50","b":"Rptel 40mg Tablet","g":"Telmisartan","s":"40mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aztel 40mg Tablet","Abtelmi 40mg Tablet","Antel 40mg Tablet"],"t":["rptel 40mg tablet","rptel40mgtablet","telmisartan","rptel 40mg tablet 40mg"],"o":[]}];

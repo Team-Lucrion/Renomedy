@@ -1,0 +1,1 @@
+module.exports = [{"id":"ca57d275a21d","b":"MT 4 Syrup","g":"Terbutaline + Bromhexine","s":"1.25mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Algnil CF Syrup","Bronchosolvin Syrup","Brogikoff Syrup"],"t":["mt 4 syrup","terbutaline + bromhexine","mt 4 syrup 1.25mg","mt4syrup"],"o":[]}];

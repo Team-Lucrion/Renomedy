@@ -1,0 +1,1 @@
+module.exports = [{"id":"9a2401948053","b":"SG 2mg Tablet","g":"Glimepiride","s":"2mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amaryl 2mg Tablet","Azulix 2 Tablet","Ajapride 2mg Tablet"],"t":["sg2mgtablet","sg 2mg tablet 2mg","sg 2mg tablet","glimepiride"],"o":[]}];

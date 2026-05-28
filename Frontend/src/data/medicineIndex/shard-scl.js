@@ -1,0 +1,1 @@
+module.exports = [{"id":"d83fcb610933","b":"S-Clear Cream","g":"Ozenoxacin","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["B-Oze Cream","Chooz 1% Cream","Impinoz Cream"],"t":["ozenoxacin","s-clear cream","s-clear cream 1% w/w","sclearcream"],"o":[]}];

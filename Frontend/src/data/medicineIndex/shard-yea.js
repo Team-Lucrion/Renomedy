@@ -1,0 +1,1 @@
+module.exports = [{"id":"1a8c154ed2fe","b":"Yearcet Tablet","g":"Cetirizine","s":"10mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alerid Tablet","Agmacet 10mg Tablet","Alergin 10mg Tablet"],"t":["yearcet tablet","yearcettablet","yearcet tablet 10mg","cetirizine"],"o":[]}];

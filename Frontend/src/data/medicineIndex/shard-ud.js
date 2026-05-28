@@ -1,0 +1,1 @@
+module.exports = [{"id":"3fe4c95c490a","b":"Higado UD Syrup","g":"Silymarin + Ursodeoxycholic Acid","s":"35mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["silymarin + ursodeoxycholic acid","higado ud syrup","higado ud syrup 35mg","higadoudsyrup"],"o":[]}];

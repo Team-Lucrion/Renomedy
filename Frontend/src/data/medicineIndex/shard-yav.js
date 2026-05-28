@@ -1,0 +1,1 @@
+module.exports = [{"id":"53bbf5f8ed9e","b":"Yavir Eye Ointment","g":"Acyclovir","s":"3% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acivir Eye Ointment","Eyevir Eye Ointment","Grovir Eye Ointment"],"t":["yavir eye ointment 3% w/w","acyclovir","yavireyeointment","yavir eye ointment"],"o":[]}];

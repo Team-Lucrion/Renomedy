@@ -1,0 +1,1 @@
+module.exports = [{"id":"6242f20b46e6","b":"Ktfax Eye Drop","g":"Ofloxacin + Ketorolac","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aflox K Eye Drop","Bell Ofc Eye Drop","Doloket O Eye Drop"],"t":["ktfax eye drop 0.3% w/v","ofloxacin + ketorolac","ktfax eye drop","ktfaxeyedrop"],"o":[]}];

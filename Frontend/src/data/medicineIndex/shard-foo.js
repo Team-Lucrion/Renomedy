@@ -1,0 +1,1 @@
+module.exports = [{"id":"e2e7dea67b15","b":"Foodaholic Syrup","g":"Cyproheptadine + Tricholine Citrate","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apitone Plus Syrup","Apticyp Syrup","Apitop Syrup"],"t":["foodaholic syrup","foodaholicsyrup","foodaholic syrup 2mg","cyproheptadine + tricholine citrate"],"o":[]}];

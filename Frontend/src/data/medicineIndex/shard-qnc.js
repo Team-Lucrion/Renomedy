@@ -1,0 +1,1 @@
+module.exports = [{"id":"76fc81529d98","b":"Qnclin N Cream","g":"Clindamycin + Nicotinamide","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Actreat Cream","Acnoval N Cream","Clinmiface Cream"],"t":["qnclin n cream","qnclinncream","qnclin n cream 1% w/w","clindamycin + nicotinamide"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"757f33dd8e5e","b":"Ketwon NCT Cream","g":"Ketoconazole + Clioquinol","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Covate-Mixi Cream","Corci KT Cream","Dermikem KT 5 Cream"],"t":["ketoconazole + clioquinol","ketwon nct cream","ketwonnctcream","ketwon nct cream 2% w/w"],"o":[]}];

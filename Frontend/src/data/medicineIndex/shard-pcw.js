@@ -1,0 +1,1 @@
+module.exports = [{"id":"c752fbb757d7","b":"PC-Win 650 Tablet","g":"Paracetamol","s":"650mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Admol 650mg Tablet","Algina 650 Tablet","Arden 650mg Tablet"],"t":["pc-win 650 tablet","pcwin650tablet","pc-win 650 tablet 650mg","paracetamol"],"o":[]}];

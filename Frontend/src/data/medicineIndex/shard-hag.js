@@ -1,0 +1,1 @@
+module.exports = [{"id":"0470a1f295ce","b":"Hagsol Ointment","g":"Clobetasol","s":"0.05% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bariderm Z Ointment","Bariderm Ointment","Clonate Ointment"],"t":["hagsolointment","hagsol ointment","hagsol ointment 0.05% w/w","clobetasol"],"o":[]}];

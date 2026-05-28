@@ -1,0 +1,1 @@
+module.exports = [{"id":"56809b4f3a4b","b":"Cufdip Syrup","g":"Ammonium Chloride + Sodium Citrate","s":"0.138gm/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["cufdipsyrup","cufdip syrup 0.138gm/5ml","cufdip syrup","ammonium chloride + sodium citrate"],"o":[]}];

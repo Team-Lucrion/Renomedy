@@ -1,0 +1,1 @@
+module.exports = [{"id":"1f05f34a231a","b":"Avytor 10mg Tablet","g":"Atorvastatin","s":"10mg","f":"Tablet","c":"Cholesterol","mt":"Cholesterol","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Atorva Tablet","Aztor 10 Tablet","Atorlip 10 Tablet"],"t":["avytor10mgtablet","avytor 10mg tablet","avytor 10mg tablet 10mg","atorvastatin"],"o":[]}];

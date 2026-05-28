@@ -1,0 +1,1 @@
+module.exports = [{"id":"55c757b1aeea","b":"Jkox Syrup","g":"Guaifenesin + Terbutaline","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alkof Syrup","Alkof Syrup Orange","Aroxyl Syrup"],"t":["jkox syrup","guaifenesin + terbutaline","jkox syrup 50mg","jkoxsyrup"],"o":[]}];

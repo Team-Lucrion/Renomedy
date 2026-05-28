@@ -1,0 +1,1 @@
+module.exports = [{"id":"eeff8460a5c3","b":"HI ZN Syrup","g":"Zinc Acetate","s":"20mg","f":"Syrup","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["hi zn syrup 20mg","hi zn syrup","zinc acetate","hiznsyrup"],"o":[]}];

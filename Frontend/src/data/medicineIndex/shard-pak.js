@@ -1,0 +1,1 @@
+module.exports = [{"id":"d21f1171b39b","b":"Paknet Creamy Wash","g":"Benzoyl Peroxide","s":"4% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["paknet creamy wash","paknetcreamywash","benzoyl peroxide","paknet creamy wash 4% w/w"],"o":[]}];

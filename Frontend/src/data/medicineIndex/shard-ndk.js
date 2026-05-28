@@ -1,0 +1,1 @@
+module.exports = [{"id":"6c512e517322","b":"ND Kuff Syrup","g":"Bromhexine + Guaifenesin","s":"4mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amcuff Syrup","Askuff BR Syrup","Alrocuf-BR Syrup"],"t":["ndkuffsyrup","nd kuff syrup 4mg/5ml","bromhexine + guaifenesin","nd kuff syrup"],"o":[]}];

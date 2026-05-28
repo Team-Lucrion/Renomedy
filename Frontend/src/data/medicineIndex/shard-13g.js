@@ -1,0 +1,1 @@
+module.exports = [{"id":"2808e4379111","b":"Citrawin 1.3gm Syrup","g":"Disodium Hydrogen Citrate","s":"1.3gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["citrawin 1.3gm syrup 1.3gm","citrawin1.3gmsyrup","disodium hydrogen citrate","citrawin 1.3gm syrup"],"o":[]}];

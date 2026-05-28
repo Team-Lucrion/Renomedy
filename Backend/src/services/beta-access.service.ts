@@ -10,7 +10,7 @@ type JwtIdentity = {
 type BetaInviteRecord = {
   id: string;
   code?: string | null;
-  status?: "unused" | "used" | "revoked" | string | null;
+  status?: "active" | "used" | "revoked" | string | null;
   email?: string | null;
   used_by_user_id?: string | null;
   expires_at?: string | null;
@@ -82,12 +82,16 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     throw new HttpError(404, "Invalid beta invite code", inviteError);
   }
 
-  if (invite.status === "revoked") {
-    throw new HttpError(403, "This beta invite has been revoked");
+  if (currentUser.beta_access_approved || currentUser.beta_access_status === "active") {
+    throw new HttpError(409, "User already approved");
   }
 
-  if ((invite.used_count ?? 0) >= (invite.max_uses ?? 1) || invite.status === "used") {
+  if (invite.status === "used" || invite.used_by_user_id || (invite.used_count ?? 0) > 0) {
     throw new HttpError(403, "This beta invite has already been used");
+  }
+
+  if (invite.status !== "active") {
+    throw new HttpError(403, "This beta invite is not active");
   }
 
   if (invite.expires_at && new Date(invite.expires_at).getTime() < Date.now()) {
@@ -146,7 +150,7 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     used_count: nextUsedCount,
     used_by_user_id: currentUser.id,
     used_at: activationTimestamp,
-    status: nextUsedCount >= (invite.max_uses ?? 1) ? "used" : "unused"
+    status: "used"
   };
 
   console.log("[beta-invite] marking invite used", {
@@ -156,7 +160,11 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
   });
 
   let inviteUpdateQuery = supabaseAdmin.from("beta_invites").update(inviteUpdates).eq("id", invite.id);
-  inviteUpdateQuery = inviteUpdateQuery.eq("used_count", invite.used_count ?? 0);
+  inviteUpdateQuery = inviteUpdateQuery
+    .eq("status", "active")
+    .eq("used_count", 0)
+    .is("used_by_user_id", null)
+    .is("used_at", null);
 
   const { data: consumedInvite, error: inviteUpdateError } = Object.keys(inviteUpdates).length
     ? await inviteUpdateQuery.select("id").single()

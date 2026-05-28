@@ -1,0 +1,1 @@
+module.exports = [{"id":"80a63e718254","b":"TP-Flam Tablet","g":"Tramadol + Paracetamol","s":"37.5mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Advin Tablet","Anadol P 37.5mg/325mg Tablet","Analog P 37.5mg/325mg Tablet"],"t":["tp-flam tablet 37.5mg","tpflamtablet","tp-flam tablet","tramadol + paracetamol"],"o":[]}];

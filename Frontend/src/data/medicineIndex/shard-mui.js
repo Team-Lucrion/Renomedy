@@ -1,0 +1,1 @@
+module.exports = [{"id":"cd146b5195bf","b":"MU IN 2% Ointment","g":"Mupirocin","s":"2% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Axibact 2% Ointment","Ag-Bact Ointment","Abetabact Ointment"],"t":["mu in 2% ointment 2% w/w","mupirocin","muin2%ointment","mu in 2% ointment"],"o":[]}];

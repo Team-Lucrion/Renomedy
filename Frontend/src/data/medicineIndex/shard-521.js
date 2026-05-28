@@ -1,0 +1,1 @@
+module.exports = [{"id":"e3d46633e6eb","b":"Debrifree Ointment","g":"Papain + Urea","s":"521700units","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["debrifree ointment","debrifree ointment 521700units","debrifreeointment","papain + urea"],"o":[]}];

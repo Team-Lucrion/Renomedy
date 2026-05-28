@@ -1,0 +1,1 @@
+module.exports = [{"id":"7064caced640","b":"Odcef 200mg Capsule","g":"Cefixime","s":"200mg","f":"Capsule","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Axime 200mg Capsule","Axis 200mg Capsule","Aqcef 200mg Capsule"],"t":["odcef 200mg capsule 200mg","odcef 200mg capsule","cefixime","odcef200mgcapsule"],"o":[]}];

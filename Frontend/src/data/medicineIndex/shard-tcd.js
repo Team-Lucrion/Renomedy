@@ -1,0 +1,1 @@
+module.exports = [{"id":"67b50c849f74","b":"TC Dine Syrup","g":"Cyproheptadine + Tricholine Citrate","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apitone Plus Syrup","Apticyp Syrup","Apitop Syrup"],"t":["tc dine syrup","tcdinesyrup","tc dine syrup 2mg","cyproheptadine + tricholine citrate"],"o":[]}];

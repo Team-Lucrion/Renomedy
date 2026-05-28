@@ -1,0 +1,1 @@
+module.exports = [{"id":"01cf3ddca33a","b":"P 1K Tablet","g":"Paracetamol","s":"1000mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["ACTION OR 1000mg Tablet","Ace Tablet","Actimin 1000mg Tablet"],"t":["p 1k tablet 1000mg","paracetamol","p 1k tablet","p1ktablet"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"04ee3eee633b","b":"Tdset-P Tablet","g":"Tramadol + Paracetamol","s":"37.5mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Advin Tablet","Anadol P 37.5mg/325mg Tablet","Analog P 37.5mg/325mg Tablet"],"t":["tdset-p tablet","tdset-p tablet 37.5mg","tdsetptablet","tramadol + paracetamol"],"o":[]}];

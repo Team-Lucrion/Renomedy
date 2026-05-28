@@ -771,6 +771,53 @@ export async function getPrescriptionHistory(jwt: string) {
   return data;
 }
 
+export async function createManualPrescriptionDraft(jwt: string, input: { family_member_id: string }) {
+  const currentUser = await ensureClosedBetaAccess(jwt);
+  const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, input.family_member_id);
+
+  if (!accessibleFamilyMemberIds.includes(input.family_member_id)) {
+    throw new HttpError(403, "Family member is not accessible");
+  }
+
+  const { data: prescription, error } = await supabaseAdmin
+    .from("prescriptions")
+    .insert({
+      family_member_id: input.family_member_id,
+      uploaded_by_user_id: currentUser.id,
+      doctor_name: null,
+      hospital_name: null,
+      prescription_date: new Date().toISOString().slice(0, 10),
+      image_url: null,
+      parse_status: "parsed",
+      verification_status: "unverified",
+      raw_ocr_text: null,
+      ocr_confidence_score: null,
+      ocr_provider: "manual_entry",
+      ocr_provider_metadata: { source: "manual_entry" }
+    })
+    .select("*")
+    .single();
+
+  if (error || !prescription) {
+    throw new HttpError(500, "Failed to create manual prescription draft", error);
+  }
+
+  await writeAuditLog({
+    userId: currentUser.id,
+    action: "prescription.manual_draft_created",
+    entityType: "prescription",
+    entityId: prescription.id,
+    metadata: { family_member_id: input.family_member_id }
+  });
+
+  return {
+    ...prescription,
+    prescription_medications: [],
+    prescription_uploads: [],
+    image_url: null
+  };
+}
+
 export async function createManualMedication(jwt: string, prescriptionId: string, input: Record<string, unknown>) {
   const currentUser = await ensureClosedBetaAccess(jwt);
   const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id);

@@ -1,0 +1,1 @@
+module.exports = [{"id":"89438824f525","b":"Ogyro Z Syrup","g":"Ofloxacin + Ornidazole","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Azoflox OZ Syrup","Antof OR Dry Syrup","Anloxa OZ Syrup"],"t":["ogyro z syrup","ogyro z syrup 50mg/5ml","ogyrozsyrup","ofloxacin + ornidazole"],"o":[]}];

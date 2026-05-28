@@ -1,0 +1,1 @@
+module.exports = [{"id":"f10abd769ea7","b":"Ycyst M Tablet","g":"Metformin + Alpha Lipoic Acid","s":"500mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Benforce-M Tablet","Benquil M 500mg/200mg Tablet","Cystop-A Tablet"],"t":["ycyst m tablet","metformin + alpha lipoic acid","ycystmtablet","ycyst m tablet 500mg"],"o":[]}];

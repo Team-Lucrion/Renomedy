@@ -1,0 +1,1 @@
+module.exports = [{"id":"1306de4b7e76","b":"Blp Zole 40mg Tablet","g":"Pantoprazole","s":"40mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aciban 40 Tablet","Apnicid 40mg Tablet","Arropan 40mg Tablet"],"t":["blpzole40mgtablet","blp zole 40mg tablet","blp zole 40mg tablet 40mg","pantoprazole"],"o":[]}];

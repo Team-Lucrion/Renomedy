@@ -1,0 +1,1 @@
+module.exports = [{"id":"c7c7565c5c19","b":"F Zole AS Kit","g":"Fluconazole + Azithromycin","s":"150mg","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Afs 3 Kit","Aziwin FS Kit","Azined SF Kit"],"t":["f zole as kit","f zole as kit 150mg","fzoleaskit","fluconazole + azithromycin"],"o":[]}];

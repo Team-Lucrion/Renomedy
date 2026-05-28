@@ -1,0 +1,1 @@
+module.exports = [{"id":"e1954926310d","b":"P 100 Drop","g":"Paracetamol","s":"100mg/ml","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Admol Drop","Aminol Drop","Admol Drop Sweet Orange"],"t":["p 100 drop 100mg/ml","p 100 drop","p100drop","paracetamol"],"o":[]}];

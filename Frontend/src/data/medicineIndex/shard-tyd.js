@@ -1,0 +1,1 @@
+module.exports = [{"id":"e65b905f6bae","b":"Tydem Oral Drops","g":"Ondansetron","s":"2mg/5ml","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Astron 2mg Oral Drops","Ansetron 2mg Oral Drops","Cladon 2mg Oral Drops"],"t":["tydemoraldrops","tydem oral drops 2mg/5ml","tydem oral drops","ondansetron"],"o":[]}];

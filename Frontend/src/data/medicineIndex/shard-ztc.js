@@ -1,0 +1,1 @@
+module.exports = [{"id":"f8aedd038bfe","b":"Ole Ztc Ointment","g":"Terbinafine + Clobetasol","s":"1% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avderm Ointment","Ariderm Ointment","Actocin Plus Ointment"],"t":["oleztcointment","ole ztc ointment","ole ztc ointment 1% w/w","terbinafine + clobetasol"],"o":[]}];

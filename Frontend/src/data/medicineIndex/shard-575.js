@@ -1,0 +1,1 @@
+module.exports = [{"id":"aa986f3d9a40","b":"Unistar 5/75 Capsule","g":"Rosuvastatin + Aspirin","s":"5mg","f":"Capsule","c":"Cholesterol","mt":"Cholesterol","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["rosuvastatin + aspirin","unistar5/75capsule","unistar 5/75 capsule","unistar 5/75 capsule 5mg"],"o":[]}];

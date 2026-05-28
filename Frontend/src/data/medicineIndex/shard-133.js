@@ -1,0 +1,1 @@
+module.exports = [{"id":"d0450cf55a77","b":"Zerofos DS Tablet","g":"Calcium Acetate","s":"1334mg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["calcium acetate","zerofosdstablet","zerofos ds tablet 1334mg","zerofos ds tablet"],"o":[]}];

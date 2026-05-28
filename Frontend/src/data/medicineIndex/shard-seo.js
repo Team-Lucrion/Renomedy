@@ -1,0 +1,1 @@
+module.exports = [{"id":"fc2afbf9ce27","b":"Seon 2mg Oral Drops","g":"Ondansetron","s":"2mg/5ml","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Astron 2mg Oral Drops","Ansetron 2mg Oral Drops","Cladon 2mg Oral Drops"],"t":["seon2mgoraldrops","ondansetron","seon 2mg oral drops 2mg/5ml","seon 2mg oral drops"],"o":[]}];

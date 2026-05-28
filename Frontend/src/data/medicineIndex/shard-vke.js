@@ -1,0 +1,1 @@
+module.exports = [{"id":"32d79b352c07","b":"V Ket Eye Drop","g":"Ketorolac","s":"0.4% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["K L S Eye Drop","Ketromin 0.4% Eye Drop","Ketovac Eye Drop"],"t":["v ket eye drop","vketeyedrop","v ket eye drop 0.4% w/v","ketorolac"],"o":[]}];

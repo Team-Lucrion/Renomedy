@@ -1,0 +1,1 @@
+module.exports = [{"id":"a2caa873286a","b":"GB Flox Eye Drop","g":"Ciprofloxacin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ahlox Eye Drop","Arflox 0.3% Eye Drop","Baclox 0.3% Eye Drop"],"t":["gb flox eye drop","gb flox eye drop 0.3% w/v","ciprofloxacin","gbfloxeyedrop"],"o":[]}];

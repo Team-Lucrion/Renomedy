@@ -1,0 +1,1 @@
+module.exports = [{"id":"65493b743d10","b":"Hgiclav Syrup","g":"Amoxycillin + Clavulanic Acid","s":"200mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advent 228.5mg Dry Syrup","Almox CV Syrup","Aniclav Syrup"],"t":["hgiclav syrup","hgiclavsyrup","amoxycillin + clavulanic acid","hgiclav syrup 200mg/5ml"],"o":[]}];

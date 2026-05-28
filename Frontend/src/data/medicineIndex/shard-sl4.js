@@ -1,0 +1,1 @@
+module.exports = [{"id":"83d00bb6092b","b":"SL 40 Tablet","g":"Pantoprazole","s":"40mg","f":"Tablet","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Aciban 40 Tablet","Apnicid 40mg Tablet","Arropan 40mg Tablet"],"t":["sl40tablet","sl 40 tablet","sl 40 tablet 40mg","pantoprazole"],"o":[]}];

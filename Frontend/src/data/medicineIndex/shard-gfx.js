@@ -1,0 +1,1 @@
+module.exports = [{"id":"271df0e34703","b":"Gfx 0.3% Eye Drop","g":"Gatifloxacin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ativis Eye Drop","Aegat 0.3% Eye Drop","Avufresh 0.3% Eye Drop"],"t":["gfx 0.3% eye drop 0.3% w/v","gfx0.3%eyedrop","gfx 0.3% eye drop","gatifloxacin"],"o":[]}];

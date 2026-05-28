@@ -1,0 +1,1 @@
+module.exports = [{"id":"e9363ebbbc90","b":"N Lok T Tablet","g":"Cilnidipine + Telmisartan","s":"10mg","f":"Tablet","c":"Hypertension","mt":"Hypertension","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Acmetel-LN Tablet","Alvitel LN 10mg/40mg Tablet","Cilacar T Tablet"],"t":["n lok t tablet","cilnidipine + telmisartan","nlokttablet","n lok t tablet 10mg"],"o":[]}];

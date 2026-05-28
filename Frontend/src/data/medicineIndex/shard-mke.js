@@ -1,0 +1,1 @@
+module.exports = [{"id":"a7216cb2f185","b":"M Keto Cream","g":"Clobetasol + Gentamicin","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bactiderm G Cream","Cosvate-Gm Cream","Clop-G Cream"],"t":["m keto cream","mketocream","m keto cream 0.05% w/w","clobetasol + gentamicin"],"o":[]}];

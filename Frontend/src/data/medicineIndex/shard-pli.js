@@ -1,0 +1,1 @@
+module.exports = [{"id":"b7bdea5fddcd","b":"Plite Cream","g":"Permethrin","s":"5% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avthrin Cream","Curemite Cream","Ceasemite Cream"],"t":["plite cream 5% w/w","permethrin","plitecream","plite cream"],"o":[]}];

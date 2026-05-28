@@ -1,0 +1,1 @@
+module.exports = [{"id":"aa5af083ec31","b":"A2V 20mg Tablet","g":"Atorvastatin","s":"20mg","f":"Tablet","c":"Cholesterol","mt":"Cholesterol","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Atorva 20 Tablet","Aztor 20 Tablet","Atorlip 20 Tablet"],"t":["a2v 20mg tablet 20mg","atorvastatin","a2v20mgtablet","a2v 20mg tablet"],"o":[]}];

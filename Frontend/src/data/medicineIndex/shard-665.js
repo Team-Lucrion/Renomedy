@@ -1,0 +1,1 @@
+module.exports = [{"id":"139933b3dced","b":"Tegril Syrup","g":"Guaifenesin + Terbutaline","s":"66.5mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["tegrilsyrup","tegril syrup 66.5mg","guaifenesin + terbutaline","tegril syrup"],"o":[]}];

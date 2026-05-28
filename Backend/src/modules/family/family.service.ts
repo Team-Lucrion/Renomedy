@@ -187,7 +187,12 @@ function generateInviteCode(): string {
   return code;
 }
 
-export async function createFamily(jwt: string, input: { family_name: string; member_role?: "caregiver" | "patient" | "family_member" }) {
+export async function createFamily(jwt: string, input: {
+  family_name: string;
+  member_role?: "caregiver" | "patient" | "family_member";
+  primary_member_name?: string;
+  primary_member_relationship?: string;
+}) {
   const currentUser = await ensureClosedBetaAccess(jwt);
   const inviteCode = generateInviteCode();
   const inviteExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
@@ -220,9 +225,9 @@ export async function createFamily(jwt: string, input: { family_name: string; me
     family_group_id: data.id,
     added_by_user_id: currentUser.id,
     created_by: currentUser.id,
-    full_name: currentUser.full_name ?? "Primary Member",
-    name: currentUser.full_name ?? "Primary Member",
-    relationship: memberRelationshipFromRole(memberRole),
+    full_name: normalizedString(input.primary_member_name) ?? currentUser.full_name ?? "Primary Member",
+    name: normalizedString(input.primary_member_name) ?? currentUser.full_name ?? "Primary Member",
+    relationship: normalizedString(input.primary_member_relationship) ?? memberRelationshipFromRole(memberRole),
     role: memberRole,
     chronic_conditions: [],
     allergies: [],

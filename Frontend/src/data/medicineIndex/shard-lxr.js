@@ -1,0 +1,1 @@
+module.exports = [{"id":"efb464851014","b":"Lxrol O Syrup","g":"Sucralfate + Oxetacaine","s":"1000mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alcocid 1000mg/20mg Syrup","Aulcer OS Syrup","Acifate O Syrup"],"t":["lxrol o syrup","lxrol o syrup 1000mg","lxrolosyrup","sucralfate + oxetacaine"],"o":[]}];

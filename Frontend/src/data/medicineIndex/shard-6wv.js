@@ -1,0 +1,1 @@
+module.exports = [{"id":"8852773f4f58","b":"Isol 6% Eye Drop","g":"Sodium Chloride","s":"6% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["isol 6% eye drop 6% w/v","isol6%eyedrop","sodium chloride","isol 6% eye drop"],"o":[]}];

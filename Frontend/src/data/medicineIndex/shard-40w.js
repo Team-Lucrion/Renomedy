@@ -1,0 +1,1 @@
+module.exports = [{"id":"32272e46e719","b":"Otofast Ear Drop","g":"Lidocaine + Phenazone","s":"4.0% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["lidocaine + phenazone","otofasteardrop","otofast ear drop","otofast ear drop 4.0% w/v"],"o":[]}];

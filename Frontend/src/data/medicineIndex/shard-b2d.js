@@ -1,0 +1,1 @@
+module.exports = [{"id":"eeed6b526980","b":"B2 Doc Eye Drop","g":"Brinzolamide + Brimonidine","s":"10mg","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["b2doceyedrop","b2 doc eye drop","brinzolamide + brimonidine","b2 doc eye drop 10mg"],"o":[]}];

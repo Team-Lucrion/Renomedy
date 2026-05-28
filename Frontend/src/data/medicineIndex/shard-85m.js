@@ -1,0 +1,1 @@
+module.exports = [{"id":"bfb99adce8b4","b":"Ventex Ped 85mg/1mg Syrup","g":"Etofylline + Salbutamol","s":"85mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["etofylline + salbutamol","ventex ped 85mg/1mg syrup 85mg","ventexped85mg/1mgsyrup","ventex ped 85mg/1mg syrup"],"o":[]}];

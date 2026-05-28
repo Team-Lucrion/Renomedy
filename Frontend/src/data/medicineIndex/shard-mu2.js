@@ -1,0 +1,1 @@
+module.exports = [{"id":"792b13bc15b3","b":"MU 2% Ointment","g":"Mupirocin","s":"2%","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Bactirel Ointment","Mupivate Ointment","Mupricon Ointment"],"t":["mupirocin","mu 2% ointment","mu2%ointment","mu 2% ointment 2%"],"o":[]}];

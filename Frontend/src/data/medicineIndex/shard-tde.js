@@ -1,0 +1,1 @@
+module.exports = [{"id":"ef1c8acc8149","b":"T Derma 0.1% Ointment","g":"Tacrolimus","s":"0.1% w/w","f":"Ointment","c":"General","mt":"General","sm":"blocked","hr":1,"rmv":1,"beta":1,"ps":10,"a":["Acroli Forte Ointment","Atomus Ointment","Atograf Forte 0.1% Ointment"],"t":["tderma0.1%ointment","t derma 0.1% ointment","t derma 0.1% ointment 0.1% w/w","tacrolimus"],"o":[]}];

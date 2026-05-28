@@ -1,0 +1,1 @@
+module.exports = [{"id":"dcb86eff82c2","b":"Jtryp-DP Tablet","g":"Diclofenac + Paracetamol","s":"50mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AT SP Tablet","Adine-Plus Tablet","Arumin 50 mg/500 mg Tablet"],"t":["jtryp-dp tablet","diclofenac + paracetamol","jtryp-dp tablet 50mg","jtrypdptablet"],"o":[]}];

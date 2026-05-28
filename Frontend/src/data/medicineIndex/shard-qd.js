@@ -1,0 +1,1 @@
+module.exports = [{"id":"4ba62fe639fb","b":"QD 4 Cream","g":"Betamethasone + Gentamicin","s":"","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Betagen Cream","Fulderm Cream","Grobet gm Cream"],"t":["qd4cream","betamethasone + gentamicin","qd 4 cream na","qd 4 cream"],"o":[]}];

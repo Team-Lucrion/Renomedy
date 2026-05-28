@@ -1,0 +1,1 @@
+module.exports = [{"id":"390c28c5aee2","b":"Neypac 0.1% Eye Drop","g":"Nepafenac","s":"0.1% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Accunac 0.1% Eye Drop","Amnac Opthalmic Suspension","Avanep Eye Drop"],"t":["neypac0.1%eyedrop","nepafenac","neypac 0.1% eye drop 0.1% w/v","neypac 0.1% eye drop"],"o":[]}];

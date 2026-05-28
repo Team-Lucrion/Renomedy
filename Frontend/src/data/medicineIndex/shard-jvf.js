@@ -1,0 +1,1 @@
+module.exports = [{"id":"1c0944fca685","b":"JV Flox SM Syrup","g":"Ofloxacin + Metronidazole","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agroflox M Syrup","Alfox M Syrup","Dioflox M Syrup"],"t":["ofloxacin + metronidazole","jvfloxsmsyrup","jv flox sm syrup 50mg/5ml","jv flox sm syrup"],"o":[]}];

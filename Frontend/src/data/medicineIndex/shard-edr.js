@@ -1,0 +1,1 @@
+module.exports = [{"id":"e6916bd72ba9","b":"Edric AG Syrup","g":"Ambroxol + Guaifenesin","s":"15mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Astagon Syrup","Axol Plus Syrup","Aroget Syrup"],"t":["edricagsyrup","edric ag syrup 15mg","ambroxol + guaifenesin","edric ag syrup"],"o":[]}];

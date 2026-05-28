@@ -1,0 +1,1 @@
+module.exports = [{"id":"376cb17b093c","b":"KT 5 Derm Cream","g":"Clobetasol + Gentamicin","s":"0.5mg","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["kt 5 derm cream 0.5mg","kt 5 derm cream","kt5dermcream","clobetasol + gentamicin"],"o":[]}];

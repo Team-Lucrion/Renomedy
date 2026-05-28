@@ -1,0 +1,1 @@
+module.exports = [{"id":"30c3517800ec","b":"Shwas Syrup","g":"Bromhexine + Etofylline","s":"4mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["bromhexine + etofylline","shwas syrup 4mg","shwassyrup","shwas syrup"],"o":[]}];

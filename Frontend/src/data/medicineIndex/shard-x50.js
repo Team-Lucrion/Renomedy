@@ -1,0 +1,1 @@
+module.exports = [{"id":"b7d465592f98","b":"Spnﬁx 50mg Dry Syrup","g":"Cefixime","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aricef O 50mg/5ml Dry Syrup","Abixim 50mg Dry Syrup","Aphexine DS 50mg Dry Syrup"],"t":["spnﬁx 50mg dry syrup","spnﬁx 50mg dry syrup 50mg/5ml","cefixime","spnﬁx50mgdrysyrup"],"o":[]}];

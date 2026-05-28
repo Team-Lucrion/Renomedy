@@ -1,0 +1,1 @@
+module.exports = [{"id":"1655bbadda48","b":"Sbflam Syrup","g":"Ibuprofen + Paracetamol","s":"100mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Brugesicp 100 mg/125 mg Syrup","Corflam Plus  Syrup","Decomb Syrup"],"t":["sbflam syrup 100mg","sbflamsyrup","sbflam syrup","ibuprofen + paracetamol"],"o":[]}];

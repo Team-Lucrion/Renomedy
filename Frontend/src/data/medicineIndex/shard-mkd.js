@@ -1,0 +1,1 @@
+module.exports = [{"id":"67bac7f99e9a","b":"Mkdrem Fast Cream","g":"Clobetasol + Miconazole","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Agmaderm Cream","Avoderm Cream","Asclob NM Cream"],"t":["mkdremfastcream","clobetasol + miconazole","mkdrem fast cream 0.05% w/w","mkdrem fast cream"],"o":[]}];

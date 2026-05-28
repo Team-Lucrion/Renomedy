@@ -1,0 +1,1 @@
+module.exports = [{"id":"de1a77fcf79e","b":"Roen 50mg Syrup","g":"Roxithromycin","s":"50mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Eurox 50mg Syrup","Luprex 50mg Syrup","Othrox Syrup"],"t":["roen 50mg syrup 50mg","roxithromycin","roen 50mg syrup","roen50mgsyrup"],"o":[]}];

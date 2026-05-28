@@ -4,11 +4,11 @@ export const colors = {
   background: '#F4F9F8', // Very soft mint/white background
   surface: '#FFFFFF', // Card background
   text: '#2D3748',
-  textMuted: '#718096',
+  textMuted: '#4A5568',
   border: '#E2E8F0',
-  success: '#38A169',
-  warning: '#D69E2E',
-  danger: '#E53E3E',
+  success: '#2F855A',
+  warning: '#975A16',
+  danger: '#C53030',
   inputBackground: '#EDF2F7',
 };
 
@@ -35,7 +35,7 @@ export const typography = {
   h3: { fontSize: 18, fontWeight: '600' as const, color: colors.text },
   body: { fontSize: 16, fontWeight: '400' as const, color: colors.text },
   bodySmall: { fontSize: 14, fontWeight: '400' as const, color: colors.textMuted },
-  label: { fontSize: 14, fontWeight: '600' as const, color: colors.text },
+  label: { fontSize: 16, fontWeight: '600' as const, color: colors.text },
 };
 
 export const shadows = {

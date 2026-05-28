@@ -1,0 +1,1 @@
+module.exports = [{"id":"3f5febb269de","b":"Pilenil Ointment","g":"Lidocaine","s":"0.70%","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["pilenil ointment","pilenilointment","pilenil ointment 0.70%","lidocaine"],"o":[]}];

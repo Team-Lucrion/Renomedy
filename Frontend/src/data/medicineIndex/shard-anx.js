@@ -1,0 +1,1 @@
+module.exports = [{"id":"e75db38706ad","b":"Anxipan Capsule","g":"Amitriptyline + Pantoprazole","s":"10mg","f":"Capsule","c":"PPIs/Reflux","mt":"PPIs/Reflux","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":60,"a":[],"t":["anxipan capsule 10mg","amitriptyline + pantoprazole","anxipan capsule","anxipancapsule"],"o":["pan40","pan-40","p an 40"]}];

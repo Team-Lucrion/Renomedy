@@ -1,0 +1,1 @@
+module.exports = [{"id":"ad3da2a2aa89","b":"Histolin Plus Syrup","g":"Citric Acid + Diphenhydramine","s":"57mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["histolin plus syrup 57mg","citric acid + diphenhydramine","histolin plus syrup","histolinplussyrup"],"o":[]}];

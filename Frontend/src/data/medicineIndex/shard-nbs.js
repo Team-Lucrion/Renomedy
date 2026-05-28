@@ -1,0 +1,1 @@
+module.exports = [{"id":"200788517b41","b":"Nbstmet 500mg Tablet","g":"Metformin","s":"500mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Almetfor 500mg Tablet","Ali M 500mg Tablet","Ameto 500 Tablet ER"],"t":["nbstmet500mgtablet","nbstmet 500mg tablet","nbstmet 500mg tablet 500mg","metformin"],"o":[]}];

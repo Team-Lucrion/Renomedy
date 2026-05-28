@@ -1,0 +1,1 @@
+module.exports = [{"id":"7df37b000687","b":"Cobeta 6S Cream","g":"Clobetasol + Salicylic Acid","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Biclo S Cream","Betohal SL Cream","Closalic MF Cream"],"t":["cobeta 6s cream 0.05% w/w","cobeta 6s cream","cobeta6scream","clobetasol + salicylic acid"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"9cd829f5d193","b":"Oflover IC Cream","g":"Ofloxacin + Ornidazole","s":"0.75% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Altovate Cream","Atlox OZ Cream","Anizerm Cream"],"t":["oflover ic cream 0.75% w/w","oflover ic cream","oflovericcream","ofloxacin + ornidazole"],"o":[]}];

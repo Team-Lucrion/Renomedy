@@ -1,0 +1,1 @@
+module.exports = [{"id":"8f645c3ce0cb","b":"Fcb GM Ointment","g":"Clobetasol + Neomycin","s":"0.05% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Aclogm Ointment","Benkos Ointment","Clobid NM  Ointment"],"t":["fcbgmointment","clobetasol + neomycin","fcb gm ointment","fcb gm ointment 0.05% w/w"],"o":[]}];

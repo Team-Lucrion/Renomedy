@@ -1,0 +1,1 @@
+module.exports = [{"id":"f277b3e184e7","b":"SV Syrup","g":"Ondansetron","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alset 2mg Syrup","Avdom 2mg Syrup","Beon 2mg Syrup"],"t":["sv syrup","svsyrup","sv syrup 2mg","ondansetron"],"o":[]}];

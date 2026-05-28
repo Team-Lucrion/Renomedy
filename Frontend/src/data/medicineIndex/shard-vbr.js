@@ -1,0 +1,1 @@
+module.exports = [{"id":"8526f564c2ae","b":"V Brom Eye Drop","g":"Bromfenac","s":"0.09% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["BFN Eye Drop","Bromza Eye Drop","Bromflam Eye Drop"],"t":["v brom eye drop 0.09% w/v","v brom eye drop","vbromeyedrop","bromfenac"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"9c948d7a214c","b":"GC Derm 1% Cream","g":"Clotrimazole","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Abzorb 1% Cream","AD Fun 1% Cream","Clocip Cream"],"t":["gc derm 1% cream 1% w/w","clotrimazole","gcderm1%cream","gc derm 1% cream"],"o":[]}];

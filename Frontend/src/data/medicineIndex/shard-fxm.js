@@ -1,0 +1,1 @@
+module.exports = [{"id":"fe68b4831840","b":"FX-Montu Tablet","g":"Montelukast + Fexofenadine","s":"10mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allegra-M Tablet","Air-M Tablet","Acegrow 3D Tablet"],"t":["fx-montu tablet","fx-montu tablet 10mg","montelukast + fexofenadine","fxmontutablet"],"o":[]}];

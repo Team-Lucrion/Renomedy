@@ -1,0 +1,1 @@
+module.exports = [{"id":"e58220330959","b":"Ecbdol Tablet","g":"Etoricoxib + Paracetamol","s":"60mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcoxia-P Tablet","Auxib P 60mg/325mg Tablet","Asvoxia-P Tablet"],"t":["ecbdol tablet 60mg","ecbdol tablet","ecbdoltablet","etoricoxib + paracetamol"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"99ce54b5e903","b":"Soycex 100mg Tablet DT","g":"Cefixime","s":"100mg","f":"Tablet","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Abixim 100mg Tablet","Amicef 100mg Tablet","Aricef 100mg Tablet DT"],"t":["soycex 100mg tablet dt 100mg","cefixime","soycex100mgtabletdt","soycex 100mg tablet dt"],"o":[]}];

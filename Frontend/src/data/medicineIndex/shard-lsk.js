@@ -1,0 +1,1 @@
+module.exports = [{"id":"d6c5049f7897","b":"Lsky Syrup","g":"Cyproheptadine + Tricholine Citrate","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Apitone Plus Syrup","Apticyp Syrup","Apitop Syrup"],"t":["lsky syrup","cyproheptadine + tricholine citrate","lsky syrup 2mg","lskysyrup"],"o":[]}];

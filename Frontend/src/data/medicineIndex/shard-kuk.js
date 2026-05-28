@@ -1,0 +1,1 @@
+module.exports = [{"id":"7b53e39979b0","b":"Kukuf AM Syrup","g":"Ambroxol + Guaifenesin","s":"15mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Astagon Syrup","Axol Plus Syrup","Aroget Syrup"],"t":["ambroxol + guaifenesin","kukufamsyrup","kukuf am syrup","kukuf am syrup 15mg"],"o":[]}];

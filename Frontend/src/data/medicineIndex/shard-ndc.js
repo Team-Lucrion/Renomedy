@@ -1,0 +1,1 @@
+module.exports = [{"id":"cef51f2a10b3","b":"ND Cold DS Syrup","g":"Chlorpheniramine Maleate + Paracetamol","s":"2mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alerfri Syrup","Alerfri P Syrup","Ace Plus Syrup"],"t":["nd cold ds syrup 2mg","chlorpheniramine maleate + paracetamol","nd cold ds syrup","ndcolddssyrup"],"o":[]}];

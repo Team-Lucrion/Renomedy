@@ -1,0 +1,1 @@
+module.exports = [{"id":"47e94ff85a30","b":"LC 10mg Tablet DT","g":"Levocetirizine","s":"10mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alvizine 10mg Tablet","Allelin 10mg Tablet","Alvocet 10mg Tablet MD"],"t":["lc10mgtabletdt","lc 10mg tablet dt","levocetirizine","lc 10mg tablet dt 10mg"],"o":[]}];

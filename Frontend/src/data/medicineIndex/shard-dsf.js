@@ -1,0 +1,1 @@
+module.exports = [{"id":"1e727d30b7c2","b":"Rahat-Dsf Syrup","g":"Ambroxol + Guaifenesin","s":"15mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Advanced LCF Kid Expectorant","Amrox Junior Syrup","Ambrox T Syrup"],"t":["rahat-dsf syrup","ambroxol + guaifenesin","rahatdsfsyrup","rahat-dsf syrup 15mg/5ml"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"d2025e025c1f","b":"Bomcold Syrup","g":"Chlorpheniramine Maleate + Paracetamol","s":"0.5mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Alex P Syrup","Albicold Syrup","Adlemef P Syrup"],"t":["bomcoldsyrup","chlorpheniramine maleate + paracetamol","bomcold syrup","bomcold syrup 0.5mg/5ml"],"o":[]}];

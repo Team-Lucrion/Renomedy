@@ -1,0 +1,1 @@
+module.exports = [{"id":"bae433abeb03","b":"Gris ODT Cream","g":"Terbinafine","s":"1% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Acbro 1% Cream","Af-ter Cream","Abturbi Cream"],"t":["grisodtcream","gris odt cream","gris odt cream 1% w/w","terbinafine"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"a7381545ac36","b":"Clotzin Cream","g":"Clotrimazole","s":"11.3% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["clotzincream","clotrimazole","clotzin cream","clotzin cream 11.3% w/w"],"o":[]}];

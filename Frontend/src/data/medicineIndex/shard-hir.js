@@ -1,0 +1,1 @@
+module.exports = [{"id":"d8f9ab6c1a8a","b":"Hirudal Cream","g":"Mucopolysaccharide Polysulfate","s":"250IU/gm","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["hirudal cream","mucopolysaccharide polysulfate","hirudalcream","hirudal cream 250iu/gm"],"o":[]}];

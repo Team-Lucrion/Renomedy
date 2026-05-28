@@ -1,0 +1,1 @@
+module.exports = [{"id":"40d624290d9c","b":"Fudic BNF Cream","g":"Beclometasone + Fusidic Acid","s":"0.025% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Abibec-F Cream","Betapic-G Cream","Dicfu-B Cream"],"t":["fudicbnfcream","fudic bnf cream","beclometasone + fusidic acid","fudic bnf cream 0.025% w/w"],"o":[]}];

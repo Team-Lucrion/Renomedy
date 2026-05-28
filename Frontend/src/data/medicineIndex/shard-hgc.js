@@ -1,0 +1,1 @@
+module.exports = [{"id":"8008ebc710b1","b":"HG Cough Syrup","g":"Ammonium Chloride + Sodium Citrate","s":"138mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascotus Syrup","Anadryl Syrup","Agedryl Syrup"],"t":["hg cough syrup 138mg/5ml","hgcoughsyrup","hg cough syrup","ammonium chloride + sodium citrate"],"o":[]}];

@@ -1,4 +1,4 @@
-const { commonIndianMedicines } = require('../data/indianMedicines');
+const { searchIndianMedicines } = require('../data/indianMedicines');
 
 const CATEGORY_TRUST_DEFAULTS = {
   cardiovascular: {
@@ -134,23 +134,20 @@ function splitMolecules(value) {
 
 function findCatalogMatch(input) {
   const parsed = parseBrandStrengthEntry(input);
-  const brandName = parsed.nameOnly || parsed.normalized;
-  const genericName = normalizeMedicineText(input.genericName);
+  const queries = [
+    parsed.nameOnly || parsed.normalized,
+    input.brandName,
+    input.genericName,
+    input.medicineName,
+    input.medicine_name,
+  ].filter(Boolean);
 
-  return commonIndianMedicines.find((item) => {
-    const itemBrand = normalizeMedicineText(item.brandName);
-    const itemGeneric = normalizeMedicineText(item.genericName);
-    const aliases = (item.aliases || []).map(normalizeMedicineText);
-    return (
-      itemBrand === brandName ||
-      brandName.startsWith(`${itemBrand} `) ||
-      aliases.includes(brandName) ||
-      aliases.some((alias) => alias.startsWith(brandName) || alias === parsed.normalized) ||
-      itemGeneric === brandName ||
-      itemGeneric === genericName ||
-      itemBrand === genericName
-    );
-  }) || null;
+  for (const query of queries) {
+    const result = searchIndianMedicines(query, 1)[0];
+    if (result) return result;
+  }
+
+  return null;
 }
 
 function getMedicineTrustProfile(input) {
@@ -175,11 +172,12 @@ function getMedicineTrustProfile(input) {
     genericName: genericName || null,
     category,
     molecules,
-    formulation,
+    formulation: catalogMatch.trustMetadata?.formulation || formulation,
     parsedStrength: parsedEntry.parsedStrength || null,
     isCombination: molecules.length > 1,
     stateKey: `${molecules.join('+') || normalizeMedicineText(input.medicineName)}:${formulation}`,
     ...defaults,
+    ...(catalogMatch.trustMetadata || {}),
   };
 }
 

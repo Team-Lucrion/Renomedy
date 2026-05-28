@@ -1,0 +1,1 @@
+module.exports = [{"id":"b7df23c5b1ec","b":"Naso 2D Tablet","g":"Levocetirizine + Montelukast","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allercet-M Tablet","Akair LC Tablet","Alzero M Tablet"],"t":["levocetirizine + montelukast","naso 2d tablet 5mg","naso 2d tablet","naso2dtablet"],"o":[]}];

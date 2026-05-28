@@ -1,0 +1,1 @@
+module.exports = [{"id":"d9ed43b606a1","b":"Lohist Tablet","g":"Levocetirizine","s":"","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["AH Plus Tablet","Anticet Tablet","Allfit Tablet"],"t":["lohist tablet","levocetirizine","lohist tablet na","lohisttablet"],"o":[]}];

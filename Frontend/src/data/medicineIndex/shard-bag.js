@@ -1,0 +1,1 @@
+module.exports = [{"id":"1555e2a33c1d","b":"Bagee Cream","g":"Beclometasone + Neomycin","s":"0.025% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ariderm Cream","Ash-Derm Cream","Astobet Cream"],"t":["bagee cream","bageecream","bagee cream 0.025% w/w","beclometasone + neomycin"],"o":[]}];

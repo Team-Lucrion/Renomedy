@@ -1,0 +1,1 @@
+module.exports = [{"id":"631ae776a80c","b":"Udmon-L Tablet","g":"Levocetirizine + Montelukast","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Allercet-M Tablet","Akair LC Tablet","Alzero M Tablet"],"t":["levocetirizine + montelukast","udmonltablet","udmon-l tablet 5mg","udmon-l tablet"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"f19162f62d8c","b":"Qdeederm Cream","g":"Beclometasone + Neomycin","s":"","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Betsonir N Cream","Becsone N Cream","Bencream Cream"],"t":["beclometasone + neomycin","qdeederm cream","qdeederm cream na","qdeedermcream"],"o":[]}];

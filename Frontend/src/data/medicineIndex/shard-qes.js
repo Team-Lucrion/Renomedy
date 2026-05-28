@@ -1,0 +1,1 @@
+module.exports = [{"id":"44b1a537bac8","b":"Qest 10mg Tablet","g":"Atorvastatin","s":"10mg","f":"Tablet","c":"Cholesterol","mt":"Cholesterol","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Atorva Tablet","Aztor 10 Tablet","Atorlip 10 Tablet"],"t":["qest 10mg tablet 10mg","qest10mgtablet","atorvastatin","qest 10mg tablet"],"o":[]}];

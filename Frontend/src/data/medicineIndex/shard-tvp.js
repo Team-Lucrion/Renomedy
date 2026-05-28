@@ -1,0 +1,1 @@
+module.exports = [{"id":"ec5edafaf322","b":"Tvpress Eye Drop","g":"Travoprost","s":"","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["travoprost","tvpress eye drop na","tvpress eye drop","tvpresseyedrop"],"o":[]}];

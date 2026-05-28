@@ -1,0 +1,1 @@
+module.exports = [{"id":"cdf4f2dc3342","b":"Pfc MF Syrup","g":"Mefenamic Acid + Paracetamol","s":"100mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avolide P DS Syrup","Ayufen Dry Syrup","Assmol M Jnr Syrup"],"t":["pfc mf syrup 100mg","mefenamic acid + paracetamol","pfcmfsyrup","pfc mf syrup"],"o":[]}];

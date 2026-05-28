@@ -1,0 +1,1 @@
+module.exports = [{"id":"2aa4a4e4a848","b":"K-Vate Cream","g":"Clobetasol","s":"0.05% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Abetanate Cream","Acloveta 0.05% Cream","Aniclov 0.05% Cream"],"t":["kvatecream","k-vate cream","k-vate cream 0.05% w/w","clobetasol"],"o":[]}];

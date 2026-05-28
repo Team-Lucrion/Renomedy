@@ -1,0 +1,1 @@
+module.exports = [{"id":"a271bd718ed6","b":"Mnx Syrup","g":"Metronidazole + Norfloxacin","s":"100mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Amefur 100 mg/100 mg Syrup","Biogyl M 100 mg/100 mg Syrup","Boxer NM 100 mg/100 mg Syrup"],"t":["mnx syrup 100mg","mnx syrup","metronidazole + norfloxacin","mnxsyrup"],"o":[]}];

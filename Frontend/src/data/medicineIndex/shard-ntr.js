@@ -1,0 +1,1 @@
+module.exports = [{"id":"07bfa46d2c3f","b":"N Tron 2mg Syrup","g":"Ondansetron","s":"2mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Axiset 2mg Syrup","Amedil 2mg/5ml Syrup","Abivom 2mg Syrup"],"t":["ntron2mgsyrup","n tron 2mg syrup 2mg/5ml","n tron 2mg syrup","ondansetron"],"o":[]}];

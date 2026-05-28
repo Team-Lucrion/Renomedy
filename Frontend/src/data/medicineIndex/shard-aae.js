@@ -1,0 +1,1 @@
+module.exports = [{"id":"7e507e3c8c20","b":"Aaeka Levo 5 Tablet","g":"Levocetirizine","s":"5mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Alcet 5mg Tablet","Allercet-L Tablet","Aleva 5mg Tablet"],"t":["levocetirizine","aaeka levo 5 tablet","aaeka levo 5 tablet 5mg","aaekalevo5tablet"],"o":[]}];

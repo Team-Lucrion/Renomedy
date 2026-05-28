@@ -1,0 +1,1 @@
+module.exports = [{"id":"ec7b8e4f88be","b":"SKZ 2% Cream","g":"Sertaconazole","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Afserta Cream","Coniset 2% Cream","Canserta 2% Cream"],"t":["sertaconazole","skz2%cream","skz 2% cream 2% w/w","skz 2% cream"],"o":[]}];

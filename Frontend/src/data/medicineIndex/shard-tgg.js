@@ -1,0 +1,1 @@
+module.exports = [{"id":"c3cde8b37f6c","b":"TG Goal 145 Tablet","g":"Atorvastatin + Fenofibrate","s":"10mg","f":"Tablet","c":"Cholesterol","mt":"Cholesterol","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Atorlip-F Tablet","Atchol-F Tablet","Atormac TG Tablet"],"t":["tggoal145tablet","atorvastatin + fenofibrate","tg goal 145 tablet 10mg","tg goal 145 tablet"],"o":[]}];

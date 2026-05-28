@@ -1,0 +1,1 @@
+module.exports = [{"id":"bc87aaef3d63","b":"Lbdrox 125mg Syrup","g":"Cefadroxil","s":"125mg","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Actidrox 125mg Syrup","Acer Syrup","Anodox 125mg Syrup"],"t":["lbdrox 125mg syrup 125mg","lbdrox125mgsyrup","cefadroxil","lbdrox 125mg syrup"],"o":[]}];

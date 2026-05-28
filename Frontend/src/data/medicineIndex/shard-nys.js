@@ -1,0 +1,1 @@
+module.exports = [{"id":"4e368f7fd061","b":"Nistin 100000IU Ointment","g":"Nystatin","s":"100000IU","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["nistin100000iuointment","nystatin","nistin 100000iu ointment","nistin 100000iu ointment 100000iu"],"o":[]}];

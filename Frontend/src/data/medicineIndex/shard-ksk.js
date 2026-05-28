@@ -1,0 +1,1 @@
+module.exports = [{"id":"7781f1d86f31","b":"K Sky 2% Cream","g":"Ketoconazole","s":"2% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Allyzole Cream","Alzirol 2% Cream","Azolbest-KT Cream"],"t":["ketoconazole","ksky2%cream","k sky 2% cream","k sky 2% cream 2% w/w"],"o":[]}];

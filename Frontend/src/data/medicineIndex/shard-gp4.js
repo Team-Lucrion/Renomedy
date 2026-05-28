@@ -1,0 +1,1 @@
+module.exports = [{"id":"c01bb1871d1c","b":"GP 4 Tablet","g":"Glimepiride","s":"4mg","f":"Tablet","c":"Diabetes","mt":"Diabetes","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Amaryl 4mg Tablet","Azulix 4 Tablet","Apriglim 4 Tablet"],"t":["gp 4 tablet","gp4tablet","gp 4 tablet 4mg","glimepiride"],"o":[]}];

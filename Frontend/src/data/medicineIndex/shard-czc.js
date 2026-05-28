@@ -1,0 +1,1 @@
+module.exports = [{"id":"d62d4260aa71","b":"CZ Cold Tablet","g":"Caffeine + Cetirizine","s":"30mg","f":"Tablet","c":"Antihistamines","mt":"Antihistamines","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Azicold Plus Tablet","Asbetos Tablet","Autcold Tablet"],"t":["cz cold tablet 30mg","cz cold tablet","czcoldtablet","caffeine + cetirizine"],"o":[]}];

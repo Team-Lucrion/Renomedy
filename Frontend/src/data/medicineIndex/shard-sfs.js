@@ -1,0 +1,1 @@
+module.exports = [{"id":"46df6cd2e197","b":"Sfs Kit","g":"Fluconazole + Azithromycin","s":"150mg","f":"Other","c":"General","mt":"General","sm":"recognition_only","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Afs 3 Kit","Aziwin FS Kit","Azined SF Kit"],"t":["sfskit","fluconazole + azithromycin","sfs kit 150mg","sfs kit"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"29d249e2cddf","b":"Trichosor Syrup","g":"Tricholine Citrate + Sorbitol","s":"55gm","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["trichosor syrup","trichosor syrup 55gm","trichosorsyrup","tricholine citrate + sorbitol"],"o":[]}];

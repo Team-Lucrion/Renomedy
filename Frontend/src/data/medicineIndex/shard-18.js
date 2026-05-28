@@ -1,0 +1,1 @@
+module.exports = [{"id":"a659c9dca393","b":"Dersol 18% Ointment","g":"Salicylic Acid","s":"18% w/w","f":"Ointment","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["salicylic acid","dersol 18% ointment","dersol 18% ointment 18% w/w","dersol18%ointment"],"o":[]}];

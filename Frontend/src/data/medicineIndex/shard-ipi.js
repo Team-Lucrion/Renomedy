@@ -1,0 +1,1 @@
+module.exports = [{"id":"d41ca30837d6","b":"Ipiz 10mg Tablet","g":"Atorvastatin","s":"10mg","f":"Tablet","c":"Cholesterol","mt":"Cholesterol","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":["Atorva Tablet","Aztor 10 Tablet","Atorlip 10 Tablet"],"t":["ipiz10mgtablet","atorvastatin","ipiz 10mg tablet 10mg","ipiz 10mg tablet"],"o":[]}];

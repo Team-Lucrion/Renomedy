@@ -1,0 +1,1 @@
+module.exports = [{"id":"62fc782c69b7","b":"PC Dex Eye/Ear Drops","g":"Chloramphenicol + Dexamethasone","s":"","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Avimon Eye Drop","Chlorodex Eye Drop","Care Eye Drop"],"t":["pcdexeye/eardrops","chloramphenicol + dexamethasone","pc dex eye/ear drops","pc dex eye/ear drops na"],"o":[]}];

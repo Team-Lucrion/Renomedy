@@ -1,0 +1,1 @@
+module.exports = [{"id":"9cdc98dd0b48","b":"Disoral 0.07% Syrup","g":"Diclofenac","s":"0.07%","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["disoral 0.07% syrup","diclofenac","disoral0.07%syrup","disoral 0.07% syrup 0.07%"],"o":[]}];

@@ -1,0 +1,1 @@
+module.exports = [{"id":"c8c09daa83e2","b":"T Lac Eye Drop","g":"Ketorolac","s":"0.5% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Algic Eye Drop","Apsolox Eye Drop","Centagesic Eye Drop"],"t":["ketorolac","tlaceyedrop","t lac eye drop","t lac eye drop 0.5% w/v"],"o":[]}];

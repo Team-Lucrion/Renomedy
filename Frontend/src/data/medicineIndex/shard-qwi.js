@@ -1,0 +1,1 @@
+module.exports = [{"id":"e187784ae5b0","b":"Qwikderm Cream","g":"Betamethasone + Neomycin","s":"0.025% w/w","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["qwikderm cream 0.025% w/w","qwikderm cream","qwikdermcream","betamethasone + neomycin"],"o":[]}];

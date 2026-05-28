@@ -1,0 +1,1 @@
+module.exports = [{"id":"7bc1fc1e4cf6","b":"Beclomate EG Cream","g":"Beclometasone + Econazole","s":"1%","f":"Cream","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":[],"t":["beclomateegcream","beclomate eg cream","beclometasone + econazole","beclomate eg cream 1%"],"o":[]}];

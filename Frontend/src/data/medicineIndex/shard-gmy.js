@@ -1,0 +1,1 @@
+module.exports = [{"id":"0278f05dcae7","b":"G Mycin Eye Drop","g":"Gentamicin","s":"0.3% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Eldegenta Eye Drop","Genta Eye Drop","Gentacon 0.3% Eye/Ear Drops"],"t":["g mycin eye drop","gmycineyedrop","g mycin eye drop 0.3% w/v","gentamicin"],"o":[]}];

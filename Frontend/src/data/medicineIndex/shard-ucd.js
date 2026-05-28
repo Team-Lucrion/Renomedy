@@ -1,0 +1,1 @@
+module.exports = [{"id":"e4d91062464a","b":"Ucdex Syrup","g":"Guaifenesin + Terbutaline","s":"50mg/5ml","f":"Syrup","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ascodex SF Syrup Sugar Free","Ascodex BR Syrup","Adzo-BR Syrup"],"t":["ucdex syrup 50mg/5ml","guaifenesin + terbutaline","ucdex syrup","ucdexsyrup"],"o":[]}];

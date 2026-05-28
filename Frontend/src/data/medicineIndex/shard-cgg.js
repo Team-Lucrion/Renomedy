@@ -1,0 +1,1 @@
+module.exports = [{"id":"fb6fa2b2b9e6","b":"Cgglu 500 Tablet","g":"Calcium Gluconate","s":"500mg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["cgglu 500 tablet","calcium gluconate","cgglu 500 tablet 500mg","cgglu500tablet"],"o":[]}];

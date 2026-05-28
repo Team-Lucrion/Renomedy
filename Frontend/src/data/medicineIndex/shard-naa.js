@@ -1,0 +1,1 @@
+module.exports = [{"id":"a10e1a523c97","b":"Naari Cal Tablet","g":"Calcium Citrate Malate + Vitamin D3","s":"1000mg","f":"Tablet","c":"Vitamins/Minerals","mt":"Vitamins/Minerals","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["calcium citrate malate + vitamin d3","naari cal tablet 1000mg","naari cal tablet","naaricaltablet"],"o":[]}];

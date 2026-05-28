@@ -1,0 +1,1 @@
+module.exports = [{"id":"1cbd56aa7121","b":"Olways OK Eye Drop","g":"Ketorolac + Olopatadine","s":"0.4% w/v","f":"Drops","c":"General","mt":"General","sm":"manual_only","hr":0,"rmv":1,"beta":1,"ps":10,"a":["Ketopat Eye Drop","Keter O Eye Drop","Ktodin Eye Drop"],"t":["olways ok eye drop","olwaysokeyedrop","ketorolac + olopatadine","olways ok eye drop 0.4% w/v"],"o":[]}];

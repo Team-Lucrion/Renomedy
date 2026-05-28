@@ -1,0 +1,1 @@
+module.exports = [{"id":"8288ec251826","b":"Atq Tablet","g":"Atorvastatin + Coenzyme Q10","s":"10mg","f":"Tablet","c":"Cholesterol","mt":"Cholesterol","sm":"full_support","hr":0,"rmv":0,"beta":1,"ps":10,"a":[],"t":["atorvastatin + coenzyme q10","atqtablet","atq tablet","atq tablet 10mg"],"o":[]}];
