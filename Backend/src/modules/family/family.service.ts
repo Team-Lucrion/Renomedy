@@ -1,4 +1,5 @@
 import { getUserSupabaseClient, supabaseAdmin } from "../../lib/supabase";
+import { randomInt } from "crypto";
 import { writeAuditLog } from "../../services/audit.service";
 import { ensureClosedBetaAccess } from "../../services/beta-access.service";
 import { assertFeatureAccess } from "../subscriptions/subscriptions.service";
@@ -182,7 +183,7 @@ function generateInviteCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "";
   for (let i = 0; i < 8; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(randomInt(chars.length));
   }
   return code;
 }
@@ -246,7 +247,7 @@ export async function createFamily(jwt: string, input: {
     action: "family.created",
     entityType: "family_group",
     entityId: data.id,
-    metadata: { family_name: input.family_name, invite_code: inviteCode }
+    metadata: { family_name: input.family_name }
   });
 
   return data;
@@ -331,7 +332,7 @@ export async function joinFamily(jwt: string, inviteCode: string, requestedRole?
     action: "family.joined",
     entityType: "family_group",
     entityId: family.id,
-    metadata: { invite_code: normalizedCode, role }
+    metadata: { role }
   });
 
   return { ...family, joined_role: role };
@@ -591,7 +592,7 @@ export async function regenerateInvite(jwt: string) {
     action: "family.invite_regenerated",
     entityType: "family_group",
     entityId: data.id,
-    metadata: { new_code: newCode, expires_at: newExpiresAt },
+    metadata: { expires_at: newExpiresAt },
   });
 
   return { invite_code: newCode, invite_expires_at: newExpiresAt };

@@ -18,8 +18,26 @@ type BetaInviteRecord = {
   notes?: string | null;
 };
 
+type JwtIdentity = {
+  email?: string;
+  phone_number?: string;
+};
+
 function normalizeInviteCode(inviteCode: string) {
   return inviteCode.trim().toUpperCase();
+}
+
+function decodeIdentity(jwt: string): JwtIdentity {
+  try {
+    const [, payload = ""] = jwt.split(".");
+    return JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as JwtIdentity;
+  } catch {
+    return {};
+  }
+}
+
+function normalizePhoneNumber(value?: string | null) {
+  return (value ?? "").replace(/\D/g, "");
 }
 
 function resolveInviteError(invite: BetaInviteRecord | null) {
@@ -48,6 +66,24 @@ async function getInviteByCode(code: string) {
   return data ?? null;
 }
 
+function assertInviteMatchesIdentity(invite: BetaInviteRecord, jwt: string) {
+  const identity = decodeIdentity(jwt);
+
+  if (invite.email) {
+    const tokenEmail = identity.email?.trim().toLowerCase();
+    if (!tokenEmail || tokenEmail !== invite.email.trim().toLowerCase()) {
+      throw new HttpError(403, "This beta invite is issued for a different email address");
+    }
+  }
+
+  if (invite.phone) {
+    const tokenPhone = normalizePhoneNumber(identity.phone_number);
+    if (!tokenPhone || tokenPhone !== normalizePhoneNumber(invite.phone)) {
+      throw new HttpError(403, "This beta invite is issued for a different phone number");
+    }
+  }
+}
+
 async function ensureUserNotApproved(userId: string) {
   const { data, error } = await supabaseAdmin
     .from("users")
@@ -74,13 +110,14 @@ export async function validateBetaInvite(jwt: string, inviteCode: string) {
   if (inviteError) {
     throw new HttpError(inviteError.statusCode, inviteError.message);
   }
+  assertInviteMatchesIdentity(invite!, jwt);
 
   await writeAuditLog({
     userId: currentUser.id,
     action: "beta.code_validated",
     entityType: "beta_invite",
     entityId: invite!.id,
-    metadata: { code: normalizedCode }
+    metadata: {}
   });
 
   return {
@@ -101,6 +138,7 @@ export async function redeemBetaInvite(jwt: string, inviteCode: string) {
   if (inviteError) {
     throw new HttpError(inviteError.statusCode, inviteError.message);
   }
+  assertInviteMatchesIdentity(invite!, jwt);
 
   const approvedAt = new Date().toISOString();
 
@@ -161,7 +199,7 @@ export async function redeemBetaInvite(jwt: string, inviteCode: string) {
     action: "beta.code_redeemed",
     entityType: "beta_invite",
     entityId: invite!.id,
-    metadata: { code: normalizedCode, used_count: 1 }
+    metadata: { used_count: 1 }
   });
 
   return {

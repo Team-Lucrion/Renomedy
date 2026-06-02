@@ -51,7 +51,6 @@ export default function BetaInviteScreen() {
       setInviteCode('');
     } catch (unlockError) {
       trackEvent('beta_code_invalid', {
-        invite_code: normalizedCode,
         reason: unlockError instanceof Error ? unlockError.message : 'unknown_error',
       });
       setError(getBetaInviteErrorMessage(unlockError));

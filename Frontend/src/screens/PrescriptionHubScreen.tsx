@@ -17,6 +17,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 import * as Sharing from 'expo-sharing';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -651,15 +652,6 @@ function getPrescriptionFromApiError(error: ApiError) {
 }
 
 async function prepareImageForUpload(asset: ImagePicker.ImagePickerAsset): Promise<SelectedImage> {
-  console.log('[prescription-upload] original asset before conversion', {
-    uri: asset.uri,
-    fileName: asset.fileName,
-    mimeType: asset.mimeType,
-    fileSize: asset.fileSize,
-    width: asset.width,
-    height: asset.height,
-  });
-
   const resizedWidth = asset.width && asset.width > 1800 ? 1800 : undefined;
   const manipulated = await ImageManipulator.manipulateAsync(
     asset.uri,
@@ -669,8 +661,6 @@ async function prepareImageForUpload(asset: ImagePicker.ImagePickerAsset): Promi
       format: ImageManipulator.SaveFormat.JPEG,
     },
   );
-
-  console.log('[prescription-upload] converted image for upload', manipulated);
 
   return normalizeAsset({
     ...asset,
@@ -838,7 +828,8 @@ export default function PrescriptionHubScreen() {
       medication: manualMedication,
       updatedAt: new Date().toISOString(),
     };
-    await AsyncStorage.setItem(getManualDraftStorageKey(targetFamilyMember.id), JSON.stringify(draft));
+    await AsyncStorage.removeItem(getManualDraftStorageKey(targetFamilyMember.id));
+    await SecureStore.setItemAsync(getManualDraftStorageKey(targetFamilyMember.id), JSON.stringify(draft));
     trackEvent('manual_medicine_draft_saved', {
       family_member_id: targetFamilyMember.id,
       prescription_id: decodedPrescription?.id ?? null,
@@ -849,6 +840,7 @@ export default function PrescriptionHubScreen() {
   const clearManualMedicationDraft = async () => {
     if (!targetFamilyMember) return;
     await AsyncStorage.removeItem(getManualDraftStorageKey(targetFamilyMember.id));
+    await SecureStore.deleteItemAsync(getManualDraftStorageKey(targetFamilyMember.id));
     setManualDraftRecovery(null);
   };
 
@@ -919,7 +911,8 @@ export default function PrescriptionHubScreen() {
     const loadManualDraft = async () => {
       if (!targetFamilyMember?.id) return;
       try {
-        const stored = await AsyncStorage.getItem(getManualDraftStorageKey(targetFamilyMember.id));
+        await AsyncStorage.removeItem(getManualDraftStorageKey(targetFamilyMember.id));
+        const stored = await SecureStore.getItemAsync(getManualDraftStorageKey(targetFamilyMember.id));
         if (!isMounted || !stored) return;
         const parsed = JSON.parse(stored) as ManualDraftRecovery;
         if (parsed?.familyMemberId === targetFamilyMember.id && hasManualMedicationContent(parsed.medication)) {
@@ -971,13 +964,11 @@ export default function PrescriptionHubScreen() {
 
   const requestCameraPermission = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
-    console.log('[prescription-upload] camera permission', permission);
     return permission.granted;
   };
 
   const requestGalleryPermission = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    console.log('[prescription-upload] gallery permission', permission);
     return permission.granted;
   };
 
@@ -1080,8 +1071,6 @@ export default function PrescriptionHubScreen() {
               selectionLimit: 1,
             });
 
-      console.log('[prescription-upload] image picker result', pickerResult);
-
       if (pickerResult.canceled || !pickerResult.assets?.[0]) {
         return;
       }
@@ -1094,7 +1083,6 @@ export default function PrescriptionHubScreen() {
         void uploadAndParse(finalImage);
       }, 250);
     } catch (pickerError) {
-      console.log('[prescription-upload] picker/network failure', pickerError);
       setUploadState('error');
       setUploadError(pickerError instanceof Error ? pickerError.message : 'Unable to open image picker.');
     }
@@ -1132,15 +1120,6 @@ export default function PrescriptionHubScreen() {
     let aiStageTimer: ReturnType<typeof setTimeout> | undefined;
 
     try {
-      console.log('[prescription-upload] upload payload', {
-        familyMemberId: targetFamilyMember.id,
-        uri: imageToUpload.uri,
-        name: imageToUpload.name,
-        type: imageToUpload.type,
-        size: imageToUpload.size,
-        platform: Platform.OS,
-      });
-
       decodeStageTimer = setTimeout(() => {
         setUploadState('processing');
         setProcessingStage('ocr');
@@ -1157,11 +1136,9 @@ export default function PrescriptionHubScreen() {
 
       clearTimeout(decodeStageTimer);
       clearTimeout(aiStageTimer);
-      console.log('[prescription-upload] scan response', scanResult);
 
       setProcessingStage('saving');
       setUploadProgress(0.92);
-      console.log('[prescription-upload] parsing output', scanResult.prescription?.prescription_medications);
 
       const details = scanResult.prescription ?? null;
       setDecodedPrescription(details);
@@ -1184,7 +1161,6 @@ export default function PrescriptionHubScreen() {
     } catch (uploadFailure) {
       if (decodeStageTimer) clearTimeout(decodeStageTimer);
       if (aiStageTimer) clearTimeout(aiStageTimer);
-      console.log('[prescription-upload] backend/network error', uploadFailure);
       if (uploadFailure instanceof ApiError && uploadFailure.statusCode === 0) {
         setUploadState('error');
         setProcessingStage('idle');

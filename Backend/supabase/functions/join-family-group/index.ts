@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
       action: "family.joined",
       entityType: "family_group",
       entityId: family.id,
-      metadata: { invite_code: inviteCode }
+      metadata: {}
     });
 
     return jsonResponse(200, {

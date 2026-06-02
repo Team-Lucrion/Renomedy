@@ -59,7 +59,7 @@ export async function activateMedication(jwt: string, input: Record<string, unkn
 
   const { data: medication, error: medicationError } = await supabaseAdmin
     .from("prescription_medications")
-    .select("id, prescription_id, medicine_name, brand_name, generic_name, strength, dosage, instructions, requires_manual_verification, prescriptions!inner(verification_status)")
+    .select("id, prescription_id, medicine_name, brand_name, generic_name, strength, dosage, instructions, requires_manual_verification, prescriptions!inner(family_member_id, verification_status)")
     .eq("id", String(input.prescription_medication_id))
     .single();
 
@@ -70,6 +70,13 @@ export async function activateMedication(jwt: string, input: Record<string, unkn
   const prescriptionVerificationStatus = Array.isArray((medication as any).prescriptions)
     ? (medication as any).prescriptions[0]?.verification_status
     : (medication as any).prescriptions?.verification_status;
+  const medicationFamilyMemberId = Array.isArray((medication as any).prescriptions)
+    ? (medication as any).prescriptions[0]?.family_member_id
+    : (medication as any).prescriptions?.family_member_id;
+
+  if (medicationFamilyMemberId !== String(input.family_member_id)) {
+    throw new HttpError(403, "Prescription medication is not accessible for this family member");
+  }
 
   if (medication.requires_manual_verification || prescriptionVerificationStatus === "unverified") {
     throw new HttpError(403, "Medication activation requires human verification first");

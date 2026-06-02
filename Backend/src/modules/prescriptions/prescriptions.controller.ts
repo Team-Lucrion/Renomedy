@@ -17,18 +17,6 @@ import {
 import { HttpError } from "../../utils/http-error";
 
 export async function uploadPrescriptionHandler(req: Request, res: Response) {
-  console.log("[prescription-upload] upload handler payload", {
-    hasFile: Boolean(req.file),
-    body: req.body,
-    file: req.file
-      ? {
-          originalname: req.file.originalname,
-          mimetype: req.file.mimetype,
-          size: req.file.size
-        }
-      : null
-  });
-
   if (!req.file) throw new HttpError(400, "Prescription image file is required");
   const data = await uploadPrescription({
     jwt: req.auth!.token,
@@ -40,18 +28,6 @@ export async function uploadPrescriptionHandler(req: Request, res: Response) {
 }
 
 export async function decodePrescriptionHandler(req: Request, res: Response) {
-  console.log("[prescription-decode] decode handler payload", {
-    hasFile: Boolean(req.file),
-    body: req.body,
-    file: req.file
-      ? {
-          originalname: req.file.originalname,
-          mimetype: req.file.mimetype,
-          size: req.file.size
-        }
-      : null
-  });
-
   if (!req.file) throw new HttpError(400, "Prescription image file is required");
 
   const data = await decodePrescriptionUpload({

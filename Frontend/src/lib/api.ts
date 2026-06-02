@@ -59,7 +59,6 @@ function buildUrl(path: string, query?: Record<string, string | undefined>) {
 async function getAuthToken() {
   const session = getClerkInstance().session;
   const token = await session?.getToken({ skipCache: true } as never);
-  console.log("[api] Clerk auth token present", Boolean(token));
   return token;
 }
 
@@ -157,7 +156,6 @@ async function upload<T>(path: string, formData: FormData, options: UploadOption
       })();
 
       if (xhr.status < 200 || xhr.status >= 300) {
-        console.log("[api] upload failed", { path, status: xhr.status, payload });
         reject(
           new ApiError(
             payload?.message ?? "Upload failed.",
@@ -174,7 +172,6 @@ async function upload<T>(path: string, formData: FormData, options: UploadOption
       }
 
       options.onProgress?.(1);
-      console.log("[api] upload response", payload.data);
       resolve(payload.data);
     };
 

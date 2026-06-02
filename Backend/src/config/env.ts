@@ -56,3 +56,7 @@ export const corsAllowedOrigins = env.CORS_ALLOWED_ORIGINS
   .split(",")
   .map((origin: string) => origin.trim())
   .filter(Boolean);
+
+if (isProduction && corsAllowedOrigins.length === 0) {
+  throw new Error("CORS_ALLOWED_ORIGINS must be configured in production");
+}

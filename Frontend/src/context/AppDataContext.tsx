@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth, useUser } from "@clerk/expo";
 import { api, ApiError } from "../lib/api";
@@ -133,23 +134,18 @@ function hasBetaAccess(user: BackendUser | null) {
   return Boolean(user?.beta_access_approved || user?.beta_access_status === "active");
 }
 
-async function readCachedAppData() {
-  const raw = await AsyncStorage.getItem(APP_DATA_CACHE_KEY);
-  if (!raw) return null;
-
-  try {
-    return JSON.parse(raw) as CachedAppData;
-  } catch {
-    return null;
-  }
+async function readCachedAppData(): Promise<CachedAppData | null> {
+  await AsyncStorage.removeItem(APP_DATA_CACHE_KEY);
+  return null;
 }
 
-async function writeCachedAppData(data: Omit<CachedAppData, "cachedAt">) {
-  await AsyncStorage.setItem(APP_DATA_CACHE_KEY, JSON.stringify({ ...data, cachedAt: new Date().toISOString() }));
+async function writeCachedAppData(_data: Omit<CachedAppData, "cachedAt">) {
+  await AsyncStorage.removeItem(APP_DATA_CACHE_KEY);
 }
 
 async function readDoseLogQueue() {
-  const raw = await AsyncStorage.getItem(DOSE_LOG_QUEUE_KEY);
+  await AsyncStorage.removeItem(DOSE_LOG_QUEUE_KEY);
+  const raw = await SecureStore.getItemAsync(DOSE_LOG_QUEUE_KEY);
   if (!raw) return [];
 
   try {
@@ -161,7 +157,13 @@ async function readDoseLogQueue() {
 }
 
 async function writeDoseLogQueue(queue: QueuedDoseLog[]) {
-  await AsyncStorage.setItem(DOSE_LOG_QUEUE_KEY, JSON.stringify(queue));
+  await AsyncStorage.removeItem(DOSE_LOG_QUEUE_KEY);
+  if (queue.length === 0) {
+    await SecureStore.deleteItemAsync(DOSE_LOG_QUEUE_KEY);
+    return;
+  }
+
+  await SecureStore.setItemAsync(DOSE_LOG_QUEUE_KEY, JSON.stringify(queue));
 }
 
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
@@ -400,11 +402,11 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
 
   const activateBetaAccess = async (enteredCode: string) => {
     const normalizedCode = enteredCode.trim().toUpperCase();
-    trackEvent("beta_code_entered", { invite_code: normalizedCode });
+    trackEvent("beta_code_entered");
     await api.post("beta/validate", { invite_code: normalizedCode });
-    trackEvent("beta_code_valid", { invite_code: normalizedCode });
+    trackEvent("beta_code_valid");
     const redeemed = await api.post<{ user: BackendUser }>("beta/redeem", { invite_code: normalizedCode });
-    trackEvent("beta_code_redeemed", { invite_code: normalizedCode });
+    trackEvent("beta_code_redeemed");
     setCurrentUser(redeemed.user);
     setBetaBlocked(false);
     setError("");

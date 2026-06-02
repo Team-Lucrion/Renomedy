@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "../../lib/supabase";
+import { randomInt } from "crypto";
 import { getCurrentUserRecord } from "../../services/current-user.service";
 import { dismissAlert, retryAlert } from "../../services/notification/notification.service";
 import { HttpError } from "../../utils/http-error";
@@ -6,7 +7,12 @@ import { writeAuditLog } from "../../services/audit.service";
 import { assignManualSubscription } from "../subscriptions/subscriptions.service";
 
 function normalizedInviteCode() {
-  return `RENO-BETA-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let suffix = "";
+  for (let index = 0; index < 8; index++) {
+    suffix += chars.charAt(randomInt(chars.length));
+  }
+  return `RENO-BETA-${suffix}`;
 }
 
 export async function createBetaInvite(jwt: string, input: { code?: string; name?: string; email?: string; phone?: string; notes?: string; expires_at?: string }) {

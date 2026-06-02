@@ -1,4 +1,6 @@
 import { env } from "../../config/env";
+import { lookup } from "dns/promises";
+import { isIP } from "net";
 import { Readable } from "stream";
 import { supabaseAdmin } from "../../lib/supabase";
 import { writeAuditLog } from "../../services/audit.service";
@@ -19,6 +21,7 @@ const OCR_PIPELINE_OPTIONAL_COLUMNS = [
   "ai_model",
   "ai_raw_response"
 ] as const;
+const IMAGE_URL_FETCH_TIMEOUT_MS = 10000;
 
 type ScanFailureCode =
   | "OCR_FAILED"
@@ -60,6 +63,53 @@ function extensionForMimeType(mimeType: string) {
   if (mimeType === "image/heic") return "heic";
   if (mimeType === "image/heif") return "heif";
   return "jpg";
+}
+
+function isPrivateIpAddress(address: string) {
+  if (isIP(address) === 4) {
+    const [a = 0, b = 0] = address.split(".").map((part) => Number(part));
+    return (
+      a === 10 ||
+      a === 127 ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168) ||
+      a === 0
+    );
+  }
+
+  if (isIP(address) === 6) {
+    const normalized = address.toLowerCase();
+    return (
+      normalized === "::1" ||
+      normalized === "::" ||
+      normalized.startsWith("fc") ||
+      normalized.startsWith("fd") ||
+      normalized.startsWith("fe80:")
+    );
+  }
+
+  return false;
+}
+
+async function assertPublicImageUrl(url: URL) {
+  if (url.protocol !== "https:") {
+    throw new HttpError(400, "imageUrl must use https", { scanError: "NO_IMAGE" });
+  }
+
+  const hostname = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (hostname === "localhost" || hostname.endsWith(".localhost")) {
+    throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
+  }
+
+  if (isIP(hostname) && isPrivateIpAddress(hostname)) {
+    throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
+  }
+
+  const addresses = await lookup(hostname, { all: true });
+  if (addresses.some((entry) => isPrivateIpAddress(entry.address))) {
+    throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
+  }
 }
 
 function assertSupportedImage(mimeType: string, byteLength: number) {
@@ -105,11 +155,21 @@ async function resolveImageUrl(value: string) {
     throw new HttpError(400, "Invalid imageUrl", { scanError: "NO_IMAGE" });
   }
 
-  if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
-    throw new HttpError(400, "imageUrl must use http or https", { scanError: "NO_IMAGE" });
-  }
+  await assertPublicImageUrl(parsedUrl);
 
-  const response = await fetch(parsedUrl);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), IMAGE_URL_FETCH_TIMEOUT_MS);
+  let response: Response;
+  try {
+    response = await fetch(parsedUrl, {
+      redirect: "error",
+      signal: controller.signal
+    });
+  } catch (error) {
+    throw new HttpError(400, "Could not fetch image from the provided URL", { scanError: "NO_IMAGE" });
+  } finally {
+    clearTimeout(timeout);
+  }
   if (!response.ok) {
     throw new HttpError(400, "Could not fetch image from the provided URL", { scanError: "NO_IMAGE" });
   }
@@ -261,11 +321,6 @@ async function updatePrescriptionOcrOutput(
     throw new HttpError(500, "Failed to update OCR output", updateError);
   }
 
-  console.log("[prescription-ocr] optional OCR pipeline columns missing; falling back to legacy schema", {
-    prescriptionId,
-    error: updateError
-  });
-
   const legacyPayload = {
     raw_ocr_text: ocrResult.rawText,
     parse_status: ocrResult.parseStatus,
@@ -361,18 +416,11 @@ export async function uploadPrescription(input: {
   const familyMemberId = String(input.body.family_member_id ?? "");
   const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, familyMemberId);
 
-  console.log("[prescription-upload] received file", {
-    originalName: input.file.originalname,
-    mimetype: input.file.mimetype,
-    size: input.file.size,
-    familyMemberId
-  });
-
   if (!accessibleFamilyMemberIds.includes(familyMemberId)) {
     throw new HttpError(403, "Family member is not accessible");
   }
 
-  const filename = `${Date.now()}-${input.file.originalname}`.replace(/\s+/g, "-");
+  const filename = `${Date.now()}-${input.file.originalname}`.replace(/[^A-Za-z0-9._-]/g, "-");
   const storagePath = `${input.clerkUserId}/${filename}`;
 
   const { error: uploadError } = await supabaseAdmin.storage
@@ -603,8 +651,6 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
   }
 
   const upload = Array.isArray(prescription.prescription_uploads) ? prescription.prescription_uploads[0] : prescription.prescription_uploads;
-  console.log("[prescription-ocr] Fetched prescription:", JSON.stringify(prescription, null, 2));
-  console.log("[prescription-ocr] Computed upload metadata:", upload);
   
   if (!upload?.storage_path) {
     throw new HttpError(400, "Prescription upload metadata is missing");
@@ -612,25 +658,11 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
 
   try {
     const imageBuffer = await downloadPrescriptionFile(upload.storage_path);
-    console.log("[prescription-ocr] downloaded image", {
-      prescriptionId,
-      storagePath: upload.storage_path,
-      bytes: imageBuffer.length
-    });
     const ocrResult = await withTimeout(
       ocrProvider.parsePrescription(imageBuffer),
       env.OCR_TIMEOUT_MS,
       `OCR provider timed out after ${env.OCR_TIMEOUT_MS}ms`
     );
-    console.log("[prescription-ocr] OCR API response", {
-      prescriptionId,
-      provider: currentOcrProviderName(),
-      parseStatus: ocrResult.parseStatus,
-      medicationsDetected: ocrResult.medications.length,
-      rawTextLength: ocrResult.rawText.length,
-      rawTextPreview: ocrResult.rawText.slice(0, 500),
-      providerMetadata: ocrResult.providerMetadata
-    });
     const averageConfidence =
       ocrResult.medications.length > 0
         ? ocrResult.medications.reduce((sum, medication) => sum + medication.confidenceScore, 0) / ocrResult.medications.length
@@ -693,7 +725,6 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
       aiModel: ocrResult.aiModel ?? null
     };
   } catch (error) {
-    console.log("[prescription-ocr] extraction/parsing error", error);
     const failureMessage = error instanceof Error ? error.message : "OCR parsing failed";
 
     if (isOcrProviderFailure(error)) {

@@ -51,32 +51,11 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
   const identity = decodeIdentity(jwt);
   const normalizedCode = inviteCode.trim().toUpperCase();
 
-  console.log("[beta-invite] enteredCode", inviteCode);
-  console.log("[beta-invite] normalizedCode", normalizedCode);
-  console.log("[beta-invite] auth token present", Boolean(jwt));
-  console.log("[beta-invite] auth validation result", {
-    userId: currentUser.id,
-    clerkUserId: currentUser.clerk_user_id,
-    betaAccessStatus: currentUser.beta_access_status
-  });
-
   const { data: invite, error: inviteError } = await supabaseAdmin
     .from("beta_invites")
     .select("*")
     .eq("code", normalizedCode)
     .single<BetaInviteRecord>();
-
-  console.log("[beta-invite] Supabase response data", invite);
-  console.log("[beta-invite] Supabase error", inviteError);
-
-  if (inviteError?.code === "PGRST116") {
-    console.log("[beta-invite] .single() returned no rows or multiple rows", {
-      code: inviteError.code,
-      details: inviteError.details,
-      hint: inviteError.hint,
-      message: inviteError.message
-    });
-  }
 
   if (inviteError || !invite) {
     throw new HttpError(404, "Invalid beta invite code", inviteError);
@@ -110,14 +89,8 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     .single<UserBetaAccessSnapshot>();
 
   if (previousUserError || !previousUser) {
-    console.log("[beta-invite] activation failed before user update", previousUserError);
     throw new HttpError(500, "Failed to load user before beta activation", previousUserError);
   }
-
-  console.log("[beta-invite] activating user beta access", {
-    userId: currentUser.id,
-    inviteId: invite.id
-  });
 
   const { data: user, error: userError } = await supabaseAdmin
     .from("users")
@@ -136,14 +109,8 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     .single();
 
   if (userError || !user) {
-    console.log("[beta-invite] activation failed during user update", userError);
     throw new HttpError(500, "Failed to activate beta access", userError);
   }
-
-  console.log("[beta-invite] user activation succeeded", {
-    userId: currentUser.id,
-    inviteId: invite.id
-  });
 
   const nextUsedCount = (invite.used_count ?? 0) + 1;
   const inviteUpdates: Partial<BetaInviteRecord> & { used_by_user_id?: string | null; used_at?: string | null } = {
@@ -152,12 +119,6 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     used_at: activationTimestamp,
     status: "used"
   };
-
-  console.log("[beta-invite] marking invite used", {
-    inviteId: invite.id,
-    inviteCode: normalizedCode,
-    updates: Object.keys(inviteUpdates)
-  });
 
   let inviteUpdateQuery = supabaseAdmin.from("beta_invites").update(inviteUpdates).eq("id", invite.id);
   inviteUpdateQuery = inviteUpdateQuery
@@ -171,7 +132,6 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
     : { data: { id: invite.id }, error: null };
 
   if (inviteUpdateError || !consumedInvite) {
-    console.log("[beta-invite] invite consumption failed; rolling back user activation", inviteUpdateError);
     const { error: rollbackError } = await supabaseAdmin
       .from("users")
       .update({
@@ -186,7 +146,6 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
       .eq("id", currentUser.id);
 
     if (rollbackError) {
-      console.log("[beta-invite] rollback failed after invite consumption error", rollbackError);
       throw new HttpError(500, "Failed to consume beta invite and rollback activation", {
         inviteUpdateError,
         rollbackError
@@ -195,12 +154,6 @@ export async function activateBetaInvite(jwt: string, inviteCode: string, userUp
 
     throw new HttpError(500, "Failed to consume beta invite", inviteUpdateError);
   }
-
-  console.log("[beta-invite] activation completed", {
-    userId: currentUser.id,
-    inviteId: invite.id,
-    inviteCode: normalizedCode
-  });
 
   return user;
 }

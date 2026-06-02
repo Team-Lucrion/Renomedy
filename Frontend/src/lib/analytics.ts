@@ -36,7 +36,8 @@ export function trackEvent(
   event: AppAnalyticsEvent,
   properties?: Record<string, unknown>,
 ) {
-  console.log('[analytics]', event, properties ?? {});
+  void event;
+  void properties;
 }
 
 export function trackRenoItEvent(event: RenoItAnalyticsEvent, properties?: Record<string, unknown>) {

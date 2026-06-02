@@ -40,7 +40,7 @@ export const updateParsedMedicationSchema = z.object({
   confidence_score: z.number().min(0).max(1).optional(),
   requires_manual_verification: z.boolean().optional(),
   verification_notes: z.string().optional(),
-  verification_status: z.enum(["unverified", "user_verified", "pharmacist_verified", "doctor_verified"]).optional()
+  verification_status: z.enum(["unverified", "user_verified"]).optional()
 });
 
 export const createManualMedicationSchema = z.object({
@@ -60,7 +60,7 @@ export const createManualMedicationSchema = z.object({
   confidence_score: z.number().min(0).max(1).optional(),
   requires_manual_verification: z.boolean().optional(),
   verification_notes: z.string().optional(),
-  verification_status: z.enum(["unverified", "user_verified", "pharmacist_verified", "doctor_verified"]).optional()
+  verification_status: z.enum(["unverified", "user_verified"]).optional()
 });
 
 export const reconcilePrescriptionSchema = z.object({

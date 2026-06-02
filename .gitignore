@@ -9,3 +9,14 @@ Backend/.env
 *.log
 Backend/server.out.log
 Backend/server.err.log
+
+*.pem
+*.key
+*-firebase-adminsdk-*.json
+firebase-adminsdk-*.json
+*service-account*.json
+*service_account*.json
+*-service-account-*.json
+gen-lang-client-*.json
+*.p8
+*.p12
