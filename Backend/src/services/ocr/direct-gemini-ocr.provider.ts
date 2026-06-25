@@ -85,7 +85,7 @@ function toParsedMedication(medicine: GeminiMedicine): OcrParsedMedication {
 }
 
 export class DirectGeminiOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
     if (!env.GEMINI_API_KEY) {
       return {
         rawText: "",
