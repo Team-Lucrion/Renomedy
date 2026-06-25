@@ -1,7 +1,7 @@
 import type { OcrParseResult, OcrProvider } from "./ocr-provider";
 
 export class MockOcrProvider implements OcrProvider {
-  async parsePrescription(_imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(_imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
     return {
       rawText: "Rx: Metformin 500mg BD PC, Atorvastatin 20mg HS, Thyroxine 50mcg OD AC, SOS for severe symptoms",
       cleanedText: "Rx: Metformin 500mg BD PC, Atorvastatin 20mg HS, Thyroxine 50mcg OD AC, SOS for severe symptoms",

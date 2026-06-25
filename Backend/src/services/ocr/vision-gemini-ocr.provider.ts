@@ -12,7 +12,7 @@ import {
 import { extractTextWithGoogleVision } from "./google-vision-text";
 
 export class VisionGeminiOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
     let rawText = "";
 
     try {

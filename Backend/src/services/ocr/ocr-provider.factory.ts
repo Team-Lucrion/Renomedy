@@ -4,11 +4,16 @@ import { TesseractGroqOcrProvider } from "./tesseract-groq-ocr.provider";
 import { VisionGeminiOcrProvider } from "./vision-gemini-ocr.provider";
 import { DirectGeminiOcrProvider } from "./direct-gemini-ocr.provider";
 import { FallbackOcrProvider } from "./fallback-ocr.provider";
+import { MlKitMedGemmaProvider } from "./mlkit-medgemma.provider";
 import type { OcrProvider } from "./ocr-provider";
 
 export function createOcrProvider(): OcrProvider {
   if (env.OCR_PROVIDER === "mock") {
     return new MockOcrProvider();
+  }
+
+  if (env.OCR_PROVIDER === "mlkit_medgemma") {
+    return new MlKitMedGemmaProvider();
   }
 
   const primary =

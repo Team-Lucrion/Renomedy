@@ -114,7 +114,7 @@ async function buildPreparedVariants(imageBuffer: Buffer): Promise<PreparedImage
 }
 
 export class TesseractGroqOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
     const worker = await createWorker("eng");
     let rawText = "";
     let ocrConfidence = 0;

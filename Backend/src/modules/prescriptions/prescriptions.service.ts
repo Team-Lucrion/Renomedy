@@ -497,7 +497,8 @@ export async function decodePrescriptionUpload(input: {
   body: Record<string, unknown>;
 }) {
   const uploaded = await uploadPrescription(input);
-  await parsePrescription(input.jwt, uploaded.id);
+  const metadata = typeof input.body.extractedText === "string" ? { extractedText: input.body.extractedText } : undefined;
+  await parsePrescription(input.jwt, uploaded.id, metadata);
   return getPrescription(input.jwt, uploaded.id);
 }
 
@@ -636,7 +637,7 @@ export function mapPrescriptionToScanResponse(details: any) {
   };
 }
 
-export async function parsePrescription(jwt: string, prescriptionId: string) {
+export async function parsePrescription(jwt: string, prescriptionId: string, metadata?: Record<string, unknown>) {
   const currentUser = await ensureClosedBetaAccess(jwt);
   const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id);
   const { data: prescription, error } = await supabaseAdmin
@@ -659,7 +660,7 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
   try {
     const imageBuffer = await downloadPrescriptionFile(upload.storage_path);
     const ocrResult = await withTimeout(
-      ocrProvider.parsePrescription(imageBuffer),
+      ocrProvider.parsePrescription(imageBuffer, metadata),
       env.OCR_TIMEOUT_MS,
       `OCR provider timed out after ${env.OCR_TIMEOUT_MS}ms`
     );
