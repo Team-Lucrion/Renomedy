@@ -27,7 +27,7 @@ const envSchema = z.object({
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
-  OCR_PROVIDER: z.enum(["mock", "vision_gemini", "tesseract_groq", "prescripto_ai"]).default("vision_gemini"),
+  OCR_PROVIDER: z.enum(["mock", "vision_gemini", "tesseract_groq", "prescripto_ai", "mlkit_medgemma"]).default("vision_gemini"),
   OCR_TIMEOUT_MS: z.coerce.number().int().positive().default(30000),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().default("gemini-2.0-flash"),

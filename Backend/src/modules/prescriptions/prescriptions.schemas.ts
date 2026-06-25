@@ -4,7 +4,8 @@ export const uploadPrescriptionBodySchema = z.object({
   family_member_id: z.string().uuid(),
   doctor_name: z.string().optional(),
   hospital_name: z.string().optional(),
-  prescription_date: z.string().optional()
+  prescription_date: z.string().optional(),
+  extractedText: z.string().optional()
 });
 
 export const decodePrescriptionBodySchema = uploadPrescriptionBodySchema;
