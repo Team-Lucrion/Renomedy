@@ -83,6 +83,14 @@ export async function decodePrescriptionHandler(req: Request, res: Response) {
 export async function scanPrescriptionHandler(req: Request, res: Response) {
   let scanFile: Express.Multer.File | null;
 
+  if (typeof req.body.ocrMetadata === "string") {
+    try {
+      req.body.ocrMetadata = JSON.parse(req.body.ocrMetadata);
+    } catch (e) {
+      console.warn("[prescription-scan] failed to parse ocrMetadata JSON", e);
+    }
+  }
+
   try {
     scanFile = await resolvePrescriptionScanFile({
       file: req.file,
@@ -152,4 +160,14 @@ export async function createManualPrescriptionDraftHandler(req: Request, res: Re
 export async function reconcilePrescriptionHandler(req: Request, res: Response) {
   const data = await reconcilePrescription(req.auth!.token, req.params.id, req.body);
   return ok(res, data, "Prescription reconciliation saved");
+}
+
+export async function processPrescriptionHandler(req: Request, res: Response) {
+  // Note: ocrMetadata is already parsed by middleware in prescriptions.routes.ts
+  const data = await parsePrescription(req.auth!.token, "", {
+    extractedText: req.body.extractedText,
+    ocrMetadata: req.body.ocrMetadata as Record<string, unknown>,
+    familyMemberId: req.body.family_member_id
+  });
+  return ok(res, data, "Prescription processed");
 }

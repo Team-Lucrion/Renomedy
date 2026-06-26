@@ -16,7 +16,7 @@ export function createOcrProvider(): OcrProvider {
       ? new TesseractGroqOcrProvider()
       : new VisionGeminiOcrProvider();
 
-  if (!env.GEMINI_API_KEY) {
+  if (!env.GEMINI_API_KEY && process.env.AI_PROVIDER !== "medgemma") {
     return primary;
   }
 

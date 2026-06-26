@@ -449,7 +449,10 @@ export async function decodePrescriptionUpload(input: {
   body: Record<string, unknown>;
 }) {
   const uploaded = await uploadPrescription(input);
-  await parsePrescription(input.jwt, uploaded.id);
+  await parsePrescription(input.jwt, uploaded.id, {
+    extractedText: input.body.extractedText as string,
+    ocrMetadata: input.body.ocrMetadata as Record<string, unknown>
+  });
   return getPrescription(input.jwt, uploaded.id);
 }
 
@@ -588,14 +591,47 @@ export function mapPrescriptionToScanResponse(details: any) {
   };
 }
 
-export async function parsePrescription(jwt: string, prescriptionId: string) {
+export async function parsePrescription(
+  jwt: string,
+  prescriptionId: string,
+  options?: {
+    extractedText?: string;
+    ocrMetadata?: Record<string, unknown>;
+    familyMemberId?: string;
+  }
+) {
   const currentUser = await ensureClosedBetaAccess(jwt);
   const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id);
+
+  let targetPrescriptionId = prescriptionId;
+  let familyMemberId = options?.familyMemberId;
+
+  if (!targetPrescriptionId && options?.extractedText && familyMemberId) {
+    // New /api/v2/process path: create a prescription record if it doesn't exist
+    const { data: newPrescription, error: createError } = await supabaseAdmin
+      .from("prescriptions")
+      .insert({
+        family_member_id: familyMemberId,
+        uploaded_by_user_id: currentUser.id,
+        parse_status: "pending",
+        verification_status: "unverified",
+        raw_ocr_text: options.extractedText
+      })
+      .select("*")
+      .single();
+
+    if (createError || !newPrescription) {
+      throw new HttpError(500, "Failed to create prescription for processing", createError);
+    }
+    targetPrescriptionId = newPrescription.id;
+  }
+
   const { data: prescription, error } = await supabaseAdmin
     .from("prescriptions")
     .select("*, prescription_uploads(*)")
-    .eq("id", prescriptionId)
+    .eq("id", targetPrescriptionId)
     .single();
+
   if (error || !prescription) throw new HttpError(404, "Prescription not found", error);
 
   if (!accessibleFamilyMemberIds.includes(prescription.family_member_id)) {
@@ -603,22 +639,27 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
   }
 
   const upload = Array.isArray(prescription.prescription_uploads) ? prescription.prescription_uploads[0] : prescription.prescription_uploads;
-  console.log("[prescription-ocr] Fetched prescription:", JSON.stringify(prescription, null, 2));
-  console.log("[prescription-ocr] Computed upload metadata:", upload);
   
-  if (!upload?.storage_path) {
-    throw new HttpError(400, "Prescription upload metadata is missing");
-  }
-
   try {
-    const imageBuffer = await downloadPrescriptionFile(upload.storage_path);
-    console.log("[prescription-ocr] downloaded image", {
-      prescriptionId,
-      storagePath: upload.storage_path,
-      bytes: imageBuffer.length
-    });
+    let imageBuffer = Buffer.alloc(0);
+    if (!options?.extractedText) {
+      if (!upload?.storage_path) {
+        throw new HttpError(400, "Prescription upload metadata is missing for image processing");
+      }
+      imageBuffer = await downloadPrescriptionFile(upload.storage_path);
+      console.log("[prescription-ocr] downloaded image", {
+        prescriptionId: targetPrescriptionId,
+        storagePath: upload.storage_path,
+        bytes: imageBuffer.length
+      });
+    } else {
+      console.log("[prescription-ocr] skipping image download, using extracted text");
+    }
     const ocrResult = await withTimeout(
-      ocrProvider.parsePrescription(imageBuffer),
+      ocrProvider.parsePrescription(imageBuffer, {
+        extractedText: options?.extractedText,
+        ocrMetadata: options?.ocrMetadata
+      }),
       env.OCR_TIMEOUT_MS,
       `OCR provider timed out after ${env.OCR_TIMEOUT_MS}ms`
     );
@@ -637,13 +678,13 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
         : null;
     const parseFailureMessage = ocrResult.parseStatus === "failed" ? getParseFailureMessage(ocrResult) : null;
 
-    await updatePrescriptionOcrOutput(prescriptionId, ocrResult, averageConfidence);
+    await updatePrescriptionOcrOutput(targetPrescriptionId, ocrResult, averageConfidence);
 
-    await supabaseAdmin.from("prescription_medications").delete().eq("prescription_id", prescriptionId);
+    await supabaseAdmin.from("prescription_medications").delete().eq("prescription_id", targetPrescriptionId);
 
     for (const med of ocrResult.medications) {
       const { error: medicationError } = await supabaseAdmin.from("prescription_medications").insert({
-        prescription_id: prescriptionId,
+        prescription_id: targetPrescriptionId,
         medicine_name: med.medicineName,
         generic_name: med.genericName ?? null,
         dosage: med.strength ?? med.dosage ?? null,
@@ -670,13 +711,13 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
         last_error: parseFailureMessage,
         last_processed_at: new Date().toISOString()
       })
-      .eq("prescription_id", prescriptionId);
+      .eq("prescription_id", targetPrescriptionId);
 
     await writeAuditLog({
       userId: currentUser.id,
       action: "prescription.parsed",
       entityType: "prescription",
-      entityId: prescriptionId,
+      entityId: targetPrescriptionId,
       metadata: {
         medications_detected: ocrResult.medications.length,
         parse_status: ocrResult.parseStatus,
@@ -685,7 +726,7 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
     });
 
     return {
-      prescriptionId,
+      prescriptionId: targetPrescriptionId,
       parseStatus: ocrResult.parseStatus,
       medicationsDetected: ocrResult.medications.length,
       ocrProvider: currentOcrProviderName(),
@@ -707,7 +748,7 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
             provider: currentOcrProviderName()
           }
         })
-        .eq("id", prescriptionId);
+        .eq("id", targetPrescriptionId);
     }
 
     await supabaseAdmin
@@ -717,13 +758,13 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
         last_error: failureMessage,
         last_processed_at: new Date().toISOString()
       })
-      .eq("prescription_id", prescriptionId);
+      .eq("prescription_id", targetPrescriptionId);
 
     await writeAuditLog({
       userId: currentUser.id,
       action: "prescription.ocr_failed",
       entityType: "prescription",
-      entityId: prescriptionId,
+      entityId: targetPrescriptionId,
       metadata: { reason: failureMessage }
     });
 

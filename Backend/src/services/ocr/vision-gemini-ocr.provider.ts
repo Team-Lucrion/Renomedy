@@ -10,13 +10,20 @@ import {
   parseMedicinesFromOcrText,
 } from "./gemini-prescription-parse";
 import { extractTextWithGoogleVision } from "./google-vision-text";
+import { createAiProvider } from "../ai/ai-provider.factory";
 
 export class VisionGeminiOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
-    let rawText = "";
+  async parsePrescription(
+    imageBuffer: Buffer,
+    options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
+  ): Promise<OcrParseResult> {
+    let rawText = options?.extractedText || "";
 
     try {
-      rawText = await extractTextWithGoogleVision(imageBuffer);
+      if (!rawText) {
+        rawText = await extractTextWithGoogleVision(imageBuffer);
+      }
+
       const cleanedText = cleanOcrText(rawText);
 
       if (!cleanedText || cleanedText.length < 15) {
@@ -26,8 +33,8 @@ export class VisionGeminiOcrProvider implements OcrProvider {
           parseStatus: "failed",
           medications: [],
           cardData: buildMedicineCardData([], "low", [SAFE_LOW_QUALITY_MESSAGE], cleanedText),
-          aiProvider: "gemini",
-          aiModel: env.GEMINI_MODEL,
+          aiProvider: process.env.AI_PROVIDER || "gemini",
+          aiModel: process.env.AI_PROVIDER === "medgemma" ? process.env.MEDGEMMA_MODEL : env.GEMINI_MODEL,
           providerMetadata: {
             provider: "vision_gemini",
             ocr_engine: "google-cloud-vision",
@@ -38,17 +45,12 @@ export class VisionGeminiOcrProvider implements OcrProvider {
         };
       }
 
-      const { parsed, rawResponse } = await parseMedicinesFromOcrText(cleanedText);
-      const medications = mapMedicinesToParseResult(Array.isArray(parsed.medicines) ? parsed.medicines : []);
-      const warnings = (Array.isArray(parsed.warnings) ? parsed.warnings : [])
-        .map((warning) => normalizeWhitespace(warning))
-        .filter(Boolean);
+      const aiProvider = createAiProvider();
+      const reasoningResult = await aiProvider.reason(cleanedText);
 
-      const modelQuality =
-        parsed.ocr_quality === "high" || parsed.ocr_quality === "medium" || parsed.ocr_quality === "low"
-          ? parsed.ocr_quality
-          : "low";
-      const ocrQuality = modelQuality === "low" ? assessOcrQuality(rawText) : modelQuality;
+      const medications = reasoningResult.medications;
+      const warnings = reasoningResult.warnings;
+      const ocrQuality = assessOcrQuality(rawText);
 
       return {
         rawText,
@@ -61,18 +63,22 @@ export class VisionGeminiOcrProvider implements OcrProvider {
           warnings.length > 0 ? warnings : medications.length > 0 ? [] : [SAFE_LOW_QUALITY_MESSAGE],
           cleanedText
         ),
-        aiProvider: "gemini",
-        aiModel: env.GEMINI_MODEL,
-        rawModelResponse: rawResponse,
+        aiProvider: reasoningResult.provider,
+        aiModel: reasoningResult.model,
+        rawModelResponse: reasoningResult.rawModelResponse,
         providerMetadata: {
           provider: "vision_gemini",
-          ocr_engine: "google-cloud-vision",
-          ai_engine: "google-genai-gemini",
+          ocr_engine: options?.extractedText ? "ml-kit-edge" : "google-cloud-vision",
+          edge_metadata: options?.ocrMetadata,
+          ai_engine: reasoningResult.provider,
           warnings,
           parse_status: medications.length > 0 ? "parsed" : "failed",
           failure_reason: medications.length > 0 ? undefined : "no_medicines_parsed",
-          error: medications.length > 0 ? undefined : "Gemini did not return any valid medicines from the OCR text.",
+          error: medications.length > 0 ? undefined : "AI did not return any valid medicines from the OCR text.",
           raw_text_preview: cleanedText.slice(0, 500),
+          prompt_version: reasoningResult.promptVersion,
+          latency_ms: reasoningResult.modelLatencyMs,
+          retry_count: reasoningResult.retryCount
         },
       };
     } catch (error) {

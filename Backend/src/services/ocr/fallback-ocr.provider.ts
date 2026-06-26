@@ -26,16 +26,19 @@ export class FallbackOcrProvider implements OcrProvider {
     private readonly fallbackName: string
   ) {}
 
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(
+    imageBuffer: Buffer,
+    options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
+  ): Promise<OcrParseResult> {
     let primaryResult: OcrParseResult | undefined;
 
     try {
-      primaryResult = await this.primary.parsePrescription(imageBuffer);
+      primaryResult = await this.primary.parsePrescription(imageBuffer, options);
       if (!shouldFallback(primaryResult)) {
         return primaryResult;
       }
     } catch (error) {
-      const fallbackResult = await this.fallback.parsePrescription(imageBuffer);
+      const fallbackResult = await this.fallback.parsePrescription(imageBuffer, options);
       return {
         ...fallbackResult,
         providerMetadata: {
@@ -47,7 +50,7 @@ export class FallbackOcrProvider implements OcrProvider {
       };
     }
 
-    const fallbackResult = await this.fallback.parsePrescription(imageBuffer);
+    const fallbackResult = await this.fallback.parsePrescription(imageBuffer, options);
     if (!shouldFallback(fallbackResult)) {
       return {
         ...fallbackResult,

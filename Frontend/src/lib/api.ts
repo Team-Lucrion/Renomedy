@@ -195,7 +195,12 @@ export const api = {
   upload,
 };
 
-export async function scanPrescription(imageUri: string, familyMemberId: string): Promise<ScanPrescriptionResponse> {
+export async function scanPrescription(
+  imageUri: string,
+  familyMemberId: string,
+  extractedText?: string,
+  ocrMetadata?: Record<string, any>
+): Promise<ScanPrescriptionResponse> {
   const token = await getAuthToken();
 
   if (!token) {
@@ -205,6 +210,15 @@ export async function scanPrescription(imageUri: string, familyMemberId: string)
   const url = buildUrl("api/scan-prescription");
   const formData = new FormData();
   formData.append("family_member_id", familyMemberId);
+
+  if (extractedText) {
+    formData.append("extractedText", extractedText);
+  }
+
+  if (ocrMetadata) {
+    formData.append("ocrMetadata", JSON.stringify(ocrMetadata));
+  }
+
   formData.append("file", {
     uri: imageUri,
     name: `prescription-${Date.now()}.jpg`,
