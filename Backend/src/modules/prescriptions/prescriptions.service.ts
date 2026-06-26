@@ -8,6 +8,7 @@ import { createOcrProvider, currentOcrProviderName } from "../../services/ocr/oc
 import { HttpError } from "../../utils/http-error";
 import { detectExcludedMedicine } from "../../utils/medicineSafety";
 import { getMedicineTrustProfile } from "../../utils/medicineTrust";
+import { computeConfidence } from "../../utils/confidenceEngine";
 
 const ocrProvider = createOcrProvider();
 type ParsedOcrResult = Awaited<ReturnType<typeof ocrProvider.parsePrescription>>;
@@ -672,6 +673,41 @@ export async function parsePrescription(
       rawTextPreview: ocrResult.rawText.slice(0, 500),
       providerMetadata: ocrResult.providerMetadata
     });
+    // Re-score the medications with the dynamic confidence engine
+    // We pass the existing medicines so duplicate detection logic triggers
+    ocrResult.medications.forEach((medication, i) => {
+      const existingMedicinesForDuplicateCheck = ocrResult.medications
+        .filter((_, idx) => idx !== i)
+        .map(m => ({
+          medicine_name: m.medicineName,
+          generic_name: m.genericName,
+          strength: m.strength,
+          dosage: m.dosage
+        }));
+
+      const confidenceRes = computeConfidence(
+        {
+          medicineName: medication.medicineName,
+          genericName: medication.genericName,
+          strength: medication.strength,
+          dosage: medication.dosage,
+          frequency: medication.frequency,
+          ocrConfidence: medication.confidenceScore, // using confidenceScore as a fallback signal for now
+          medGemmaConfidence: medication.confidenceScore
+        },
+        existingMedicinesForDuplicateCheck
+      );
+      medication.confidenceScore = confidenceRes.confidenceScore;
+      medication.requiresManualVerification = confidenceRes.level !== "Auto Accept";
+      if (confidenceRes.level === "Auto Accept") medication.confidence = "high";
+      else if (confidenceRes.level === "Review") medication.confidence = "medium";
+      else medication.confidence = "low";
+      if (confidenceRes.validationFailures.length > 0) {
+        if (!medication.warnings) medication.warnings = [];
+        medication.warnings.push(...confidenceRes.validationFailures);
+      }
+    });
+
     const averageConfidence =
       ocrResult.medications.length > 0
         ? ocrResult.medications.reduce((sum, medication) => sum + medication.confidenceScore, 0) / ocrResult.medications.length
