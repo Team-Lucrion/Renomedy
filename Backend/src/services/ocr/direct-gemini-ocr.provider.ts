@@ -2,6 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { env } from "../../config/env";
 import type { OcrParseResult, OcrParsedMedication, OcrProvider } from "./ocr-provider";
 import { SAFE_LOW_QUALITY_MESSAGE, buildMedicineCardData } from "./gemini-prescription-parse";
+import { createAiProvider } from "../ai/ai-provider.factory";
 
 type GeminiMedicine = {
   name?: string;
@@ -89,6 +90,79 @@ export class DirectGeminiOcrProvider implements OcrProvider {
     imageBuffer: Buffer,
     options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
   ): Promise<OcrParseResult> {
+    if (options?.extractedText) {
+      const aiProvider = createAiProvider();
+      try {
+        const reasoningResult = await aiProvider.reason(options.extractedText);
+        const medicines = reasoningResult.medications;
+        const cleanedText = cleanText(
+          medicines
+            .map((medicine) =>
+              [
+                medicine.medicineName,
+                medicine.strength,
+                medicine.dosage,
+                medicine.frequency,
+                medicine.timing,
+                medicine.duration,
+                medicine.instructions
+              ]
+                .filter(Boolean)
+                .join(" ")
+            )
+            .join("\n")
+        );
+
+        return {
+          rawText: options.extractedText,
+          cleanedText,
+          parseStatus: medicines.length > 0 ? "parsed" : "failed",
+          medications: medicines,
+          cardData: buildMedicineCardData(
+            medicines,
+            medicines.length > 0 ? "medium" : "low",
+            medicines.some((medicine) => medicine.requiresManualVerification)
+              ? ["Some medicines have low confidence and require verification."]
+              : medicines.length > 0
+                ? []
+                : [SAFE_LOW_QUALITY_MESSAGE],
+            cleanedText
+          ),
+          aiProvider: reasoningResult.provider,
+          aiModel: reasoningResult.model,
+          rawModelResponse: reasoningResult.rawModelResponse,
+          providerMetadata: {
+            provider: "direct_gemini",
+            ocr_engine: "ml-kit-edge",
+            edge_metadata: options.ocrMetadata,
+            ai_engine: reasoningResult.provider,
+            parse_status: medicines.length > 0 ? "parsed" : "failed",
+            failure_reason: medicines.length > 0 ? undefined : "no_medicines_parsed",
+            error: medicines.length > 0 ? undefined : "AI did not return any valid medicines from the text.",
+            prompt_version: reasoningResult.promptVersion,
+            latency_ms: reasoningResult.modelLatencyMs,
+            retry_count: reasoningResult.retryCount
+          }
+        };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Clinical reasoning failed";
+        return {
+          rawText: options.extractedText,
+          cleanedText: "",
+          parseStatus: "failed",
+          medications: [],
+          cardData: buildMedicineCardData([], "low", [SAFE_LOW_QUALITY_MESSAGE], ""),
+          providerMetadata: {
+            provider: "direct_gemini",
+            ocr_engine: "ml-kit-edge",
+            edge_metadata: options.ocrMetadata,
+            failure_reason: "clinical_reasoning_error",
+            error: message
+          }
+        };
+      }
+    }
+
     if (!env.GEMINI_API_KEY) {
       return {
         rawText: "",
@@ -114,23 +188,17 @@ export class DirectGeminiOcrProvider implements OcrProvider {
         contents: [
           {
             role: "user",
-            parts: options?.extractedText
-              ? [
-                  {
-                    text: `${SYSTEM_INSTRUCTION}\n\nExtract every medicine from this prescription text. Return only the JSON array matching the schema.\n\nPRESCRIPTION TEXT:\n${options.extractedText}`
-                  }
-                ]
-              : [
-                  {
-                    text: `${SYSTEM_INSTRUCTION}\n\nExtract every medicine from this prescription image. Return only the JSON array matching the schema.`
-                  },
-                  {
-                    inlineData: {
-                      data: imageBuffer.toString("base64"),
-                      mimeType: "image/jpeg"
-                    }
-                  }
-                ]
+            parts: [
+              {
+                text: `${SYSTEM_INSTRUCTION}\n\nExtract every medicine from this prescription image. Return only the JSON array matching the schema.`
+              },
+              {
+                inlineData: {
+                  data: imageBuffer.toString("base64"),
+                  mimeType: "image/jpeg"
+                }
+              }
+            ]
           }
         ],
         config: {
@@ -163,7 +231,7 @@ export class DirectGeminiOcrProvider implements OcrProvider {
       );
 
       return {
-        rawText: options?.extractedText || cleanedText || "[extracted via Gemini Vision]",
+        rawText: cleanedText || "[extracted via Gemini Vision]",
         cleanedText,
         parseStatus: medicines.length > 0 ? "parsed" : "failed",
         medications: medicines,
@@ -182,9 +250,9 @@ export class DirectGeminiOcrProvider implements OcrProvider {
         rawModelResponse: rawResponse,
         providerMetadata: {
           provider: "direct_gemini",
-          ocr_engine: options?.extractedText ? "ml-kit-edge" : "direct-vision",
+          ocr_engine: "direct-vision",
           edge_metadata: options?.ocrMetadata,
-          ai_engine: options?.extractedText ? "google-genai-gemini" : "google-genai-gemini-vision",
+          ai_engine: "google-genai-gemini-vision",
           parse_status: medicines.length > 0 ? "parsed" : "failed",
           failure_reason: medicines.length > 0 ? undefined : "no_medicines_parsed",
           error: medicines.length > 0 ? undefined : "Gemini did not return any valid medicines from the image."

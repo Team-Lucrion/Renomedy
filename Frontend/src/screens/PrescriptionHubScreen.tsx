@@ -24,9 +24,6 @@ import RenoItModal from '../components/RenoItModal';
 import { captureRef } from 'react-native-view-shot';
 import { useTranslation } from 'react-i18next';
 import { ApiError, api, scanPrescription } from '../lib/api';
-import { ImageQualityService } from '../lib/ocr/ImageQualityService';
-import { MlKitScannerService } from '../lib/ocr/MlKitScannerService';
-import { MlKitTextRecognitionService } from '../lib/ocr/MlKitTextRecognitionService';
 import { trackEvent, trackRenoItEvent } from '../lib/analytics';
 import { useAppData } from '../context/AppDataContext';
 import { findFirst, includesText } from '../lib/collections';
@@ -1056,50 +1053,32 @@ export default function PrescriptionHubScreen() {
     setUploadProgress(0);
 
     try {
-      if (source === 'camera') {
-        const scanResult = await MlKitScannerService.scanDocument();
-        if (!scanResult) return;
-
-        const finalImage = await prepareImageForUpload({
-          uri: scanResult.uri,
-          width: scanResult.width,
-          height: scanResult.height,
-        } as ImagePicker.ImagePickerAsset);
-        setSelectedImage(finalImage);
-
-        const quality = await ImageQualityService.checkQuality(finalImage.uri);
-        if (!quality.isAcceptable) {
-          setUploadError(`Low image quality: ${quality.warnings.join(', ')}`);
-          setUploadState('error');
-          return;
-        }
-
-        const ocr = await MlKitTextRecognitionService.recognizeText(finalImage.uri);
-        setUploadState('preview');
-
-        setTimeout(() => {
-          void uploadAndParse(
-            finalImage,
-            ocr ? { text: ocr.fullText, metadata: ocr.metadata } : undefined
-          );
-        }, 250);
-        return;
-      }
-
-      const hasPermission = await requestGalleryPermission();
+      const hasPermission =
+        source === 'camera' ? await requestCameraPermission() : await requestGalleryPermission();
 
       if (!hasPermission) {
         setUploadState('error');
-        setUploadError('Photo library permission is required to upload a prescription.');
+        setUploadError(
+          source === 'camera'
+            ? 'Camera permission is required to scan a prescription.'
+            : 'Photo library permission is required to upload a prescription.',
+        );
         return;
       }
 
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: false,
-        mediaTypes: ['images'],
-        quality: 0.82,
-        selectionLimit: 1,
-      });
+      const pickerResult =
+        source === 'camera'
+          ? await ImagePicker.launchCameraAsync({
+              allowsEditing: false,
+              mediaTypes: ['images'],
+              quality: 0.82,
+            })
+          : await ImagePicker.launchImageLibraryAsync({
+              allowsEditing: false,
+              mediaTypes: ['images'],
+              quality: 0.82,
+              selectionLimit: 1,
+            });
 
       console.log('[prescription-upload] image picker result', pickerResult);
 
@@ -1115,13 +1094,13 @@ export default function PrescriptionHubScreen() {
         void uploadAndParse(finalImage);
       }, 250);
     } catch (pickerError) {
-      console.log('[prescription-upload] capture failure', pickerError);
+      console.log('[prescription-upload] picker/network failure', pickerError);
       setUploadState('error');
-      setUploadError(pickerError instanceof Error ? pickerError.message : 'Unable to capture prescription.');
+      setUploadError(pickerError instanceof Error ? pickerError.message : 'Unable to open image picker.');
     }
   };
 
-  const uploadAndParse = async (imageOverride?: SelectedImage, edgeExtractionResult?: { text: string; metadata: any }) => {
+  const uploadAndParse = async (imageOverride?: SelectedImage) => {
     const imageToUpload = imageOverride ?? selectedImage;
 
     if (!imageToUpload) {
@@ -1174,12 +1153,7 @@ export default function PrescriptionHubScreen() {
         setUploadProgress((current) => Math.max(current, 0.82));
       }, 1600);
 
-      const scanResult: ScanPrescriptionResponse = await scanPrescription(
-        imageToUpload.uri,
-        targetFamilyMember.id,
-        edgeExtractionResult?.text,
-        edgeExtractionResult?.metadata
-      );
+      const scanResult: ScanPrescriptionResponse = await scanPrescription(imageToUpload.uri, targetFamilyMember.id);
 
       clearTimeout(decodeStageTimer);
       clearTimeout(aiStageTimer);

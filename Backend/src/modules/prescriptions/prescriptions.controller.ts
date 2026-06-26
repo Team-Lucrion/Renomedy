@@ -161,3 +161,13 @@ export async function reconcilePrescriptionHandler(req: Request, res: Response) 
   const data = await reconcilePrescription(req.auth!.token, req.params.id, req.body);
   return ok(res, data, "Prescription reconciliation saved");
 }
+
+export async function processPrescriptionHandler(req: Request, res: Response) {
+  // Note: ocrMetadata is already parsed by middleware in prescriptions.routes.ts
+  const data = await parsePrescription(req.auth!.token, "", {
+    extractedText: req.body.extractedText,
+    ocrMetadata: req.body.ocrMetadata as Record<string, unknown>,
+    familyMemberId: req.body.family_member_id
+  });
+  return ok(res, data, "Prescription processed");
+}

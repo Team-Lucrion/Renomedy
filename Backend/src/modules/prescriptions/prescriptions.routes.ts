@@ -12,6 +12,7 @@ import {
   getPrescriptionHandler,
   getPrescriptionHistoryHandler,
   parsePrescriptionHandler,
+  processPrescriptionHandler,
   reconcilePrescriptionHandler,
   scanPrescriptionHandler,
   updateParsedMedicationHandler,
@@ -22,6 +23,7 @@ import {
   createManualPrescriptionDraftSchema,
   decodePrescriptionBodySchema,
   parsePrescriptionSchema,
+  processPrescriptionSchema,
   reconcilePrescriptionSchema,
   scanPrescriptionBodySchema,
   updateParsedMedicationSchema,
@@ -83,6 +85,20 @@ prescriptionsRouter.patch(
   requireAuth,
   validateBody(updateParsedMedicationSchema),
   asyncHandler(updateParsedMedicationHandler)
+);
+
+prescriptionsRouter.post(
+  "/process",
+  requireAuth,
+  validateBody(processPrescriptionSchema),
+  asyncHandler(processPrescriptionHandler)
+);
+
+prescriptionScanRouter.post(
+  "/v2/prescriptions/process",
+  requireAuth,
+  validateBody(processPrescriptionSchema),
+  asyncHandler(processPrescriptionHandler)
 );
 
 prescriptionScanRouter.post(
