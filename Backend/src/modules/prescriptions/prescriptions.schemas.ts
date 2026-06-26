@@ -74,3 +74,9 @@ export const reconcilePrescriptionSchema = z.object({
   })).min(1),
   superseded_prescription_ids: z.array(z.string().uuid()).optional()
 });
+
+export const processPrescriptionV2BodySchema = z.object({
+  ocrText: z.string().min(1),
+  ocrMetadata: z.record(z.unknown()).optional(),
+  segmentation: z.record(z.unknown()).optional(),
+});

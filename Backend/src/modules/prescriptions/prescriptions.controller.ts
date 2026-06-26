@@ -15,6 +15,7 @@ import {
   uploadPrescription
 } from "./prescriptions.service";
 import { HttpError } from "../../utils/http-error";
+import { createAiProvider } from "../../services/ai/ai-provider.factory";
 
 export async function uploadPrescriptionHandler(req: Request, res: Response) {
   console.log("[prescription-upload] upload handler payload", {
@@ -152,4 +153,17 @@ export async function createManualPrescriptionDraftHandler(req: Request, res: Re
 export async function reconcilePrescriptionHandler(req: Request, res: Response) {
   const data = await reconcilePrescription(req.auth!.token, req.params.id, req.body);
   return ok(res, data, "Prescription reconciliation saved");
+}
+
+export async function processPrescriptionV2Handler(req: Request, res: Response) {
+  const { ocrText, ocrMetadata, segmentation } = req.body;
+
+  const aiProvider = createAiProvider();
+  const parseResult = await aiProvider.processPrescription(ocrText, ocrMetadata, segmentation);
+
+  return res.json({
+    status: "success",
+    message: "Prescription processed successfully",
+    data: parseResult
+  });
 }
