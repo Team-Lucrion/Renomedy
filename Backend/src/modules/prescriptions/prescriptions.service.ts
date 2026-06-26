@@ -449,7 +449,10 @@ export async function decodePrescriptionUpload(input: {
   body: Record<string, unknown>;
 }) {
   const uploaded = await uploadPrescription(input);
-  await parsePrescription(input.jwt, uploaded.id);
+  await parsePrescription(input.jwt, uploaded.id, {
+    extractedText: input.body.extractedText as string,
+    ocrMetadata: input.body.ocrMetadata as Record<string, unknown>
+  });
   return getPrescription(input.jwt, uploaded.id);
 }
 
@@ -588,7 +591,14 @@ export function mapPrescriptionToScanResponse(details: any) {
   };
 }
 
-export async function parsePrescription(jwt: string, prescriptionId: string) {
+export async function parsePrescription(
+  jwt: string,
+  prescriptionId: string,
+  options?: {
+    extractedText?: string;
+    ocrMetadata?: Record<string, unknown>;
+  }
+) {
   const currentUser = await ensureClosedBetaAccess(jwt);
   const accessibleFamilyMemberIds = await getAccessibleFamilyMemberIds(currentUser.id);
   const { data: prescription, error } = await supabaseAdmin
@@ -618,7 +628,10 @@ export async function parsePrescription(jwt: string, prescriptionId: string) {
       bytes: imageBuffer.length
     });
     const ocrResult = await withTimeout(
-      ocrProvider.parsePrescription(imageBuffer),
+      ocrProvider.parsePrescription(imageBuffer, {
+        extractedText: options?.extractedText,
+        ocrMetadata: options?.ocrMetadata
+      }),
       env.OCR_TIMEOUT_MS,
       `OCR provider timed out after ${env.OCR_TIMEOUT_MS}ms`
     );

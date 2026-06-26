@@ -1,7 +1,35 @@
 import type { OcrParseResult, OcrProvider } from "./ocr-provider";
 
 export class MockOcrProvider implements OcrProvider {
-  async parsePrescription(_imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(
+    _imageBuffer: Buffer,
+    options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
+  ): Promise<OcrParseResult> {
+    if (options?.extractedText) {
+      return {
+        rawText: options.extractedText,
+        cleanedText: options.extractedText,
+        parseStatus: "parsed",
+        aiProvider: "mock",
+        aiModel: "edge-test",
+        medications: [
+          {
+            medicineName: "Edge-Extracted Mock Medicine",
+            dosage: "1 tablet",
+            frequency: "Daily",
+            shorthandDetected: [],
+            confidenceScore: 0.95,
+            requiresManualVerification: false
+          }
+        ],
+        providerMetadata: {
+          provider: "mock",
+          ocr_engine: "ml-kit-edge",
+          edge_metadata: options.ocrMetadata
+        }
+      };
+    }
+
     return {
       rawText: "Rx: Metformin 500mg BD PC, Atorvastatin 20mg HS, Thyroxine 50mcg OD AC, SOS for severe symptoms",
       cleanedText: "Rx: Metformin 500mg BD PC, Atorvastatin 20mg HS, Thyroxine 50mcg OD AC, SOS for severe symptoms",

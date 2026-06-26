@@ -54,6 +54,15 @@ function scanPrescriptionUpload(req: Request, res: Response, next: NextFunction)
 
     const files = req.files as Record<string, Express.Multer.File[]> | undefined;
     req.file = files?.file?.[0] ?? files?.image?.[0];
+
+    if (typeof req.body.ocrMetadata === "string") {
+      try {
+        req.body.ocrMetadata = JSON.parse(req.body.ocrMetadata);
+      } catch (e) {
+        console.warn("[prescription-scan] failed to parse ocrMetadata JSON before validation", e);
+      }
+    }
+
     next();
   });
 }

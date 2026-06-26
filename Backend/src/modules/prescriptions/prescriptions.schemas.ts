@@ -12,7 +12,9 @@ export const decodePrescriptionBodySchema = uploadPrescriptionBodySchema;
 export const scanPrescriptionBodySchema = uploadPrescriptionBodySchema.extend({
   imageBase64: z.string().min(1).optional(),
   imageUrl: z.string().url().optional(),
-  mimeType: z.string().optional()
+  mimeType: z.string().optional(),
+  extractedText: z.string().optional(),
+  ocrMetadata: z.record(z.any()).optional()
 });
 
 export const createManualPrescriptionDraftSchema = z.object({

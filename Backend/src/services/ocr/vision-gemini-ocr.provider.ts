@@ -12,11 +12,17 @@ import {
 import { extractTextWithGoogleVision } from "./google-vision-text";
 
 export class VisionGeminiOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
-    let rawText = "";
+  async parsePrescription(
+    imageBuffer: Buffer,
+    options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
+  ): Promise<OcrParseResult> {
+    let rawText = options?.extractedText || "";
 
     try {
-      rawText = await extractTextWithGoogleVision(imageBuffer);
+      if (!rawText) {
+        rawText = await extractTextWithGoogleVision(imageBuffer);
+      }
+
       const cleanedText = cleanOcrText(rawText);
 
       if (!cleanedText || cleanedText.length < 15) {
@@ -66,7 +72,8 @@ export class VisionGeminiOcrProvider implements OcrProvider {
         rawModelResponse: rawResponse,
         providerMetadata: {
           provider: "vision_gemini",
-          ocr_engine: "google-cloud-vision",
+          ocr_engine: options?.extractedText ? "ml-kit-edge" : "google-cloud-vision",
+          edge_metadata: options?.ocrMetadata,
           ai_engine: "google-genai-gemini",
           warnings,
           parse_status: medications.length > 0 ? "parsed" : "failed",

@@ -62,5 +62,11 @@ export type OcrParseResult = {
 };
 
 export interface OcrProvider {
-  parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult>;
+  parsePrescription(
+    imageBuffer: Buffer,
+    options?: {
+      extractedText?: string;
+      ocrMetadata?: Record<string, unknown>;
+    }
+  ): Promise<OcrParseResult>;
 }

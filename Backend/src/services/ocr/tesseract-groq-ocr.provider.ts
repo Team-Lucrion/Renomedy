@@ -114,43 +114,54 @@ async function buildPreparedVariants(imageBuffer: Buffer): Promise<PreparedImage
 }
 
 export class TesseractGroqOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(
+    imageBuffer: Buffer,
+    options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
+  ): Promise<OcrParseResult> {
     const worker = await createWorker("eng");
-    let rawText = "";
+    let rawText = options?.extractedText || "";
     let ocrConfidence = 0;
 
+    const candidates: OcrCandidate[] = [];
+    let bestCandidate: OcrCandidate | undefined;
+
     try {
-      const variants = await buildPreparedVariants(imageBuffer);
-      const candidates: OcrCandidate[] = [];
+      let cleanedText = "";
 
-      await worker.setParameters({
-        tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
-        preserve_interword_spaces: "1"
-      });
+      if (!rawText) {
+        const variants = await buildPreparedVariants(imageBuffer);
 
-      for (const variant of variants) {
-        const { data } = await worker.recognize(variant.buffer);
-        const candidateRawText = data.text ?? "";
-        const candidateCleanedText = cleanOcrText(candidateRawText);
-        const candidateConfidence =
-          typeof data.confidence === "number" ? Math.max(0, Math.min(1, data.confidence / 100)) : 0;
-
-        candidates.push({
-          label: variant.label,
-          rawText: candidateRawText,
-          cleanedText: candidateCleanedText,
-          confidence: candidateConfidence,
-          score: scoreOcrText(candidateCleanedText, candidateConfidence)
+        await worker.setParameters({
+          tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
+          preserve_interword_spaces: "1"
         });
+
+        for (const variant of variants) {
+          const { data } = await worker.recognize(variant.buffer);
+          const candidateRawText = data.text ?? "";
+          const candidateCleanedText = cleanOcrText(candidateRawText);
+          const candidateConfidence =
+            typeof data.confidence === "number" ? Math.max(0, Math.min(1, data.confidence / 100)) : 0;
+
+          candidates.push({
+            label: variant.label,
+            rawText: candidateRawText,
+            cleanedText: candidateCleanedText,
+            confidence: candidateConfidence,
+            score: scoreOcrText(candidateCleanedText, candidateConfidence)
+          });
+        }
+
+        candidates.sort((left, right) => right.score - left.score);
+        const bestCandidate = candidates[0];
+
+        rawText = bestCandidate?.rawText ?? "";
+        ocrConfidence = bestCandidate?.confidence ?? 0;
+        cleanedText = bestCandidate?.cleanedText ?? "";
+      } else {
+        cleanedText = cleanOcrText(rawText);
+        ocrConfidence = 0.95; // Assume high confidence for edge OCR
       }
-
-      candidates.sort((left, right) => right.score - left.score);
-      const bestCandidate = candidates[0];
-
-      rawText = bestCandidate?.rawText ?? "";
-      ocrConfidence = bestCandidate?.confidence ?? 0;
-
-      const cleanedText = bestCandidate?.cleanedText ?? "";
       const readableText = isTextReadable(cleanedText, ocrConfidence);
 
       if (!readableText) {
@@ -164,16 +175,19 @@ export class TesseractGroqOcrProvider implements OcrProvider {
           aiModel: env.GROQ_MODEL,
           providerMetadata: {
             provider: "tesseract_groq",
-            ocr_engine: "tesseract.js",
+            ocr_engine: options?.extractedText ? "ml-kit-edge" : "tesseract.js",
+            edge_metadata: options?.ocrMetadata,
             failure_reason: "low_quality_text",
             error: SAFE_LOW_QUALITY_MESSAGE,
             ocr_confidence: ocrConfidence,
-            preprocess_variants: candidates.map((candidate) => ({
-              label: candidate.label,
-              confidence: candidate.confidence,
-              score: Number(candidate.score.toFixed(2))
-            })),
-            best_variant: bestCandidate?.label,
+            preprocess_variants: options?.extractedText
+              ? []
+              : candidates.map((candidate) => ({
+                  label: candidate.label,
+                  confidence: candidate.confidence,
+                  score: Number(candidate.score.toFixed(2))
+                })),
+            best_variant: options?.extractedText ? "ml-kit-edge" : bestCandidate?.label,
             raw_text_preview: cleanedText.slice(0, 300)
           }
         };
@@ -200,10 +214,10 @@ export class TesseractGroqOcrProvider implements OcrProvider {
         rawModelResponse: rawResponse,
         providerMetadata: {
           provider: "tesseract_groq",
-          ocr_engine: "tesseract.js",
+          ocr_engine: options?.extractedText ? "ml-kit-edge" : "tesseract.js",
+          edge_metadata: options?.ocrMetadata,
           ai_engine: "groq",
           ocr_confidence: ocrConfidence,
-          best_variant: bestCandidate?.label,
           warnings,
           parse_status: medications.length > 0 ? "parsed" : "failed",
           failure_reason: medications.length > 0 ? undefined : "no_medicines_parsed",
@@ -223,7 +237,8 @@ export class TesseractGroqOcrProvider implements OcrProvider {
         aiModel: env.GROQ_MODEL,
         providerMetadata: {
           provider: "tesseract_groq",
-          ocr_engine: "tesseract.js",
+          ocr_engine: options?.extractedText ? "ml-kit-edge" : "tesseract.js",
+          edge_metadata: options?.ocrMetadata,
           ai_engine: "groq",
           failure_reason: rawText ? "parse_error" : "ocr_pipeline_error",
           error: message,

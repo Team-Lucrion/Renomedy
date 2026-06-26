@@ -85,7 +85,10 @@ function toParsedMedication(medicine: GeminiMedicine): OcrParsedMedication {
 }
 
 export class DirectGeminiOcrProvider implements OcrProvider {
-  async parsePrescription(imageBuffer: Buffer): Promise<OcrParseResult> {
+  async parsePrescription(
+    imageBuffer: Buffer,
+    options?: { extractedText?: string; ocrMetadata?: Record<string, unknown> }
+  ): Promise<OcrParseResult> {
     if (!env.GEMINI_API_KEY) {
       return {
         rawText: "",
@@ -111,17 +114,23 @@ export class DirectGeminiOcrProvider implements OcrProvider {
         contents: [
           {
             role: "user",
-            parts: [
-              {
-                text: `${SYSTEM_INSTRUCTION}\n\nExtract every medicine from this prescription image. Return only the JSON array matching the schema.`
-              },
-              {
-                inlineData: {
-                  data: imageBuffer.toString("base64"),
-                  mimeType: "image/jpeg"
-                }
-              }
-            ]
+            parts: options?.extractedText
+              ? [
+                  {
+                    text: `${SYSTEM_INSTRUCTION}\n\nExtract every medicine from this prescription text. Return only the JSON array matching the schema.\n\nPRESCRIPTION TEXT:\n${options.extractedText}`
+                  }
+                ]
+              : [
+                  {
+                    text: `${SYSTEM_INSTRUCTION}\n\nExtract every medicine from this prescription image. Return only the JSON array matching the schema.`
+                  },
+                  {
+                    inlineData: {
+                      data: imageBuffer.toString("base64"),
+                      mimeType: "image/jpeg"
+                    }
+                  }
+                ]
           }
         ],
         config: {
@@ -154,7 +163,7 @@ export class DirectGeminiOcrProvider implements OcrProvider {
       );
 
       return {
-        rawText: cleanedText || "[extracted via Gemini Vision]",
+        rawText: options?.extractedText || cleanedText || "[extracted via Gemini Vision]",
         cleanedText,
         parseStatus: medicines.length > 0 ? "parsed" : "failed",
         medications: medicines,
@@ -173,7 +182,9 @@ export class DirectGeminiOcrProvider implements OcrProvider {
         rawModelResponse: rawResponse,
         providerMetadata: {
           provider: "direct_gemini",
-          ai_engine: "google-genai-gemini-vision",
+          ocr_engine: options?.extractedText ? "ml-kit-edge" : "direct-vision",
+          edge_metadata: options?.ocrMetadata,
+          ai_engine: options?.extractedText ? "google-genai-gemini" : "google-genai-gemini-vision",
           parse_status: medicines.length > 0 ? "parsed" : "failed",
           failure_reason: medicines.length > 0 ? undefined : "no_medicines_parsed",
           error: medicines.length > 0 ? undefined : "Gemini did not return any valid medicines from the image."

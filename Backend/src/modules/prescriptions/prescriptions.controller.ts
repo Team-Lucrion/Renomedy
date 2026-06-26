@@ -83,6 +83,14 @@ export async function decodePrescriptionHandler(req: Request, res: Response) {
 export async function scanPrescriptionHandler(req: Request, res: Response) {
   let scanFile: Express.Multer.File | null;
 
+  if (typeof req.body.ocrMetadata === "string") {
+    try {
+      req.body.ocrMetadata = JSON.parse(req.body.ocrMetadata);
+    } catch (e) {
+      console.warn("[prescription-scan] failed to parse ocrMetadata JSON", e);
+    }
+  }
+
   try {
     scanFile = await resolvePrescriptionScanFile({
       file: req.file,
