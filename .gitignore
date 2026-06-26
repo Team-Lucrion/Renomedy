@@ -20,3 +20,9 @@ firebase-adminsdk-*.json
 gen-lang-client-*.json
 *.p8
 *.p12
+
+node_modules/
+Backend/node_modules/
+Frontend/node_modules/
+.expo/
+*.log
