@@ -10,6 +10,14 @@ export const colors = {
   warning: '#975A16',
   danger: '#C53030',
   inputBackground: '#EDF2F7',
+
+  // Banner Backgrounds
+  errorBackground: '#FFF5F5',
+  errorBorder: '#FED7D7',
+  warningBackground: '#FFFAF0',
+  warningBorder: '#FBD38D',
+  infoBackground: '#E6FFFA',
+  infoBorder: '#B2F5EA',
 };
 
 export const spacing = {

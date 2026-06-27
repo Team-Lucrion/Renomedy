@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSignIn, useSignUp, useSSO } from '@clerk/expo';
 import * as WebBrowser from 'expo-web-browser';
 import {
+  ActivityIndicator,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -12,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import ErrorBanner from '../components/ErrorBanner';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, shadows, spacing } from '../theme/theme';
 import { clerkRedirectUrl } from '../lib/clerk';
@@ -67,12 +69,29 @@ export default function LoginScreen() {
     }
 
     if (mode === 'signUp' && !fullName.trim()) {
-      setError('Enter your full name.');
+      setError('Please enter your full name to create an account.');
       return;
     }
 
-    if (!email.trim() || !password) {
-      setError('Enter your email address and password.');
+    if (!email.trim()) {
+      setError('Please enter your email address.');
+      return;
+    }
+
+    // Basic email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!password) {
+      setError('Please enter your password.');
+      return;
+    }
+
+    if (mode === 'signUp' && password.length < 8) {
+      setError('Password must be at least 8 characters long.');
       return;
     }
 
@@ -185,7 +204,7 @@ export default function LoginScreen() {
           <View style={styles.formSection}>
             {isSignUp ? (
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>FULL NAME</Text>
+                <Text style={styles.fieldLabel} accessible={false}>FULL NAME</Text>
                 <TextInput
                   autoCapitalize="words"
                   autoComplete="name"
@@ -194,12 +213,15 @@ export default function LoginScreen() {
                   style={styles.input}
                   value={fullName}
                   onChangeText={setFullName}
+                  accessible={true}
+                  accessibilityLabel="Full Name Input"
+                  accessibilityHint="Enter your full name for the account"
                 />
               </View>
             ) : null}
 
             <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>FAMILY EMAIL ADDRESS</Text>
+              <Text style={styles.fieldLabel} accessible={false}>FAMILY EMAIL ADDRESS</Text>
               <TextInput
                 autoCapitalize="none"
                 autoComplete="email"
@@ -209,11 +231,14 @@ export default function LoginScreen() {
                 style={styles.input}
                 value={email}
                 onChangeText={setEmail}
+                accessible={true}
+                accessibilityLabel="Email Address Input"
+                accessibilityHint="Enter your email address"
               />
             </View>
 
             <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>
+              <Text style={styles.fieldLabel} accessible={false}>
                 {isSignUp ? 'SECURE SANCTUARY PASSWORD' : 'SECURE SANCTUARY PASSWORD'}
               </Text>
               <View style={styles.passwordWrap}>
@@ -226,19 +251,22 @@ export default function LoginScreen() {
                   style={styles.passwordInput}
                   value={password}
                   onChangeText={setPassword}
+                  accessible={true}
+                  accessibilityLabel="Password Input"
+                  accessibilityHint={isSignUp ? 'Create a new password' : 'Enter your existing password'}
                 />
                 {!isSignUp ? (
-                  <View style={styles.inlineIcon}>
+                  <View style={styles.inlineIcon} accessible={false}>
                     <Ionicons name="shield-checkmark-outline" size={18} color={colors.secondary} />
                   </View>
                 ) : null}
               </View>
               {!isSignUp ? (
-                <Text style={styles.helperText}>USED FOR CRITICAL MEDICATION UPDATES</Text>
+                <Text style={styles.helperText} accessible={false}>USED FOR CRITICAL MEDICATION UPDATES</Text>
               ) : null}
             </View>
 
-            {!!error ? <Text style={styles.errorText}>{error}</Text> : null}
+            {!!error ? <ErrorBanner message={error} type="error" /> : null}
           </View>
 
           <View style={styles.actionsSection}>
@@ -246,13 +274,21 @@ export default function LoginScreen() {
               disabled={isLoading}
               style={styles.primaryButton}
               onPress={() => void handlePrimaryAuth()}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={isSignUp ? 'Create Sanctuary Button' : 'Enter Sanctuary Button'}
+              accessibilityHint={isSignUp ? 'Submit form to create a new account' : 'Submit form to sign in'}
             >
-              <Ionicons
-                color={colors.surface}
-                name={isSignUp ? 'person-add-outline' : 'log-in-outline'}
-                size={22}
-                style={styles.primaryButtonIcon}
-              />
+              {isLoading ? (
+                <ActivityIndicator size="small" color={colors.surface} style={styles.primaryButtonIcon} />
+              ) : (
+                <Ionicons
+                  color={colors.surface}
+                  name={isSignUp ? 'person-add-outline' : 'log-in-outline'}
+                  size={22}
+                  style={styles.primaryButtonIcon}
+                />
+              )}
               <Text style={styles.primaryButtonText}>{primaryButtonLabel}</Text>
             </TouchableOpacity>
 
@@ -260,6 +296,10 @@ export default function LoginScreen() {
               disabled={isLoading}
               style={styles.googleButton}
               onPress={() => void handleGoogleAuth()}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Google Authentication Button"
+              accessibilityHint="Sign in or sign up using your Google account"
             >
               <Ionicons color={colors.primary} name="logo-google" size={20} style={styles.googleButtonIcon} />
               <Text style={styles.googleButtonText}>{googleButtonLabel}</Text>
@@ -269,6 +309,10 @@ export default function LoginScreen() {
               disabled={isLoading}
               style={styles.switchModeButton}
               onPress={() => resetErrorAndSwitchMode(isSignUp ? 'signIn' : 'signUp')}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up'}
+              accessibilityHint={isSignUp ? 'Go to the login screen' : 'Go to the account creation screen'}
             >
               <Text style={styles.switchModeText}>
                 {isSignUp ? 'ACCESS EXISTING SANCTUARY' : 'ESTABLISH NEW SANCTUARY'}
@@ -391,11 +435,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     letterSpacing: 2.4,
     marginTop: 2,
-  },
-  errorText: {
-    color: colors.danger,
-    fontSize: 14,
-    lineHeight: 18,
   },
   actionsSection: {
     marginTop: 28,

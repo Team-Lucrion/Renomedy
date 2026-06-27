@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import ErrorBanner from '../components/ErrorBanner';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -80,10 +81,7 @@ export default function HomeScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         {error ? (
-          <View style={styles.backendMessageCard}>
-            <Ionicons name="alert-circle-outline" size={18} color={colors.danger} />
-            <Text style={styles.backendMessageText}>{error}</Text>
-          </View>
+          <ErrorBanner message={error} type="error" />
         ) : null}
 
         <View style={styles.statsGrid}>
@@ -157,7 +155,7 @@ export default function HomeScreen() {
         ) : null}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('home.activeMedicationSchedules')}</Text>
+          <Text style={styles.sectionTitle} accessible={true} accessibilityRole="header">{t('home.activeMedicationSchedules')}</Text>
           {activeSchedules.length > 0 ? (
             activeSchedules.map((schedule) => {
               const member = findFirst(familyMembers, (item) => item.id === schedule.family_member_id);
@@ -168,7 +166,7 @@ export default function HomeScreen() {
                 'Medication';
 
               return (
-                <View key={schedule.id} style={styles.medCard}>
+                <View key={schedule.id} style={styles.medCard} accessible={true} accessibilityRole="button" accessibilityLabel={`Medication ${medicationName} for ${member?.name ?? member?.full_name ?? 'unknown member'}`}>
                   <View style={styles.medInfo}>
                     <Text style={styles.medName}>
                       {medicationName}
@@ -183,6 +181,9 @@ export default function HomeScreen() {
                   <TouchableOpacity
                     style={styles.medButton}
                     onPress={() => navigation.dispatch(DrawerActions.jumpTo('Medications'))}
+                    accessible={true}
+                    accessibilityRole="button"
+                    accessibilityLabel="View Medication Details"
                   >
                     <Ionicons name="chevron-forward-circle-outline" size={28} color={colors.success} />
                   </TouchableOpacity>
@@ -191,7 +192,18 @@ export default function HomeScreen() {
             })
           ) : (
             <View style={styles.emptyCard}>
-              <Text style={styles.emptyStateText}>Add a medicine to get started.</Text>
+              <Ionicons name="medical-outline" size={48} color={colors.primary} style={styles.emptyStateIcon} />
+              <Text style={styles.emptyStateTitle}>No Active Medications</Text>
+              <Text style={styles.emptyStateText}>Add your first prescription or manual medication to begin tracking.</Text>
+              <TouchableOpacity
+                style={styles.emptyStateButton}
+                onPress={() => navigation.dispatch(DrawerActions.jumpTo('Prescriptions'))}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Add Medicine Button"
+              >
+                <Text style={styles.emptyStateButtonText}>Add Medicine</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -244,20 +256,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: spacing.lg,
     paddingBottom: 100,
-  },
-  backendMessageCard: {
-    backgroundColor: '#FFF5F5',
-    borderColor: '#FED7D7',
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    flexDirection: 'row',
-    gap: spacing.sm,
-    padding: spacing.md,
-  },
-  backendMessageText: {
-    ...typography.bodySmall,
-    color: colors.danger,
-    flex: 1,
   },
   statsGrid: {
     flexDirection: 'row',
@@ -387,13 +385,33 @@ const styles = StyleSheet.create({
     minWidth: 48,
   },
   emptyCard: {
+    alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.md,
-    padding: spacing.lg,
+    padding: spacing.xl,
     ...shadows.sm,
+  },
+  emptyStateIcon: {
+    marginBottom: spacing.md,
+  },
+  emptyStateTitle: {
+    ...typography.h3,
+    marginBottom: spacing.sm,
   },
   emptyStateText: {
     ...typography.bodySmall,
     color: colors.textMuted,
+    textAlign: 'center',
+    marginBottom: spacing.lg,
+  },
+  emptyStateButton: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.pill,
+  },
+  emptyStateButtonText: {
+    ...typography.label,
+    color: colors.surface,
   },
 });

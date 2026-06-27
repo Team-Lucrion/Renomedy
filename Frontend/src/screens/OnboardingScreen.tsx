@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import ErrorBanner from '../components/ErrorBanner';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '@clerk/expo';
 import { useAppData } from '../context/AppDataContext';
@@ -16,7 +18,7 @@ import { setPendingFirstMedicineFlow, type PendingFirstMedicineFlow } from '../u
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
 type OnboardingStep = 1 | 2 | 3;
-type AuthMethod = 'phone' | 'google';
+type AuthMethod = 'email' | 'google';
 type Relationship = 'Myself' | 'Parent' | 'Spouse' | 'Child' | 'Other';
 
 const RELATIONSHIPS: Relationship[] = ['Myself', 'Parent', 'Spouse', 'Child', 'Other'];
@@ -27,7 +29,7 @@ export default function OnboardingScreen() {
   const defaultName = useMemo(() => user?.fullName ?? user?.firstName ?? '', [user?.firstName, user?.fullName]);
   const [step, setStep] = useState<OnboardingStep>(1);
   const [accountName, setAccountName] = useState(defaultName);
-  const [authMethod, setAuthMethod] = useState<AuthMethod>('phone');
+  const [authMethod, setAuthMethod] = useState<AuthMethod>('email');
   const [patientName, setPatientName] = useState('');
   const [relationship, setRelationship] = useState<Relationship>('Parent');
   const [error, setError] = useState('');
@@ -94,8 +96,8 @@ export default function OnboardingScreen() {
 
         {step === 1 ? (
           <View style={styles.panel}>
-            <Text style={styles.title}>Create your account</Text>
-            <Text style={styles.label}>Name</Text>
+            <Text style={styles.title} accessible={true} accessibilityRole="header">Create your account</Text>
+            <Text style={styles.label} accessible={false}>Name</Text>
             <TextInput
               autoCapitalize="words"
               onChangeText={setAccountName}
@@ -103,11 +105,14 @@ export default function OnboardingScreen() {
               placeholderTextColor={colors.textMuted}
               style={styles.input}
               value={accountName}
+              accessible={true}
+              accessibilityLabel="Your Name Input"
+              accessibilityHint="Enter your name"
             />
 
-            <Text style={styles.label}>Sign-in method</Text>
+            <Text style={styles.label} accessible={false}>Sign-in method</Text>
             <View style={styles.optionGrid}>
-              {(['phone', 'google'] as AuthMethod[]).map((method) => {
+              {(['email', 'google'] as AuthMethod[]).map((method) => {
                 const active = authMethod === method;
                 return (
                   <TouchableOpacity
@@ -115,22 +120,33 @@ export default function OnboardingScreen() {
                     activeOpacity={0.86}
                     onPress={() => setAuthMethod(method)}
                     style={[styles.methodButton, active ? styles.methodButtonActive : null]}
+                    accessible={true}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: active }}
+                    accessibilityLabel={`Sign in with ${method}`}
                   >
                     <Ionicons
-                      name={method === 'phone' ? 'call-outline' : 'logo-google'}
+                      name={method === 'email' ? 'mail-outline' : 'logo-google'}
                       size={20}
                       color={active ? colors.surface : colors.primary}
                     />
                     <Text style={[styles.methodText, active ? styles.methodTextActive : null]}>
-                      {method === 'phone' ? 'Phone number' : 'Google'}
+                      {method === 'email' ? 'Email address' : 'Google'}
                     </Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
 
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <TouchableOpacity disabled={isSaving} style={styles.primaryButton} onPress={continueFromStepOne}>
+            {error ? <ErrorBanner message={error} type="error" /> : null}
+            <TouchableOpacity
+              disabled={isSaving}
+              style={styles.primaryButton}
+              onPress={continueFromStepOne}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Continue to step 2"
+            >
               <Text style={styles.primaryButtonText}>Continue</Text>
               <Ionicons name="arrow-forward" size={19} color={colors.surface} />
             </TouchableOpacity>
@@ -139,8 +155,8 @@ export default function OnboardingScreen() {
 
         {step === 2 ? (
           <View style={styles.panel}>
-            <Text style={styles.title}>Who are you managing medicines for?</Text>
-            <Text style={styles.label}>Name</Text>
+            <Text style={styles.title} accessible={true} accessibilityRole="header">Who are you managing medicines for?</Text>
+            <Text style={styles.label} accessible={false}>Name</Text>
             <TextInput
               autoCapitalize="words"
               onChangeText={setPatientName}
@@ -148,9 +164,12 @@ export default function OnboardingScreen() {
               placeholderTextColor={colors.textMuted}
               style={styles.input}
               value={patientName}
+              accessible={true}
+              accessibilityLabel="Patient Name Input"
+              accessibilityHint="Enter the name of the patient"
             />
 
-            <Text style={styles.label}>Relationship</Text>
+            <Text style={styles.label} accessible={false}>Relationship</Text>
             <View style={styles.optionWrap}>
               {RELATIONSHIPS.map((item) => (
                 <TouchableOpacity
@@ -158,6 +177,10 @@ export default function OnboardingScreen() {
                   activeOpacity={0.86}
                   onPress={() => setRelationship(item)}
                   style={[styles.optionChip, relationship === item ? styles.optionChipSelected : null]}
+                  accessible={true}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: relationship === item }}
+                  accessibilityLabel={`Relationship: ${item}`}
                 >
                   <Text style={[styles.optionChipText, relationship === item ? styles.optionChipTextSelected : null]}>
                     {item}
@@ -166,8 +189,15 @@ export default function OnboardingScreen() {
               ))}
             </View>
 
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <TouchableOpacity disabled={isSaving} style={styles.primaryButton} onPress={continueFromStepTwo}>
+            {error ? <ErrorBanner message={error} type="error" /> : null}
+            <TouchableOpacity
+              disabled={isSaving}
+              style={styles.primaryButton}
+              onPress={continueFromStepTwo}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Continue to step 3"
+            >
               <Text style={styles.primaryButtonText}>Continue</Text>
               <Ionicons name="arrow-forward" size={19} color={colors.surface} />
             </TouchableOpacity>
@@ -175,6 +205,9 @@ export default function OnboardingScreen() {
               disabled={isSaving}
               style={styles.skipButton}
               onPress={() => void finishOnboarding(undefined, true)}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Skip adding a patient for now"
             >
               <Text style={styles.skipButtonText}>Skip for now</Text>
             </TouchableOpacity>
@@ -183,12 +216,16 @@ export default function OnboardingScreen() {
 
         {step === 3 ? (
           <View style={styles.panel}>
-            <Text style={styles.title}>Add your first medicine</Text>
+            <Text style={styles.title} accessible={true} accessibilityRole="header">Add your first medicine</Text>
             <View style={styles.entryOptions}>
               <TouchableOpacity
                 disabled={isSaving}
                 style={styles.entryOptionButton}
                 onPress={() => void finishOnboarding('upload')}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Upload Prescription Photo"
+                accessibilityHint="Use camera or gallery to upload and extract medicine details"
               >
                 <Ionicons name="cloud-upload-outline" size={24} color={colors.surface} />
                 <View style={styles.entryOptionCopy}>
@@ -200,6 +237,10 @@ export default function OnboardingScreen() {
                 disabled={isSaving}
                 style={styles.entryOptionButton}
                 onPress={() => void finishOnboarding('manual')}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Add Medicine Manually"
+                accessibilityHint="Type in medicine details manually"
               >
                 <Ionicons name="create-outline" size={24} color={colors.surface} />
                 <View style={styles.entryOptionCopy}>
@@ -209,10 +250,22 @@ export default function OnboardingScreen() {
               </TouchableOpacity>
             </View>
 
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <TouchableOpacity disabled={isSaving} style={styles.skipButton} onPress={() => void finishOnboarding()}>
-              <Text style={styles.skipButtonText}>Skip for now</Text>
-            </TouchableOpacity>
+            {error ? <ErrorBanner message={error} type="error" /> : null}
+
+            {isSaving ? (
+              <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: spacing.lg }} />
+            ) : (
+              <TouchableOpacity
+                disabled={isSaving}
+                style={styles.skipButton}
+                onPress={() => void finishOnboarding()}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Skip adding a medicine for now"
+              >
+                <Text style={styles.skipButtonText}>Skip for now</Text>
+              </TouchableOpacity>
+            )}
           </View>
         ) : null}
       </ScrollView>
@@ -364,10 +417,5 @@ const styles = StyleSheet.create({
   skipButtonText: {
     ...typography.label,
     color: colors.primary,
-  },
-  errorText: {
-    ...typography.bodySmall,
-    color: colors.danger,
-    marginTop: spacing.md,
   },
 });
