@@ -1,3 +1,4 @@
+import { confidenceEngine } from "../../utils/confidenceEngine";
 import sharp from "sharp";
 import { createWorker, PSM } from "tesseract.js";
 import { env } from "../../config/env";
@@ -113,6 +114,7 @@ async function buildPreparedVariants(imageBuffer: Buffer): Promise<PreparedImage
   return variants;
 }
 
+
 export class TesseractGroqOcrProvider implements OcrProvider {
   async parsePrescription(imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
     const worker = await createWorker("eng");
@@ -183,7 +185,14 @@ export class TesseractGroqOcrProvider implements OcrProvider {
       const warnings = (Array.isArray(parsed.warnings) ? parsed.warnings : [])
         .map((warning) => String(warning).trim())
         .filter(Boolean);
-      const medications = mapGroqMedicinesToParseResult(Array.isArray(parsed.medicines) ? parsed.medicines : []);
+      const medications = mapGroqMedicinesToParseResult(Array.isArray(parsed.medicines) ? parsed.medicines : []).map((med) => {
+        const confidenceResult = confidenceEngine.evaluate({ medicine: med, ocrQuality: "medium" });
+        med.confidenceScore = confidenceResult.confidenceScore;
+        med.confidenceLevel = confidenceResult.confidenceLevel;
+        med.requiresManualVerification = confidenceResult.verificationRequired;
+        med.confidenceReasons = confidenceResult.confidenceReasons;
+        return med;
+      });
 
       return {
         rawText,

@@ -17,10 +17,13 @@ export type OcrParsedMedication = {
   shorthandDetected: string[];
   shorthandExplanation?: string;
   confidenceScore: number;
+  confidenceLevel?: "High Confidence" | "Review Recommended" | "Manual Verification Required";
+  confidenceReasons?: string[];
   requiresManualVerification: boolean;
 };
 
 export type OcrCardMedication = {
+  confidenceLevel?: "High Confidence" | "Review Recommended" | "Manual Verification Required";
   id: number;
   medicine_name: string;
   generic_name: string;

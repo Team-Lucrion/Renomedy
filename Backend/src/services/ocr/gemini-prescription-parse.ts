@@ -294,6 +294,7 @@ export function buildMedicineCardData(
       warnings: [],
       quantity: "",
       confidence: medicine.confidence ?? "low",
+      confidenceLevel: medicine.confidenceLevel,
     })),
     important_notes: warnings,
     raw_detected_text_summary: rawText.slice(0, 500) || SAFE_LOW_QUALITY_MESSAGE,
