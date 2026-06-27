@@ -1,4 +1,3 @@
-import { confidenceEngine } from "../../utils/confidenceEngine";
 import { env } from "../../config/env";
 import { GoogleGenAI } from "@google/genai";
 import type { OcrParseResult, OcrProvider } from "./ocr-provider";
@@ -10,7 +9,6 @@ import {
   mapMedGemmaToParsedMedication,
   extractJsonPayload
 } from "./medgemma-prescription-parse";
-
 
 export class MlKitMedGemmaProvider implements OcrProvider {
   /**
@@ -78,16 +76,7 @@ export class MlKitMedGemmaProvider implements OcrProvider {
       const rawResponse = response.text ?? "[]";
       const parsed = extractJsonPayload(rawResponse);
       const medicines = Array.isArray(parsed)
-        ? parsed.map((m) => {
-            const parsedMed = mapMedGemmaToParsedMedication(m);
-            if (!parsedMed.medicineName) return parsedMed;
-            const confidenceResult = confidenceEngine.evaluate({ medicine: parsedMed, ocrQuality: "medium" });
-            parsedMed.confidenceScore = confidenceResult.confidenceScore;
-            parsedMed.confidenceLevel = confidenceResult.confidenceLevel;
-            parsedMed.requiresManualVerification = confidenceResult.verificationRequired;
-            parsedMed.confidenceReasons = confidenceResult.confidenceReasons;
-            return parsedMed;
-          }).filter((m) => m.medicineName)
+        ? parsed.map(mapMedGemmaToParsedMedication).filter((m) => m.medicineName)
         : [];
 
       return {

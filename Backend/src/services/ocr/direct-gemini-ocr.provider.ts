@@ -1,4 +1,3 @@
-import { confidenceEngine } from "../../utils/confidenceEngine";
 import { GoogleGenAI, Type } from "@google/genai";
 import { env } from "../../config/env";
 import type { OcrParseResult, OcrParsedMedication, OcrProvider } from "./ocr-provider";
@@ -85,7 +84,6 @@ function toParsedMedication(medicine: GeminiMedicine): OcrParsedMedication {
   };
 }
 
-
 export class DirectGeminiOcrProvider implements OcrProvider {
   async parsePrescription(imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
     if (!env.GEMINI_API_KEY) {
@@ -135,16 +133,7 @@ export class DirectGeminiOcrProvider implements OcrProvider {
       const rawResponse = response.text ?? "[]";
       const parsed = JSON.parse(rawResponse) as unknown;
       const medicines = Array.isArray(parsed)
-        ? parsed.map((m) => {
-            const med = toParsedMedication(m);
-            if (!med.medicineName) return med;
-            const confidenceResult = confidenceEngine.evaluate({ medicine: med, ocrQuality: "medium" });
-            med.confidenceScore = confidenceResult.confidenceScore;
-            med.confidenceLevel = confidenceResult.confidenceLevel;
-            med.requiresManualVerification = confidenceResult.verificationRequired;
-            med.confidenceReasons = confidenceResult.confidenceReasons;
-            return med;
-          }).filter((medicine) => medicine.medicineName)
+        ? parsed.map(toParsedMedication).filter((medicine) => medicine.medicineName)
         : [];
       const cleanedText = cleanText(
         medicines

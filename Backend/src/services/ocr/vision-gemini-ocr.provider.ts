@@ -1,4 +1,3 @@
-import { confidenceEngine } from "../../utils/confidenceEngine";
 import { env } from "../../config/env";
 import type { OcrParseResult, OcrProvider } from "./ocr-provider";
 import {
@@ -11,7 +10,6 @@ import {
   parseMedicinesFromOcrText,
 } from "./gemini-prescription-parse";
 import { extractTextWithGoogleVision } from "./google-vision-text";
-
 
 export class VisionGeminiOcrProvider implements OcrProvider {
   async parsePrescription(imageBuffer: Buffer, _metadata?: Record<string, unknown>): Promise<OcrParseResult> {
@@ -41,23 +39,16 @@ export class VisionGeminiOcrProvider implements OcrProvider {
       }
 
       const { parsed, rawResponse } = await parseMedicinesFromOcrText(cleanedText);
+      const medications = mapMedicinesToParseResult(Array.isArray(parsed.medicines) ? parsed.medicines : []);
+      const warnings = (Array.isArray(parsed.warnings) ? parsed.warnings : [])
+        .map((warning) => normalizeWhitespace(warning))
+        .filter(Boolean);
+
       const modelQuality =
         parsed.ocr_quality === "high" || parsed.ocr_quality === "medium" || parsed.ocr_quality === "low"
           ? parsed.ocr_quality
           : "low";
-      const finalOcrQuality = modelQuality === "low" ? assessOcrQuality(rawText) : modelQuality;
-
-      const medications = mapMedicinesToParseResult(Array.isArray(parsed.medicines) ? parsed.medicines : []).map((med) => {
-        const confidenceResult = confidenceEngine.evaluate({ medicine: med, ocrQuality: finalOcrQuality });
-        med.confidenceScore = confidenceResult.confidenceScore;
-        med.confidenceLevel = confidenceResult.confidenceLevel;
-        med.requiresManualVerification = confidenceResult.verificationRequired;
-        med.confidenceReasons = confidenceResult.confidenceReasons;
-        return med;
-      });
-      const warnings = (Array.isArray(parsed.warnings) ? parsed.warnings : [])
-        .map((warning) => normalizeWhitespace(warning))
-        .filter(Boolean);
+      const ocrQuality = modelQuality === "low" ? assessOcrQuality(rawText) : modelQuality;
 
       return {
         rawText,
@@ -66,7 +57,7 @@ export class VisionGeminiOcrProvider implements OcrProvider {
         medications,
         cardData: buildMedicineCardData(
           medications,
-          medications.length > 0 ? finalOcrQuality : "low",
+          medications.length > 0 ? ocrQuality : "low",
           warnings.length > 0 ? warnings : medications.length > 0 ? [] : [SAFE_LOW_QUALITY_MESSAGE],
           cleanedText
         ),

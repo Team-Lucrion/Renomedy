@@ -3,68 +3,113 @@ import { findMedicineCatalogMatch } from "./medicineIntelligence";
 
 export type VerificationLevel = "High Confidence" | "Review Recommended" | "Manual Verification Required";
 
+export type RiskFlag =
+  | "MISSING_DOSAGE"
+  | "UNKNOWN_MEDICINE"
+  | "AMBIGUOUS_TIMING"
+  | "LOW_OCR_QUALITY"
+  | "FAILED_VALIDATION"
+  | "INCOMPLETE_PRESCRIPTION"
+  | "DUPLICATE_MEDICATION_DETECTED"
+  | "SUSPICIOUS_MEDICATION_PATTERN";
+
 export interface ConfidenceResult {
   confidenceScore: number;
   confidenceLevel: VerificationLevel;
   verificationRequired: boolean;
   confidenceReasons: string[];
+  riskFlags: RiskFlag[];
 }
 
-export interface ConfidenceInput {
-  medicine: OcrParsedMedication;
+export interface ConfidenceInputMetadata {
   ocrQuality?: "high" | "medium" | "low";
   aiValidationFailed?: boolean;
 }
 
 export class ConfidenceEngine {
   /**
-   * Evaluates a parsed medication to determine its true confidence score and verification level.
-   * Weighting:
-   * Medicine Match: +30 verified, +15 probable, 0 unknown
-   * Dosage: +25 valid, 0 missing
-   * Timing/Frequency: +15 valid, 0 missing
-   * OCR Quality: +15 high, +10 medium, 0 low
-   * AI Validation: +15 valid, 0 failed
+   * Evaluates the entire prescription to compute confidence scores and identify cross-medication patterns.
    */
-  public evaluate(input: ConfidenceInput): ConfidenceResult {
-    const { medicine, ocrQuality = "medium", aiValidationFailed = false } = input;
+  public evaluatePrescription(
+    medications: OcrParsedMedication[],
+    metadata: ConfidenceInputMetadata = {}
+  ): OcrParsedMedication[] {
+
+    // Step 1: Pre-process and normalize medicines for context-aware duplicate/suspicious pattern rules
+    const medicineOccurrences = new Map<string, OcrParsedMedication[]>();
+    medications.forEach(med => {
+      const normName = (med.medicineName || "").trim().toLowerCase();
+      if (normName) {
+        if (!medicineOccurrences.has(normName)) {
+          medicineOccurrences.set(normName, []);
+        }
+        medicineOccurrences.get(normName)!.push(med);
+      }
+    });
+
+    // Step 2: Evaluate each medication with context
+    return medications.map(med => {
+      const result = this.evaluateSingleMedication(med, metadata, medicineOccurrences);
+      return {
+        ...med,
+        confidenceScore: result.confidenceScore,
+        confidenceLevel: result.confidenceLevel,
+        requiresManualVerification: result.verificationRequired,
+        confidenceReasons: result.confidenceReasons,
+        riskFlags: result.riskFlags
+      };
+    });
+  }
+
+  private evaluateSingleMedication(
+    medicine: OcrParsedMedication,
+    metadata: ConfidenceInputMetadata,
+    contextOccurrences: Map<string, OcrParsedMedication[]>
+  ): ConfidenceResult {
+    const { ocrQuality = "medium", aiValidationFailed = false } = metadata;
     let score = 0;
     const reasons: string[] = [];
-    let requiresManualSafety = false;
+    const riskFlags: RiskFlag[] = [];
 
-    // 1. Medicine Match (+30 / +15 / 0)
+    // --- Modular Trust Signals ---
+
+    // 1. Medicine Match (+30 / 0)
+    let medicineVerified = false;
     if (medicine.medicineName) {
       const match = findMedicineCatalogMatch({ medicineName: medicine.medicineName });
       if (match) {
-        score += 30; // Catalog returns match only on high confidence
+        score += 30;
         reasons.push(`Medicine perfectly matched in catalog: ${match.brandName} (+30)`);
+        medicineVerified = true;
       } else {
         reasons.push("Medicine not found in catalog (0)");
+        riskFlags.push("UNKNOWN_MEDICINE");
       }
     } else {
       reasons.push("Missing medicine name (0)");
-      requiresManualSafety = true;
+      riskFlags.push("UNKNOWN_MEDICINE");
     }
 
     // 2. Dosage (+25 / 0)
-    if (medicine.dosage && medicine.dosage.trim().length > 0) {
+    const hasDosage = (medicine.dosage && medicine.dosage.trim().length > 0) ||
+                      (medicine.strength && medicine.strength.trim().length > 0);
+    if (hasDosage) {
       score += 25;
       reasons.push("Dosage extracted (+25)");
-    } else if (medicine.strength && medicine.strength.trim().length > 0) {
-      score += 25;
-      reasons.push("Strength extracted (+25)");
     } else {
       reasons.push("Missing dosage/strength (0)");
-      requiresManualSafety = true;
+      riskFlags.push("MISSING_DOSAGE");
     }
 
     // 3. Timing / Frequency (+15 / 0)
-    if ((medicine.frequency && medicine.frequency.trim().length > 0) ||
-        (medicine.timing && medicine.timing.trim().length > 0)) {
+    const hasTiming = (medicine.frequency && medicine.frequency.trim().length > 0) ||
+                      (medicine.timing && medicine.timing.trim().length > 0);
+    if (hasTiming) {
       score += 15;
       reasons.push("Timing/Frequency extracted (+15)");
     } else {
       reasons.push("Missing timing/frequency (0)");
+      riskFlags.push("AMBIGUOUS_TIMING");
     }
 
     // 4. OCR Quality (+15 / +10 / 0)
@@ -76,7 +121,7 @@ export class ConfidenceEngine {
       reasons.push("Medium OCR text quality (+10)");
     } else {
       reasons.push("Low OCR text quality (0)");
-      requiresManualSafety = true;
+      riskFlags.push("LOW_OCR_QUALITY");
     }
 
     // 5. AI Validation (+15 / 0)
@@ -85,29 +130,82 @@ export class ConfidenceEngine {
       reasons.push("AI Schema validation passed (+15)");
     } else {
       reasons.push("AI Schema validation issues detected (0)");
-      requiresManualSafety = true;
+      riskFlags.push("FAILED_VALIDATION");
     }
 
-    // Determine Categories
+    // --- Context-Aware Rules (Suspicious Medication Patterns & Duplicates) ---
+    const normName = (medicine.medicineName || "").trim().toLowerCase();
+    const siblings = contextOccurrences.get(normName) || [];
+
+    // Rule D: Medicine appears repeatedly (3+ times)
+    if (siblings.length >= 3) {
+      riskFlags.push("DUPLICATE_MEDICATION_DETECTED");
+      riskFlags.push("SUSPICIOUS_MEDICATION_PATTERN");
+      reasons.push("Medicine appears 3 or more times (Suspicious Pattern)");
+    }
+
+    // Rules for when there are 2 or more occurrences
+    if (siblings.length > 1) {
+      // Check Rule A: Conflicting strengths
+      const strengths = new Set(siblings.map(s => s.strength || s.dosage || "").filter(Boolean));
+      if (strengths.size > 1) {
+        riskFlags.push("SUSPICIOUS_MEDICATION_PATTERN");
+        reasons.push("Conflicting strengths for the same medicine (Suspicious Pattern)");
+      }
+
+      // Check Rule B: Contradictory frequency instructions
+      const frequencies = new Set(siblings.map(s => s.frequency || "").filter(Boolean));
+      if (frequencies.size > 1) {
+        riskFlags.push("SUSPICIOUS_MEDICATION_PATTERN");
+        reasons.push("Conflicting frequency instructions for the same medicine (Suspicious Pattern)");
+      }
+    }
+
+    // Rule C: Medicine exists but both dosage and timing are missing
+    if (medicineVerified && !hasDosage && !hasTiming) {
+      riskFlags.push("SUSPICIOUS_MEDICATION_PATTERN");
+      reasons.push("Valid medicine but both dosage and timing are missing (Suspicious Pattern)");
+    }
+
+    // --- Critical Override Logic ---
     let level: VerificationLevel;
     let verificationRequired = false;
 
-    if (requiresManualSafety || score < 60) {
+    // Remove duplicates from riskFlags
+    const uniqueRiskFlags = Array.from(new Set(riskFlags));
+
+    const finalScore = Math.min(100, score);
+
+    // Check if any flag is a critical safety flag that MUST trigger manual review
+    // For this engine, we consider the following as critical safety overrides:
+    const criticalFlags: RiskFlag[] = [
+      "MISSING_DOSAGE",
+      "FAILED_VALIDATION",
+      "SUSPICIOUS_MEDICATION_PATTERN",
+      "DUPLICATE_MEDICATION_DETECTED",
+      "LOW_OCR_QUALITY",
+      "INCOMPLETE_PRESCRIPTION" // Placeholders for future use
+    ];
+
+    const hasCriticalFlag = uniqueRiskFlags.some(flag => criticalFlags.includes(flag));
+
+    if (finalScore < 60 || hasCriticalFlag) {
       level = "Manual Verification Required";
       verificationRequired = true;
-    } else if (score >= 85) {
+    } else if (finalScore >= 85) {
       level = "High Confidence";
       verificationRequired = false;
     } else {
       level = "Review Recommended";
-      verificationRequired = false; // "Review Recommended" is the preferred default but doesn't strictly force manual block
+      verificationRequired = false;
     }
 
     return {
-      confidenceScore: Math.min(100, score),
+      confidenceScore: finalScore,
       confidenceLevel: level,
-      verificationRequired: verificationRequired,
-      confidenceReasons: reasons
+      verificationRequired,
+      confidenceReasons: reasons,
+      riskFlags: uniqueRiskFlags
     };
   }
 }

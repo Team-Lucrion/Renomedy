@@ -1,26 +1,27 @@
-# Confidence Engine Architecture Report
+# Confidence Engine Architecture Report (v2 - Trust Layer)
 
 ## 1. Overview
-The Confidence Engine serves as the Trust Layer for the OCR processing pipeline. It evaluates the raw extracted outputs from AI reasoning engines (like MedGemma and Gemini) and assigns an explicit, normalized confidence score and verification requirement. The primary goal is to ensure healthcare safety by aggressively flagging ambiguous or unverified prescriptions for manual review, thus minimizing the risk of false confidence.
+The Confidence Engine has been upgraded into a second-generation Trust Layer for the OCR processing pipeline. It enforces context-aware evaluation for an entire prescription and applies strict healthcare risk overriding logic. The goal is to maximize healthcare safety by utilizing risk flags to catch missing data, contradictory fields, and suspicious patterns, prioritizing patient safety over basic extraction confidence.
 
-## 2. Architecture Diagram
+## 2. Architecture Diagram & Centralization
 
 ```text
 [Mobile App (Frontend)]
        |
        v
 [OCR Extraction (ML Kit / Google Vision / Tesseract)]
-       | (raw text & metadata)
+       |
        v
 [AI Structuring (MedGemma / Gemini / Groq)]
-       | (JSON structured OcrParsedMedication)
+       |
        v
 [Schema Validation (Zod)]
        |
        v
-[Confidence Engine]  <--- **NEW TRUST LAYER**
-       | (Evaluates Medicine Match, Dosage, Timing, OCR Quality)
-       | (Appends confidenceScore, confidenceLevel, verificationRequired, reasons)
+[OcrProviderFactory (ConfidenceWrapperProvider)]  <--- **CENTRALIZED TRUST LAYER**
+       | (Evaluates entire OcrParseResult using ConfidenceEngine.evaluatePrescription)
+       | (Analyzes medicine context, cross-field consistency, and duplicates)
+       | (Appends confidenceScore, confidenceLevel, verificationRequired, reasons, riskFlags)
        v
 [Final OcrParseResult]
        |
@@ -28,44 +29,89 @@ The Confidence Engine serves as the Trust Layer for the OCR processing pipeline.
 [Backend DB / Frontend Verification UI]
 ```
 
-## 3. Scoring Methodology
+## 3. Risk Flag Architecture
 
-The engine calculates a score between 0 and 100 based on the following weights:
-- **Medicine Match (+30 / 0)**: 30 points if an exact match is found in the Indian medicine catalog (`medicineIntelligence.ts`), 0 otherwise.
-- **Dosage (+25 / 0)**: 25 points if strength or dosage text is parsed, 0 if missing.
-- **Timing/Frequency (+15 / 0)**: 15 points if frequency or timing is present, 0 if missing.
-- **OCR Quality (+15 / +10 / 0)**: 15 points for high quality, 10 for medium, 0 for low.
-- **AI Validation (+15 / 0)**: 15 points if schema validation succeeded without forcing a manual review flag during AI reasoning.
+We introduced a strict enum-based Risk Flag system designed for modularity and future expansion. Current flags include:
+- **`MISSING_DOSAGE`**: Required strength or dosage missing.
+- **`UNKNOWN_MEDICINE`**: Medicine could not be mapped to the local catalog.
+- **`AMBIGUOUS_TIMING`**: Timing or frequency missing.
+- **`LOW_OCR_QUALITY`**: Text extraction quality reported as low.
+- **`FAILED_VALIDATION`**: JSON structuring bypassed standard schema guardrails.
+- **`INCOMPLETE_PRESCRIPTION`**: Extracted text appears truncated.
+- **`DUPLICATE_MEDICATION_DETECTED`**: Same medicine detected 3+ times.
+- **`SUSPICIOUS_MEDICATION_PATTERN`**: Contradictory dosages (e.g., Paracetamol 500mg and 650mg on same script) or contradictory frequencies (e.g., OD and TDS).
 
-## 4. Confidence Categories & Verification Workflow
+## 4. Scoring Methodology & Trust Signals
 
-Based on the calculated score, the engine enforces exactly three categories:
+The base score (0-100) utilizes modular Trust Signals:
+- **Medicine Match (+30 / 0)**: Matches catalog.
+- **Dosage (+25 / 0)**: Dosage extracted.
+- **Timing/Frequency (+15 / 0)**: Frequency/timing extracted.
+- **OCR Quality (+15 / +10 / 0)**: High/medium OCR quality text payload.
+- **AI Validation (+15 / 0)**: Successful AI schema extraction.
 
-### **High Confidence** (Score >= 85)
-- **Criteria**: No critical validation issues, perfectly matched in the medicine catalog, high/medium OCR quality.
-- **Workflow**: Auto-accepted by the system. Displayed to the user with a green checkmark.
+## 5. Critical Override Logic & Healthcare Safety Rules
 
-### **Review Recommended** (Score 60 - 84)
-- **Criteria**: Minor ambiguities (e.g., medicine not found in catalog, but all other fields clearly extracted).
-- **Workflow**: Preferred default when uncertain. Prompts the user to review the fields but does not strictly block saving.
+Verification levels are **NOT** determined by score alone. Patient safety overrides score.
 
-### **Manual Verification Required** (Score < 60)
-- **Criteria**: Missing critical safety information (like dosage/timing), unreadable OCR text, or failed AI validation.
-- **Workflow**: Enforces `requiresManualVerification = true`. The UI strictly blocks background saving until the patient manually confirms dosage and timing.
+- **High Confidence**: Score >= 85 AND *no critical risk flags*.
+- **Review Recommended**: Score 60-84 AND *no critical risk flags*.
+- **Manual Verification Required**: Score < 60 OR *any critical risk flag is present*.
 
-## 5. Integration Points
+**Examples of overrides**:
+- `95 + MISSING_DOSAGE -> MANUAL_VERIFICATION_REQUIRED`
+- `92 + FAILED_VALIDATION -> MANUAL_VERIFICATION_REQUIRED`
+- `88 + SUSPICIOUS_MEDICATION_PATTERN -> MANUAL_VERIFICATION_REQUIRED`
+- `78 + (No Flags) -> REVIEW_RECOMMENDED`
 
-The Confidence Engine (`Backend/src/utils/confidenceEngine.ts`) is deeply integrated into all provider classes within `Backend/src/services/ocr/`:
-- `MlKitMedGemmaProvider`
-- `VisionGeminiOcrProvider`
-- `DirectGeminiOcrProvider`
-- `TesseractGroqOcrProvider`
+## 6. Verification Classification Flow
 
-It hooks into the flow *after* the raw text has been mapped to `OcrParsedMedication` but *before* the result array is bundled into the `OcrParseResult`, ensuring a uniform security posture regardless of the underlying extraction model.
+1. AI models return structured JSON payload.
+2. `ConfidenceWrapperProvider` catches the payload and extracts all medicines.
+3. `ConfidenceEngine` pre-processes the medicines, grouping them by normalized names.
+4. Each medicine is evaluated against base scores and cross-referenced with siblings to trigger contextual flags (Rule A, B, C, D).
+5. Output fields (`confidenceScore`, `confidenceLevel`, `requiresManualVerification`, `riskFlags`, `confidenceReasons`) are mapped back onto the objects.
 
-## 6. Future Enhancements
+## 7. Example Confidence Outputs
 
-The Trust Layer is designed to be fully backward and forward compatible. Future enhancements will include:
-1. **ML Kit Native Confidence**: Utilizing raw bounding box confidence scores directly from ML Kit Document Scanner.
-2. **MedGemma Token Probabilities**: Factoring in LLM logprobs for specific dosage extraction.
-3. **Continuous Learning**: Adjusting catalog weighting based on historical user corrections (e.g., if users frequently correct "Paracetamol 500" to "Paracetamol 650", the engine will flag future 500mg extractions for manual review).
+```json
+{
+  "medicineName": "Paracetamol",
+  "dosage": "500mg",
+  "frequency": "OD",
+  "confidenceScore": 85,
+  "confidenceLevel": "High Confidence",
+  "requiresManualVerification": false,
+  "riskFlags": [],
+  "confidenceReasons": [
+    "Medicine perfectly matched in catalog: Paracetamol (+30)",
+    "Dosage extracted (+25)",
+    "Timing/Frequency extracted (+15)",
+    "Medium OCR text quality (+10)"
+  ]
+}
+```
+
+```json
+{
+  "medicineName": "UnknownDrug",
+  "dosage": "",
+  "frequency": "TDS",
+  "confidenceScore": 40,
+  "confidenceLevel": "Manual Verification Required",
+  "requiresManualVerification": true,
+  "riskFlags": ["UNKNOWN_MEDICINE", "MISSING_DOSAGE"],
+  "confidenceReasons": [
+    "Medicine not found in catalog (0)",
+    "Missing dosage/strength (0)",
+    "Timing/Frequency extracted (+15)",
+    "High OCR text quality (+15)"
+  ]
+}
+```
+
+## 8. Future Expansion Strategy
+
+- **Future ML Kit Confidence Integration**: Mapping ML Kit bounding box block probabilities to modify the `ocrQuality` sub-score.
+- **Future MedGemma Confidence Integration**: Extracting logprobs from the MedGemma token stream to apply direct scaling to the overall AI Validation score.
+- **Future Learning-Based Trust Signals**: Incorporating continuous learning rules based on user manual correction events.
