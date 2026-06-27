@@ -21,6 +21,8 @@ import * as SecureStore from 'expo-secure-store';
 import * as Sharing from 'expo-sharing';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import DocumentScanner from 'react-native-document-scanner-plugin';
+import TextRecognition from '@react-native-ml-kit/text-recognition';
 import RenoItModal from '../components/RenoItModal';
 import { captureRef } from 'react-native-view-shot';
 import { useTranslation } from 'react-i18next';
@@ -1044,38 +1046,46 @@ export default function PrescriptionHubScreen() {
     setUploadProgress(0);
 
     try {
-      const hasPermission =
-        source === 'camera' ? await requestCameraPermission() : await requestGalleryPermission();
+      let finalImage: SelectedImage | null = null;
 
-      if (!hasPermission) {
-        setUploadState('error');
-        setUploadError(
-          source === 'camera'
-            ? 'Camera permission is required to scan a prescription.'
-            : 'Photo library permission is required to upload a prescription.',
-        );
-        return;
+      if (source === 'camera') {
+        const scannerResult = await DocumentScanner.scanDocument({
+          maxNumDocuments: 1,
+          letUserAdjustCrop: true,
+        } as any);
+
+        if (scannerResult.scannedImages && scannerResult.scannedImages.length > 0) {
+          const uri = scannerResult.scannedImages[0];
+          finalImage = {
+            uri,
+            name: `prescription-${Date.now()}.jpg`,
+            type: 'image/jpeg',
+          };
+        }
+      } else {
+        const hasPermission = await requestGalleryPermission();
+        if (!hasPermission) {
+          setUploadState('error');
+          setUploadError('Photo library permission is required to upload a prescription.');
+          return;
+        }
+
+        const pickerResult = await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: false,
+          mediaTypes: ['images'],
+          quality: 0.82,
+          selectionLimit: 1,
+        });
+
+        if (!pickerResult.canceled && pickerResult.assets?.[0]) {
+          finalImage = await prepareImageForUpload(pickerResult.assets[0]);
+        }
       }
 
-      const pickerResult =
-        source === 'camera'
-          ? await ImagePicker.launchCameraAsync({
-              allowsEditing: false,
-              mediaTypes: ['images'],
-              quality: 0.82,
-            })
-          : await ImagePicker.launchImageLibraryAsync({
-              allowsEditing: false,
-              mediaTypes: ['images'],
-              quality: 0.82,
-              selectionLimit: 1,
-            });
-
-      if (pickerResult.canceled || !pickerResult.assets?.[0]) {
-        return;
+      if (!finalImage) {
+        return; // User canceled
       }
 
-      const finalImage = await prepareImageForUpload(pickerResult.assets[0]);
       setSelectedImage(finalImage);
       setUploadState('preview');
 
@@ -1084,7 +1094,7 @@ export default function PrescriptionHubScreen() {
       }, 250);
     } catch (pickerError) {
       setUploadState('error');
-      setUploadError(pickerError instanceof Error ? pickerError.message : 'Unable to open image picker.');
+      setUploadError(pickerError instanceof Error ? pickerError.message : 'Unable to open image scanner.');
     }
   };
 
@@ -1118,21 +1128,37 @@ export default function PrescriptionHubScreen() {
 
     let decodeStageTimer: ReturnType<typeof setTimeout> | undefined;
     let aiStageTimer: ReturnType<typeof setTimeout> | undefined;
+    let extractedText = '';
 
     try {
       decodeStageTimer = setTimeout(() => {
         setUploadState('processing');
         setProcessingStage('ocr');
-        setUploadProgress((current) => Math.max(current, 0.62));
-      }, 700);
+        setUploadProgress((current) => Math.max(current, 0.42));
+      }, 200);
+
+      // Perform Edge OCR using ML Kit Text Recognition
+      try {
+        const result = await TextRecognition.recognize(imageToUpload.uri);
+        if (result && result.text) {
+          extractedText = result.text;
+          trackEvent('edge_ocr_success', { text_length: extractedText.length });
+        }
+      } catch (ocrError) {
+        console.warn('Edge OCR failed, falling back to server OCR', ocrError);
+        trackEvent('edge_ocr_failed', { error: String(ocrError) });
+      }
+
+      setUploadProgress((current) => Math.max(current, 0.62));
 
       aiStageTimer = setTimeout(() => {
         setUploadState('processing');
         setProcessingStage('ai');
         setUploadProgress((current) => Math.max(current, 0.82));
-      }, 1600);
+      }, 1000);
 
-      const scanResult: ScanPrescriptionResponse = await scanPrescription(imageToUpload.uri, targetFamilyMember.id);
+      // Pass the extractedText to the backend
+      const scanResult: ScanPrescriptionResponse = await scanPrescription(imageToUpload.uri, targetFamilyMember.id, extractedText);
 
       clearTimeout(decodeStageTimer);
       clearTimeout(aiStageTimer);

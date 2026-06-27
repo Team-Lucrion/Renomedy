@@ -39,11 +39,14 @@ The `MlKitMedGemmaProvider` is built for **Edge-First OCR**.
 - **Redundancy**: If `extractedText` is missing from the client, the provider automatically falls back to **Google Cloud Vision OCR**, ensuring web and legacy support.
 
 ## Section 6: Code Changes
-- `Backend/src/services/ocr/mlkit-medgemma.provider.ts`: Primary implementation.
-- `Backend/src/services/ocr/medgemma-prescription-parse.ts`: Hardened medical extraction logic.
-- `Backend/src/modules/prescriptions/prescriptions.schemas.ts`: Updated to support `extractedText`.
-- `Backend/src/services/ocr/ocr-provider.factory.ts`: Registered the new provider.
-- `Backend/src/services/ocr/ocr-provider.ts`: Interface updated for metadata support.
+- `Frontend/src/screens/PrescriptionHubScreen.tsx`: Integrated ML Kit and Document Scanner.
+- `Frontend/src/lib/api.ts`: Added extractedText to the scan prescription API call.
+- `Frontend/src/lib/analytics.ts`: Added analytics tracking for ML Kit Edge OCR success/failure.
+- `Backend/src/services/ocr/mlkit-medgemma.provider.ts`: Primary implementation (Already implemented).
+- `Backend/src/services/ocr/medgemma-prescription-parse.ts`: Hardened medical extraction logic (Already implemented).
+- `Backend/src/modules/prescriptions/prescriptions.schemas.ts`: Updated to support `extractedText` (Already implemented).
+- `Backend/src/services/ocr/ocr-provider.factory.ts`: Registered the new provider (Already implemented).
+- `Backend/src/services/ocr/ocr-provider.ts`: Interface updated for metadata support (Already implemented).
 
 ---
 

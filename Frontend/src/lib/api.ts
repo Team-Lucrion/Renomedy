@@ -43,7 +43,8 @@ export class ApiError extends Error {
 }
 
 function buildUrl(path: string, query?: Record<string, string | undefined>) {
-  const url = new URL(path, apiBaseUrl.endsWith("/") ? apiBaseUrl : `${apiBaseUrl}/`);
+  const baseUrl = apiBaseUrl || "http://localhost:3000";
+  const url = new URL(path, baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`);
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
@@ -192,7 +193,7 @@ export const api = {
   upload,
 };
 
-export async function scanPrescription(imageUri: string, familyMemberId: string): Promise<ScanPrescriptionResponse> {
+export async function scanPrescription(imageUri: string, familyMemberId: string, extractedText?: string): Promise<ScanPrescriptionResponse> {
   const token = await getAuthToken();
 
   if (!token) {
@@ -202,6 +203,9 @@ export async function scanPrescription(imageUri: string, familyMemberId: string)
   const url = buildUrl("api/scan-prescription");
   const formData = new FormData();
   formData.append("family_member_id", familyMemberId);
+  if (extractedText) {
+    formData.append("extractedText", extractedText);
+  }
   formData.append("file", {
     uri: imageUri,
     name: `prescription-${Date.now()}.jpg`,

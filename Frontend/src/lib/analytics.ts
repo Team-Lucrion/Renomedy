@@ -30,7 +30,9 @@ export type AppAnalyticsEvent =
   | 'medicine_relationship_confirmed'
   | 'offline_dose_log_queued'
   | 'offline_dose_log_sync_failed'
-  | 'medicine_verification_completed';
+  | 'medicine_verification_completed'
+  | 'edge_ocr_success'
+  | 'edge_ocr_failed';
 
 export function trackEvent(
   event: AppAnalyticsEvent,
