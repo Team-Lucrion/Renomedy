@@ -10,6 +10,7 @@ import { createOcrProvider, currentOcrProviderName } from "../../services/ocr/oc
 import { HttpError } from "../../utils/http-error";
 import { detectExcludedMedicine } from "../../utils/medicineSafety";
 import { getMedicineTrustProfile } from "../../utils/medicineTrust";
+import { logger } from "../../config/logger";
 
 const ocrProvider = createOcrProvider();
 type ParsedOcrResult = Awaited<ReturnType<typeof ocrProvider.parsePrescription>>;
@@ -92,24 +93,36 @@ function isPrivateIpAddress(address: string) {
   return false;
 }
 
-async function assertPublicImageUrl(url: URL) {
+// Security: Verifies the URL resolves to a public IP and returns the first safe resolved IP address
+// to be used directly in the fetch call to prevent DNS rebinding attacks.
+async function assertPublicImageUrl(url: URL): Promise<string> {
   if (url.protocol !== "https:") {
+    logger.warn({ url: url.toString() }, "SSRF attempt rejected: non-https protocol");
     throw new HttpError(400, "imageUrl must use https", { scanError: "NO_IMAGE" });
   }
 
   const hostname = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
   if (hostname === "localhost" || hostname.endsWith(".localhost")) {
+    logger.warn({ url: url.toString(), hostname }, "SSRF attempt rejected: localhost domain");
     throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
   }
 
-  if (isIP(hostname) && isPrivateIpAddress(hostname)) {
-    throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
+  if (isIP(hostname)) {
+    if (isPrivateIpAddress(hostname)) {
+      logger.warn({ url: url.toString(), hostname }, "SSRF attempt rejected: private IP provided directly");
+      throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
+    }
+    return hostname;
   }
 
   const addresses = await lookup(hostname, { all: true });
-  if (addresses.some((entry) => isPrivateIpAddress(entry.address))) {
+  if (addresses.length === 0 || addresses.some((entry) => isPrivateIpAddress(entry.address))) {
+    logger.warn({ url: url.toString(), hostname, resolvedAddresses: addresses }, "SSRF attempt rejected: domain resolved to private IP");
     throw new HttpError(400, "imageUrl host is not allowed", { scanError: "NO_IMAGE" });
   }
+
+  // Return the first safe resolved IP to be used for the actual fetch
+  return addresses[0].address;
 }
 
 function assertSupportedImage(mimeType: string, byteLength: number) {
@@ -155,35 +168,69 @@ async function resolveImageUrl(value: string) {
     throw new HttpError(400, "Invalid imageUrl", { scanError: "NO_IMAGE" });
   }
 
-  await assertPublicImageUrl(parsedUrl);
+  // Retrieve the safe IP address to prevent SSRF via DNS rebinding
+  const safeIp = await assertPublicImageUrl(parsedUrl);
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), IMAGE_URL_FETCH_TIMEOUT_MS);
-  let response: Response;
   try {
-    response = await fetch(parsedUrl, {
-      redirect: "error",
-      signal: controller.signal
+    const { mimetype, buffer } = await new Promise<{ mimetype: string; buffer: Buffer }>((resolve, reject) => {
+      let isSettled = false;
+
+      const finish = (err?: Error, data?: { mimetype: string; buffer: Buffer }) => {
+        if (isSettled) return;
+        isSettled = true;
+        clearTimeout(absoluteTimeout);
+        if (err) return reject(err);
+        if (data) return resolve(data);
+      };
+
+      const req = require("https").get(
+        parsedUrl,
+        {
+          lookup: (hostname: string, options: any, callback: any) => {
+            callback(null, safeIp, isIP(safeIp) as 4 | 6);
+          }
+        },
+        (res: any) => {
+          if (res.statusCode === 301 || res.statusCode === 302 || res.statusCode === 307 || res.statusCode === 308) {
+            // Security: Prevent following redirects to internal SSRF targets
+            res.destroy();
+            return finish(new Error("Redirects are not allowed"));
+          }
+
+          if (!res.statusCode || res.statusCode < 200 || res.statusCode >= 300) {
+            res.destroy();
+            return finish(new Error(`HTTP error ${res.statusCode}`));
+          }
+
+          const contentType = (res.headers["content-type"] ?? "image/jpeg").split(";")[0].toLowerCase();
+          const chunks: Buffer[] = [];
+          res.on("data", (chunk: Buffer) => chunks.push(chunk));
+          res.on("end", () => finish(undefined, { mimetype: contentType, buffer: Buffer.concat(chunks) }));
+          res.on("error", (err: Error) => finish(err));
+        }
+      );
+
+      // Security: Enforce an absolute timeout to prevent Slowloris-style DoS attacks
+      const absoluteTimeout = setTimeout(() => {
+        req.destroy();
+        finish(new Error("Request absolute timeout"));
+      }, IMAGE_URL_FETCH_TIMEOUT_MS);
+
+      req.on("error", (err: Error) => finish(err));
+    });
+
+    assertSupportedImage(mimetype, buffer.length);
+
+    return buildMulterFileFromBuffer({
+      fieldname: "imageUrl",
+      originalname: `prescription-url.${extensionForMimeType(mimetype)}`,
+      mimetype,
+      buffer
     });
   } catch (error) {
-    throw new HttpError(400, "Could not fetch image from the provided URL", { scanError: "NO_IMAGE" });
-  } finally {
-    clearTimeout(timeout);
-  }
-  if (!response.ok) {
+    logger.warn({ error: error instanceof Error ? error.message : "Unknown error", url: parsedUrl.toString() }, "Failed to fetch image URL securely");
     throw new HttpError(400, "Could not fetch image from the provided URL", { scanError: "NO_IMAGE" });
   }
-
-  const mimetype = (response.headers.get("content-type") ?? "image/jpeg").split(";")[0].toLowerCase();
-  const buffer = Buffer.from(await response.arrayBuffer());
-  assertSupportedImage(mimetype, buffer.length);
-
-  return buildMulterFileFromBuffer({
-    fieldname: "imageUrl",
-    originalname: `prescription-url.${extensionForMimeType(mimetype)}`,
-    mimetype,
-    buffer
-  });
 }
 
 export async function resolvePrescriptionScanFile(input: {
