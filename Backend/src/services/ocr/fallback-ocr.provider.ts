@@ -1,4 +1,5 @@
 import type { OcrParseResult, OcrProvider } from "./ocr-provider";
+import { logger } from "../../config/logger";
 
 function shouldFallback(result: OcrParseResult) {
   return result.parseStatus === "failed" || result.medications.length === 0;
@@ -35,6 +36,7 @@ export class FallbackOcrProvider implements OcrProvider {
         return primaryResult;
       }
     } catch (error) {
+      logger.warn({ primaryProvider: this.primaryName, fallbackProvider: this.fallbackName, error: error instanceof Error ? error.message : "Unknown error" }, "Primary OCR provider failed abruptly, engaging fallback");
       const fallbackResult = await this.fallback.parsePrescription(imageBuffer, metadata);
       return {
         ...fallbackResult,
@@ -47,8 +49,10 @@ export class FallbackOcrProvider implements OcrProvider {
       };
     }
 
+    logger.info({ primaryProvider: this.primaryName, fallbackProvider: this.fallbackName, parseStatus: primaryResult.parseStatus, medicationsDetected: primaryResult.medications.length }, "Primary OCR provider yielded poor results, engaging fallback");
     const fallbackResult = await this.fallback.parsePrescription(imageBuffer, metadata);
     if (!shouldFallback(fallbackResult)) {
+      logger.info({ fallbackProvider: this.fallbackName }, "Fallback OCR provider successfully salvaged prescription");
       return {
         ...fallbackResult,
         providerMetadata: {
@@ -60,6 +64,7 @@ export class FallbackOcrProvider implements OcrProvider {
       };
     }
 
+    logger.warn({ primaryProvider: this.primaryName, fallbackProvider: this.fallbackName }, "Both primary and fallback OCR providers failed to parse prescription");
     return {
       ...primaryResult,
       providerMetadata: {
