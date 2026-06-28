@@ -40,25 +40,33 @@ function loadFactoryWithEnv(overrides) {
   return mod;
 }
 
-test("createOcrProvider returns mock provider when OCR_PROVIDER=mock", () => {
+test("createOcrProvider returns wrapped mock provider when OCR_PROVIDER=mock", () => {
   const { createOcrProvider, currentOcrProviderName } = loadFactoryWithEnv({ OCR_PROVIDER: "mock" });
   assert.equal(currentOcrProviderName(), "mock");
-  assert.equal(createOcrProvider().constructor.name, "MockOcrProvider");
+  const wrapped = createOcrProvider();
+  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(wrapped.provider.constructor.name, "MockOcrProvider");
 });
 
-test("createOcrProvider returns VisionGeminiOcrProvider when OCR_PROVIDER=vision_gemini", () => {
+test("createOcrProvider returns wrapped VisionGeminiOcrProvider when OCR_PROVIDER=vision_gemini", () => {
   const { createOcrProvider, currentOcrProviderName } = loadFactoryWithEnv({ OCR_PROVIDER: "vision_gemini" });
   assert.equal(currentOcrProviderName(), "vision_gemini");
-  assert.equal(createOcrProvider().constructor.name, "VisionGeminiOcrProvider");
+  const wrapped = createOcrProvider();
+  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(wrapped.provider.constructor.name, "VisionGeminiOcrProvider");
 });
 
 test("createOcrProvider accepts PrescriptoAI alias for Tesseract plus Groq", () => {
   const { createOcrProvider, currentOcrProviderName } = loadFactoryWithEnv({ OCR_PROVIDER: "prescripto_ai" });
   assert.equal(currentOcrProviderName(), "prescripto_ai");
-  assert.equal(createOcrProvider().constructor.name, "TesseractGroqOcrProvider");
+  const wrapped = createOcrProvider();
+  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(wrapped.provider.constructor.name, "TesseractGroqOcrProvider");
 });
 
 test("createOcrProvider wraps non-mock providers with Gemini fallback when configured", () => {
   const { createOcrProvider } = loadFactoryWithEnv({ OCR_PROVIDER: "prescripto_ai", GEMINI_API_KEY: "test-gemini-key" });
-  assert.equal(createOcrProvider().constructor.name, "FallbackOcrProvider");
+  const wrapped = createOcrProvider();
+  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(wrapped.provider.constructor.name, "FallbackOcrProvider");
 });
