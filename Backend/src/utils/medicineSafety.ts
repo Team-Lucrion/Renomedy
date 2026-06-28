@@ -12,6 +12,23 @@ const EXCLUDED_MEDICINE_RULES: ExcludedMedicineRule[] = [
   { category: "epilepsy", label: "Epilepsy or seizure medicine", terms: ["levetiracetam", "keppra", "valproate", "valparin", "divalproex", "carbamazepine", "tegretol", "oxcarbazepine", "oxetol", "phenytoin", "eptoin", "lamotrigine", "topiramate", "lacosamide", "pregabalin", "gabapentin"] }
 ];
 
+const CRITICAL_MONITORED_MEDS = [
+  "insulin", "warfarin", "acenocoumarol", "acitrom", "apixaban", "eliquis",
+  "rivaroxaban", "xarelto", "dabigatran", "pradaxa", "heparin", "enoxaparin", "clexane",
+  "methotrexate", "mexate", "folitrax", "metoject"
+];
+
+const HIGH_ATTENTION_MEDS = [
+  "amoxicillin", "azithromycin", "ciprofloxacin", "doxycycline", "cefixime", // Antibiotics
+  "prednisolone", "dexamethasone", "methylprednisolone", "hydrocortisone" // Steroids
+];
+
+const HIGH_RISK_DURATION_CATEGORIES = [
+  ...HIGH_ATTENTION_MEDS,
+  "sertraline", "escitalopram", "fluoxetine", "paroxetine", "venlafaxine", "duloxetine", // Psychiatric
+  "alprazolam", "clonazepam", "lorazepam", "diazepam", "zolpidem" // Controlled meds
+];
+
 export type ExcludedMedicineSignal = {
   category: string;
   label: string;
@@ -41,4 +58,19 @@ export function detectExcludedMedicine(input: Record<string, unknown> | string):
   }
 
   return null;
+}
+
+export function isCriticalMonitoredMedicine(medicineName: string, genericName?: string): boolean {
+  const haystack = ` ${normalizeSafetyText([medicineName, genericName].filter(Boolean).join(" "))} `;
+  return CRITICAL_MONITORED_MEDS.some(term => haystack.includes(` ${normalizeSafetyText(term)} `));
+}
+
+export function isHighAttentionMedicine(medicineName: string, genericName?: string): boolean {
+  const haystack = ` ${normalizeSafetyText([medicineName, genericName].filter(Boolean).join(" "))} `;
+  return HIGH_ATTENTION_MEDS.some(term => haystack.includes(` ${normalizeSafetyText(term)} `));
+}
+
+export function isHighRiskDurationMedicine(medicineName: string, genericName?: string): boolean {
+  const haystack = ` ${normalizeSafetyText([medicineName, genericName].filter(Boolean).join(" "))} `;
+  return HIGH_RISK_DURATION_CATEGORIES.some(term => haystack.includes(` ${normalizeSafetyText(term)} `));
 }
