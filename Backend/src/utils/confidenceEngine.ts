@@ -1,5 +1,6 @@
 import { OcrParsedMedication } from "../services/ocr/ocr-provider";
 import { findMedicineCatalogMatch } from "./medicineIntelligence";
+import { isCriticalMonitoredMedicine, isHighAttentionMedicine, isHighRiskDurationMedicine } from "./medicineSafety";
 
 export type VerificationLevel = "High Confidence" | "Review Recommended" | "Manual Verification Required";
 
@@ -11,7 +12,12 @@ export type RiskFlag =
   | "FAILED_VALIDATION"
   | "INCOMPLETE_PRESCRIPTION"
   | "DUPLICATE_MEDICATION_DETECTED"
-  | "SUSPICIOUS_MEDICATION_PATTERN";
+  | "SUSPICIOUS_MEDICATION_PATTERN"
+  | "MISSING_CRITICAL_DURATION"
+  | "MISSING_DURATION_WARNING"
+  | "CRITICAL_MONITORED_MEDICINE"
+  | "HIGH_ATTENTION_MEDICINE"
+  | "UNCERTAIN_DOSAGE_PATTERN";
 
 export interface ConfidenceResult {
   confidenceScore: number;
@@ -101,6 +107,13 @@ export class ConfidenceEngine {
       riskFlags.push("MISSING_DOSAGE");
     }
 
+    // Dosage Pattern (P1)
+    if (hasDosage && !medicineVerified && (!medicine.dosage?.match(/^[0-9.]+(?:\s*(?:mg|ml|mcg|g|iu))?$/i) && !medicine.strength?.match(/^[0-9.]+(?:\s*(?:mg|ml|mcg|g|iu))?$/i))) {
+      // Very basic heuristic for abnormal dosage without catalog match
+      riskFlags.push("UNCERTAIN_DOSAGE_PATTERN");
+      reasons.push("Uncertain dosage pattern detected without strong catalog match.");
+    }
+
     // 3. Timing / Frequency (+15 / 0)
     const hasTiming = (medicine.frequency && medicine.frequency.trim().length > 0) ||
                       (medicine.timing && medicine.timing.trim().length > 0);
@@ -110,6 +123,29 @@ export class ConfidenceEngine {
     } else {
       reasons.push("Missing timing/frequency (0)");
       riskFlags.push("AMBIGUOUS_TIMING");
+    }
+
+    // Duration Checks (P0/P1)
+    const hasDuration = medicine.duration && medicine.duration.trim().length > 0;
+    const isDurationCritical = isHighRiskDurationMedicine(medicine.medicineName, medicine.genericName);
+
+    if (!hasDuration) {
+      if (isDurationCritical) {
+        riskFlags.push("MISSING_CRITICAL_DURATION");
+        reasons.push("Missing duration for high-risk duration medicine (P0)");
+      } else {
+        riskFlags.push("MISSING_DURATION_WARNING");
+        reasons.push("Missing duration (P1)");
+      }
+    }
+
+    // Category Checks (P0/P1)
+    if (isCriticalMonitoredMedicine(medicine.medicineName, medicine.genericName)) {
+      riskFlags.push("CRITICAL_MONITORED_MEDICINE");
+      reasons.push("Critical Monitored Medicine detected (P0)");
+    } else if (isHighAttentionMedicine(medicine.medicineName, medicine.genericName)) {
+      riskFlags.push("HIGH_ATTENTION_MEDICINE");
+      reasons.push("High Attention Medicine detected (P1)");
     }
 
     // 4. OCR Quality (+15 / +10 / 0)
@@ -184,7 +220,9 @@ export class ConfidenceEngine {
       "SUSPICIOUS_MEDICATION_PATTERN",
       "DUPLICATE_MEDICATION_DETECTED",
       "LOW_OCR_QUALITY",
-      "INCOMPLETE_PRESCRIPTION" // Placeholders for future use
+      "INCOMPLETE_PRESCRIPTION", // Placeholders for future use
+      "MISSING_CRITICAL_DURATION",
+      "CRITICAL_MONITORED_MEDICINE"
     ];
 
     const hasCriticalFlag = uniqueRiskFlags.some(flag => criticalFlags.includes(flag));
