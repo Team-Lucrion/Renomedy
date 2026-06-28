@@ -2,8 +2,6 @@ import { env } from "../../config/env";
 import { MockOcrProvider } from "./mock-ocr.provider";
 import { TesseractGroqOcrProvider } from "./tesseract-groq-ocr.provider";
 import { VisionGeminiOcrProvider } from "./vision-gemini-ocr.provider";
-import { DirectGeminiOcrProvider } from "./direct-gemini-ocr.provider";
-import { FallbackOcrProvider } from "./fallback-ocr.provider";
 import { MlKitMedGemmaProvider } from "./mlkit-medgemma.provider";
 import type { OcrProvider, OcrParseResult } from "./ocr-provider";
 import { confidenceEngine } from "../../utils/confidenceEngine";
@@ -53,17 +51,11 @@ export function createOcrProvider(): OcrProvider {
     provider = new MockOcrProvider();
   } else if (env.OCR_PROVIDER === "mlkit_medgemma") {
     provider = new MlKitMedGemmaProvider();
+  } else if (env.OCR_PROVIDER === "tesseract_groq" || env.OCR_PROVIDER === "prescripto_ai") {
+    provider = new TesseractGroqOcrProvider();
   } else {
-    const primary =
-      env.OCR_PROVIDER === "tesseract_groq" || env.OCR_PROVIDER === "prescripto_ai"
-        ? new TesseractGroqOcrProvider()
-        : new VisionGeminiOcrProvider();
-
-    if (!env.GEMINI_API_KEY) {
-      provider = primary;
-    } else {
-      provider = new FallbackOcrProvider(primary, new DirectGeminiOcrProvider(), env.OCR_PROVIDER, "direct_gemini");
-    }
+    // Default to Vision Gemini
+    provider = new VisionGeminiOcrProvider();
   }
 
   return new ConfidenceWrapperProvider(provider);

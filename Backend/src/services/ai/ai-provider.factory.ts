@@ -1,17 +1,12 @@
 import { env } from "../../config/env";
 import { AiProvider } from "./ai-provider";
-import { GeminiAiProvider } from "./gemini-ai.provider";
 import { MedGemmaAiProvider } from "./medgemma/medgemma-ai.provider";
 
 export function createAiProvider(): AiProvider {
-  if (env.AI_PROVIDER === "medgemma") {
-    return new MedGemmaAiProvider();
-  }
-
-  // Default to Gemini as per requirements
-  return new GeminiAiProvider();
+  // Enforce MedGemma 1.5 as the ONLY AI structuring model for Beta simplification
+  return new MedGemmaAiProvider();
 }
 
 export function currentAiProviderName() {
-  return env.AI_PROVIDER;
+  return "medgemma";
 }
