@@ -25,48 +25,37 @@ function loadFactoryWithEnv(overrides) {
 
   delete require.cache[require.resolve("../dist/config/env.js")];
   delete require.cache[require.resolve("../dist/services/ocr/ocr-provider.factory.js")];
-  delete require.cache[require.resolve("../dist/services/ocr/direct-gemini-ocr.provider.js")];
-  delete require.cache[require.resolve("../dist/services/ocr/fallback-ocr.provider.js")];
   delete require.cache[require.resolve("../dist/services/ocr/mock-ocr.provider.js")];
-  delete require.cache[require.resolve("../dist/services/ocr/vision-gemini-ocr.provider.js")];
   delete require.cache[require.resolve("../dist/services/ocr/tesseract-groq-ocr.provider.js")];
-  delete require.cache[require.resolve("../dist/services/ocr/gemini-prescription-parse.js")];
-  delete require.cache[require.resolve("../dist/services/ocr/google-vision-text.js")];
+  delete require.cache[require.resolve("../dist/services/ocr/vision-gemini-ocr.provider.js")];
 
-  const mod = require("../dist/services/ocr/ocr-provider.factory.js");
+  const factory = require("../dist/services/ocr/ocr-provider.factory.js");
+  const result = factory.createOcrProvider();
 
   Object.assign(process.env, previous);
-
-  return mod;
+  return result;
 }
 
 test("createOcrProvider returns wrapped mock provider when OCR_PROVIDER=mock", () => {
-  const { createOcrProvider, currentOcrProviderName } = loadFactoryWithEnv({ OCR_PROVIDER: "mock" });
-  assert.equal(currentOcrProviderName(), "mock");
-  const wrapped = createOcrProvider();
-  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
-  assert.equal(wrapped.provider.constructor.name, "MockOcrProvider");
+  const provider = loadFactoryWithEnv({ OCR_PROVIDER: "mock" });
+  assert.equal(provider.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(provider.provider.constructor.name, "MockOcrProvider");
 });
 
 test("createOcrProvider returns wrapped VisionGeminiOcrProvider when OCR_PROVIDER=vision_gemini", () => {
-  const { createOcrProvider, currentOcrProviderName } = loadFactoryWithEnv({ OCR_PROVIDER: "vision_gemini" });
-  assert.equal(currentOcrProviderName(), "vision_gemini");
-  const wrapped = createOcrProvider();
-  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
-  assert.equal(wrapped.provider.constructor.name, "VisionGeminiOcrProvider");
+  const provider = loadFactoryWithEnv({ OCR_PROVIDER: "vision_gemini" });
+  assert.equal(provider.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(provider.provider.constructor.name, "VisionGeminiOcrProvider");
 });
 
 test("createOcrProvider accepts PrescriptoAI alias for Tesseract plus Groq", () => {
-  const { createOcrProvider, currentOcrProviderName } = loadFactoryWithEnv({ OCR_PROVIDER: "prescripto_ai" });
-  assert.equal(currentOcrProviderName(), "prescripto_ai");
-  const wrapped = createOcrProvider();
-  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
-  assert.equal(wrapped.provider.constructor.name, "TesseractGroqOcrProvider");
+  const provider = loadFactoryWithEnv({ OCR_PROVIDER: "prescripto_ai" });
+  assert.equal(provider.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(provider.provider.constructor.name, "TesseractGroqOcrProvider");
 });
 
-test("createOcrProvider wraps non-mock providers with Gemini fallback when configured", () => {
-  const { createOcrProvider } = loadFactoryWithEnv({ OCR_PROVIDER: "prescripto_ai", GEMINI_API_KEY: "test-gemini-key" });
-  const wrapped = createOcrProvider();
-  assert.equal(wrapped.constructor.name, "ConfidenceWrapperProvider");
-  assert.equal(wrapped.provider.constructor.name, "FallbackOcrProvider");
+test("createOcrProvider returns MlKitMedGemmaProvider when configured", () => {
+  const provider = loadFactoryWithEnv({ OCR_PROVIDER: "mlkit_medgemma" });
+  assert.equal(provider.constructor.name, "ConfidenceWrapperProvider");
+  assert.equal(provider.provider.constructor.name, "MlKitMedGemmaProvider");
 });
