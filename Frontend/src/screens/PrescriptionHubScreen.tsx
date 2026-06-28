@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import ErrorBanner from '../components/ErrorBanner';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
@@ -2479,10 +2480,16 @@ export default function PrescriptionHubScreen() {
           ) : null}
 
           {uploadState === 'error' || uploadError ? (
-            <View style={styles.errorBox}>
-              <Ionicons name="alert-circle-outline" size={20} color={colors.danger} />
-              <Text style={styles.errorText}>{uploadError || 'Upload failed. Please try again.'}</Text>
-            </View>
+            <ErrorBanner
+              message={
+                uploadError?.toLowerCase().includes('timeout') || uploadError?.toLowerCase().includes('network')
+                  ? 'Network connection is unstable. Please check your internet and try again.'
+                  : uploadError?.toLowerCase().includes('blur') || uploadError?.toLowerCase().includes('quality') || uploadError?.toLowerCase().includes('failed')
+                    ? 'The image appears too blurry or could not be processed. Please try again with better lighting.'
+                    : uploadError || 'Upload failed. Please try again.'
+              }
+              type="error"
+            />
           ) : null}
 
           <View style={styles.uploadActions}>
@@ -2490,6 +2497,9 @@ export default function PrescriptionHubScreen() {
               disabled={uploadState === 'uploading' || uploadState === 'processing'}
               style={styles.uploadButton}
               onPress={() => beginAddFlow({ type: 'upload', source: 'camera' })}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={selectedImage ? 'Retake photo with camera' : 'Take photo with camera'}
             >
               <Ionicons name="camera-outline" size={20} color={colors.surface} />
               <Text style={styles.uploadButtonText}>{selectedImage ? 'Retake' : 'Camera'}</Text>
@@ -2498,6 +2508,9 @@ export default function PrescriptionHubScreen() {
               disabled={uploadState === 'uploading' || uploadState === 'processing'}
               style={[styles.uploadButton, styles.secondaryUploadButton]}
               onPress={() => beginAddFlow({ type: 'upload', source: 'gallery' })}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={selectedImage ? 'Pick another photo from gallery' : 'Choose photo from gallery'}
             >
               <Ionicons name="images-outline" size={20} color={colors.primary} />
               <Text style={styles.secondaryUploadButtonText}>Gallery</Text>
@@ -2556,10 +2569,7 @@ export default function PrescriptionHubScreen() {
         ) : null}
 
         {error ? (
-          <View style={styles.errorBox}>
-            <Ionicons name="alert-circle-outline" size={18} color={colors.danger} />
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
+          <ErrorBanner message={error} type="error" />
         ) : null}
 
         <View style={styles.section}>
@@ -2594,10 +2604,7 @@ export default function PrescriptionHubScreen() {
               {renderContinuityReview()}
               {renderMedicineCards(decodedMedicines)}
               {activationError ? (
-                <View style={styles.errorBox}>
-                  <Ionicons name="alert-circle-outline" size={18} color={colors.danger} />
-                  <Text style={styles.errorText}>{activationError}</Text>
-                </View>
+                <ErrorBanner message={activationError} type="error" />
               ) : null}
             </View>
 
@@ -3614,15 +3621,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
-  },
-  errorBox: {
-    ...boxBase,
-    backgroundColor: '#FFF5F5',
-  },
-  errorText: {
-    ...typography.bodySmall,
-    color: colors.danger,
-    flex: 1,
   },
   section: {
     gap: spacing.md,
