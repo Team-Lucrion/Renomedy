@@ -21,6 +21,29 @@ test("golden: extractJsonPayload strips markdown fences", () => {
   assert.deepEqual(out, { medicines: [], warnings: [], ocr_quality: "low" });
 });
 
+test("extractJsonPayload still accepts direct prescription JSON", () => {
+  const { extractJsonPayload } = require("../dist/services/ocr/gemini-prescription-parse.js");
+  const parsed = extractJsonPayload('{"medicines":[{"medicine_name":"Pan","confidence":"high"}],"warnings":[]}');
+
+  assert.equal(parsed.medicines.length, 1);
+  assert.equal(parsed.medicines[0].medicine_name, "Pan");
+  assert.deepEqual(parsed.warnings, []);
+});
+
+test("extractJsonPayload extracts JSON from conversational output", () => {
+  const { extractJsonPayload } = require("../dist/services/ocr/gemini-prescription-parse.js");
+  const conversationalText = "Here is the parsed output:\n{\n  \"medicines\": [],\n  \"warnings\": [\"test\"]\n}\nEnd of analysis.";
+  const out = extractJsonPayload(conversationalText);
+  assert.deepEqual(out, { medicines: [], warnings: ["test"] });
+});
+
+test("extractJsonPayload throws on completely invalid input", () => {
+  const { extractJsonPayload } = require("../dist/services/ocr/gemini-prescription-parse.js");
+  assert.throws(() => {
+    extractJsonPayload("Sorry, I couldn't read the prescription.");
+  }, /Gemini returned malformed JSON for prescription parsing/);
+});
+
 test("golden: mapMedicinesToParseResult keeps plausible Gemini medicine names", () => {
   const { mapMedicinesToParseResult } = require("../dist/services/ocr/gemini-prescription-parse.js");
   const meds = mapMedicinesToParseResult([
