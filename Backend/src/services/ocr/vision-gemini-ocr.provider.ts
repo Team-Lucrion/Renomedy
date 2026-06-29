@@ -5,9 +5,6 @@ import {
   assessOcrQuality,
   buildMedicineCardData,
   cleanOcrText,
-  mapMedicinesToParseResult,
-  normalizeWhitespace,
-  parseMedicinesFromOcrText,
 } from "./gemini-prescription-parse";
 import { extractTextWithGoogleVision } from "./google-vision-text";
 import { createAiProvider } from "../ai/ai-provider.factory";
