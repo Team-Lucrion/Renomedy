@@ -1145,6 +1145,7 @@ export async function reconcilePrescription(jwt: string, prescriptionId: string,
   const preservedMedicationIds: string[] = [];
   const newMedicationIds: string[] = [];
   const supersededPrescriptionIds = new Set(input.superseded_prescription_ids ?? []);
+  const updatePromises: PromiseLike<any>[] = [];
 
   for (const action of actions) {
     const oldMedication = action.existing_medication_id ? medicationById.get(action.existing_medication_id) : null;
@@ -1164,17 +1165,20 @@ export async function reconcilePrescription(jwt: string, prescriptionId: string,
 
     if (action.type === "add_new" && newMedication) {
       newMedicationIds.push(newMedication.id);
-      await supabaseAdmin
-        .from("prescription_medications")
-        .update({
-          continuity_status: "draft",
-          requires_manual_verification: true,
-          verified_at: null,
-          verified_by_user_id: null,
-          continuity_note: action.note ?? "New medicine from reconciliation; verification required before activation",
-          trust_metadata: getMedicineTrustProfile(newMedication)
-        })
-        .eq("id", newMedication.id);
+      updatePromises.push(
+        supabaseAdmin
+          .from("prescription_medications")
+          .update({
+            continuity_status: "draft",
+            requires_manual_verification: true,
+            verified_at: null,
+            verified_by_user_id: null,
+            continuity_note: action.note ?? "New medicine from reconciliation; verification required before activation",
+            trust_metadata: getMedicineTrustProfile(newMedication)
+          })
+          .eq("id", newMedication.id)
+          .then()
+      );
       continue;
     }
 
@@ -1182,57 +1186,71 @@ export async function reconcilePrescription(jwt: string, prescriptionId: string,
       const shouldStopOld = action.type === "discontinue" || action.type === "replace_existing" || action.stop_old === true;
       if (shouldStopOld) {
         stoppedMedicationIds.push(oldMedication.id);
-        await supabaseAdmin
-          .from("medication_schedules")
-          .update({
-            status: "completed",
-            end_date: action.begin_date ?? new Date().toISOString().slice(0, 10),
-            stopped_at: now,
-            stopped_reason: action.type === "discontinue" ? "discontinued_in_reconciliation" : "replaced_in_reconciliation",
-            continuity_note: action.note ?? "Stopped during prescription reconciliation"
-          })
-          .eq("prescription_medication_id", oldMedication.id)
-          .eq("status", "active");
+        updatePromises.push(
+          supabaseAdmin
+            .from("medication_schedules")
+            .update({
+              status: "completed",
+              end_date: action.begin_date ?? new Date().toISOString().slice(0, 10),
+              stopped_at: now,
+              stopped_reason: action.type === "discontinue" ? "discontinued_in_reconciliation" : "replaced_in_reconciliation",
+              continuity_note: action.note ?? "Stopped during prescription reconciliation"
+            })
+            .eq("prescription_medication_id", oldMedication.id)
+            .eq("status", "active")
+            .then()
+        );
 
-        await supabaseAdmin
-          .from("prescription_medications")
-          .update({
-            continuity_status: action.type === "discontinue" ? "discontinued" : "replaced",
-            replaced_by_medication_id: newMedication?.id ?? null,
-            discontinued_at: now,
-            continuity_note: action.note ?? "Changed during prescription reconciliation"
-          })
-          .eq("id", oldMedication.id);
+        updatePromises.push(
+          supabaseAdmin
+            .from("prescription_medications")
+            .update({
+              continuity_status: action.type === "discontinue" ? "discontinued" : "replaced",
+              replaced_by_medication_id: newMedication?.id ?? null,
+              discontinued_at: now,
+              continuity_note: action.note ?? "Changed during prescription reconciliation"
+            })
+            .eq("id", oldMedication.id)
+            .then()
+        );
       }
     }
 
     if ((action.type === "continue_unchanged" || action.type === "keep_active") && oldMedication) {
       preservedMedicationIds.push(oldMedication.id);
-      await supabaseAdmin
-        .from("prescription_medications")
-        .update({
-          continuity_status: "active",
-          continuity_note: action.note ?? "Caregiver chose to keep active during reconciliation",
-          trust_metadata: getMedicineTrustProfile(oldMedication)
-        })
-        .eq("id", oldMedication.id);
+      updatePromises.push(
+        supabaseAdmin
+          .from("prescription_medications")
+          .update({
+            continuity_status: "active",
+            continuity_note: action.note ?? "Caregiver chose to keep active during reconciliation",
+            trust_metadata: getMedicineTrustProfile(oldMedication)
+          })
+          .eq("id", oldMedication.id)
+          .then()
+      );
     }
 
     if ((action.type === "replace_existing" || action.type === "update_existing") && newMedication) {
       newMedicationIds.push(newMedication.id);
-      await supabaseAdmin
-        .from("prescription_medications")
-        .update({
-          continuity_status: "draft",
-          requires_manual_verification: true,
-          verified_at: null,
-          verified_by_user_id: null,
-          continuity_note: action.note ?? "Replacement/update medicine from reconciliation; verification required before activation",
-          trust_metadata: getMedicineTrustProfile(newMedication)
-        })
-        .eq("id", newMedication.id);
+      updatePromises.push(
+        supabaseAdmin
+          .from("prescription_medications")
+          .update({
+            continuity_status: "draft",
+            requires_manual_verification: true,
+            verified_at: null,
+            verified_by_user_id: null,
+            continuity_note: action.note ?? "Replacement/update medicine from reconciliation; verification required before activation",
+            trust_metadata: getMedicineTrustProfile(newMedication)
+          })
+          .eq("id", newMedication.id)
+          .then()
+      );
     }
   }
+
+  await Promise.all(updatePromises);
 
   const archiveIds = Array.from(supersededPrescriptionIds).filter((id) => id !== prescriptionId);
   if (archiveIds.length > 0) {
