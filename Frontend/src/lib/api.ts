@@ -43,7 +43,8 @@ export class ApiError extends Error {
 }
 
 function buildUrl(path: string, query?: Record<string, string | undefined>) {
-  const url = new URL(path, apiBaseUrl.endsWith("/") ? apiBaseUrl : `${apiBaseUrl}/`);
+  const base = apiBaseUrl || "http://localhost:4000";
+  const url = new URL(path, base.endsWith("/") ? base : `${base}/`);
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {

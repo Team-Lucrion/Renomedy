@@ -18,7 +18,7 @@ export class MlKitScannerService {
       // DocumentScanner only works on physical iOS/Android devices
       if (Platform.OS !== 'web') {
         const { scannedImages } = await DocumentScanner.scanDocument({
-          maxNumPhotos: 1,
+          maxNumDocuments: 1,
         });
 
         if (scannedImages && scannedImages.length > 0) {
