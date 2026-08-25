@@ -16,7 +16,7 @@ export async function createBetaInviteHandler(req: Request, res: Response) {
   return ok(res, data, "Beta invite created");
 }
 
-export async function listBetaUsersHandler(_req: Request, res: Response) {
+export async function getBetaFunnelHandler(_req: Request, res: Response) { const data = await getBetaFunnel(); return ok(res, data, "Beta funnel"); } export async function listBetaUsersHandler(_req: Request, res: Response) {
   const data = await listBetaUsers();
   return ok(res, data, "Beta users");
 }
