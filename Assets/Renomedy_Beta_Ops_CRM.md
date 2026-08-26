@@ -268,3 +268,52 @@ It is about:
 - referral readiness
 
 Optimize for learning quality before scale.
+---
+
+## 12. First-50 Acquisition Queue
+
+The existing fields and beta lifecycle above remain the source of truth after a family enters the beta process. Add this pre-funnel to the same record or linked acquisition_leads record so prospect research does not become a second disconnected spreadsheet.
+
+### Pre-funnel states
+
+Use these states before Applied:
+
+1. Researched — public source found; no contact made.
+2. Qualified — score is 5 or higher and the person appears to be a caregiver with a real medication-management problem.
+3. Awaiting Approval — an outreach draft is ready; founder decision is required.
+4. Approved to Contact — founder explicitly approved the draft and channel.
+5. Contacted — message was sent manually or through an explicitly approved integration.
+6. Replied — the person responded.
+7. Qualified Conversation — caregiver need, willingness to try, and beta fit were confirmed.
+8. Do Not Contact or Not a Fit — stop follow-up and record why.
+
+### Required acquisition fields
+
+- source: PUBLIC_THREAD, COMMUNITY_HOST, COLD_LOCAL, CONTENT_REPLY, INBOUND, REFERRAL, DOC, or PHARM.
+- source_url: public post, public organisation page, or public business page used for research.
+- public_handle: public username or public business/community handle; do not collect private contact details during research.
+- research_summary: only observable, non-sensitive context relevant to the caregiving problem.
+- consent_status: research_only, opted_in, or do_not_contact.
+- priority_score: existing 10-point fit score, with a minimum of 5 for the founder approval queue.
+- outreach_draft: permission-first message prepared by AI; never auto-sent.
+- approval_status: pending, approved, or rejected.
+- next_follow_up_at, last_response_at, contacted_at, and a short founder note.
+
+### Source rules for zero-distribution acquisition
+
+- PUBLIC_THREAD means a public post where the caregiver has already described a relevant problem; reply only where platform rules allow it.
+- COMMUNITY_HOST means a moderator, NGO, or community operator who has publicly invited contact; request permission before sharing anything with members.
+- COLD_LOCAL means a public clinic, pharmacy, elder-care service, or caregiver organisation page; the founder makes the first relationship-building contact.
+- CONTENT_REPLY is a useful answer or clarity artifact attached to a real conversation, not a broadcast campaign.
+- INBOUND and REFERRAL remain the preferred low-friction sources once the first families exist.
+
+### Human approval and privacy rules
+
+- AI may discover public sources, summarize the evidence, score fit, and draft a message.
+- AI must not send a message, join a private group, infer a medical diagnosis, or store private health information without an explicit human decision and user-provided consent.
+- Founder approval is required before every external outreach action.
+- A beta code is sent only after the founder confirms the conversation is qualified.
+
+### Database mapping
+
+The acquisition queue maps into the existing beta lifecycle at Applied → Reviewed → Approved → Code Generated → Code Sent → Joined → First Prescription Upload → Active. The daily brief should show both queues together so the founder works from one prioritized list.
