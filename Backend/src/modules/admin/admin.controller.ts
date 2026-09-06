@@ -8,7 +8,8 @@ import {
   listBetaUsers,
   listOperationalIssues,
   retryFailedAlert,
-  revokeBetaAccess
+  revokeBetaAccess,
+  getBetaFunnel
 } from "./admin.service";
 
 export async function createBetaInviteHandler(req: Request, res: Response) {

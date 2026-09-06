@@ -1,3 +1,4 @@
+import { captureServerEvent } from "../../lib/posthog";
 import { supabaseAdmin } from "../../lib/supabase";
 import { writeAuditLog } from "../../services/audit.service";
 import { ensureClosedBetaAccess } from "../../services/beta-access.service";
@@ -199,6 +200,15 @@ export async function activateMedication(jwt: string, input: Record<string, unkn
   const { data, error } = await supabaseAdmin.from("medication_schedules").insert(scheduleInput).select("*").single();
   if (error) throw new HttpError(500, "Failed to activate medication schedule", error);
 
+  captureServerEvent({
+    distinctId: currentUser.id,
+    event: "medicine_activated",
+    properties: {
+      prescription_medication_id: medication.id,
+      schedule_id: data.id
+    }
+  });
+
   await supabaseAdmin
     .from("prescription_medications")
     .update({
@@ -288,6 +298,15 @@ export async function logDose(jwt: string, input: Record<string, unknown>) {
 
   const { data, error } = await supabaseAdmin.from("dose_logs").insert(input).select("*").single();
   if (error) throw new HttpError(500, "Failed to log dose", error);
+
+  captureServerEvent({
+    distinctId: currentUser.id,
+    event: "dose_logged",
+    properties: {
+      schedule_id: data.medication_schedule_id,
+      status: data.status
+    }
+  });
 
   if (data.status === "taken") {
     const { data: refillState, error: refillFetchError } = await supabaseAdmin
@@ -380,5 +399,49 @@ export async function refillStatus(jwt: string, familyMemberId?: string) {
     .in("medication_schedule_id", scheduleIds);
 
   if (refillError) throw new HttpError(500, "Failed to fetch refill states", refillError);
+  return data;
+}
+
+export async function updateSchedule(jwt: string, scheduleId: string, input: Record<string, unknown>) {
+  const currentUser = await ensureClosedBetaAccess(jwt);
+
+  const { data: schedule, error: scheduleError } = await supabaseAdmin
+    .from("medication_schedules")
+    .select("id, family_member_id")
+    .eq("id", scheduleId)
+    .single();
+
+  if (scheduleError || !schedule) {
+    throw new HttpError(404, "Medication schedule not found", scheduleError);
+  }
+
+  const accessibleMemberIds = await getAccessibleFamilyMemberIds(currentUser.id, schedule.family_member_id);
+
+  if (!accessibleMemberIds.includes(schedule.family_member_id)) {
+    throw new HttpError(403, "Medication schedule is not accessible");
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("medication_schedules")
+    .update(input)
+    .eq("id", scheduleId)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new HttpError(500, "Failed to update schedule", error);
+  }
+
+  await writeAuditLog({
+    userId: currentUser.id,
+    action: "medication.schedule_updated",
+    entityType: "medication_schedule",
+    entityId: scheduleId,
+    metadata: {
+      family_member_id: schedule.family_member_id,
+      updated_fields: Object.keys(input)
+    }
+  });
+
   return data;
 }
