@@ -3,7 +3,7 @@
 Renomedy is split into two applications inside one workspace:
 
 - `Frontend/` contains the Expo React Native app.
-- `Backend/` contains the Express API and the canonical prescription pipeline: **Google Cloud Vision** for OCR text extraction and **Google Gemini** for structured medicine parsing (`OCR_PROVIDER=vision_gemini`).
+- `Backend/` contains the Express API and the canonical prescription pipeline: **ML Kit** for edge OCR text extraction and **MedGemma** for structured medicine parsing (`OCR_PROVIDER=mlkit_medgemma`).
 
 ## Integrated local setup
 
@@ -32,5 +32,5 @@ Renomedy is split into two applications inside one workspace:
 - Frontend authentication is handled by Clerk Expo.
 - Frontend API calls send the Clerk bearer token to the backend.
 - Backend validates the token, maps the Clerk user to the local `users` table, and serves family, medication, dashboard, and prescription data.
-- Prescription OCR is handled by `Backend/src/services/ocr/vision-gemini-ocr.provider.ts`: **Google Cloud Vision** extracts text; **Gemini** structures medicines. Set `OCR_PROVIDER=mock` only for tests or demos without Vision/Gemini credentials.
+- Prescription OCR is handled by `Backend/src/services/ocr/mlkit-medgemma.provider.ts` for Edge-First OCR using ML Kit and MedGemma. Server-side fallbacks (e.g. Vision Gemini) are configured through `OCR_PROVIDER`. Set `OCR_PROVIDER=mock` only for tests or demos without credentials.
 - `CORS_ALLOWED_ORIGINS` in `Backend/.env` controls which browser origins may call the API. Native mobile requests without a browser origin remain allowed.

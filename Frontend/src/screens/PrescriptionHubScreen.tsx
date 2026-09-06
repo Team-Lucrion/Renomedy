@@ -64,6 +64,18 @@ import {
 } from '../utils/onboardingFlow';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/theme';
 
+type ReminderPreset = 'Morning' | 'Afternoon' | 'Evening' | 'Bedtime';
+const REMINDER_PRESETS: { label: ReminderPreset; value: string }[] = [
+  { label: 'Morning', value: '08:00' },
+  { label: 'Afternoon', value: '13:00' },
+  { label: 'Evening', value: '18:00' },
+  { label: 'Bedtime', value: '21:00' },
+];
+
+type MedicineReminderDraft = {
+  selectedPresets: Set<ReminderPreset>;
+};
+
 type UploadState = 'idle' | 'preview' | 'uploading' | 'processing' | 'success' | 'error';
 type ProcessingStage = 'idle' | 'uploading' | 'ocr' | 'ai' | 'saving';
 
@@ -697,6 +709,7 @@ export default function PrescriptionHubScreen() {
   const [isRenoItModalVisible, setIsRenoItModalVisible] = useState(false);
   const [isRenoItSharing, setIsRenoItSharing] = useState(false);
   const [verificationDrafts, setVerificationDrafts] = useState<Record<string, MedicineVerificationDraft>>({});
+  const [reminderDrafts, setReminderDrafts] = useState<Record<string, MedicineReminderDraft>>({});
   const [isGuidedVerificationEnabled, setIsGuidedVerificationEnabled] = useState(false);
   const [isVerificationPreferenceLoaded, setIsVerificationPreferenceLoaded] = useState(false);
   const [guidedMedicineIndex, setGuidedMedicineIndex] = useState(0);
@@ -1246,6 +1259,7 @@ export default function PrescriptionHubScreen() {
     setIsRenoItModalVisible(false);
     setIsRenoItSharing(false);
     setVerificationDrafts({});
+    setReminderDrafts({});
     setGuidedMedicineIndex(0);
     setGuidedFieldIndex(0);
     setGuidedEditingField(null);
@@ -1477,6 +1491,11 @@ export default function PrescriptionHubScreen() {
 
   const openRenoIt = () => {
     if (!decodedPrescription || decodedMedicines.length === 0) {
+      return;
+    }
+
+    if (hasShareRisk) {
+      setUploadError('Please verify all medicines before sharing this prescription card.');
       return;
     }
 
@@ -1816,7 +1835,14 @@ export default function PrescriptionHubScreen() {
         family_member_id: familyMemberId,
         prescription_medication_id: medicine.id,
         start_date: getMedicationStartDate(draft),
-        reminder_times: [],
+        reminder_times: (() => {
+          const reminderDraft = reminderDrafts[medicine.id];
+          return reminderDraft
+            ? Array.from(reminderDraft.selectedPresets)
+                .map(preset => REMINDER_PRESETS.find(p => p.label === preset)?.value)
+                .filter(Boolean) as string[]
+            : [];
+        })(),
         food_relation: normalizeWhitespace(draft.foodTiming) || undefined,
         quantity_total: quantityPurchased || undefined,
         quantity_remaining: quantityPurchased || undefined,
@@ -1884,6 +1910,22 @@ export default function PrescriptionHubScreen() {
     }
 
     setGuidedFieldIndex(REVIEW_FIELD_ORDER.length);
+  };
+
+  const toggleReminderPreset = (medicineId: string, preset: ReminderPreset) => {
+    setReminderDrafts((current) => {
+      const existing = current[medicineId]?.selectedPresets || new Set<ReminderPreset>();
+      const updated = new Set(existing);
+      if (updated.has(preset)) {
+        updated.delete(preset);
+      } else {
+        updated.add(preset);
+      }
+      return {
+        ...current,
+        [medicineId]: { selectedPresets: updated },
+      };
+    });
   };
 
   const renderActivationPrompt = (medicine: ParsedPrescriptionMedication, draft: MedicineVerificationDraft) => {
@@ -2031,6 +2073,33 @@ export default function PrescriptionHubScreen() {
             </View>
           </View>
         ) : null}
+
+        {!isActivated && !isActivationBlocked && !excludedSignal ? (
+          <View style={styles.remindersBlock}>
+            <Text style={styles.remindersTitle}>When do you take this?</Text>
+            <Text style={styles.remindersSubtitle}>We'll remind you.</Text>
+            <View style={styles.reminderPresetsRow}>
+              {REMINDER_PRESETS.map((preset) => {
+                const isSelected = reminderDrafts[medicine.id]?.selectedPresets?.has(preset.label);
+                return (
+                  <TouchableOpacity
+                    key={preset.label}
+                    style={[
+                      styles.reminderPresetChip,
+                      isSelected ? styles.reminderPresetChipSelected : null,
+                    ]}
+                    onPress={() => toggleReminderPreset(medicine.id, preset.label)}
+                  >
+                    <Text style={[styles.reminderPresetText, isSelected ? styles.reminderPresetTextSelected : null]}>
+                      {preset.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        ) : null}
+
         <TouchableOpacity
           disabled={isActivating || isActivated || isActivationBlocked}
           style={[styles.activationButton, isActivated ? styles.activationButtonDone : null, isActivationBlocked ? styles.disabledButton : null]}
@@ -2729,7 +2798,7 @@ export default function PrescriptionHubScreen() {
                   </View>
                 </View>
 
-                <TouchableOpacity style={styles.processButton} onPress={openRenoIt}>
+                <TouchableOpacity style={[styles.processButton, hasShareRisk ? styles.disabledButton : null]} disabled={hasShareRisk} onPress={openRenoIt}>
                   <Text style={styles.processButtonText}>Reno It</Text>
                   <Ionicons name="logo-whatsapp" size={19} color={colors.surface} />
                 </TouchableOpacity>
@@ -4760,5 +4829,43 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.text,
     lineHeight: 23,
+  },
+  remindersBlock: {
+    marginTop: spacing.md,
+    marginBottom: spacing.md,
+  },
+  remindersTitle: {
+    ...typography.h3,
+    color: colors.text,
+  },
+  remindersSubtitle: {
+    ...typography.body,
+    color: colors.textMuted,
+    marginBottom: spacing.sm,
+  },
+  reminderPresetsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  reminderPresetChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.pill,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  reminderPresetChipSelected: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  reminderPresetText: {
+    ...typography.body,
+    color: colors.text,
+  },
+  reminderPresetTextSelected: {
+    color: colors.surface,
+    fontWeight: '600',
   },
 });

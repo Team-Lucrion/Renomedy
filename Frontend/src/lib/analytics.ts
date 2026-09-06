@@ -1,3 +1,10 @@
+import PostHog from 'posthog-react-native';
+
+export const posthog = new PostHog(process.env.EXPO_PUBLIC_POSTHOG_API_KEY || '', {
+  host: process.env.EXPO_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+  disabled: !Boolean(process.env.EXPO_PUBLIC_POSTHOG_API_KEY)
+});
+
 export type RenoItAnalyticsEvent =
   | 'reno_it_opened'
   | 'reno_it_popup_seen'
@@ -38,8 +45,7 @@ export function trackEvent(
   event: AppAnalyticsEvent,
   properties?: Record<string, unknown>,
 ) {
-  void event;
-  void properties;
+  posthog.capture(event, properties as any);
 }
 
 export function trackRenoItEvent(event: RenoItAnalyticsEvent, properties?: Record<string, unknown>) {

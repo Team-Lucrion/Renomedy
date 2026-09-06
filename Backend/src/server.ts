@@ -1,5 +1,6 @@
 import { bootstrapApp } from "./bootstrap";
 import { env } from "./config/env";
+import { currentOcrProviderName } from "./services/ocr/ocr-provider.factory";
 import { logger } from "./config/logger";
 import { app } from "./app";
 import { shutdownPostHog } from "./lib/posthog";
