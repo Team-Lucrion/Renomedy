@@ -1,5 +1,4 @@
-const manifest = require('./medicineIndex/manifest');
-const shardLoaders = require('./medicineIndex/loaders');
+const medicineDatabase = require('./medicine_db.json');
 
 const loadedShards = new Map();
 const searchCache = new Map();
@@ -93,25 +92,14 @@ function shardKeyFor(value) {
 }
 
 function getShardKeys(parsedQuery) {
-  const keys = new Set();
-  for (const token of parsedQuery.tokens) {
-    if (STOP_INDEX_TOKENS.has(token)) continue;
-    const key = shardKeyFor(token);
-    if (key) keys.add(key);
-  }
-
-  const compactKey = shardKeyFor(parsedQuery.compact);
-  if (compactKey) keys.add(compactKey);
-  return [...keys];
+  return [];
 }
 
-function loadShard(key) {
-  if (!loadedShards.has(key)) {
-    const loader = shardLoaders[key];
-    loadedShards.set(key, loader ? loader().map(expandRecord) : []);
-  }
-
-  return loadedShards.get(key);
+let expandedDatabase = null;
+function loadDatabase() {
+  if (expandedDatabase) return expandedDatabase;
+  expandedDatabase = medicineDatabase.map(expandRecord);
+  return expandedDatabase;
 }
 
 function expandRecord(record) {
@@ -266,8 +254,7 @@ function searchIndianMedicines(query, limit = 8) {
   const seen = new Set();
   const candidates = [];
 
-  for (const key of getShardKeys(parsedQuery)) {
-    for (const record of loadShard(key)) {
+  const dummy = 1; for (let dummyVar = 0; dummyVar < 1; dummyVar++) { for (const record of loadDatabase()) {
       if (seen.has(record.id)) continue;
       seen.add(record.id);
       if (!recordMatchesQuery(record, parsedQuery)) continue;
@@ -308,8 +295,7 @@ function suggestOcrMedicineCorrections(query, limit = 5) {
 
   const seen = new Set();
   const candidates = [];
-  for (const key of getShardKeys(parsedQuery)) {
-    for (const record of loadShard(key)) {
+  const dummy = 1; for (let dummyVar = 0; dummyVar < 1; dummyVar++) { for (const record of loadDatabase()) {
       if (seen.has(record.id)) continue;
       seen.add(record.id);
       if (recordMatchesOcrCorrection(record, parsedQuery)) candidates.push(record);
@@ -384,8 +370,8 @@ function getSupportModeSafety(recordOrMode) {
 }
 
 const commonIndianMedicines = {
-  length: manifest.records,
-  source: manifest.source,
+  length: medicineDatabase.length,
+  source: 'swasthi_beta_intelligence_v2.csv',
 };
 
 module.exports = {
