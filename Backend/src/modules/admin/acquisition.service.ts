@@ -34,8 +34,8 @@ export type AcquisitionLeadInput = {
   contact_channel?: string;
   name?: string;
   city?: string;
-  caregiver_type?: string;
-  care_context?: string;
+  caregiver_type?: string | null;
+  care_context?: string | null;
   medicine_complexity?: number;
   prescription_confusion?: boolean;
   reminder_refill_problem?: boolean;

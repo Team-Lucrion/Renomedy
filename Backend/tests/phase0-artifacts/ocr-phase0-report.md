@@ -1,6 +1,6 @@
 # Phase 0 OCR Accuracy Test Results
 
-Generated: 2026-05-21T12:45:26.687Z
+Generated: 2026-09-06T06:25:27.571Z
 
 ## Test Set
 
@@ -11,29 +11,39 @@ Generated: 2026-05-21T12:45:26.687Z
 
 ## Backends Tested
 
+- direct_gemini
 - tesseract_groq
 
 ## Accuracy Summary
 
 | Backend | Printed field accuracy | Handwritten field accuracy |
 |---|---:|---:|
-| tesseract_groq | 100.0% | 94.9% |
+| direct_gemini | 0.0% | 0.0% |
+| tesseract_groq | 0.0% | 0.0% |
 
 ## Per-Field Accuracy
 
 | Backend | Field | Accuracy |
 |---|---|---:|
-| tesseract_groq | medicineName | 100.0% |
-| tesseract_groq | strength | 94.0% |
-| tesseract_groq | dose | 100.0% |
-| tesseract_groq | frequency | 98.0% |
-| tesseract_groq | timing | 100.0% |
-| tesseract_groq | foodTiming | 90.0% |
-| tesseract_groq | duration | 100.0% |
+| direct_gemini | medicineName | 0.0% |
+| direct_gemini | strength | 0.0% |
+| direct_gemini | dose | 0.0% |
+| direct_gemini | frequency | 0.0% |
+| direct_gemini | timing | 0.0% |
+| direct_gemini | foodTiming | 0.0% |
+| direct_gemini | duration | 0.0% |
+| tesseract_groq | medicineName | 0.0% |
+| tesseract_groq | strength | 0.0% |
+| tesseract_groq | dose | 0.0% |
+| tesseract_groq | frequency | 0.0% |
+| tesseract_groq | timing | 0.0% |
+| tesseract_groq | foodTiming | 0.0% |
+| tesseract_groq | duration | 0.0% |
 
 ## Confidence Correlation
 
-- tesseract_groq: 0.187
+- direct_gemini: not available
+- tesseract_groq: not available
 
 ## Raw Results
 

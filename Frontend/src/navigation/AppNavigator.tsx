@@ -27,6 +27,7 @@ import FamilyMemberDetailsScreen from '../screens/FamilyMemberDetailsScreen';
 import BetaInviteScreen from '../screens/BetaInviteScreen';
 import LanguageSetupScreen from '../screens/LanguageSetupScreen';
 import AboutSwasthiScreen from '../screens/AboutSwasthiScreen';
+import LegalScreen from '../screens/LegalScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -39,6 +40,7 @@ export type RootStackParamList = {
   FamilyMemberDetails: { memberId: string };
   MedicationActivation: { medicationId: string } | undefined;
   AboutSwasthi: undefined;
+  Legal: undefined;
 };
 
 export type MainTabParamList = {

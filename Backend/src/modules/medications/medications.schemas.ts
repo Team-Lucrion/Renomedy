@@ -27,3 +27,9 @@ export const doseLogSchema = z.object({
   status: z.enum(["taken", "missed", "skipped", "snoozed"]),
   notes: z.string().optional()
 });
+
+export const updateScheduleSchema = z.object({
+  reminder_times: z.array(z.string()).optional(),
+  food_relation: z.string().optional(),
+  refill_threshold_days: z.number().int().min(1).max(30).optional(),
+});

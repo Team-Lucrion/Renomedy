@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "../../lib/supabase";
+import { captureServerEvent } from "../../lib/posthog";
 import { getCurrentUserRecord } from "../../services/current-user.service";
 import { dismissAlert, retryAlert } from "../../services/notification/notification.service";
 import { HttpError } from "../../utils/http-error";

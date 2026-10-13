@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "../../lib/supabase";
+import { captureServerEvent } from "../../lib/posthog";
 import { writeAuditLog } from "../audit.service";
 import { buildAlertDedupeKey } from "./alert.utils";
 import { isInvalidFcmTokenError, sendPushNotification } from "./fcm.service";

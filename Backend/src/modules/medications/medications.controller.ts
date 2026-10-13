@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { ok } from "../../utils/api-response";
-import { activateMedication, listSchedules, logDose, refillStatus } from "./medications.service";
+import { activateMedication, listSchedules, logDose, refillStatus , updateSchedule } from "./medications.service";
 
 export async function activateMedicationHandler(req: Request, res: Response) {
   const data = await activateMedication(req.auth!.token, req.body);
@@ -20,4 +20,9 @@ export async function logDoseHandler(req: Request, res: Response) {
 export async function refillStatusHandler(req: Request, res: Response) {
   const data = await refillStatus(req.auth!.token, String(req.query.familyMemberId ?? ""));
   return ok(res, data, "Refill continuity status");
+}
+
+export async function updateScheduleHandler(req: Request, res: Response) {
+  const data = await updateSchedule(req.auth!.token, req.params.id, req.body);
+  return ok(res, data, "Medication schedule updated");
 }

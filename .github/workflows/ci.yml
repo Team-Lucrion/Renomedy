@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, beta-main ]
+  pull_request:
+    branches: [ main, beta-main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+
+    - name: Install dependencies (Backend)
+      run: npm install --no-workspaces
+      working-directory: ./Backend
+
+    - name: Typecheck (Backend)
+      run: npm run typecheck
+      working-directory: ./Backend
+
+    - name: Run Tests (Backend)
+      run: npm run test
+      working-directory: ./Backend
+      env:
+        SUPABASE_URL: "http://localhost"
+        SUPABASE_ANON_KEY: "anon"
+        SUPABASE_SERVICE_ROLE_KEY: "role"
+        CLERK_SECRET_KEY: "clerk"
+        CLERK_WEBHOOK_SECRET: "webhook"
+        SENTRY_DSN: "https://example@sentry.io/123456"
+
+    - name: Install dependencies (Frontend)
+      run: npm install --no-workspaces
+      working-directory: ./Frontend
+
+    - name: Typecheck (Frontend)
+      run: npm run typecheck
+      working-directory: ./Frontend
