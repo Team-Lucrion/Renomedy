@@ -1,0 +1,25 @@
+import { BatteryFull, Bell, CalendarDays, Check, ChevronLeft, ChevronRight, Heart, House, Pill, Plus, Signal, Users, Wifi } from 'lucide-react';
+import type { ReactNode } from 'react';
+
+export function Brand({ linked = false }: { linked?: boolean }) {
+  const content = <img src="https://raw.githubusercontent.com/Team-Lucrion/Renomedy/beta-main/Assets/logo.png" alt="Renomedy" className="brand-logo" />;
+  return linked ? <a href="#top" className="brand" aria-label="Renomedy home">{content}</a> : <span className="brand">{content}</span>;
+}
+function PhoneFrame({ kind, children }: { kind: string; children: ReactNode }) {
+  return <div className={`phone ${kind}`}><div className="phone-screen"><div className="phone-status"><span>9:41</span><div className="phone-island" /><span><Signal /><Wifi /><BatteryFull /></span></div>{children}<div className="phone-nav"><span className={kind === 'center' ? 'selected' : ''}><House />Today</span><span className={kind === 'left' ? 'selected' : ''}><Pill />Medicines</span><span className={kind === 'right' ? 'selected' : ''}><Users />Family</span></div><div className="phone-home" /></div></div>;
+}
+function Medicine({ name, dose, warm = false, taken = false }: { name: string; dose: string; warm?: boolean; taken?: boolean }) {
+  return <div className="med-row"><span className={`med-icon ${warm ? 'warm' : ''}`}><Pill /></span><div><h4>{name}</h4><p>{dose}</p></div>{taken ? <Check /> : <ChevronRight />}</div>;
+}
+function SchedulePhone() {
+  return <PhoneFrame kind="center"><div className="phone-content"><div className="phone-head"><Brand /><span className="person-avatar">M</span></div><p className="phone-small-label">MONDAY, OCTOBER 12</p><h3 className="phone-title">Good morning, Mum.</h3><p className="phone-subtitle">A little clarity for the day ahead.</p><div className="phone-date-row">{['S 11', 'M 12', 'T 13', 'W 14', 'T 15', 'F 16', 'S 17'].map((date, i) => <span key={date} className={`date-cell ${i === 1 ? 'active' : ''}`}><span>{date.split(' ')[0]}</span><strong>{date.split(' ')[1]}</strong></span>)}</div><div className="phone-section-label">Morning<span>8:00 AM</span></div><Medicine name="Amlodipine" dose="5 mg · 1 tablet · With breakfast" taken /><Medicine name="Vitamin D" dose="25 mcg · 1 tablet" warm taken /><div className="phone-section-label">Evening<span>6:00 PM</span></div><Medicine name="Atorvastatin" dose="20 mg · 1 tablet" /><div className="phone-info"><Heart /><span>A shared routine.<br /><strong>You and Emma, on the same page.</strong></span></div></div></PhoneFrame>;
+}
+function DetailPhone() {
+  return <PhoneFrame kind="left"><div className="phone-content"><div className="phone-head"><ChevronLeft size={17} /><span className="phone-small-label">Medicine details</span><span /></div><div className="detail-illustration"><Pill /></div><div className="detail-heading"><h3 className="phone-title">Amlodipine</h3><p className="phone-subtitle">5 mg tablet</p></div><div className="detail-meta"><div><span>Routine</span><strong>Every day</strong></div><div><span>Time</span><strong>8:00 AM</strong></div><div><span>Amount</span><strong>1 tablet</strong></div><div><span>Routine note</span><strong>With breakfast</strong></div></div><div className="reminder-strip"><Bell /><div><strong>Daily reminder</strong><p>At 8:00 AM</p></div><span className="preview-toggle" /></div><div className="phone-info"><CalendarDays /><span>Part of Mum’s morning routine</span></div></div></PhoneFrame>;
+}
+function FamilyPhone() {
+  return <PhoneFrame kind="right"><div className="phone-content"><div className="phone-head"><Brand /><Plus size={15} /></div><h3 className="phone-title">Better, together.</h3><p className="phone-subtitle">Mum’s care circle</p><div className="family-members">{[['M','Mum'],['E','Emma'],['J','James']].map(([initial, name], i) => <div className="family-member" key={name}><span className={`person-avatar ${i === 2 ? 'warm' : ''}`}>{initial}</span>{name}</div>)}</div><div className="phone-section-label">Family updates</div><div className="activity-row"><span className="person-avatar">M</span><div><p><strong>Mum</strong> marked her morning medicines as taken.</p><small>Today, 8:12 AM</small></div></div><div className="activity-row"><span className="person-avatar warm">J</span><div><p><strong>James</strong> added a routine note.</p><small>Today, 8:20 AM</small></div></div><div className="family-note">“I’ll pop by this evening and check the medicine box.”<small>James · Shared with the family</small></div><div className="phone-info"><Users /><span>A little less back-and-forth.<br />A little more together.</span></div></div></PhoneFrame>;
+}
+export function PhoneShowcase() {
+  return <div className="phone-stage" role="img" aria-label="Three Renomedy app concepts: today's medicine schedule, medicine reminders, and a family care circle"><DetailPhone /><FamilyPhone /><SchedulePhone /><div className="floating-note"><span><Check /></span><div><strong>A little more peace of mind.</strong><p>One routine. A shared view.</p></div></div><p className="preview-caption">App concepts · Illustrative information</p></div>;
+}
